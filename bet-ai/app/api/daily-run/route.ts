@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+
 import { getOdds } from "@/app/lib/odds";
+import { getMatches } from "@/app/lib/fixtures";
 
 type Match = {
   slug: string;
@@ -21,24 +23,32 @@ function clamp(num: number, min: number, max: number) {
   return Math.max(min, Math.min(max, num));
 }
 
-async function generatePrediction(match: Match): Promise<Prediction> {
-  const [home, away] = match.slug.split("-vs-");
+async function generatePrediction(
+  match: Match
+): Promise<Prediction> {
+  const [homeRaw, awayRaw] = match.slug.split("-vs-");
+
+  const home = homeRaw.replace(/-/g, " ");
+  const away = awayRaw.replace(/-/g, " ");
 
   const oddsData = await getOdds(home, away);
 
+  // fallback odds if API fails
   const odds =
     oddsData?.home ||
     Number((1.4 + Math.random() * 3.5).toFixed(2));
 
   const impliedProb = 100 / odds;
 
-  // stabil AI modell (nem random noise-only)
+  // stabilized AI probability model
   const baseAiProb =
     impliedProb + (Math.random() - 0.5) * 10;
 
-  const marketBias = (Math.random() - 0.5) * 6;
+  const marketBias =
+    (Math.random() - 0.5) * 6;
 
-  let confidence = baseAiProb + marketBias;
+  let confidence =
+    baseAiProb + marketBias;
 
   confidence = clamp(confidence, 52, 90);
 
@@ -50,7 +60,9 @@ async function generatePrediction(match: Match): Promise<Prediction> {
   ];
 
   const prediction =
-    options[Math.floor(Math.random() * options.length)];
+    options[
+      Math.floor(Math.random() * options.length)
+    ];
 
   return {
     slug: match.slug,
@@ -58,34 +70,28 @@ async function generatePrediction(match: Match): Promise<Prediction> {
     prediction,
     confidence: Math.round(confidence),
     odds,
-    analysis: `Odds ${odds} → implied ${impliedProb.toFixed(
-      1
-    )}% → AI ${confidence.toFixed(1)}%`,
+    analysis:
+      `Odds ${odds} → implied ${impliedProb.toFixed(
+        1
+      )}% → AI ${confidence.toFixed(1)}%`,
   };
 }
 
 export async function GET() {
   try {
-    const matchesPath = path.join(process.cwd(), "data", "matches.json");
     const predictionsPath = path.join(
       process.cwd(),
       "data",
       "predictions.json"
     );
 
-    let matches: Match[] = [];
+    // REAL FIXTURES FROM football-data.org
+    const matches = await getMatches();
 
-    try {
-      const raw = fs.readFileSync(matchesPath, "utf-8");
-      matches = JSON.parse(raw);
-    } catch {
-      matches = [];
-    }
-
-    if (matches.length === 0) {
+    if (!matches.length) {
       return NextResponse.json({
-        success: true,
-        message: "No matches available",
+        success: false,
+        message: "No fixtures found",
         count: 0,
       });
     }
@@ -93,8 +99,10 @@ export async function GET() {
     const predictions: Prediction[] = [];
 
     for (const match of matches) {
-      const p = await generatePrediction(match);
-      predictions.push(p);
+      const prediction =
+        await generatePrediction(match);
+
+      predictions.push(prediction);
     }
 
     fs.writeFileSync(
@@ -108,12 +116,16 @@ export async function GET() {
       count: predictions.length,
     });
   } catch (error) {
+    console.error(error);
+
     return NextResponse.json(
       {
         success: false,
         message: "Pipeline failed",
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }
