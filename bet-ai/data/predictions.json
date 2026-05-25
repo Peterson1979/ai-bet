@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "arsenal-vs-chelsea",
+    "league": "Premier League",
+    "prediction": "Home Win (simulated)",
+    "confidence": 70,
+    "analysis": "No AI key configured. This is a fallback analytical placeholder based on general team strength assumptions."
+  },
+  {
+    "slug": "inter-vs-milan",
+    "league": "Serie A",
+    "prediction": "Home Win (simulated)",
+    "confidence": 70,
+    "analysis": "No AI key configured. This is a fallback analytical placeholder based on general team strength assumptions."
+  },
+  {
+    "slug": "barcelona-vs-sevilla",
+    "league": "La Liga",
+    "prediction": "Home Win (simulated)",
+    "confidence": 70,
+    "analysis": "No AI key configured. This is a fallback analytical placeholder based on general team strength assumptions."
+  }
+]
