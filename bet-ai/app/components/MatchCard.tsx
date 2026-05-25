@@ -11,15 +11,40 @@ type Props = {
   analysis?: string;
 };
 
-function getRisk(conf: number, odds?: number) {
-  if (!odds) return "Unknown";
+type Risk = {
+  label: "Low risk" | "Medium risk" | "High risk" | "Unknown";
+  color: string;
+};
+
+function getRisk(conf: number, odds?: number): Risk {
+  if (!odds) {
+    return {
+      label: "Unknown",
+      color: "#94a3b8",
+    };
+  }
 
   const implied = 100 / odds;
   const edge = conf - implied;
 
-  if (edge >= 8) return { label: "Low risk", color: "#22c55e" };
-  if (edge >= 0) return { label: "Medium risk", color: "#f59e0b" };
-  return { label: "High risk", color: "#ef4444" };
+  if (edge >= 8) {
+    return {
+      label: "Low risk",
+      color: "#22c55e",
+    };
+  }
+
+  if (edge >= 0) {
+    return {
+      label: "Medium risk",
+      color: "#f59e0b",
+    };
+  }
+
+  return {
+    label: "High risk",
+    color: "#ef4444",
+  };
 }
 
 function getConfidenceLabel(conf: number) {
@@ -62,7 +87,7 @@ export default function MatchCard({
         </div>
       </div>
 
-      {/* AI PREDICTION BLOCK */}
+      {/* AI BLOCK */}
       <div
         style={{
           padding: 12,
@@ -90,7 +115,7 @@ export default function MatchCard({
         </div>
 
         {analysis ||
-          `${home} shows stronger statistical form compared to ${away}, giving them a slight predictive advantage based on AI model weighting.`}
+          `${home} shows stronger statistical form compared to ${away}.`}
       </div>
 
       {/* METRICS */}
