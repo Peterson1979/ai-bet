@@ -63,7 +63,7 @@ export default async function HomePage() {
           <a
             href={getAffiliateLink(bestBet.league)}
             target="_blank"
-			onClick={() => trackClick(p.league, p.slug)}
+            onClick={() => trackClick(bestBet.league, bestBet.slug)}
             style={{
               display: "inline-block",
               marginTop: 12,
@@ -118,7 +118,7 @@ export default async function HomePage() {
             <a
               href={getAffiliateLink(p.league)}
               target="_blank"
-			  onClick={() => trackClick(p.league, p.slug)}
+              onClick={() => trackClick(p.league, p.slug)}
               style={{
                 display: "inline-block",
                 marginTop: 12,
