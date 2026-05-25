@@ -2,22 +2,25 @@
   {
     "slug": "arsenal-vs-chelsea",
     "league": "Premier League",
-    "prediction": "Home Win (simulated)",
-    "confidence": 70,
-    "analysis": "No AI key configured. This is a fallback analytical placeholder based on general team strength assumptions."
+    "prediction": "Home Win",
+    "confidence": 57,
+    "odds": 1.97,
+    "analysis": "Odds 1.97 → implied 50.8% → AI 57.4%"
   },
   {
     "slug": "inter-vs-milan",
     "league": "Serie A",
-    "prediction": "Home Win (simulated)",
-    "confidence": 70,
-    "analysis": "No AI key configured. This is a fallback analytical placeholder based on general team strength assumptions."
+    "prediction": "BTTS",
+    "confidence": 55,
+    "odds": 1.79,
+    "analysis": "Odds 1.79 → implied 55.9% → AI 55.1%"
   },
   {
     "slug": "barcelona-vs-sevilla",
     "league": "La Liga",
-    "prediction": "Home Win (simulated)",
-    "confidence": 70,
-    "analysis": "No AI key configured. This is a fallback analytical placeholder based on general team strength assumptions."
+    "prediction": "BTTS",
+    "confidence": 52,
+    "odds": 3.69,
+    "analysis": "Odds 3.69 → implied 27.1% → AI 52.0%"
   }
 ]
