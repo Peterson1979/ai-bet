@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import Image from "next/image";
+import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 
 type Prediction = {
@@ -59,7 +60,7 @@ export default async function HomePage() {
         fontFamily: "system-ui, sans-serif",
       }}
     >
-      {/* HERO (responsive height) */}
+      {/* HERO */}
       <div
         style={{
           position: "relative",
@@ -76,23 +77,18 @@ export default async function HomePage() {
         />
       </div>
 
-      {/* RESPONSIVE WRAPPER */}
+      {/* RESPONSIVE LAYOUT (NO CSS-IN-JS) */}
       <div
         style={{
           display: "flex",
-          flexDirection: "row",
+          flexWrap: "wrap",
           gap: 24,
           padding: 28,
           alignItems: "flex-start",
         }}
       >
-        {/* LEFT */}
-        <div
-          style={{
-            flex: 2,
-            minWidth: 0,
-          }}
-        >
+        {/* LEFT COLUMN */}
+        <div style={{ flex: "2 1 600px" }}>
           {/* FEATURED */}
           {featured && (
             <div style={{ marginBottom: 20 }}>
@@ -187,7 +183,7 @@ export default async function HomePage() {
                   <div style={{ marginTop: 10, fontSize: 13 }}>
                     <b>Short analysis:</b>{" "}
                     {p.analysis ||
-                      `${p.home} has a statistical advantage over ${p.away}.`}
+                      `${p.home} has statistical edge over ${p.away}.`}
                   </div>
 
                   <div style={{ marginTop: 8 }}>
@@ -229,33 +225,11 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* RIGHT */}
-        <div
-          style={{
-            flex: 1,
-            minWidth: 280,
-          }}
-        >
+        {/* RIGHT COLUMN */}
+        <div style={{ flex: "1 1 280px" }}>
           <TopBettingSites />
         </div>
       </div>
-
-      {/* MOBILE FIX (simple stack override behavior) */}
-      <style jsx>{`
-        @media (max-width: 900px) {
-          div[style*="flex-direction: row"] {
-            flex-direction: column !important;
-          }
-
-          div[style*="min-width: 280px"] {
-            width: 100%;
-          }
-
-          main {
-            padding-bottom: 40px;
-          }
-        }
-      `}</style>
     </main>
   );
 }
