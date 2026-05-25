@@ -6,10 +6,22 @@ import { getAffiliateLink } from "../lib/affiliates";
 type Props = {
   league: string;
   slug: string;
-  children: React.ReactNode;
 };
 
-export default function TrackLink({ league, slug, children }: Props) {
+function getLabel(league: string) {
+  const map: Record<string, string[]> = {
+    "Premier League": ["Best EPL Odds", "Claim EPL Bonus"],
+    "Serie A": ["Best Serie A Odds", "Check Italy Odds"],
+    "La Liga": ["Best La Liga Odds", "Spain Value Odds"],
+  };
+
+  const options = map[league] || ["Get Best Odds", "Check Odds"];
+  return options[Math.floor(Math.random() * options.length)];
+}
+
+export default function TrackLink({ league, slug }: Props) {
+  const label = getLabel(league);
+
   return (
     <a
       href={getAffiliateLink(league)}
@@ -26,7 +38,7 @@ export default function TrackLink({ league, slug, children }: Props) {
         textDecoration: "none",
       }}
     >
-      {children}
+      {label}
     </a>
   );
 }

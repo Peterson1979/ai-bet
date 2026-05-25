@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { getAffiliateLink } from "./lib/affiliates";
 import TrackLink from "./components/TrackLink";
 
 type Prediction = {
@@ -9,12 +8,22 @@ type Prediction = {
   prediction: string;
   confidence: number;
   analysis: string;
+  odds?: number;
 };
 
 function getBadge(confidence: number) {
   if (confidence >= 85) return "HIGH CONFIDENCE";
   if (confidence >= 75) return "MEDIUM CONFIDENCE";
   return "RISKY";
+}
+
+function isValueBet(confidence: number, odds?: number) {
+  if (!odds) return false;
+
+  const impliedProb = 100 / odds;
+  const edge = confidence - impliedProb;
+
+  return edge >= 8;
 }
 
 async function getPredictions(): Promise<Prediction[]> {
@@ -30,9 +39,15 @@ async function getPredictions(): Promise<Prediction[]> {
 export default async function HomePage() {
   const predictions = await getPredictions();
 
-  const bestBet = predictions
-    .filter((p) => p.confidence >= 80)
-    .sort((a, b) => b.confidence - a.confidence)[0];
+  const valueBets = predictions.filter((p) =>
+    isValueBet(p.confidence, p.odds)
+  );
+
+  const bestBet = valueBets.length
+    ? valueBets.sort((a, b) => b.confidence - a.confidence)[0]
+    : predictions
+        .filter((p) => p.confidence >= 80)
+        .sort((a, b) => b.confidence - a.confidence)[0];
 
   return (
     <main
@@ -43,7 +58,13 @@ export default async function HomePage() {
         color: "#fff",
       }}
     >
-      <h1 style={{ fontSize: 28, marginBottom: 20 }}>AI Betting Tips</h1>
+      <h1 style={{ fontSize: 28, marginBottom: 10 }}>
+        AI Betting Tips
+      </h1>
+
+      <p style={{ opacity: 0.7, maxWidth: 600, marginBottom: 20 }}>
+        Daily AI-powered football predictions with value bet detection and odds comparison.
+      </p>
 
       {bestBet && (
         <div
@@ -65,13 +86,23 @@ export default async function HomePage() {
             {bestBet.prediction} ({bestBet.confidence}%)
           </div>
 
+          {bestBet.odds && (
+            <div style={{ marginTop: 6 }}>
+              Odds: {bestBet.odds}
+            </div>
+          )}
+
           <div style={{ marginTop: 6, fontSize: 12, color: "#94a3b8" }}>
             {getBadge(bestBet.confidence)}
           </div>
 
-          <TrackLink league={bestBet.league} slug={bestBet.slug}>
-            Get Best Odds
-          </TrackLink>
+          {isValueBet(bestBet.confidence, bestBet.odds) && (
+            <div style={{ color: "#22c55e", marginTop: 6 }}>
+              VALUE BET DETECTED
+            </div>
+          )}
+
+          <TrackLink league={bestBet.league} slug={bestBet.slug} />
         </div>
       )}
 
@@ -88,7 +119,9 @@ export default async function HomePage() {
               background: "#111827",
             }}
           >
-            <div style={{ fontSize: 18, fontWeight: 600 }}>{p.slug}</div>
+            <div style={{ fontSize: 18, fontWeight: 600 }}>
+              {p.slug}
+            </div>
 
             <div style={{ opacity: 0.8 }}>{p.league}</div>
 
@@ -100,15 +133,28 @@ export default async function HomePage() {
               <b>Confidence:</b> {p.confidence}%
             </div>
 
+            {p.odds && (
+              <div>
+                <b>Odds:</b> {p.odds}
+              </div>
+            )}
+
             <div style={{ marginTop: 6, fontSize: 12, color: "#94a3b8" }}>
               {getBadge(p.confidence)}
             </div>
 
-            <p style={{ marginTop: 10, opacity: 0.9 }}>{p.analysis}</p>
+            <p style={{ marginTop: 10, opacity: 0.9 }}>
+              {p.analysis}
+            </p>
 
-            <TrackLink league={p.league} slug={p.slug}>
-              Get Best Odds
-            </TrackLink>
+            <a
+              href={`/predictions/${p.slug}`}
+              style={{ color: "#60a5fa", display: "inline-block", marginTop: 8 }}
+            >
+              Open Analysis
+            </a>
+
+            <TrackLink league={p.league} slug={p.slug} />
           </div>
         ))}
       </div>
