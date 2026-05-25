@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { getAffiliateLink } from "@/lib/affiliates";
+import { getAffiliateLink } from "../lib/affiliates";
 
 type Prediction = {
   slug: string;
