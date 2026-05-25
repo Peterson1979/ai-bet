@@ -36,6 +36,20 @@ async function getPredictions(): Promise<Prediction[]> {
   }
 }
 
+export async function generateMetadata() {
+  const predictions = await getPredictions();
+  const best = predictions[0];
+
+  return {
+    title: best
+      ? `${best.slug} – AI Betting Tips`
+      : "AI Betting Tips",
+    description:
+      best?.analysis ||
+      "Daily AI-powered football predictions with value bet detection and odds comparison.",
+  };
+}
+
 export default async function HomePage() {
   const predictions = await getPredictions();
 
@@ -62,7 +76,13 @@ export default async function HomePage() {
         AI Betting Tips
       </h1>
 
-      <p style={{ opacity: 0.7, maxWidth: 600, marginBottom: 20 }}>
+      <p
+        style={{
+          opacity: 0.7,
+          maxWidth: 600,
+          marginBottom: 20,
+        }}
+      >
         Daily AI-powered football predictions with value bet detection and odds comparison.
       </p>
 
@@ -92,21 +112,40 @@ export default async function HomePage() {
             </div>
           )}
 
-          <div style={{ marginTop: 6, fontSize: 12, color: "#94a3b8" }}>
+          <div
+            style={{
+              marginTop: 6,
+              fontSize: 12,
+              color: "#94a3b8",
+            }}
+          >
             {getBadge(bestBet.confidence)}
           </div>
 
-          {isValueBet(bestBet.confidence, bestBet.odds) && (
-            <div style={{ color: "#22c55e", marginTop: 6 }}>
+          {isValueBet(
+            bestBet.confidence,
+            bestBet.odds
+          ) && (
+            <div
+              style={{
+                color: "#22c55e",
+                marginTop: 6,
+              }}
+            >
               VALUE BET DETECTED
             </div>
           )}
 
-          <TrackLink league={bestBet.league} slug={bestBet.slug} />
+          <TrackLink
+            league={bestBet.league}
+            slug={bestBet.slug}
+          />
         </div>
       )}
 
-      {predictions.length === 0 && <p>No predictions yet.</p>}
+      {predictions.length === 0 && (
+        <p>No predictions yet.</p>
+      )}
 
       <div style={{ display: "grid", gap: 16 }}>
         {predictions.map((p, i) => (
@@ -119,11 +158,18 @@ export default async function HomePage() {
               background: "#111827",
             }}
           >
-            <div style={{ fontSize: 18, fontWeight: 600 }}>
+            <div
+              style={{
+                fontSize: 18,
+                fontWeight: 600,
+              }}
+            >
               {p.slug}
             </div>
 
-            <div style={{ opacity: 0.8 }}>{p.league}</div>
+            <div style={{ opacity: 0.8 }}>
+              {p.league}
+            </div>
 
             <div style={{ marginTop: 8 }}>
               <b>Prediction:</b> {p.prediction}
@@ -139,22 +185,40 @@ export default async function HomePage() {
               </div>
             )}
 
-            <div style={{ marginTop: 6, fontSize: 12, color: "#94a3b8" }}>
+            <div
+              style={{
+                marginTop: 6,
+                fontSize: 12,
+                color: "#94a3b8",
+              }}
+            >
               {getBadge(p.confidence)}
             </div>
 
-            <p style={{ marginTop: 10, opacity: 0.9 }}>
+            <p
+              style={{
+                marginTop: 10,
+                opacity: 0.9,
+              }}
+            >
               {p.analysis}
             </p>
 
             <a
               href={`/predictions/${p.slug}`}
-              style={{ color: "#60a5fa", display: "inline-block", marginTop: 8 }}
+              style={{
+                color: "#60a5fa",
+                display: "inline-block",
+                marginTop: 8,
+              }}
             >
               Open Analysis
             </a>
 
-            <TrackLink league={p.league} slug={p.slug} />
+            <TrackLink
+              league={p.league}
+              slug={p.slug}
+            />
           </div>
         ))}
       </div>
