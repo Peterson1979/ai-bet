@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { getAffiliateLink } from "./lib/affiliates";
+import { trackClick } from "./lib/tracking";
 
 type Prediction = {
   slug: string;
