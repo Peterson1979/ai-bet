@@ -1,29 +1,18 @@
 import fs from "fs";
 import path from "path";
 import Image from "next/image";
-import TrackLink from "./components/TrackLink";
-import AnimatedGrid from "./components/AnimatedGrid";
+import MatchCard from "./components/MatchCard";
+import TopBettingSites from "./components/TopBettingSites";
 
 type Prediction = {
   slug: string;
   league: string;
+  home: string;
+  away: string;
   prediction: string;
   confidence: number;
-  analysis: string;
   odds?: number;
 };
-
-function getBadge(confidence: number) {
-  if (confidence >= 85) return "HIGH CONFIDENCE";
-  if (confidence >= 75) return "MEDIUM CONFIDENCE";
-  return "RISKY";
-}
-
-function isValueBet(confidence: number, odds?: number) {
-  if (!odds) return false;
-  const implied = 100 / odds;
-  return confidence - implied >= 6;
-}
 
 async function getPredictions(): Promise<Prediction[]> {
   try {
@@ -38,9 +27,11 @@ async function getPredictions(): Promise<Prediction[]> {
 export default async function HomePage() {
   const predictions = await getPredictions();
 
-  const bestBet = predictions
-    .filter((p) => isValueBet(p.confidence, p.odds))
-    .sort((a, b) => b.confidence - a.confidence)[0];
+  const sorted = [...predictions].sort(
+    (a, b) => b.confidence - a.confidence
+  );
+
+  const featured = sorted[0];
 
   return (
     <main
@@ -60,9 +51,9 @@ export default async function HomePage() {
           height={500}
           style={{
             width: "100%",
-            height: "340px",
+            height: "320px",
             objectFit: "cover",
-            filter: "contrast(1.15) saturate(1.1)",
+            filter: "contrast(1.1) saturate(1.1)",
           }}
         />
 
@@ -71,138 +62,66 @@ export default async function HomePage() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to top, rgba(7,11,20,1), rgba(7,11,20,0.1))",
+              "linear-gradient(to top, rgba(7,11,20,1), rgba(7,11,20,0.2))",
             display: "flex",
             alignItems: "flex-end",
             padding: 28,
           }}
         >
           <div>
-            <h1 style={{ fontSize: 40, margin: 0 }}>
-              AI Betting Tips
+            <h1 style={{ fontSize: 38, margin: 0 }}>
+              AI Betting Dashboard
             </h1>
             <p style={{ opacity: 0.7, marginTop: 6 }}>
-              Data-driven football predictions with odds edge detection
+              Structured AI predictions with bookmaker odds comparison
             </p>
           </div>
         </div>
       </div>
 
       {/* FEATURED */}
-      {bestBet && (
+      {featured && (
         <div style={{ padding: 28 }}>
-          <div
-            style={{
-              background:
-                "linear-gradient(145deg, #111827, #0f172a)",
-              border: "1px solid rgba(34,197,94,0.3)",
-              borderRadius: 18,
-              padding: 22,
-              boxShadow:
-                "0 15px 40px rgba(0,0,0,0.4)",
-            }}
-          >
-            <div style={{ fontSize: 11, opacity: 0.6 }}>
-              FEATURED VALUE PICK
-            </div>
-
-            <h2 style={{ marginTop: 8 }}>
-              {bestBet.slug}
-            </h2>
-
-            <div style={{ opacity: 0.7 }}>
-              {bestBet.league}
-            </div>
-
-            <div style={{ marginTop: 10 }}>
-              <b>{bestBet.prediction}</b>{" "}
-              <span style={{ opacity: 0.7 }}>
-                ({bestBet.confidence}%)
-              </span>
-            </div>
-
-            {bestBet.odds && (
-              <div style={{ marginTop: 6, opacity: 0.7 }}>
-                Odds: {bestBet.odds}
-              </div>
-            )}
-
-            <div style={{ marginTop: 10, fontSize: 12 }}>
-              {getBadge(bestBet.confidence)}
-            </div>
-
-            {isValueBet(bestBet.confidence, bestBet.odds) && (
-              <div
-                style={{
-                  marginTop: 10,
-                  color: "#22c55e",
-                  fontWeight: 600,
-                }}
-              >
-                VALUE EDGE DETECTED
-              </div>
-            )}
-
-            <div style={{ marginTop: 16 }}>
-              <TrackLink
-                league={bestBet.league}
-                slug={bestBet.slug}
-              >
-                Get Best Odds
-              </TrackLink>
-            </div>
+          <div style={{ marginBottom: 10, opacity: 0.7 }}>
+            FEATURED MATCH
           </div>
+
+          <MatchCard
+            slug={featured.slug}
+            league={featured.league}
+            home={featured.home}
+            away={featured.away}
+            prediction={featured.prediction}
+            confidence={featured.confidence}
+            odds={featured.odds}
+          />
         </div>
       )}
 
-      {/* GRID (ANIMATED CLIENT COMPONENT) */}
-      <AnimatedGrid>
-        {predictions.map((p, i) => (
-          <div
-            key={i}
-            style={{
-              background: "#0f172a",
-              borderRadius: 14,
-              padding: 16,
-              border: "1px solid rgba(255,255,255,0.05)",
-            }}
-          >
-            <div style={{ fontWeight: 600 }}>
-              {p.slug}
-            </div>
+      {/* ALL MATCHES */}
+      <div style={{ padding: 28 }}>
+        <div style={{ marginBottom: 12, opacity: 0.7 }}>
+          ALL MATCHES
+        </div>
 
-            <div style={{ opacity: 0.6, fontSize: 13 }}>
-              {p.league}
-            </div>
+        <div style={{ display: "grid", gap: 14 }}>
+          {sorted.map((p, i) => (
+            <MatchCard
+              key={i}
+              slug={p.slug}
+              league={p.league}
+              home={p.home}
+              away={p.away}
+              prediction={p.prediction}
+              confidence={p.confidence}
+              odds={p.odds}
+            />
+          ))}
+        </div>
+      </div>
 
-            <div style={{ marginTop: 8 }}>
-              <b>{p.prediction}</b>{" "}
-              <span style={{ opacity: 0.6 }}>
-                ({p.confidence}%)
-              </span>
-            </div>
-
-            {p.odds && (
-              <div style={{ fontSize: 12, opacity: 0.6 }}>
-                Odds: {p.odds}
-              </div>
-            )}
-
-            <div style={{ marginTop: 8, fontSize: 11 }}>
-              {getBadge(p.confidence)}
-            </div>
-
-            <div style={{ marginTop: 12 }}>
-              <TrackLink
-                league={p.league}
-                slug={p.slug}
-              >
-                Open Analysis
-              </TrackLink>
-            </div>
-          </div>
-        ))}
-      </AnimatedGrid>
+      {/* TOP BETTING SITES MODULE */}
+      <TopBettingSites />
     </main>
   );
 }
