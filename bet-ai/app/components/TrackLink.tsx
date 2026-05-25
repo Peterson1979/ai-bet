@@ -6,6 +6,7 @@ import { getAffiliateLink } from "../lib/affiliates";
 type Props = {
   league: string;
   slug: string;
+  children?: React.ReactNode;
 };
 
 function getLabel(league: string) {
@@ -19,13 +20,18 @@ function getLabel(league: string) {
   return options[Math.floor(Math.random() * options.length)];
 }
 
-export default function TrackLink({ league, slug }: Props) {
+export default function TrackLink({
+  league,
+  slug,
+  children,
+}: Props) {
   const label = getLabel(league);
 
   return (
     <a
       href={getAffiliateLink(league)}
       target="_blank"
+      rel="noopener noreferrer"
       onClick={() => trackClick(league, slug)}
       style={{
         display: "inline-block",
@@ -38,7 +44,7 @@ export default function TrackLink({ league, slug }: Props) {
         textDecoration: "none",
       }}
     >
-      {label}
+      {children ?? label}
     </a>
   );
 }
