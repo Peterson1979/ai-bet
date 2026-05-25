@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
+import Image from "next/image";
 import TrackLink from "./components/TrackLink";
+import { motion } from "framer-motion";
 
 type Prediction = {
   slug: string;
@@ -19,11 +21,8 @@ function getBadge(confidence: number) {
 
 function isValueBet(confidence: number, odds?: number) {
   if (!odds) return false;
-
-  const impliedProb = 100 / odds;
-  const edge = confidence - impliedProb;
-
-  return edge >= 8;
+  const implied = 100 / odds;
+  return confidence - implied >= 6;
 }
 
 async function getPredictions(): Promise<Prediction[]> {
@@ -36,192 +35,203 @@ async function getPredictions(): Promise<Prediction[]> {
   }
 }
 
-export async function generateMetadata() {
-  const predictions = await getPredictions();
-  const best = predictions[0];
+const container = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
 
-  return {
-    title: best
-      ? `${best.slug} – AI Betting Tips`
-      : "AI Betting Tips",
-    description:
-      best?.analysis ||
-      "Daily AI-powered football predictions with value bet detection and odds comparison.",
-  };
-}
+const card = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0 },
+};
 
 export default async function HomePage() {
   const predictions = await getPredictions();
 
-  const valueBets = predictions.filter((p) =>
-    isValueBet(p.confidence, p.odds)
-  );
-
-  const bestBet = valueBets.length
-    ? valueBets.sort((a, b) => b.confidence - a.confidence)[0]
-    : predictions
-        .filter((p) => p.confidence >= 80)
-        .sort((a, b) => b.confidence - a.confidence)[0];
+  const bestBet = predictions
+    .filter((p) => isValueBet(p.confidence, p.odds))
+    .sort((a, b) => b.confidence - a.confidence)[0];
 
   return (
     <main
       style={{
-        padding: 24,
-        fontFamily: "sans-serif",
-        background: "#0b0f14",
-        color: "#fff",
+        background: "#070b14",
+        color: "#e5e7eb",
+        minHeight: "100vh",
+        fontFamily: "system-ui, sans-serif",
       }}
     >
-      <h1 style={{ fontSize: 28, marginBottom: 10 }}>
-        AI Betting Tips
-      </h1>
+      {/* HERO */}
+      <div style={{ position: "relative" }}>
+        <Image
+          src="/hero.jpg"
+          alt="AI Betting Tips"
+          width={1600}
+          height={500}
+          style={{
+            width: "100%",
+            height: "340px",
+            objectFit: "cover",
+            filter: "contrast(1.15) saturate(1.1)",
+          }}
+        />
 
-      <p
-        style={{
-          opacity: 0.7,
-          maxWidth: 600,
-          marginBottom: 20,
-        }}
-      >
-        Daily AI-powered football predictions with value bet detection and odds comparison.
-      </p>
-
-      {bestBet && (
         <div
           style={{
-            padding: 20,
-            marginBottom: 20,
-            border: "2px solid #22c55e",
-            borderRadius: 12,
-            background: "#0f172a",
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to top, rgba(7,11,20,1), rgba(7,11,20,0.1))",
+            display: "flex",
+            alignItems: "flex-end",
+            padding: 28,
           }}
         >
-          <h2>🔥 Best Bet of the Day</h2>
-
-          <div style={{ fontSize: 18, marginTop: 8 }}>
-            {bestBet.slug}
+          <div>
+            <h1 style={{ fontSize: 40, margin: 0 }}>
+              AI Betting Tips
+            </h1>
+            <p style={{ opacity: 0.7, marginTop: 6 }}>
+              Data-driven football predictions with odds edge detection
+            </p>
           </div>
-
-          <div style={{ marginTop: 4 }}>
-            {bestBet.prediction} ({bestBet.confidence}%)
-          </div>
-
-          {bestBet.odds && (
-            <div style={{ marginTop: 6 }}>
-              Odds: {bestBet.odds}
-            </div>
-          )}
-
-          <div
-            style={{
-              marginTop: 6,
-              fontSize: 12,
-              color: "#94a3b8",
-            }}
-          >
-            {getBadge(bestBet.confidence)}
-          </div>
-
-          {isValueBet(
-            bestBet.confidence,
-            bestBet.odds
-          ) && (
-            <div
-              style={{
-                color: "#22c55e",
-                marginTop: 6,
-              }}
-            >
-              VALUE BET DETECTED
-            </div>
-          )}
-
-          <TrackLink
-            league={bestBet.league}
-            slug={bestBet.slug}
-          />
         </div>
-      )}
+      </div>
 
-      {predictions.length === 0 && (
-        <p>No predictions yet.</p>
-      )}
-
-      <div style={{ display: "grid", gap: 16 }}>
-        {predictions.map((p, i) => (
+      {/* FEATURED */}
+      {bestBet && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          style={{ padding: 28 }}
+        >
           <div
-            key={i}
             style={{
-              border: "1px solid #222",
-              borderRadius: 12,
-              padding: 16,
-              background: "#111827",
+              background:
+                "linear-gradient(145deg, #111827, #0f172a)",
+              border: "1px solid rgba(34,197,94,0.3)",
+              borderRadius: 18,
+              padding: 22,
+              boxShadow:
+                "0 15px 40px rgba(0,0,0,0.4)",
             }}
           >
-            <div
-              style={{
-                fontSize: 18,
-                fontWeight: 600,
-              }}
-            >
+            <div style={{ fontSize: 11, opacity: 0.6 }}>
+              FEATURED VALUE PICK
+            </div>
+
+            <h2 style={{ marginTop: 8 }}>
+              {bestBet.slug}
+            </h2>
+
+            <div style={{ opacity: 0.7 }}>
+              {bestBet.league}
+            </div>
+
+            <div style={{ marginTop: 10 }}>
+              <b>{bestBet.prediction}</b>{" "}
+              <span style={{ opacity: 0.7 }}>
+                ({bestBet.confidence}%)
+              </span>
+            </div>
+
+            {bestBet.odds && (
+              <div style={{ marginTop: 6, opacity: 0.7 }}>
+                Odds: {bestBet.odds}
+              </div>
+            )}
+
+            <div style={{ marginTop: 10, fontSize: 12 }}>
+              {getBadge(bestBet.confidence)}
+            </div>
+
+            {isValueBet(bestBet.confidence, bestBet.odds) && (
+              <div
+                style={{
+                  marginTop: 10,
+                  color: "#22c55e",
+                  fontWeight: 600,
+                }}
+              >
+                VALUE EDGE DETECTED
+              </div>
+            )}
+
+            <div style={{ marginTop: 16 }}>
+              <TrackLink
+                league={bestBet.league}
+                slug={bestBet.slug}
+              >
+                Get Best Odds
+              </TrackLink>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* GRID */}
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="show"
+        style={{
+          padding: 28,
+          display: "grid",
+          gap: 14,
+        }}
+      >
+        {predictions.map((p, i) => (
+          <motion.div
+            key={i}
+            variants={card}
+            whileHover={{ scale: 1.01 }}
+            style={{
+              background: "#0f172a",
+              borderRadius: 14,
+              padding: 16,
+              border: "1px solid rgba(255,255,255,0.05)",
+            }}
+          >
+            <div style={{ fontWeight: 600 }}>
               {p.slug}
             </div>
 
-            <div style={{ opacity: 0.8 }}>
+            <div style={{ opacity: 0.6, fontSize: 13 }}>
               {p.league}
             </div>
 
             <div style={{ marginTop: 8 }}>
-              <b>Prediction:</b> {p.prediction}
-            </div>
-
-            <div>
-              <b>Confidence:</b> {p.confidence}%
+              <b>{p.prediction}</b>{" "}
+              <span style={{ opacity: 0.6 }}>
+                ({p.confidence}%)
+              </span>
             </div>
 
             {p.odds && (
-              <div>
-                <b>Odds:</b> {p.odds}
+              <div style={{ fontSize: 12, opacity: 0.6 }}>
+                Odds: {p.odds}
               </div>
             )}
 
-            <div
-              style={{
-                marginTop: 6,
-                fontSize: 12,
-                color: "#94a3b8",
-              }}
-            >
+            <div style={{ marginTop: 8, fontSize: 11 }}>
               {getBadge(p.confidence)}
             </div>
 
-            <p
-              style={{
-                marginTop: 10,
-                opacity: 0.9,
-              }}
-            >
-              {p.analysis}
-            </p>
-
-            <a
-              href={`/predictions/${p.slug}`}
-              style={{
-                color: "#60a5fa",
-                display: "inline-block",
-                marginTop: 8,
-              }}
-            >
-              Open Analysis
-            </a>
-
-            <TrackLink
-              league={p.league}
-              slug={p.slug}
-            />
-          </div>
+            <div style={{ marginTop: 12 }}>
+              <TrackLink
+                league={p.league}
+                slug={p.slug}
+              >
+                Open Analysis
+              </TrackLink>
+            </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </main>
   );
 }

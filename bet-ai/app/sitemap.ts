@@ -1,3 +1,4 @@
+import type { MetadataRoute } from "next";
 import fs from "fs";
 import path from "path";
 
@@ -5,8 +6,8 @@ type Prediction = {
   slug: string;
 };
 
-export default function sitemap() {
-  let urls: { url: string; lastModified: Date }[] = [];
+export default function sitemap(): MetadataRoute.Sitemap {
+  let urls: MetadataRoute.Sitemap = [];
 
   try {
     const filePath = path.join(
