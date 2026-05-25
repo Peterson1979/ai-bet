@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import Image from "next/image";
 import TrackLink from "./components/TrackLink";
-import { motion } from "framer-motion";
+import AnimatedGrid from "./components/AnimatedGrid";
 
 type Prediction = {
   slug: string;
@@ -34,19 +34,6 @@ async function getPredictions(): Promise<Prediction[]> {
     return [];
   }
 }
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-const card = {
-  hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0 },
-};
 
 export default async function HomePage() {
   const predictions = await getPredictions();
@@ -103,12 +90,7 @@ export default async function HomePage() {
 
       {/* FEATURED */}
       {bestBet && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          style={{ padding: 28 }}
-        >
+        <div style={{ padding: 28 }}>
           <div
             style={{
               background:
@@ -170,25 +152,14 @@ export default async function HomePage() {
               </TrackLink>
             </div>
           </div>
-        </motion.div>
+        </div>
       )}
 
-      {/* GRID */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        style={{
-          padding: 28,
-          display: "grid",
-          gap: 14,
-        }}
-      >
+      {/* GRID (ANIMATED CLIENT COMPONENT) */}
+      <AnimatedGrid>
         {predictions.map((p, i) => (
-          <motion.div
+          <div
             key={i}
-            variants={card}
-            whileHover={{ scale: 1.01 }}
             style={{
               background: "#0f172a",
               borderRadius: 14,
@@ -229,9 +200,9 @@ export default async function HomePage() {
                 Open Analysis
               </TrackLink>
             </div>
-          </motion.div>
+          </div>
         ))}
-      </motion.div>
+      </AnimatedGrid>
     </main>
   );
 }
