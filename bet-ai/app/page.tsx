@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import Image from "next/image";
-import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 
 type Prediction = {
@@ -12,7 +11,25 @@ type Prediction = {
   prediction: string;
   confidence: number;
   odds?: number;
+  analysis?: string;
 };
+
+function getRisk(conf: number, odds?: number) {
+  if (!odds) return "Unknown";
+
+  const implied = 100 / odds;
+  const edge = conf - implied;
+
+  if (edge >= 8) return "Low risk";
+  if (edge >= 0) return "Medium risk";
+  return "High risk";
+}
+
+function getTip(conf: number) {
+  if (conf >= 80) return "Strong pick";
+  if (conf >= 65) return "Moderate pick";
+  return "Speculative pick";
+}
 
 async function getPredictions(): Promise<Prediction[]> {
   try {
@@ -42,86 +59,203 @@ export default async function HomePage() {
         fontFamily: "system-ui, sans-serif",
       }}
     >
-      {/* HERO */}
-      <div style={{ position: "relative" }}>
+      {/* HERO (responsive height) */}
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          height: "clamp(180px, 30vw, 360px)",
+        }}
+      >
         <Image
           src="/hero.jpg"
-          alt="AI Betting Tips"
-          width={1600}
-          height={500}
-          style={{
-            width: "100%",
-            height: "320px",
-            objectFit: "cover",
-            filter: "contrast(1.1) saturate(1.1)",
-          }}
+          alt="AI Betting"
+          fill
+          priority
+          style={{ objectFit: "cover" }}
         />
+      </div>
 
+      {/* RESPONSIVE WRAPPER */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          gap: 24,
+          padding: 28,
+          alignItems: "flex-start",
+        }}
+      >
+        {/* LEFT */}
         <div
           style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to top, rgba(7,11,20,1), rgba(7,11,20,0.2))",
-            display: "flex",
-            alignItems: "flex-end",
-            padding: 28,
+            flex: 2,
+            minWidth: 0,
           }}
         >
+          {/* FEATURED */}
+          {featured && (
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ opacity: 0.7, marginBottom: 10 }}>
+                FEATURED MATCH
+              </div>
+
+              <div
+                style={{
+                  background: "#0f172a",
+                  borderRadius: 14,
+                  padding: 16,
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }}
+              >
+                <div style={{ fontWeight: 700 }}>
+                  {featured.home} vs {featured.away}
+                </div>
+
+                <div style={{ opacity: 0.6, fontSize: 13 }}>
+                  {featured.league}
+                </div>
+
+                <div style={{ marginTop: 10, fontSize: 13 }}>
+                  <b>Short analysis:</b>{" "}
+                  {featured.analysis ||
+                    `${featured.home} shows stronger form than ${featured.away}.`}
+                </div>
+
+                <div style={{ marginTop: 8 }}>
+                  <b>Safest betting tip:</b> {featured.prediction}
+                </div>
+
+                <div style={{ marginTop: 6, opacity: 0.8 }}>
+                  Risk level: {getRisk(featured.confidence, featured.odds)}
+                </div>
+
+                <div style={{ marginTop: 6, opacity: 0.7 }}>
+                  {getTip(featured.confidence)}
+                </div>
+
+                {featured.odds && (
+                  <div style={{ marginTop: 6, fontSize: 12 }}>
+                    Odds: {featured.odds}
+                  </div>
+                )}
+
+                <a
+                  href={`#affiliate-${featured.slug}`}
+                  style={{
+                    display: "inline-block",
+                    marginTop: 12,
+                    padding: "10px 14px",
+                    background: "#22c55e",
+                    color: "#000",
+                    borderRadius: 8,
+                    fontWeight: 700,
+                    textDecoration: "none",
+                  }}
+                >
+                  BET NOW
+                </a>
+              </div>
+            </div>
+          )}
+
+          {/* ALL MATCHES */}
           <div>
-            <h1 style={{ fontSize: 38, margin: 0 }}>
-              AI Betting Dashboard
-            </h1>
-            <p style={{ opacity: 0.7, marginTop: 6 }}>
-              Structured AI predictions with bookmaker odds comparison
-            </p>
+            <div style={{ opacity: 0.7, marginBottom: 10 }}>
+              ALL MATCHES
+            </div>
+
+            <div style={{ display: "grid", gap: 14 }}>
+              {sorted.map((p, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "#0f172a",
+                    borderRadius: 14,
+                    padding: 16,
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <div style={{ fontWeight: 700 }}>
+                    {p.home} vs {p.away}
+                  </div>
+
+                  <div style={{ opacity: 0.6, fontSize: 13 }}>
+                    {p.league}
+                  </div>
+
+                  <div style={{ marginTop: 10, fontSize: 13 }}>
+                    <b>Short analysis:</b>{" "}
+                    {p.analysis ||
+                      `${p.home} has a statistical advantage over ${p.away}.`}
+                  </div>
+
+                  <div style={{ marginTop: 8 }}>
+                    <b>Safest betting tip:</b> {p.prediction}
+                  </div>
+
+                  <div style={{ marginTop: 6, opacity: 0.8 }}>
+                    Risk level: {getRisk(p.confidence, p.odds)}
+                  </div>
+
+                  <div style={{ marginTop: 6, opacity: 0.7 }}>
+                    {getTip(p.confidence)}
+                  </div>
+
+                  {p.odds && (
+                    <div style={{ marginTop: 6, fontSize: 12 }}>
+                      Odds: {p.odds}
+                    </div>
+                  )}
+
+                  <a
+                    href={`#affiliate-${p.slug}`}
+                    style={{
+                      display: "inline-block",
+                      marginTop: 12,
+                      padding: "10px 14px",
+                      background: "#22c55e",
+                      color: "#000",
+                      borderRadius: 8,
+                      fontWeight: 700,
+                      textDecoration: "none",
+                    }}
+                  >
+                    BET NOW
+                  </a>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
+
+        {/* RIGHT */}
+        <div
+          style={{
+            flex: 1,
+            minWidth: 280,
+          }}
+        >
+          <TopBettingSites />
         </div>
       </div>
 
-      {/* FEATURED */}
-      {featured && (
-        <div style={{ padding: 28 }}>
-          <div style={{ marginBottom: 10, opacity: 0.7 }}>
-            FEATURED MATCH
-          </div>
+      {/* MOBILE FIX (simple stack override behavior) */}
+      <style jsx>{`
+        @media (max-width: 900px) {
+          div[style*="flex-direction: row"] {
+            flex-direction: column !important;
+          }
 
-          <MatchCard
-            slug={featured.slug}
-            league={featured.league}
-            home={featured.home}
-            away={featured.away}
-            prediction={featured.prediction}
-            confidence={featured.confidence}
-            odds={featured.odds}
-          />
-        </div>
-      )}
+          div[style*="min-width: 280px"] {
+            width: 100%;
+          }
 
-      {/* ALL MATCHES */}
-      <div style={{ padding: 28 }}>
-        <div style={{ marginBottom: 12, opacity: 0.7 }}>
-          ALL MATCHES
-        </div>
-
-        <div style={{ display: "grid", gap: 14 }}>
-          {sorted.map((p, i) => (
-            <MatchCard
-              key={i}
-              slug={p.slug}
-              league={p.league}
-              home={p.home}
-              away={p.away}
-              prediction={p.prediction}
-              confidence={p.confidence}
-              odds={p.odds}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* TOP BETTING SITES MODULE */}
-      <TopBettingSites />
+          main {
+            padding-bottom: 40px;
+          }
+        }
+      `}</style>
     </main>
   );
 }
