@@ -1,7 +1,5 @@
 "use client";
 
-import TrackLink from "./TrackLink";
-
 type Props = {
   slug: string;
   league: string;
@@ -10,95 +8,152 @@ type Props = {
   prediction: string;
   confidence: number;
   odds?: number;
+  analysis?: string;
 };
 
-function getEdge(confidence: number, odds?: number) {
-  if (!odds) return null;
+function getRisk(conf: number, odds?: number) {
+  if (!odds) return "Unknown";
 
   const implied = 100 / odds;
-  const diff = confidence - implied;
+  const edge = conf - implied;
 
-  if (diff >= 8) return "VALUE BET";
-  if (diff >= 0) return "FAIR VALUE";
-  return "NO VALUE";
+  if (edge >= 8) return { label: "Low risk", color: "#22c55e" };
+  if (edge >= 0) return { label: "Medium risk", color: "#f59e0b" };
+  return { label: "High risk", color: "#ef4444" };
 }
 
-function labelPrediction(p: string) {
-  const map: Record<string, string> = {
-    BTTS: "Both Teams To Score",
-    "Home Win": "Home Team Victory",
-    "Away Win": "Away Team Victory",
-    "Draw": "Draw",
-  };
-
-  return map[p] || p;
+function getConfidenceLabel(conf: number) {
+  if (conf >= 80) return "Strong AI signal";
+  if (conf >= 65) return "Moderate AI signal";
+  return "Weak signal";
 }
 
-export default function MatchCard(props: Props) {
-  const edge = getEdge(props.confidence, props.odds);
+export default function MatchCard({
+  slug,
+  league,
+  home,
+  away,
+  prediction,
+  confidence,
+  odds,
+  analysis,
+}: Props) {
+  const risk = getRisk(confidence, odds);
 
   return (
     <div
       style={{
-        background: "#0f172a",
-        borderRadius: 14,
-        padding: 16,
+        background: "linear-gradient(145deg, #0f172a, #0b1220)",
         border: "1px solid rgba(255,255,255,0.06)",
+        borderRadius: 16,
+        padding: 16,
+        display: "flex",
+        flexDirection: "column",
+        gap: 12,
+        boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
       }}
     >
-      {/* MATCH HEADER */}
-      <div style={{ fontWeight: 700, fontSize: 16 }}>
-        {props.home} vs {props.away}
-      </div>
+      {/* HEADER */}
+      <div>
+        <div style={{ fontSize: 12, opacity: 0.6 }}>{league}</div>
 
-      <div style={{ opacity: 0.6, fontSize: 13 }}>
-        {props.league}
-      </div>
-
-      {/* AI PREDICTION */}
-      <div style={{ marginTop: 10 }}>
-        <b>AI Prediction:</b>{" "}
-        {labelPrediction(props.prediction)} ({props.confidence}%)
-      </div>
-
-      {/* BOOKMAKER */}
-      {props.odds && (
-        <div style={{ marginTop: 6, fontSize: 13, opacity: 0.7 }}>
-          Bookmaker Odds: {props.odds}
+        <div style={{ fontSize: 18, fontWeight: 800, marginTop: 2 }}>
+          {home} <span style={{ opacity: 0.6 }}>vs</span> {away}
         </div>
-      )}
+      </div>
 
-      {/* EDGE */}
-      {edge && (
-        <div
-          style={{
-            marginTop: 8,
-            fontWeight: 700,
-            color:
-              edge === "VALUE BET" ? "#22c55e" : "#f59e0b",
-          }}
-        >
-          {edge}
+      {/* AI PREDICTION BLOCK */}
+      <div
+        style={{
+          padding: 12,
+          background: "rgba(255,255,255,0.03)",
+          borderRadius: 12,
+        }}
+      >
+        <div style={{ fontSize: 12, opacity: 0.6 }}>
+          AI PREDICTION
         </div>
-      )}
 
-      {/* ACTIONS */}
-      <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
-        <TrackLink league={props.league} slug={props.slug}>
-          Open Analysis
-        </TrackLink>
+        <div style={{ fontWeight: 700, marginTop: 4 }}>
+          {prediction}
+        </div>
 
+        <div style={{ marginTop: 4, fontSize: 13, opacity: 0.8 }}>
+          {getConfidenceLabel(confidence)} · {confidence}%
+        </div>
+      </div>
+
+      {/* ANALYSIS */}
+      <div style={{ fontSize: 13, opacity: 0.85, lineHeight: 1.4 }}>
+        <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>
+          SHORT ANALYSIS
+        </div>
+
+        {analysis ||
+          `${home} shows stronger statistical form compared to ${away}, giving them a slight predictive advantage based on AI model weighting.`}
+      </div>
+
+      {/* METRICS */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 10,
+          fontSize: 12,
+        }}
+      >
+        <div>
+          <div style={{ opacity: 0.6 }}>Confidence</div>
+          <div style={{ fontWeight: 700 }}>{confidence}%</div>
+        </div>
+
+        <div>
+          <div style={{ opacity: 0.6 }}>Risk</div>
+          <div style={{ fontWeight: 700, color: risk.color }}>
+            {risk.label}
+          </div>
+        </div>
+
+        <div>
+          <div style={{ opacity: 0.6 }}>Odds</div>
+          <div style={{ fontWeight: 700 }}>
+            {odds ?? "N/A"}
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
         <a
-          href="#"
+          href={`#bet-${slug}`}
           style={{
-            padding: "10px 14px",
-            borderRadius: 8,
-            border: "1px solid #333",
-            color: "#fff",
+            flex: 1,
+            textAlign: "center",
+            padding: "10px 12px",
+            background: "#22c55e",
+            color: "#000",
+            fontWeight: 800,
+            borderRadius: 10,
             textDecoration: "none",
           }}
         >
-          Compare Odds
+          BET NOW
+        </a>
+
+        <a
+          href={`/predictions/${slug}`}
+          style={{
+            flex: 1,
+            textAlign: "center",
+            padding: "10px 12px",
+            background: "rgba(255,255,255,0.05)",
+            color: "#e5e7eb",
+            fontWeight: 600,
+            borderRadius: 10,
+            textDecoration: "none",
+          }}
+        >
+          DETAILS
         </a>
       </div>
     </div>
