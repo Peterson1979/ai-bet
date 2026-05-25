@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import Image from "next/image";
-import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 
 type Prediction = {
@@ -60,24 +59,39 @@ export default async function HomePage() {
         fontFamily: "system-ui, sans-serif",
       }}
     >
-      {/* HERO */}
+      {/* HERO - FIXED (NO CROPPING) */}
       <div
         style={{
-          position: "relative",
           width: "100%",
-          height: "clamp(180px, 30vw, 360px)",
+          background: "#050814",
+          display: "flex",
+          justifyContent: "center",
+          padding: "12px 0",
         }}
       >
-        <Image
-          src="/hero.jpg"
-          alt="AI Betting"
-          fill
-          priority
-          style={{ objectFit: "cover" }}
-        />
+        <div
+          style={{
+            position: "relative",
+            width: "min(1200px, 100%)",
+            height: "auto",
+          }}
+        >
+          <Image
+            src="/hero.jpg"
+            alt="AI Betting"
+            width={1600}
+            height={900}
+            priority
+            style={{
+              width: "100%",
+              height: "auto",
+              objectFit: "contain",
+            }}
+          />
+        </div>
       </div>
 
-      {/* RESPONSIVE LAYOUT (NO CSS-IN-JS) */}
+      {/* CONTENT WRAPPER */}
       <div
         style={{
           display: "flex",
@@ -87,7 +101,7 @@ export default async function HomePage() {
           alignItems: "flex-start",
         }}
       >
-        {/* LEFT COLUMN */}
+        {/* LEFT */}
         <div style={{ flex: "2 1 600px" }}>
           {/* FEATURED */}
           {featured && (
@@ -225,7 +239,7 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN */}
+        {/* RIGHT */}
         <div style={{ flex: "1 1 280px" }}>
           <TopBettingSites />
         </div>

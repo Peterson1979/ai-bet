@@ -1,93 +1,52 @@
 "use client";
 
-type Props = {
-  slug: string;
-  league: string;
-  home: string;
-  away: string;
+type AIData = {
   prediction: string;
   confidence: number;
-  odds?: number;
-  analysis?: string;
+  risk: "low" | "medium" | "high";
+  reasoning: string;
+  alternativeTip?: string;
+  summary: string;
 };
 
-type Risk = {
-  label: "Low risk" | "Medium risk" | "High risk" | "Unknown";
-  color: string;
+type Props = {
+  home: string;
+  away: string;
+  league: string;
+  data: AIData;
 };
 
-function getRisk(conf: number, odds?: number): Risk {
-  if (!odds) {
-    return {
-      label: "Unknown",
-      color: "#94a3b8",
-    };
-  }
-
-  const implied = 100 / odds;
-  const edge = conf - implied;
-
-  if (edge >= 8) {
-    return {
-      label: "Low risk",
-      color: "#22c55e",
-    };
-  }
-
-  if (edge >= 0) {
-    return {
-      label: "Medium risk",
-      color: "#f59e0b",
-    };
-  }
-
-  return {
-    label: "High risk",
-    color: "#ef4444",
-  };
-}
-
-function getConfidenceLabel(conf: number) {
-  if (conf >= 80) return "Strong AI signal";
-  if (conf >= 65) return "Moderate AI signal";
-  return "Weak signal";
+function riskColor(risk: string) {
+  if (risk === "low") return "#22c55e";
+  if (risk === "medium") return "#f59e0b";
+  return "#ef4444";
 }
 
 export default function MatchCard({
-  slug,
-  league,
   home,
   away,
-  prediction,
-  confidence,
-  odds,
-  analysis,
+  league,
+  data,
 }: Props) {
-  const risk = getRisk(confidence, odds);
-
   return (
     <div
       style={{
-        background: "linear-gradient(145deg, #0f172a, #0b1220)",
-        border: "1px solid rgba(255,255,255,0.06)",
+        background: "#0f172a",
         borderRadius: 16,
         padding: 16,
+        border: "1px solid rgba(255,255,255,0.06)",
         display: "flex",
         flexDirection: "column",
-        gap: 12,
-        boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+        gap: 10,
       }}
     >
-      {/* HEADER */}
       <div>
         <div style={{ fontSize: 12, opacity: 0.6 }}>{league}</div>
-
-        <div style={{ fontSize: 18, fontWeight: 800, marginTop: 2 }}>
-          {home} <span style={{ opacity: 0.6 }}>vs</span> {away}
+        <div style={{ fontSize: 18, fontWeight: 800 }}>
+          {home} vs {away}
         </div>
       </div>
 
-      {/* AI BLOCK */}
       <div
         style={{
           padding: 12,
@@ -95,92 +54,55 @@ export default function MatchCard({
           borderRadius: 12,
         }}
       >
-        <div style={{ fontSize: 12, opacity: 0.6 }}>
-          AI PREDICTION
-        </div>
-
-        <div style={{ fontWeight: 700, marginTop: 4 }}>
-          {prediction}
-        </div>
-
-        <div style={{ marginTop: 4, fontSize: 13, opacity: 0.8 }}>
-          {getConfidenceLabel(confidence)} · {confidence}%
+        <div style={{ fontSize: 12, opacity: 0.6 }}>AI VERDICT</div>
+        <div style={{ fontWeight: 800 }}>{data.prediction}</div>
+        <div style={{ fontSize: 13, opacity: 0.7 }}>
+          Confidence: {data.confidence}%
         </div>
       </div>
 
-      {/* ANALYSIS */}
-      <div style={{ fontSize: 13, opacity: 0.85, lineHeight: 1.4 }}>
-        <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>
-          SHORT ANALYSIS
-        </div>
-
-        {analysis ||
-          `${home} shows stronger statistical form compared to ${away}.`}
+      <div style={{ fontSize: 13, opacity: 0.85 }}>
+        <div style={{ fontSize: 12, opacity: 0.6 }}>WHY</div>
+        {data.reasoning}
       </div>
 
-      {/* METRICS */}
-      <div
+      <div>
+        <span style={{ opacity: 0.6, fontSize: 12 }}>Risk: </span>
+        <span
+          style={{
+            color: riskColor(data.risk),
+            fontWeight: 800,
+          }}
+        >
+          {data.risk.toUpperCase()}
+        </span>
+      </div>
+
+      {data.alternativeTip && (
+        <div style={{ fontSize: 13, opacity: 0.8 }}>
+          Safer option: {data.alternativeTip}
+        </div>
+      )}
+
+      <div style={{ fontSize: 12, opacity: 0.5 }}>
+        {data.summary}
+      </div>
+
+      <a
+        href="#affiliate"
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          gap: 10,
-          fontSize: 12,
+          marginTop: 8,
+          padding: "10px 14px",
+          background: "#22c55e",
+          color: "#000",
+          fontWeight: 800,
+          borderRadius: 10,
+          textAlign: "center",
+          textDecoration: "none",
         }}
       >
-        <div>
-          <div style={{ opacity: 0.6 }}>Confidence</div>
-          <div style={{ fontWeight: 700 }}>{confidence}%</div>
-        </div>
-
-        <div>
-          <div style={{ opacity: 0.6 }}>Risk</div>
-          <div style={{ fontWeight: 700, color: risk.color }}>
-            {risk.label}
-          </div>
-        </div>
-
-        <div>
-          <div style={{ opacity: 0.6 }}>Odds</div>
-          <div style={{ fontWeight: 700 }}>
-            {odds ?? "N/A"}
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
-        <a
-          href={`#bet-${slug}`}
-          style={{
-            flex: 1,
-            textAlign: "center",
-            padding: "10px 12px",
-            background: "#22c55e",
-            color: "#000",
-            fontWeight: 800,
-            borderRadius: 10,
-            textDecoration: "none",
-          }}
-        >
-          BET NOW
-        </a>
-
-        <a
-          href={`/predictions/${slug}`}
-          style={{
-            flex: 1,
-            textAlign: "center",
-            padding: "10px 12px",
-            background: "rgba(255,255,255,0.05)",
-            color: "#e5e7eb",
-            fontWeight: 600,
-            borderRadius: 10,
-            textDecoration: "none",
-          }}
-        >
-          DETAILS
-        </a>
-      </div>
+        BET NOW
+      </a>
     </div>
   );
 }
