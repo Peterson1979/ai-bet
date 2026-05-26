@@ -42,7 +42,7 @@ export default async function HomePage() {
     >
       <Hero />
 
-      <SportsNav />
+      <SportNav />
 
       <div
         style={{
