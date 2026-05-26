@@ -21,7 +21,7 @@ const sports = [
   },
 ];
 
-export default function SportsNav() {
+export default function SportNav() {
   return (
     <section
       style={{
