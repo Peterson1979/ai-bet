@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import Hero from "./components/Hero";
-import SportsNav from "./components/SportsNav";
+import SportsNav from "./components/SportNav";
 import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
