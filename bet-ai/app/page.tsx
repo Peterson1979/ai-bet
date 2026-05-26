@@ -1,144 +1,119 @@
-import Image from "next/image";
-import TopBettingSites from "./components/TopBettingSites";
+import fs from "fs";
+import path from "path";
+
+import Hero from "./components/Hero";
+import SportsNav from "./components/SportsNav";
 import MatchCard from "./components/MatchCard";
+import TopBettingSites from "./components/TopBettingSites";
+import Footer from "./components/Footer";
 
-type AIResponse = {
-  home: string;
-  away: string;
-  league: string;
-  prediction: string;
-  analysis: string;
-  confidence: number;
-};
+import { MatchCardData } from "./types/match";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-
-async function getAI(home: string, away: string, league: string): Promise<AIResponse> {
+async function getPredictions(): Promise<MatchCardData[]> {
   try {
-    const res = await fetch(`${BASE_URL}/api/analyze`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ home, away, league }),
-      cache: "no-store",
-    });
+    const filePath = path.join(process.cwd(), "data", "predictions.json");
 
-    if (!res.ok) throw new Error("API error");
+    const data = fs.readFileSync(filePath, "utf-8");
 
-    return await res.json();
+    return JSON.parse(data);
   } catch {
-    return {
-      home,
-      away,
-      league,
-      prediction: "No prediction",
-      analysis: "AI temporarily unavailable",
-      confidence: 50,
-    };
+    return [];
   }
 }
 
-function mapRisk(confidence: number): "Low" | "Medium" | "High" {
-  if (confidence >= 75) return "Low";
-  if (confidence >= 60) return "Medium";
-  return "High";
-}
+const sports = [
+  "Football",
+  "NBA",
+  "NFL",
+  "Hockey",
+  "Tennis",
+];
 
 export default async function HomePage() {
-  const matches = [
-    { home: "Arsenal", away: "Chelsea", league: "Premier League" },
-    { home: "Inter", away: "Milan", league: "Serie A" },
-    { home: "Barcelona", away: "Sevilla", league: "La Liga" },
-  ];
-
-  const results = await Promise.all(
-    matches.map((m) => getAI(m.home, m.away, m.league))
-  );
-
-  const featured = results[0];
+  const predictions = await getPredictions();
 
   return (
     <main
       style={{
         background: "#070b14",
-        color: "#e5e7eb",
         minHeight: "100vh",
-        fontFamily: "system-ui, sans-serif",
+        color: "white",
       }}
     >
-      {/* HERO - FULL IMAGE FIX */}
-      <div style={{ width: "100%", background: "#050814" }}>
-        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-          <Image
-            src="/hero.jpg"
-            alt="AI Betting"
-            width={1600}
-            height={900}
-            priority
-            style={{
-              width: "100%",
-              height: "auto",
-              objectFit: "contain",
-              display: "block",
-            }}
-          />
-        </div>
-      </div>
+      <Hero />
 
-      {/* CONTENT */}
+      <SportsNav />
+
       <div
         style={{
+          maxWidth: 1400,
+          margin: "0 auto",
+          padding: "0 24px",
           display: "flex",
-          flexWrap: "wrap",
-          gap: 24,
-          padding: 28,
+          gap: 28,
           alignItems: "flex-start",
         }}
       >
-        {/* LEFT SIDE */}
-        <div style={{ flex: "2 1 600px" }}>
-          {/* FEATURED */}
-          {featured && (
-            <div style={{ marginBottom: 20 }}>
-              <div style={{ opacity: 0.7, marginBottom: 10 }}>
-                FEATURED AI PREDICTION
-              </div>
+        {/* LEFT */}
+        <div
+          style={{
+            flex: 1,
+          }}
+        >
+          {sports.map((sport) => {
+            const sportPredictions = predictions.filter(
+              (p) => p.sport === sport
+            );
 
-              <MatchCard
-                home={featured.home}
-                away={featured.away}
-                league={featured.league}
-                prediction={featured.prediction}
-                analysis={featured.analysis}
-                risk={mapRisk(featured.confidence)}
-                slug={`${featured.home}-${featured.away}`}
-              />
-            </div>
-          )}
+            return (
+              <section
+                key={sport}
+                id={sport.toLowerCase()}
+                style={{
+                  marginBottom: 60,
+                }}
+              >
+                <h2
+                  style={{
+                    fontSize: 36,
+                    fontWeight: 900,
+                    marginBottom: 24,
+                  }}
+                >
+                  {sport}
+                </h2>
 
-          {/* MATCH LIST */}
-          <div style={{ display: "grid", gap: 14 }}>
-            {results.map((r, i) => (
-              <MatchCard
-                key={i}
-                home={r.home}
-                away={r.away}
-                league={r.league}
-                prediction={r.prediction}
-                analysis={r.analysis}
-                risk={mapRisk(r.confidence)}
-                slug={`${r.home}-${r.away}`}
-              />
-            ))}
-          </div>
+                <div
+                  style={{
+                    display: "grid",
+                    gap: 18,
+                  }}
+                >
+                  {sportPredictions.slice(0, 3).map((prediction) => (
+                    <MatchCard
+                      key={prediction.id}
+                      data={prediction}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
-        {/* RIGHT SIDE */}
-        <div style={{ flex: "1 1 280px" }}>
+        {/* RIGHT */}
+        <aside
+          style={{
+            width: 340,
+            position: "sticky",
+            top: 24,
+          }}
+        >
           <TopBettingSites />
-        </div>
+        </aside>
       </div>
+
+      <Footer />
     </main>
   );
 }

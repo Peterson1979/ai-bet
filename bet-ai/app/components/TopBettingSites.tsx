@@ -1,117 +1,95 @@
-type Site = {
-  name: string;
-  description: string;
-  bonus: string;
-  link: string;
-  rating: number;
-};
-
-const sites: Site[] = [
+const sites = [
   {
-    name: "Bet365",
-    description: "Fast odds, strong live betting coverage",
-    bonus: "Up to €100 free bet",
-    link: "#",
-    rating: 5,
+    name: "bet365",
+    bonus: "Up to $200 Bonus",
+    url: "#",
+  },
+  {
+    name: "Stake",
+    bonus: "Crypto Betting Bonus",
+    url: "#",
   },
   {
     name: "1xBet",
-    description: "High odds margins, wide market coverage",
-    bonus: "100% deposit bonus",
-    link: "#",
-    rating: 4,
+    bonus: "100% Welcome Offer",
+    url: "#",
   },
   {
-    name: "William Hill",
-    description: "Trusted UK bookmaker, stable odds",
-    bonus: "€20 risk-free bet",
-    link: "#",
-    rating: 4,
+    name: "Betway",
+    bonus: "Live Betting Specials",
+    url: "#",
   },
 ];
 
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div style={{ color: "#fbbf24", fontSize: 12 }}>
-      {"★".repeat(rating)}{"☆".repeat(5 - rating)}
-    </div>
-  );
-}
-
 export default function TopBettingSites() {
   return (
-    <section
-      style={{
-        marginTop: 40,
-        padding: 28,
-      }}
-    >
+    <div>
       <div
         style={{
-          fontSize: 14,
-          opacity: 0.7,
-          marginBottom: 12,
+          fontSize: 28,
+          fontWeight: 900,
+          marginBottom: 20,
         }}
       >
-        TOP BETTING SITES
+        Top Betting Sites
       </div>
 
       <div
         style={{
           display: "grid",
-          gap: 12,
+          gap: 18,
         }}
       >
-        {sites.map((site, i) => (
+        {sites.map((site) => (
           <div
-            key={i}
+            key={site.name}
             style={{
-              background: "#0b1220",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: 14,
-              padding: 16,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: 12,
+              background: "#111827",
+              borderRadius: 20,
+              padding: 20,
+              border: "1px solid rgba(255,255,255,0.08)",
             }}
           >
-            {/* LEFT */}
-            <div>
-              <div style={{ fontWeight: 700 }}>
-                {site.name}
-              </div>
-
-              <div style={{ fontSize: 12, opacity: 0.7 }}>
-                {site.description}
-              </div>
-
-              <div style={{ fontSize: 12, marginTop: 6 }}>
-                🎁 {site.bonus}
-              </div>
-
-              <Stars rating={site.rating} />
-            </div>
-
-            {/* RIGHT CTA */}
-            <a
-              href={site.link}
+            <div
               style={{
-                padding: "10px 14px",
-                borderRadius: 8,
-                background: "#22c55e",
-                color: "#000",
-                textDecoration: "none",
-                fontWeight: 700,
-                fontSize: 13,
-                whiteSpace: "nowrap",
+                fontSize: 22,
+                fontWeight: 800,
+                marginBottom: 10,
               }}
             >
-              Visit
+              {site.name}
+            </div>
+
+            <div
+              style={{
+                opacity: 0.7,
+                marginBottom: 18,
+              }}
+            >
+              {site.bonus}
+            </div>
+
+            <a
+              href={site.url}
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "#22c55e",
+                color: "#000",
+                padding: "12px 16px",
+                borderRadius: 12,
+                fontWeight: 800,
+                textDecoration: "none",
+              }}
+            >
+              Visit Site
             </a>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }
