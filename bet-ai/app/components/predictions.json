@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1",
+    "sport": "Football",
+    "league": "Premier League",
+    "eventName": "Arsenal vs Chelsea",
+    "startTimeUtc": "2026-05-28 20:00 UTC",
+    "status": "upcoming",
+    "verdict": "Arsenal Advantage",
+    "recommendedBet": "Home Win",
+    "confidence": 78,
+    "riskScore": 34,
+    "shortAnalysis": "Arsenal stronger home form and better xG metrics over the last 5 matches.",
+    "ctaLabel": "Check Odds",
+    "ctaUrl": "https://your-affiliate-link.com",
+    "bookmakerName": "bet365",
+    "disclaimer": "18+ only. Gamble responsibly.",
+    "updatedAt": "2026-05-26"
+  }
+]
