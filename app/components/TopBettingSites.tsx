@@ -1,95 +1,71 @@
-const sites = [
+const bettingSites = [
   {
     name: "bet365",
-    bonus: "Up to $200 Bonus",
-    url: "#",
+    bonus: "Up to $150 Bonus",
+    rating: "9.8",
   },
   {
     name: "Stake",
-    bonus: "Crypto Betting Bonus",
-    url: "#",
+    bonus: "Crypto Welcome Bonus",
+    rating: "9.6",
   },
   {
     name: "1xBet",
-    bonus: "100% Welcome Offer",
-    url: "#",
+    bonus: "100% First Deposit",
+    rating: "9.4",
   },
   {
-    name: "Betway",
-    bonus: "Live Betting Specials",
-    url: "#",
+    name: "Betano",
+    bonus: "Top Football Odds",
+    rating: "9.2",
+  },
+  {
+    name: "Pinnacle",
+    bonus: "Low Margin Odds",
+    rating: "9.1",
   },
 ];
 
 export default function TopBettingSites() {
   return (
-    <div>
-      <div
-        style={{
-          fontSize: 28,
-          fontWeight: 900,
-          marginBottom: 20,
-        }}
-      >
-        Top Betting Sites
-      </div>
+    <div className="space-y-4">
+      {bettingSites.map((site) => (
+        <div
+          key={site.name}
+          className="rounded-[22px] border border-[#1E293B] bg-[#111827] p-5 transition duration-300 hover:border-cyan-400/40 hover:shadow-[0_0_24px_rgba(56,189,248,0.14)]"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-3">
+                <h3 className="text-lg font-bold text-white">
+                  {site.name}
+                </h3>
 
-      <div
-        style={{
-          display: "grid",
-          gap: 18,
-        }}
-      >
-        {sites.map((site) => (
-          <div
-            key={site.name}
-            style={{
-              background: "#111827",
-              borderRadius: 20,
-              padding: 20,
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 22,
-                fontWeight: 800,
-                marginBottom: 10,
-              }}
-            >
-              {site.name}
+                <span className="rounded-full bg-green-500/10 px-2 py-1 text-xs font-semibold text-green-400">
+                  {site.rating}
+                </span>
+              </div>
+
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                {site.bonus}
+              </p>
             </div>
 
-            <div
-              style={{
-                opacity: 0.7,
-                marginBottom: 18,
-              }}
-            >
-              {site.bonus}
+            <div className="h-12 w-12 rounded-2xl bg-cyan-500/10 flex items-center justify-center text-cyan-300 font-bold">
+              AI
             </div>
+          </div>
 
+          <div className="mt-5">
             <a
-              href={site.url}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                background: "#22c55e",
-                color: "#000",
-                padding: "12px 16px",
-                borderRadius: 12,
-                fontWeight: 800,
-                textDecoration: "none",
-              }}
+              href="#"
+              className="flex w-full items-center justify-center rounded-2xl bg-cyan-400 px-4 py-3 text-sm font-bold text-black transition hover:bg-cyan-300 hover:shadow-[0_0_24px_rgba(56,189,248,0.45)]"
             >
               Visit Site
             </a>
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,57 +1,54 @@
 const sports = [
   {
-    label: "Football",
-    target: "#football",
+    name: "Football",
+    icon: "⚽",
+    href: "#football",
   },
   {
-    label: "NBA",
-    target: "#nba",
+    name: "NBA",
+    icon: "🏀",
+    href: "#nba",
   },
   {
-    label: "NFL",
-    target: "#nfl",
+    name: "NFL",
+    icon: "🏈",
+    href: "#nfl",
   },
   {
-    label: "Hockey",
-    target: "#hockey",
+    name: "Hockey",
+    icon: "🏒",
+    href: "#hockey",
   },
   {
-    label: "Tennis",
-    target: "#tennis",
+    name: "Tennis",
+    icon: "🎾",
+    href: "#tennis",
   },
 ];
 
 export default function SportNav() {
   return (
-    <section
-      style={{
-        maxWidth: 1300,
-        margin: "0 auto",
-        padding: "32px 24px",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: 14,
-          flexWrap: "wrap",
-        }}
-      >
+    <section className="rounded-[26px] border border-[#1E293B] bg-[#0F172A] p-5">
+      <div className="flex flex-wrap gap-4">
         {sports.map((sport) => (
           <a
-            key={sport.label}
-            href={sport.target}
-            style={{
-              background: "#111827",
-              color: "#fff",
-              padding: "14px 20px",
-              borderRadius: 14,
-              textDecoration: "none",
-              fontWeight: 800,
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
+            key={sport.name}
+            href={sport.href}
+            className="group flex min-w-[140px] flex-1 items-center gap-4 rounded-2xl border border-slate-800 bg-[#111827] px-5 py-4 transition duration-300 hover:border-cyan-400/50 hover:bg-[#162033] hover:shadow-[0_0_20px_rgba(56,189,248,0.18)]"
           >
-            {sport.label}
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-500/10 text-2xl transition duration-300 group-hover:bg-cyan-500/20">
+              {sport.icon}
+            </div>
+
+            <div>
+              <p className="text-sm font-semibold text-white">
+                {sport.name}
+              </p>
+
+              <p className="mt-1 text-xs text-slate-500">
+                AI predictions
+              </p>
+            </div>
           </a>
         ))}
       </div>

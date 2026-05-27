@@ -1,75 +1,51 @@
 export default function Footer() {
   return (
-    <footer
-      style={{
-        marginTop: 80,
-        padding: "40px 24px",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
-        background: "#050814",
-        color: "rgba(255,255,255,0.7)",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1300,
-          margin: "0 auto",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 18,
-            marginBottom: 18,
-          }}
-        >
-          <a href="#" style={link}>
-            Privacy Policy
-          </a>
+    <footer className="mt-16 border-t border-[#1E293B] bg-[#060B14]">
+      <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-6">
+        
+        <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          
+          <div>
+            <h4 className="text-sm font-semibold text-white">
+              AI Betting Insights
+            </h4>
 
-          <a href="#" style={link}>
-            Terms & Conditions
-          </a>
+            <p className="mt-2 max-w-xl text-xs leading-5 text-slate-500">
+              This platform provides AI-generated sports betting analysis for informational purposes only. 
+              No guarantee of winnings. Gamble responsibly.
+            </p>
+          </div>
 
-          <a href="#" style={link}>
-            Affiliate Disclosure
-          </a>
+          <div className="flex flex-wrap gap-4 text-xs text-slate-500">
+            <a href="#" className="hover:text-cyan-300 transition">
+              Privacy Policy
+            </a>
 
-          <a href="#" style={link}>
-            Responsible Gambling
-          </a>
+            <a href="#" className="hover:text-cyan-300 transition">
+              Terms
+            </a>
 
-          <a href="#" style={link}>
-            Contact
-          </a>
+            <a href="#" className="hover:text-cyan-300 transition">
+              Affiliate Disclosure
+            </a>
+
+            <a href="#" className="hover:text-cyan-300 transition">
+              18+ Responsible Gaming
+            </a>
+          </div>
         </div>
 
-        <div
-          style={{
-            fontSize: 13,
-            lineHeight: 1.7,
-            opacity: 0.7,
-          }}
-        >
-          18+ only. Gambling can be addictive. Please gamble responsibly.
-          Affiliate links may generate commission.
+        <div className="mt-8 flex items-center justify-between border-t border-[#1E293B] pt-6">
+          <p className="text-[11px] text-slate-600">
+            © {new Date().getFullYear()} AI Betting Platform
+          </p>
+
+          <div className="text-[11px] text-slate-600">
+            Built with AI + Data Analytics
+          </div>
         </div>
 
-        <div
-          style={{
-            marginTop: 14,
-            fontSize: 12,
-            opacity: 0.5,
-          }}
-        >
-          © 2026 AI BETS. All rights reserved.
-        </div>
       </div>
     </footer>
   );
 }
-
-const link = {
-  color: "rgba(255,255,255,0.8)",
-  textDecoration: "none",
-};
