@@ -13,7 +13,7 @@ export default function MatchCard({ match }: MatchCardProps) {
       <div>
         <div className="mb-3 flex items-center justify-between gap-3">
           <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-cyan-300">
-            {match.sport}
+            {match.league}
           </span>
 
           <span className="text-[11px] text-slate-500">
