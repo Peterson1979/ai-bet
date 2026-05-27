@@ -21,16 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          padding: 0,
-          backgroundColor: "#0b0f14",
-          color: "#ffffff",
-          fontFamily: "sans-serif",
-        }}
-      >
-        {children}
+      <body className="min-h-screen bg-[#060B14] text-white antialiased">
+        {/* GLOBAL APP WRAPPER */}
+        <div className="flex min-h-screen flex-col">
+          {children}
+        </div>
       </body>
     </html>
   );
