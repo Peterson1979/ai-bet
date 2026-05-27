@@ -1,122 +1,80 @@
-import Header from "./Header";
-import BannerAds from "./BannerAds";
+import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section
-      style={{
-        position: "relative",
-        minHeight: 760,
-        backgroundImage: "url('/hero.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* OVERLAY */}
+    <section className="relative overflow-hidden rounded-[28px] border border-slate-800 min-h-[520px]">
       <div
+        className="absolute inset-0 bg-cover bg-center"
         style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.65), rgba(7,11,20,0.96))",
+          backgroundImage: "url('/hero.jpg')",
         }}
       />
 
-      {/* HEADER */}
-      <Header />
+      <div className="absolute inset-0 bg-[#060B14]/45" />
 
-      {/* CONTENT */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 5,
-          maxWidth: 1300,
-          margin: "0 auto",
-          padding: "180px 24px 80px",
-          color: "white",
-        }}
-      >
-        {/* TEXT */}
-        <div
-          style={{
-            maxWidth: 760,
-          }}
-        >
-          <div
-            style={{
-              color: "#22c55e",
-              fontWeight: 800,
-              marginBottom: 18,
-              letterSpacing: 1,
-            }}
-          >
-            AI SPORTS BETTING ANALYTICS
+      <div className="relative z-20 flex min-h-[520px] flex-col justify-between p-8 md:p-12">
+        <header className="flex flex-wrap items-center justify-between gap-6">
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="#top-picks"
+              className="rounded-full border border-slate-700 bg-[#0F172A]/90 px-5 py-2 text-sm text-white transition hover:border-cyan-400 hover:text-cyan-300"
+            >
+              Top Picks
+            </Link>
+
+            <Link
+              href="#betting-sites"
+              className="rounded-full border border-slate-700 bg-[#0F172A]/90 px-5 py-2 text-sm text-white transition hover:border-cyan-400 hover:text-cyan-300"
+            >
+              Betting
+            </Link>
+
+            <Link
+              href="/sport-news"
+              className="rounded-full border border-slate-700 bg-[#0F172A]/90 px-5 py-2 text-sm text-white transition hover:border-cyan-400 hover:text-cyan-300"
+            >
+              Sport News
+            </Link>
+
+            <Link
+              href="/betting-tools"
+              className="rounded-full border border-slate-700 bg-[#0F172A]/90 px-5 py-2 text-sm text-white transition hover:border-cyan-400 hover:text-cyan-300"
+            >
+              Betting Tools
+            </Link>
+          </div>
+        </header>
+
+        <div className="max-w-3xl">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 px-4 py-2 text-sm text-cyan-300 glow-cyan">
+            AI Powered Betting Intelligence
           </div>
 
-          <h1
-            style={{
-              fontSize: 64,
-              lineHeight: 1.05,
-              fontWeight: 900,
-              marginBottom: 24,
-            }}
-          >
-            Smarter Betting Decisions Powered by AI
+          <h1 className="max-w-2xl text-4xl font-bold leading-tight text-white md:text-6xl">
+            Smarter Sports Betting Insights Powered By AI
           </h1>
 
-          <p
-            style={{
-              fontSize: 20,
-              lineHeight: 1.7,
-              opacity: 0.88,
-              maxWidth: 620,
-            }}
-          >
-            AI-generated match analysis, confidence scoring and betting insights
-            across Football, NBA, NFL, Hockey and Tennis.
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            Daily football, NBA, NFL, hockey and tennis predictions with AI-driven analysis, confidence scores and betting insights.
           </p>
 
-          {/* BUTTONS */}
-          <div
-            style={{
-              marginTop: 34,
-              display: "flex",
-              gap: 16,
-              flexWrap: "wrap",
-            }}
-          >
-            <a href="#football" style={primaryBtn}>
-              View Predictions
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a
+              href="#top-picks"
+              className="rounded-2xl bg-cyan-400 px-7 py-4 font-semibold text-black transition hover:scale-[1.03] glow-cyan"
+            >
+              Explore Picks
             </a>
 
-            <a href="/betting" style={secondaryBtn}>
-              Top Betting Sites
+            <a
+              href="#betting-sites"
+              className="rounded-2xl border border-slate-600 bg-[#0F172A]/80 px-7 py-4 font-semibold text-white transition hover:border-cyan-400"
+            >
+              Betting Sites
             </a>
           </div>
         </div>
-
-        {/* BANNERS */}
-        <BannerAds />
       </div>
     </section>
   );
 }
-
-const primaryBtn = {
-  background: "#22c55e",
-  color: "#000",
-  padding: "14px 22px",
-  borderRadius: 14,
-  textDecoration: "none",
-  fontWeight: 800,
-};
-
-const secondaryBtn = {
-  background: "rgba(255,255,255,0.08)",
-  color: "#fff",
-  padding: "14px 22px",
-  borderRadius: 14,
-  textDecoration: "none",
-  fontWeight: 800,
-  border: "1px solid rgba(255,255,255,0.08)",
-};
