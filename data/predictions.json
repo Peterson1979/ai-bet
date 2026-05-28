@@ -1,0 +1,211 @@
+{
+  "date": "2026-05-28",
+  "generatedAt": "2026-05-28T08:00:00Z",
+
+  "sports": [
+    {
+      "sport": "Football",
+      "hasMatches": true,
+
+      "topPicks": [
+        {
+          "id": "football-flamengo-santos-2026-05-28",
+
+          "league": "Brazil Serie A",
+
+          "eventId": "football-event-001",
+
+          "homeTeam": "Flamengo",
+          "awayTeam": "Santos",
+
+          "startTime": "2026-05-28T19:00:00Z",
+
+          "recommendedBet": "Home Win",
+
+          "betCode": "HOME_WIN",
+
+          "marketType": "h2h",
+
+          "selectionKey": "home",
+
+          "explanation": "Flamengo enters this match with stronger recent form and superior attacking efficiency at home.",
+
+          "confidence": 78,
+
+          "risk": 34,
+
+          "odds": 1.82,
+
+          "oddsLabel": "Home Win @ 1.82",
+
+          "bookmaker": "Bet365",
+
+          "bookmakerUrl": "https://example.com/bet365",
+
+          "ctaLabel": "View Odds",
+
+          "isTopPick": true,
+
+          "status": "scheduled"
+        },
+
+        {
+          "id": "football-arsenal-chelsea-2026-05-28",
+
+          "league": "Premier League",
+
+          "eventId": "football-event-002",
+
+          "homeTeam": "Arsenal",
+          "awayTeam": "Chelsea",
+
+          "startTime": "2026-05-28T20:00:00Z",
+
+          "recommendedBet": "Over 1.5 Goals",
+
+          "betCode": "OVER_1_5",
+
+          "marketType": "totals",
+
+          "selectionKey": "over",
+
+          "explanation": "Both teams consistently generate high xG chances and recent meetings have produced multiple goals.",
+
+          "confidence": 74,
+
+          "risk": 41,
+
+          "odds": 1.63,
+
+          "oddsLabel": "Over 1.5 @ 1.63",
+
+          "bookmaker": "1xBet",
+
+          "bookmakerUrl": "https://example.com/1xbet",
+
+          "ctaLabel": "View Odds",
+
+          "isTopPick": true,
+
+          "status": "scheduled"
+        },
+
+        {
+          "id": "football-inter-milan-2026-05-28",
+
+          "league": "Serie A",
+
+          "eventId": "football-event-003",
+
+          "homeTeam": "Inter",
+          "awayTeam": "Milan",
+
+          "startTime": "2026-05-28T21:00:00Z",
+
+          "recommendedBet": "Draw No Bet - Inter",
+
+          "betCode": "DRAW_NO_BET_HOME",
+
+          "marketType": "h2h",
+
+          "selectionKey": "home",
+
+          "explanation": "Inter has shown stronger defensive consistency and better recent momentum entering the derby.",
+
+          "confidence": 69,
+
+          "risk": 44,
+
+          "odds": 1.91,
+
+          "oddsLabel": "DNB Inter @ 1.91",
+
+          "bookmaker": "Bwin",
+
+          "bookmakerUrl": "https://example.com/bwin",
+
+          "ctaLabel": "View Odds",
+
+          "isTopPick": true,
+
+          "status": "scheduled"
+        }
+      ]
+    },
+
+    {
+      "sport": "NBA",
+      "hasMatches": true,
+
+      "topPicks": [
+        {
+          "id": "nba-lakers-celtics-2026-05-28",
+
+          "league": "NBA",
+
+          "eventId": "nba-event-001",
+
+          "homeTeam": "Lakers",
+          "awayTeam": "Celtics",
+
+          "startTime": "2026-05-28T23:30:00Z",
+
+          "recommendedBet": "Home Win",
+
+          "betCode": "HOME_WIN",
+
+          "marketType": "h2h",
+
+          "selectionKey": "home",
+
+          "explanation": "The Lakers have performed significantly better at home and matchup favorability supports them here.",
+
+          "confidence": 76,
+
+          "risk": 38,
+
+          "odds": 1.74,
+
+          "oddsLabel": "Lakers Win @ 1.74",
+
+          "bookmaker": "Bet365",
+
+          "bookmakerUrl": "https://example.com/bet365",
+
+          "ctaLabel": "View Odds",
+
+          "isTopPick": true,
+
+          "status": "scheduled"
+        }
+      ]
+    },
+
+    {
+      "sport": "NFL",
+      "hasMatches": false,
+
+      "message": "No NFL events scheduled today.",
+
+      "topPicks": []
+    },
+
+    {
+      "sport": "Hockey",
+      "hasMatches": false,
+
+      "message": "No Hockey events available today.",
+
+      "topPicks": []
+    },
+
+    {
+      "sport": "Tennis",
+      "hasMatches": false,
+
+      "message": "No Tennis matches found for today.",
+
+      "topPicks": []
+    }
+  ]
+}
