@@ -1,56 +1,175 @@
-[
-  {
-    "id": "1",
-    "sport": "Football",
-    "league": "Premier League",
-    "eventName": "Arsenal vs Chelsea",
-    "startTimeUtc": "2026-05-28 20:00 UTC",
-    "status": "upcoming",
-    "verdict": "Arsenal Advantage",
-    "recommendedBet": "Home Win",
-    "confidence": 78,
-    "riskScore": 34,
-    "shortAnalysis": "Arsenal stronger home form and better attacking metrics across recent matches.",
-    "ctaLabel": "Check Odds",
-    "ctaUrl": "#",
-    "bookmakerName": "bet365",
-    "disclaimer": "18+ only. Gamble responsibly.",
-    "updatedAt": "2026-05-26"
-  },
-  {
-    "id": "2",
-    "sport": "Football",
-    "league": "La Liga",
-    "eventName": "Barcelona vs Sevilla",
-    "startTimeUtc": "2026-05-29 19:00 UTC",
-    "status": "upcoming",
-    "verdict": "Barcelona Control",
-    "recommendedBet": "Over 1.5 Goals",
-    "confidence": 74,
-    "riskScore": 40,
-    "shortAnalysis": "Barcelona generating high xG numbers at home with strong possession dominance.",
-    "ctaLabel": "Check Odds",
-    "ctaUrl": "#",
-    "bookmakerName": "Stake",
-    "disclaimer": "18+ only. Terms apply.",
-    "updatedAt": "2026-05-26"
-  },
-  {
-    "id": "3",
-    "sport": "NBA",
-    "league": "NBA",
-    "eventName": "Lakers vs Celtics",
-    "startTimeUtc": "2026-05-30 01:00 UTC",
-    "status": "upcoming",
-    "verdict": "High Scoring Match",
-    "recommendedBet": "Over 218.5",
-    "confidence": 69,
-    "riskScore": 46,
-    "shortAnalysis": "Both teams playing at elevated pace with efficient offensive metrics.",
-    "ctaLabel": "Check Odds",
-    "ctaUrl": "#",
-    "bookmakerName": "Betway",
-    "disclaimer": "Please gamble responsibly.",
-    "updatedAt": "2026-05-26"
-  }
-]
+{
+  "date": "2026-05-28",
+  "generatedAt": "2026-05-28T08:00:00Z",
+  "sports": [
+    {
+      "sport": "Football",
+      "hasMatches": true,
+      "topPicks": [
+        {
+          "id": "football-1",
+          "sport": "Football",
+          "league": "International Friendly",
+          "homeTeam": "Real Madrid",
+          "awayTeam": "AC Milan",
+          "startTime": "2026-05-28T18:00:00Z",
+
+          "recommendedBet": "Home Win",
+          "betCode": "HOME_WIN",
+          "marketType": "h2h",
+          "selectionKey": "home",
+
+          "explanation": "Real Madrid shows stronger squad depth and home advantage.",
+          "confidence": 74,
+          "risk": 32,
+
+          "odds": 1.72,
+          "oddsLabel": "Home Win @ 1.72",
+          "bookmaker": "Bet365",
+          "bookmakerUrl": "https://example.com",
+          "ctaLabel": "Check latest odds",
+
+          "isTopPick": true,
+          "status": "scheduled",
+          "generatedAt": "2026-05-28T08:00:00Z"
+        },
+        {
+          "id": "football-2",
+          "sport": "Football",
+          "league": "Brazil Serie A",
+          "homeTeam": "Flamengo",
+          "awayTeam": "Santos",
+          "startTime": "2026-05-28T21:00:00Z",
+
+          "recommendedBet": "Over 1.5 Goals",
+          "betCode": "OVER_1_5",
+          "marketType": "totals",
+          "selectionKey": "over",
+
+          "explanation": "Both teams have high scoring trend in recent matches.",
+          "confidence": 69,
+          "risk": 41,
+
+          "odds": 1.55,
+          "oddsLabel": "Over 1.5 @ 1.55",
+          "bookmaker": "Bet365",
+          "bookmakerUrl": "https://example.com",
+          "ctaLabel": "Check latest odds",
+
+          "isTopPick": true,
+          "status": "scheduled",
+          "generatedAt": "2026-05-28T08:00:00Z"
+        },
+        {
+          "id": "football-3",
+          "sport": "Football",
+          "league": "La Liga",
+          "homeTeam": "Barcelona",
+          "awayTeam": "Sevilla",
+          "startTime": "2026-05-28T19:30:00Z",
+
+          "recommendedBet": "Double Chance 1X",
+          "betCode": "DOUBLE_CHANCE_1X",
+          "marketType": "double_chance",
+          "selectionKey": "home_or_draw",
+
+          "explanation": "Barcelona rarely loses at home in this matchup.",
+          "confidence": 71,
+          "risk": 28,
+
+          "odds": 1.28,
+          "oddsLabel": "1X @ 1.28",
+          "bookmaker": "Bet365",
+          "bookmakerUrl": "https://example.com",
+          "ctaLabel": "Check latest odds",
+
+          "isTopPick": true,
+          "status": "scheduled",
+          "generatedAt": "2026-05-28T08:00:00Z"
+        }
+      ]
+    },
+
+    {
+      "sport": "NBA",
+      "hasMatches": true,
+      "topPicks": [
+        {
+          "id": "nba-1",
+          "sport": "NBA",
+          "league": "NBA Regular Season",
+          "homeTeam": "Lakers",
+          "awayTeam": "Warriors",
+          "startTime": "2026-05-28T02:00:00Z",
+
+          "recommendedBet": "Away Win",
+          "betCode": "AWAY_WIN",
+          "marketType": "h2h",
+          "selectionKey": "away",
+
+          "explanation": "Warriors have better recent offensive efficiency.",
+          "confidence": 66,
+          "risk": 45,
+
+          "odds": 1.95,
+          "oddsLabel": "Away Win @ 1.95",
+          "bookmaker": "Bet365",
+          "bookmakerUrl": "https://example.com",
+          "ctaLabel": "Check latest odds",
+
+          "isTopPick": true,
+          "status": "scheduled",
+          "generatedAt": "2026-05-28T08:00:00Z"
+        }
+      ]
+    },
+
+    {
+      "sport": "NFL",
+      "hasMatches": false,
+      "message": "No NFL events today",
+      "topPicks": []
+    },
+
+    {
+      "sport": "Hockey",
+      "hasMatches": false,
+      "message": "No Hockey events today",
+      "topPicks": []
+    },
+
+    {
+      "sport": "Tennis",
+      "hasMatches": true,
+      "topPicks": [
+        {
+          "id": "tennis-1",
+          "sport": "Tennis",
+          "league": "ATP Tour",
+          "homeTeam": "Alcaraz",
+          "awayTeam": "Sinner",
+          "startTime": "2026-05-28T16:00:00Z",
+
+          "recommendedBet": "Over 2.5 Sets",
+          "betCode": "OVER_1_5",
+          "marketType": "totals",
+          "selectionKey": "over",
+
+          "explanation": "Both players are evenly matched in long rallies.",
+          "confidence": 63,
+          "risk": 52,
+
+          "odds": 1.88,
+          "oddsLabel": "Over 2.5 Sets @ 1.88",
+          "bookmaker": "Bet365",
+          "bookmakerUrl": "https://example.com",
+          "ctaLabel": "Check latest odds",
+
+          "isTopPick": true,
+          "status": "scheduled",
+          "generatedAt": "2026-05-28T08:00:00Z"
+        }
+      ]
+    }
+  ]
+}
