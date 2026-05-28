@@ -12,11 +12,17 @@ export async function GET() {
     const result = {
       date: new Date().toISOString().split("T")[0],
       generatedAt: new Date().toISOString(),
-      sports: [],
+
+      sports: [] as {
+        sport: string;
+        hasMatches: boolean;
+        message?: string;
+        topPicks: any[];
+      }[],
     };
 
     for (const sportBlock of sportsData) {
-      const topPicks = [];
+      const topPicks: any[] = [];
 
       for (const event of sportBlock.events.slice(0, 3)) {
         const prompt = buildPredictionPrompt(event);
