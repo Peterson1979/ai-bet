@@ -55,8 +55,8 @@ export default function MatchCard({ data }: Props) {
         </span>
 
         <span className="text-[11px] text-slate-400">
-          {new Date(data.startTimeUtc).toLocaleString()}
-        </span>
+  {new Date(data.startTime).toLocaleString()}
+</span>
       </div>
 
       {/* MATCH TITLE */}
