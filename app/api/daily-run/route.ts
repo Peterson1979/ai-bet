@@ -9,6 +9,24 @@ export async function GET() {
   try {
     const sportsData = await getDailyEvents();
 
+    const cachePath = path.join(process.cwd(), "data", "cache.json");
+
+    // =========================
+    // 1. DAILY CACHE CHECK
+    // =========================
+    if (fs.existsSync(cachePath)) {
+      const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
+      const today = new Date().toISOString().split("T")[0];
+
+      if (cached.date === today) {
+        return Response.json({
+          success: true,
+          cached: true,
+          data: cached,
+        });
+      }
+    }
+
     const result = {
       date: new Date().toISOString().split("T")[0],
       generatedAt: new Date().toISOString(),
@@ -21,11 +39,33 @@ export async function GET() {
       }[],
     };
 
+    // =========================
+    // 2. GLOBAL CACHE HELPERS
+    // =========================
+    const seenEvents = new Set<string>();
+    const promptCache = new Map<string, string>();
+
     for (const sportBlock of sportsData) {
       const topPicks: any[] = [];
 
       for (const event of sportBlock.events.slice(0, 3)) {
-        const prompt = buildPredictionPrompt(event);
+        // =========================
+        // 3. DEDUPLICATION
+        // =========================
+        const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
+
+        if (seenEvents.has(eventKey)) continue;
+        seenEvents.add(eventKey);
+
+        // =========================
+        // 4. PROMPT CACHE
+        // =========================
+        let prompt = promptCache.get(eventKey);
+
+        if (!prompt) {
+          prompt = buildPredictionPrompt(event);
+          promptCache.set(eventKey, prompt);
+        }
 
         const aiPrediction = await generatePrediction(prompt);
 
@@ -75,6 +115,11 @@ export async function GET() {
         topPicks,
       });
     }
+
+    // =========================
+    // 5. SAVE CACHE
+    // =========================
+    fs.writeFileSync(cachePath, JSON.stringify(result, null, 2));
 
     const filePath = path.join(process.cwd(), "data", "predictions.json");
 
