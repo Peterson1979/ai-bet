@@ -118,7 +118,7 @@ export default async function HomePage() {
                         data={{
                           ...p,
 
-                          sport: sportBlock.sport,
+                          sport: sportBlock.sport as SportType,
 
                           startTime: p.startTime,
 
