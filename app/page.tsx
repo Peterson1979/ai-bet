@@ -102,16 +102,16 @@ export default async function HomePage() {
                   <div className="grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
                     {sportBlock.topPicks.map((p) => (
                       <MatchCard
-                        key={p.id}
-                        data={{
-                          ...p,
-sport: p.sport,
-                          // FIXED mapping (NO fake fields)
-                          startTime: p.startTime,
-                          explanation: p.explanation,
-                          recommendedBet: p.recommendedBet,
-                        }}
-                      />
+  key={p.id}
+  data={{
+    ...p,
+    sport: p.sport,
+    startTime: p.startTime,
+    explanation: p.explanation,
+    recommendedBet: p.recommendedBet,
+    status: p.status as "scheduled" | "live" | "finished",
+  }}
+/>
                     ))}
                   </div>
                 )}
