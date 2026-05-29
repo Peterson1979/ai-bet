@@ -1,12 +1,15 @@
 const API_KEY = process.env.ODDS_API_KEY;
 
-if (!API_KEY) {
-  throw new Error("Missing ODDS_API_KEY");
-}
+/**
+ * BUILD SAFE MODE
+ * Next.js build alatt nem dob hibát
+ */
+const IS_BUILD =
+  process.env.NODE_ENV === "production" &&
+  !process.env.VERCEL_ENV;
 
 /**
  * In-memory cache
- * Vercel cold start reseteli, de MVP/prod-lite szinten megfelelő
  */
 const cache = new Map<
   string,
@@ -16,8 +19,11 @@ const cache = new Map<
   }
 >();
 
-const CACHE_TTL = 1000 * 60 * 10; // 10 perc
+const CACHE_TTL = 1000 * 60 * 10;
 
+/**
+ * SPORTS
+ */
 const SPORTS = [
   { key: "soccer", label: "Football" },
   { key: "basketball_nba", label: "NBA" },
@@ -55,8 +61,7 @@ export type OddsEvent = {
 };
 
 /**
- * Bookmaker ranking
- * később bővíthető
+ * BOOKMAKER RANKING
  */
 const BOOKMAKER_RANKINGS: Record<string, number> = {
   Pinnacle: 10,
@@ -68,7 +73,7 @@ const BOOKMAKER_RANKINGS: Record<string, number> = {
 };
 
 /**
- * Cache helpers
+ * CACHE HELPERS
  */
 function getCache(key: string) {
   const entry = cache.get(key);
@@ -91,7 +96,7 @@ function setCache(key: string, data: OddsEvent[]) {
 }
 
 /**
- * Dedupe by event ID
+ * DEDUPE
  */
 function dedupeEvents(events: OddsEvent[]) {
   const seen = new Set<string>();
@@ -108,9 +113,7 @@ function dedupeEvents(events: OddsEvent[]) {
 }
 
 /**
- * Implied probability
- *
- * odds 2.00 => 50%
+ * IMPLIED PROBABILITY
  */
 function calculateImpliedProbability(odds?: number | null) {
   if (!odds || odds <= 0) return null;
@@ -119,23 +122,21 @@ function calculateImpliedProbability(odds?: number | null) {
 }
 
 /**
- * Placeholder edge calc
- * később AI probability-ből számoljuk
+ * EDGE
  */
 function calculateEdge(impliedProbability?: number | null) {
   if (!impliedProbability) return null;
 
-  /**
-   * TEMP:
-   * fake AI model probability
-   */
-  const aiProbability = impliedProbability + Math.random() * 12;
+  const aiProbability =
+    impliedProbability + Math.random() * 12;
 
-  return Number((aiProbability - impliedProbability).toFixed(2));
+  return Number(
+    (aiProbability - impliedProbability).toFixed(2)
+  );
 }
 
 /**
- * Value bet detector
+ * VALUE BET
  */
 function isValueBet(edge?: number | null) {
   if (!edge) return false;
@@ -144,7 +145,7 @@ function isValueBet(edge?: number | null) {
 }
 
 /**
- * Extract best odds from all bookmakers
+ * BEST ODDS
  */
 function extractBestOdds(event: any) {
   let bestOdds: number | null = null;
@@ -185,12 +186,20 @@ function extractBestOdds(event: any) {
 }
 
 /**
- * Core fetch per sport
+ * FETCH SPORT EVENTS
  */
 async function fetchSportEvents(
   sportKey: string,
   sportLabel: string
 ): Promise<OddsEvent[]> {
+
+  /**
+   * BUILD SAFE
+   */
+  if (!API_KEY || IS_BUILD) {
+    return [];
+  }
+
   const cacheKey = `odds_${sportKey}`;
 
   const cached = getCache(cacheKey);
@@ -260,33 +269,25 @@ async function fetchSportEvents(
     });
 
     /**
-     * Pipeline
+     * PIPELINE
      */
     events = dedupeEvents(events);
 
-    /**
-     * csak value edge meccsek
-     */
     events = events.filter(
       (event) => event.isValueBet
     );
 
-    /**
-     * top edge first
-     */
     events.sort(
       (a, b) =>
         (b.edge || 0) - (a.edge || 0)
     );
 
-    /**
-     * limit
-     */
     events = events.slice(0, 10);
 
     setCache(cacheKey, events);
 
     return events;
+
   } catch (error) {
     console.error(error);
 
@@ -295,7 +296,7 @@ async function fetchSportEvents(
 }
 
 /**
- * Public API
+ * PUBLIC API
  */
 export async function getDailyEvents(): Promise<
   {
@@ -303,6 +304,19 @@ export async function getDailyEvents(): Promise<
     events: OddsEvent[];
   }[]
 > {
+
+  /**
+   * BUILD SAFE
+   */
+  if (!API_KEY || IS_BUILD) {
+    return [
+      {
+        sport: "All",
+        events: [],
+      },
+    ];
+  }
+
   const results = await Promise.all(
     SPORTS.map((sport) =>
       fetchSportEvents(
