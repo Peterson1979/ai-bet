@@ -6,7 +6,9 @@ import SportNav from "./components/SportNav";
 import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
+
 import type { SportType } from "./types/match";
+import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 
 type PredictionCard = {
   id: string;
@@ -113,28 +115,19 @@ export default async function HomePage() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
-                    {sportBlock.topPicks.map((p) => (
-                      <MatchCard
-                        key={p.id}
-                        data={{
-                          ...p,
+                    {sportBlock.topPicks.map((p) => {
+                      const uiData = toMatchCardData(
+                        p,
+                        sportBlock.sport as SportType
+                      );
 
-                          sport: sportBlock.sport as SportType,
-
-                          startTime: p.startTime,
-
-                          explanation: p.explanation,
-
-                          recommendedBet: p.recommendedBet,
-
-                          status: p.status,
-
-                          betCode: p.betCode,
-
-                          marketType: p.marketType,
-                        }}
-                      />
-                    ))}
+                      return (
+                        <MatchCard
+                          key={p.id}
+                          data={uiData}
+                        />
+                      );
+                    })}
                   </div>
                 )}
               </section>
