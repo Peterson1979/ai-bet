@@ -1,6 +1,10 @@
+```tsx
+// app/page.tsx
+
 import fs from "fs";
 import path from "path";
 
+import Header from "./components/Header";
 import Hero from "./components/Hero";
 import SportNav from "./components/SportNav";
 import MatchCard from "./components/MatchCard";
@@ -27,7 +31,9 @@ type PredictionsData = {
 async function getPredictions(): Promise<PredictionsData | null> {
   try {
     const filePath = path.join(process.cwd(), "data", "predictions.json");
+
     const data = fs.readFileSync(filePath, "utf-8");
+
     return JSON.parse(data);
   } catch {
     return null;
@@ -38,35 +44,95 @@ export default async function HomePage() {
   const predictions = await getPredictions();
 
   return (
-    <main className="min-h-screen bg-[#060B14] text-white overflow-x-hidden">
-      <div className="mx-auto max-w-[1500px] px-4 py-5 md:px-6">
+    <main className="min-h-screen overflow-x-hidden bg-[#060B14] text-white">
+
+      {/* HEADER */}
+      <Header />
+
+      {/* PAGE WRAPPER */}
+      <div className="mx-auto max-w-[1500px] px-4 pb-10 pt-24 md:px-6 md:pt-28">
+
+        {/* HERO */}
         <Hero />
 
-        <div className="mt-6 flex justify-center">
+        {/* SPORT NAV + BANNER */}
+        <div className="mt-8">
           <SportNav />
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-8 xl:grid-cols-[1.6fr_420px] items-start">
-          <div>
+        {/* MAIN LAYOUT */}
+        <div
+          className="
+            mt-12
+
+            grid
+            grid-cols-1
+            gap-8
+
+            xl:grid-cols-[minmax(0,1.6fr)_420px]
+
+            items-start
+          "
+        >
+
+          {/* LEFT COLUMN */}
+          <div className="min-w-0">
+
             {predictions?.sports.map((sportBlock) => (
               <section
                 key={sportBlock.sport}
                 id={sportBlock.sport.toLowerCase()}
-                className="mb-12"
+                className="mb-14 scroll-mt-28"
               >
-                <div className="mb-5 flex items-center gap-4">
-                  <h2 className="text-2xl font-black tracking-tight text-white md:text-3xl">
+
+                {/* SECTION HEADER */}
+                <div className="mb-6 flex items-center gap-4">
+
+                  <h2
+                    className="
+                      shrink-0
+                      text-2xl
+                      font-black
+                      tracking-tight
+                      text-white
+
+                      md:text-3xl
+                    "
+                  >
                     {sportBlock.sport}
                   </h2>
+
                   <div className="h-[2px] flex-1 rounded-full bg-gradient-to-r from-cyan-400/40 to-transparent" />
                 </div>
 
+                {/* EMPTY */}
                 {!sportBlock.hasMatches ? (
-                  <div className="rounded-[24px] border border-[#334155] bg-[#0F172A] p-6">
-                    <p className="text-slate-300">{sportBlock.message}</p>
+                  <div
+                    className="
+                      rounded-[24px]
+                      border border-[#334155]
+                      bg-[#0F172A]
+                      p-6
+                    "
+                  >
+                    <p className="text-slate-300">
+                      {sportBlock.message}
+                    </p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
+
+                  /* MATCH GRID */
+                  <div
+                    className="
+                      grid
+                      grid-cols-1
+                      gap-5
+
+                      sm:grid-cols-2
+
+                      2xl:grid-cols-3
+                    "
+                  >
                     {sportBlock.topPicks.map((p) => {
                       const uiData = toMatchCardData(
                         p,
@@ -86,25 +152,106 @@ export default async function HomePage() {
             ))}
           </div>
 
-          <aside className="h-fit xl:sticky xl:top-5">
-            <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
-              <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-2xl font-black text-white">
-                  Top Betting Sites
-                </h2>
+          {/* SIDEBAR */}
+          <aside
+            className="
+              h-fit
 
-                <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] text-cyan-300">
-                  Sponsored
+              xl:sticky
+              xl:top-5
+            "
+          >
+
+            <div
+              className="
+                overflow-hidden
+
+                rounded-[28px]
+
+                border border-cyan-400/30
+
+                bg-gradient-to-b
+                from-[#111827]
+                to-[#0F172A]
+
+                p-5
+
+                shadow-[0_0_40px_rgba(34,211,238,0.08)]
+              "
+            >
+
+              {/* SIDEBAR HEADER */}
+              <div className="mb-6 flex items-center justify-between gap-3">
+
+                <div>
+                  <h2 className="text-2xl font-black text-white">
+                    Top Betting Sites
+                  </h2>
+
+                  <p className="mt-1 text-sm text-slate-300">
+                    Recommended sportsbooks & offers
+                  </p>
+                </div>
+
+                {/* OPTIONAL LABEL */}
+                <span
+                  className="
+                    rounded-full
+
+                    border border-cyan-400/30
+                    bg-cyan-400/10
+
+                    px-3 py-1
+
+                    text-[11px]
+                    font-bold
+                    uppercase
+                    tracking-wider
+
+                    text-cyan-300
+                  "
+                >
+                  Top Rated
                 </span>
               </div>
 
+              {/* TOP SITES */}
               <TopBettingSites />
+
+              {/* EXTRA SIDEBAR BLOCK */}
+              <div
+                className="
+                  mt-6
+
+                  rounded-2xl
+
+                  border border-cyan-400/15
+
+                  bg-[#0B1220]
+
+                  p-4
+                "
+              >
+                <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-300">
+                  AI Insights
+                </p>
+
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  Daily AI betting analysis across Football, NBA, NFL,
+                  Hockey and Tennis with confidence scoring,
+                  edge detection and market evaluation.
+                </p>
+              </div>
+
             </div>
           </aside>
         </div>
 
+        {/* FOOTER */}
         <Footer />
+
       </div>
     </main>
   );
 }
+```
