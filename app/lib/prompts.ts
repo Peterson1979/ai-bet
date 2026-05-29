@@ -1,59 +1,42 @@
 import { OddsEvent } from "./odds";
 
-export function buildPredictionPrompt(
-  event: OddsEvent
-) {
+export function buildPredictionPrompt(events: OddsEvent[]) {
   return `
 You are an AI sports betting analyst.
 
-Analyze the following sports event and return a concise betting prediction.
+Analyze the following events and return predictions for each one.
 
-SPORT:
-${event.sport}
+EVENTS:
+${events
+  .map(
+    (event, index) => `
+${index + 1}.
+SPORT: ${event.sport}
+LEAGUE: ${event.league}
+MATCH: ${event.homeTeam} vs ${event.awayTeam}
+START: ${event.commenceTime}
+BOOKMAKER: ${event.bookmaker}
+ODDS: ${event.odds}
+`
+  )
+  .join("\n")}
 
-LEAGUE:
-${event.league}
+Return ONLY valid JSON array:
 
-MATCH:
-${event.homeTeam} vs ${event.awayTeam}
-
-START TIME:
-${event.commenceTime}
-
-BOOKMAKER:
-${event.bookmaker}
-
-CURRENT HOME ODDS:
-${event.odds}
-
-Return ONLY valid JSON.
-
-Allowed betCode values:
-- HOME_WIN
-- AWAY_WIN
-- DRAW
-- DOUBLE_CHANCE_1X
-- DOUBLE_CHANCE_X2
-- DRAW_NO_BET_HOME
-- DRAW_NO_BET_AWAY
-- OVER_1_5
-- UNDER_4_5
-
-Required JSON structure:
-
-{
-  "recommendedBet": "string",
-  "betCode": "string",
-  "explanation": "string",
-  "confidence": number,
-  "risk": number
-}
+[
+  {
+    "recommendedBet": "string",
+    "betCode": "string",
+    "explanation": "string",
+    "confidence": number,
+    "risk": number
+  }
+]
 
 Rules:
 - explanation max 25 words
-- confidence between 1 and 100
-- risk between 1 and 100
-- concise professional tone
+- confidence 1-100
+- risk 1-100
 - no markdown
 - no extra text
 `;
