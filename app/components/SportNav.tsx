@@ -1,33 +1,39 @@
 // app/components/SportNav.tsx
 
 import {
-  Trophy,
-  Dumbbell,
-  Shield,
-  Snowflake,
-  CircleDot,
-} from "lucide-react";
+  FaFutbol,
+  FaBasketballBall,
+  FaFootballBall,
+  FaHockeyPuck,
+} from "react-icons/fa";
+
+import { GiTennisBall } from "react-icons/gi";
 
 const sports = [
   {
     name: "Football",
-    icon: Trophy,
+    icon: FaFutbol,
+    color: "text-green-400",
   },
   {
     name: "NBA",
-    icon: CircleDot,
+    icon: FaBasketballBall,
+    color: "text-orange-400",
   },
   {
     name: "NFL",
-    icon: Shield,
+    icon: FaFootballBall,
+    color: "text-red-400",
   },
   {
     name: "Hockey",
-    icon: Snowflake,
+    icon: FaHockeyPuck,
+    color: "text-cyan-300",
   },
   {
     name: "Tennis",
-    icon: Dumbbell,
+    icon: GiTennisBall,
+    color: "text-yellow-300",
   },
 ];
 
@@ -58,28 +64,32 @@ export default function SportNav() {
 
                 px-5 py-2
 
-                text-sm font-semibold text-slate-200
+                text-sm font-semibold text-white
 
                 shadow-[0_0_15px_rgba(56,189,248,0.05)]
 
                 transition-all duration-300
 
                 hover:border-cyan-400/60
-                hover:text-cyan-300
                 hover:shadow-[0_0_25px_rgba(56,189,248,0.15)]
                 hover:-translate-y-0.5
 
                 active:scale-95
               "
             >
-              {/* glow background */}
+              {/* glow */}
               <div className="pointer-events-none absolute inset-0 opacity-40">
                 <div className="absolute -top-6 left-2 h-10 w-10 rounded-full bg-cyan-400/10 blur-xl" />
               </div>
 
               <Icon
-                size={16}
-                className="relative z-10 text-cyan-300 transition-transform duration-300 group-hover:scale-110"
+                size={18}
+                className={`
+                  relative z-10
+                  transition-transform duration-300
+                  group-hover:scale-110
+                  ${sport.color}
+                `}
               />
 
               <span className="relative z-10">
@@ -88,10 +98,9 @@ export default function SportNav() {
             </a>
           );
         })}
-
       </nav>
 
-      {/* BANNER SLIDER PLACE */}
+      {/* BANNER AREA */}
       <div
         className="
           relative overflow-hidden
@@ -117,15 +126,11 @@ export default function SportNav() {
 
         <div className="relative z-10 text-center">
 
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-cyan-300">
-            Banner Slider Area
-          </p>
-
-          <h3 className="mt-3 text-2xl font-black text-white">
+          <h3 className="text-2xl font-black text-white">
             Premium Betting Offers
           </h3>
 
-          <p className="mt-3 text-sm text-slate-300">
+          <p className="mt-3 text-sm text-slate-200">
             Place your affiliate banners, sportsbook promos or rotating offers here.
           </p>
 

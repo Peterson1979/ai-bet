@@ -8,7 +8,7 @@ export default function Hero() {
         rounded-[28px]
         border border-cyan-400/20
         shadow-[0_0_50px_rgba(56,189,248,0.10)]
-        px-4 py-16 md:px-8 md:py-24
+        px-4 py-20 md:px-8 md:py-28
         text-center
       "
     >
@@ -18,14 +18,15 @@ export default function Hero() {
           src="/hero.jpg"
           alt="hero background"
           className="
-            h-full w-full object-cover
-            opacity-95
-            scale-100
+            h-full w-full
+            object-cover
+            object-center
+            opacity-100
           "
         />
 
-        {/* LIGHT OVERLAY */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050A14]/45 via-[#0B1220]/35 to-[#050A14]/55" />
+        {/* LIGHTER OVERLAY */}
+        <div className="absolute inset-0 bg-black/35" />
       </div>
 
       {/* GLOW */}
@@ -36,18 +37,18 @@ export default function Hero() {
 
       {/* CONTENT */}
       <div className="relative z-10">
-        <div className="inline-flex items-center rounded-full border border-cyan-400/30 bg-cyan-500/10 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-300 backdrop-blur-sm">
-          AI SPORTS ANALYTICS
-        </div>
 
         <h1
           className="
-            mt-5
-            text-4xl md:text-6xl
+            text-4xl
+            md:text-6xl
+
             font-black
-            text-white
             tracking-wide
-            drop-shadow-[0_0_25px_rgba(0,0,0,0.8)]
+
+            text-white
+
+            drop-shadow-[0_0_25px_rgba(0,0,0,0.9)]
           "
         >
           AI Tips
@@ -56,10 +57,15 @@ export default function Hero() {
         <h2
           className="
             mt-4
-            text-xl md:text-3xl
+
+            text-xl
+            md:text-3xl
+
             font-bold
+
             text-cyan-300
-            drop-shadow-[0_0_20px_rgba(0,0,0,0.7)]
+
+            drop-shadow-[0_0_20px_rgba(0,0,0,0.9)]
           "
         >
           AI-Powered Betting Insights
@@ -67,14 +73,22 @@ export default function Hero() {
 
         <p
           className="
-            mx-auto mt-6 max-w-3xl
-            text-sm md:text-lg
+            mx-auto
+            mt-6
+            max-w-3xl
+
+            text-sm
+            md:text-lg
+
             leading-7
-            text-slate-100
-            drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]
+
+            text-white
+
+            drop-shadow-[0_0_15px_rgba(0,0,0,0.9)]
           "
         >
-          AI-powered predictions, analytics and betting insights across Football, NBA, NFL, Hockey and Tennis.
+          AI-powered predictions, analytics and betting insights across
+          Football, NBA, NFL, Hockey and Tennis.
         </p>
       </div>
     </section>

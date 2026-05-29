@@ -31,7 +31,7 @@ export default function Header() {
             letterSpacing: 1,
           }}
         >
-          AI BETS
+         
         </div>
 
         <nav
