@@ -60,9 +60,9 @@ export default function MatchCard({ data }: Props) {
       </div>
 
       {/* MATCH TITLE */}
-      <h3 className="relative mt-4 text-lg font-black leading-6 text-white tracking-wide">
-        {data.eventName}
-      </h3>
+<h3 className="relative mt-4 text-lg font-black leading-6 text-white tracking-wide">
+  {data.homeTeam} vs {data.awayTeam}
+</h3>
 
       {/* ODDS STRONG FOCUS STRIP */}
       <div
