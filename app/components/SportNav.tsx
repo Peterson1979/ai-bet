@@ -5,9 +5,8 @@ import {
   FaBasketballBall,
   FaFootballBall,
   FaHockeyPuck,
+  FaTableTennis,
 } from "react-icons/fa";
-
-import { GiTennisBall } from "react-icons/gi";
 
 const sports = [
   {
@@ -32,7 +31,7 @@ const sports = [
   },
   {
     name: "Tennis",
-    icon: GiTennisBall,
+    icon: FaTableTennis,
     color: "text-yellow-300",
   },
 ];
