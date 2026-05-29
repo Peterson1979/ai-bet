@@ -27,13 +27,37 @@ function getConfidenceColor(level: string) {
 }
 
 function getConfidenceHeatColor(value: number) {
-  if (value >= 75) return "from-emerald-400 to-cyan-400";
-  if (value >= 50) return "from-yellow-400 to-orange-400";
-  return "from-red-500 to-red-300";
+  if (value >= 75) return "from-emerald-400 via-cyan-400 to-blue-400";
+  if (value >= 50) return "from-yellow-400 via-orange-400 to-amber-400";
+  return "from-red-500 via-red-400 to-orange-300";
 }
 
 function clamp(n: number) {
   return Math.max(0, Math.min(100, n));
+}
+
+/* =========================
+   LIVE SIGNAL SYSTEM
+========================= */
+
+function getSignal(confidence?: number, edge?: number) {
+  const c = confidence ?? 0;
+  const e = edge ?? 0;
+
+  if (c >= 80 && e >= 8) return "STRONG";
+  if (c >= 65 && e >= 4) return "ACTIVE";
+  return "WEAK";
+}
+
+function getSignalStyle(signal: string) {
+  switch (signal) {
+    case "STRONG":
+      return "bg-emerald-500/20 text-emerald-300 border-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.35)]";
+    case "ACTIVE":
+      return "bg-cyan-500/15 text-cyan-200 border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.25)]";
+    default:
+      return "bg-slate-500/10 text-slate-300 border-slate-500/20";
+  }
 }
 
 /* =========================
@@ -50,8 +74,11 @@ export default function MatchCard({ data }: Props) {
   const confidenceLevel = getConfidenceLevel(confidence);
   const confidenceStyle = getConfidenceColor(confidenceLevel);
 
-  const edgeVsRisk = clamp((edge - risk) + 50); // dominance indicator
+  const edgeVsRisk = clamp((edge - risk) + 50);
   const confidenceGradient = getConfidenceHeatColor(confidence);
+
+  const signal = getSignal(confidence, edge);
+  const signalStyle = getSignalStyle(signal);
 
   return (
     <article
@@ -70,40 +97,97 @@ export default function MatchCard({ data }: Props) {
         hover:ring-cyan-400/20
       "
     >
+
+      {/* BG FX */}
+
+      <div className="pointer-events-none absolute inset-0 opacity-60">
+        <div className="absolute -top-24 left-10 h-52 w-52 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-52 w-52 rounded-full bg-purple-500/10 blur-3xl" />
+      </div>
+
       {/* =========================
           TOP BADGES
       ========================= */}
 
-      <div className="flex items-start justify-between mb-4">
+      <div className="relative flex items-start justify-between mb-4">
 
         <div className="flex flex-col gap-2">
 
           {/* AI PICK */}
-          <span className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-200 w-fit">
-            AI PICK
-          </span>
+
+          <div className="flex flex-wrap items-center gap-2">
+
+            <span className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-200">
+              AI PICK
+            </span>
+
+            {signal !== "WEAK" && (
+              <span
+                className={`
+                  rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider
+                  ${signalStyle}
+                  ${signal === "STRONG" ? "animate-pulse" : ""}
+                `}
+              >
+                {signal} SIGNAL
+              </span>
+            )}
+
+          </div>
 
           {/* VALUE BET */}
+
           {data.isValueBet && (
             <span className="rounded-full bg-green-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-green-300 border border-green-400/30 w-fit">
               VALUE BET
             </span>
           )}
 
-          {/* CONFIDENCE BADGE */}
+          {/* CONFIDENCE */}
+
           <span
             className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider w-fit ${confidenceStyle}`}
           >
             confidence: {confidence}%
           </span>
 
-          {/* HEATMAP CONFIDENCE BAR (0–100 ZONES) */}
-          <div className="w-28 h-2 bg-white/10 border border-white/10 rounded-full overflow-hidden shadow-inner">
-            <div
-              className={`h-full bg-gradient-to-r ${confidenceGradient} shadow-[0_0_10px_rgba(34,211,238,0.6)]`}
-              style={{ width: `${clamp(confidence)}%` }}
-            />
+          {/* HEATMAP CONFIDENCE BAR */}
+
+          <div className="w-36">
+
+            <div className="flex items-center justify-between mb-1 text-[9px] uppercase tracking-wider text-slate-400">
+              <span>0</span>
+              <span>50</span>
+              <span>100</span>
+            </div>
+
+            <div className="relative w-full h-3 bg-white/10 border border-white/10 rounded-full overflow-hidden shadow-inner">
+
+              {/* GRID */}
+
+              <div className="absolute inset-0 flex justify-between opacity-30">
+                <div className="w-px bg-white/20" />
+                <div className="w-px bg-white/20" />
+                <div className="w-px bg-white/20" />
+                <div className="w-px bg-white/20" />
+              </div>
+
+              {/* FILL */}
+
+              <div
+                className={`
+                  h-full rounded-full
+                  bg-gradient-to-r ${confidenceGradient}
+                  shadow-[0_0_12px_rgba(34,211,238,0.6)]
+                  transition-all duration-500
+                `}
+                style={{ width: `${clamp(confidence)}%` }}
+              />
+
+            </div>
+
           </div>
+
         </div>
 
         <span className="text-[11px] text-slate-200 font-medium">
@@ -111,13 +195,14 @@ export default function MatchCard({ data }: Props) {
             ? new Date(data.startTime).toLocaleString()
             : "TBD"}
         </span>
+
       </div>
 
       {/* =========================
           LEAGUE
       ========================= */}
 
-      <div>
+      <div className="relative">
         <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan-200">
           {data.league}
         </span>
@@ -127,7 +212,7 @@ export default function MatchCard({ data }: Props) {
           MATCH TITLE
       ========================= */}
 
-      <h3 className="mt-4 text-lg font-black leading-6 text-white tracking-wide">
+      <h3 className="relative mt-4 text-lg font-black leading-6 text-white tracking-wide">
         {data.homeTeam} vs {data.awayTeam}
       </h3>
 
@@ -135,56 +220,89 @@ export default function MatchCard({ data }: Props) {
           ODDS
       ========================= */}
 
-      <div className="mt-4 flex items-center justify-between rounded-xl border border-cyan-400/15 bg-[#0B1220] px-4 py-3">
+      <div className="relative mt-4 flex items-center justify-between rounded-xl border border-cyan-400/15 bg-[#0B1220] px-4 py-3 shadow-inner">
 
         <div>
-          <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
+          <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold">
             Bookmaker
           </p>
+
           <p className="text-sm font-semibold text-white">
             {data.bookmaker || "Unknown"}
           </p>
         </div>
 
         <div className="text-right">
-          <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
+          <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold">
             Odds
           </p>
-          <p className="text-xl font-black text-emerald-300">
+
+          <p className="text-xl font-black text-emerald-300 drop-shadow-[0_0_10px_rgba(16,185,129,0.35)]">
             {bestOdds}
           </p>
         </div>
+
       </div>
 
       {/* =========================
-          EDGE vs RISK (DUAL TRACK)
+          EDGE vs RISK
       ========================= */}
 
       <div className="mt-4 rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
 
-        <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold mb-2">
-          Edge vs Risk
-        </p>
+        <div className="flex items-center justify-between mb-2">
 
-        <div className="relative w-full h-2 bg-white/10 rounded-full overflow-hidden">
+          <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold">
+            Edge vs Risk
+          </p>
 
-          {/* EDGE BAR */}
+          <span className="text-[10px] text-cyan-200 font-bold">
+            {edgeVsRisk.toFixed(0)}/100
+          </span>
+
+        </div>
+
+        <div className="relative w-full h-3 bg-white/10 border border-white/10 rounded-full overflow-hidden shadow-inner">
+
+          {/* EDGE */}
+
           <div
-            className="absolute top-0 left-0 h-2 bg-cyan-400/80"
+            className="
+              absolute top-0 left-0 h-3
+              bg-gradient-to-r from-cyan-400 to-blue-400
+              shadow-[0_0_14px_rgba(34,211,238,0.45)]
+            "
             style={{ width: `${clamp(edge)}%` }}
           />
 
-          {/* RISK BAR */}
+          {/* RISK */}
+
           <div
-            className="absolute top-0 left-0 h-2 bg-red-400/60"
+            className="
+              absolute top-0 left-0 h-3
+              bg-gradient-to-r from-red-500/70 to-orange-400/70
+            "
             style={{ width: `${clamp(risk)}%` }}
           />
+
         </div>
 
-        {/* DOMINANCE INDICATOR */}
-        <div className="mt-2 text-[11px] font-bold text-cyan-200">
-          AI dominance: {edge > risk ? "EDGE" : "RISK"} ({edgeVsRisk.toFixed(0)}/100)
+        <div className="mt-2 flex items-center justify-between text-[11px]">
+
+          <span className="font-bold text-cyan-200">
+            EDGE: {edge.toFixed(1)}%
+          </span>
+
+          <span className="font-bold text-red-300">
+            RISK: {risk}/100
+          </span>
+
         </div>
+
+        <div className="mt-2 text-[11px] font-bold text-cyan-200">
+          AI dominance: {edge > risk ? "EDGE" : "RISK"}
+        </div>
+
       </div>
 
       {/* =========================
@@ -193,32 +311,69 @@ export default function MatchCard({ data }: Props) {
 
       <div className="mt-4 grid grid-cols-3 gap-3">
 
-        <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
-          <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
+        <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3 shadow-inner">
+
+          <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold">
             AI Edge
           </p>
-          <p className="mt-1 text-lg font-black text-cyan-300">
+
+          <div className="mt-2 relative w-full h-2 bg-white/10 border border-white/10 rounded-full overflow-hidden">
+
+            <div
+              className="h-full bg-gradient-to-r from-cyan-400 to-blue-400 shadow-[0_0_10px_rgba(34,211,238,0.45)]"
+              style={{ width: `${clamp(edge)}%` }}
+            />
+
+          </div>
+
+          <p className="mt-2 text-lg font-black text-cyan-300">
             {edge ? `+${edge.toFixed(1)}%` : "—"}
           </p>
+
         </div>
 
-        <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
-          <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
+        <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3 shadow-inner">
+
+          <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold">
             Implied
           </p>
-          <p className="mt-1 text-lg font-black text-orange-300">
+
+          <div className="mt-2 relative w-full h-2 bg-white/10 border border-white/10 rounded-full overflow-hidden">
+
+            <div
+              className="h-full bg-gradient-to-r from-orange-400 to-yellow-300 shadow-[0_0_10px_rgba(251,191,36,0.35)]"
+              style={{ width: `${clamp(implied)}%` }}
+            />
+
+          </div>
+
+          <p className="mt-2 text-lg font-black text-orange-300">
             {implied ? `${implied.toFixed(1)}%` : "—"}
           </p>
+
         </div>
 
-        <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
-          <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
+        <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3 shadow-inner">
+
+          <p className="text-[10px] uppercase tracking-wider text-slate-100 font-bold">
             Risk
           </p>
-          <p className="mt-1 text-lg font-black text-red-300">
+
+          <div className="mt-2 relative w-full h-2 bg-white/10 border border-white/10 rounded-full overflow-hidden">
+
+            <div
+              className="h-full bg-gradient-to-r from-red-500 to-orange-400 shadow-[0_0_10px_rgba(239,68,68,0.35)]"
+              style={{ width: `${clamp(risk)}%` }}
+            />
+
+          </div>
+
+          <p className="mt-2 text-lg font-black text-red-300">
             {risk}/100
           </p>
+
         </div>
+
       </div>
 
       {/* =========================
@@ -226,6 +381,7 @@ export default function MatchCard({ data }: Props) {
       ========================= */}
 
       <div className="mt-4 rounded-xl border border-cyan-400/20 bg-gradient-to-r from-[#0B1220] to-[#0E1A2B] p-3">
+
         <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold">
           AI Reasoning
         </p>
@@ -233,6 +389,7 @@ export default function MatchCard({ data }: Props) {
         <p className="mt-2 text-sm text-slate-200 leading-6">
           {data.explanation || "AI analysis unavailable."}
         </p>
+
       </div>
 
       {/* =========================
@@ -259,11 +416,13 @@ export default function MatchCard({ data }: Props) {
       </a>
 
       {/* DISCLAIMER */}
+
       {data.disclaimer && (
         <p className="mt-3 text-[11px] text-slate-400">
           {data.disclaimer}
         </p>
       )}
+
     </article>
   );
 }

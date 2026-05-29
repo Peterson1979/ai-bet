@@ -4,7 +4,7 @@ import path from "path";
 import { getDailyEvents } from "@/app/lib/odds";
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { generatePrediction } from "@/app/lib/openai";
-
+import { rankMatches } from "@/app/lib/ranking";
 type SportResult = {
   sport: string;
   hasMatches: boolean;
@@ -115,11 +115,13 @@ export async function GET() {
         });
       }
 
-      result.sports.push({
-        sport: sportBlock.sport,
-        hasMatches: topPicks.length > 0,
-        topPicks,
-      });
+      const rankedTopPicks = rankMatches(topPicks);
+
+result.sports.push({
+  sport: sportBlock.sport,
+  hasMatches: rankedTopPicks.length > 0,
+  topPicks: rankedTopPicks,
+});
     }
 
     // =========================
