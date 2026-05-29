@@ -5,7 +5,7 @@ type Props = {
 };
 
 /* =========================
-   UI HELPERS
+   UTILS
 ========================= */
 
 function clamp(n: number) {
@@ -20,6 +20,7 @@ export default function MatchCard({ data }: Props) {
   const confidence = data.confidence ?? 0;
   const edge = data.edge ?? 0;
   const risk = data.risk ?? 0;
+  const bestOdds = data.bestOdds ?? data.odds ?? 0;
 
   return (
     <article
@@ -47,7 +48,7 @@ export default function MatchCard({ data }: Props) {
             AI PICK
           </span>
 
-          {/* ⭐ RECOMMENDED MARKET (NEW CORE ELEMENT) */}
+          {/* RECOMMENDED BET */}
           <span className="
             rounded-full border border-emerald-400/40
             bg-emerald-500/15 px-3 py-1
@@ -99,39 +100,19 @@ export default function MatchCard({ data }: Props) {
         <div className="text-right">
           <p className="text-[10px] text-slate-400 uppercase">Odds</p>
           <p className="text-emerald-300 font-black text-lg">
-            {data.bestOdds ?? data.odds}
+            {bestOdds}
           </p>
         </div>
 
       </div>
 
-      {/* SUPPORTING MARKETS (OPTIONAL) */}
-      <div className="mt-3 flex flex-wrap gap-2">
-
-        {data.supportingMarkets?.slice(0, 3)?.map((m, i) => (
-          <span
-            key={i}
-            className="
-              text-[10px] px-2 py-1
-              rounded-full
-              border border-white/10
-              bg-white/5
-              text-slate-300
-            "
-          >
-            {m}
-          </span>
-        ))}
-
-      </div>
-
-      {/* EDGE / RISK (SIMPLIFIED) */}
-      <div className="mt-4 text-[11px] text-slate-300 flex justify-between">
+      {/* EDGE / RISK */}
+      <div className="mt-4 flex justify-between text-[11px] text-slate-300">
         <span>Edge: {edge.toFixed(1)}%</span>
         <span className="text-red-300">Risk: {risk}/100</span>
       </div>
 
-      {/* AI REASONING */}
+      {/* AI EXPLANATION */}
       <p className="mt-3 text-sm text-slate-200 leading-5">
         {data.explanation || "AI analysis unavailable."}
       </p>
