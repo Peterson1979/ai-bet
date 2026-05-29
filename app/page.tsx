@@ -105,7 +105,7 @@ export default async function HomePage() {
                         key={p.id}
                         data={{
                           ...p,
-
+sport: p.sport,
                           // FIXED mapping (NO fake fields)
                           startTime: p.startTime,
                           explanation: p.explanation,
