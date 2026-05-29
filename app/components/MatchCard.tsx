@@ -5,6 +5,11 @@ type Props = {
 };
 
 export default function MatchCard({ data }: Props) {
+  const isValueBet = data.isValueBet;
+  const edge = data.edge;
+  const implied = data.impliedProbability;
+  const bestOdds = data.bestOdds;
+
   return (
     <article
       className="
@@ -27,10 +32,17 @@ export default function MatchCard({ data }: Props) {
         hover:ring-cyan-400/20
       "
     >
-      {/* 3D METAL EDGE EFFECT */}
+      {/* VALUE BET BADGE */}
+      {isValueBet && (
+        <div className="absolute right-4 top-4 z-10 rounded-full bg-green-500/20 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-green-300 border border-green-400/30">
+          VALUE BET
+        </div>
+      )}
+
+      {/* 3D EDGE */}
       <div className="pointer-events-none absolute inset-0 rounded-[28px] border border-white/5 shadow-inner" />
 
-      {/* GLOW BACKDROP */}
+      {/* GLOW */}
       <div className="pointer-events-none absolute inset-0 opacity-50">
         <div className="absolute -top-24 left-10 h-52 w-52 rounded-full bg-cyan-500/10 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-52 w-52 rounded-full bg-purple-500/10 blur-3xl" />
@@ -38,19 +50,7 @@ export default function MatchCard({ data }: Props) {
 
       {/* HEADER */}
       <div className="relative flex items-center justify-between gap-3">
-        <span
-          className="
-            rounded-full
-            border border-cyan-400/30
-            bg-cyan-400/10
-            px-3 py-1
-
-            text-[11px] font-semibold uppercase tracking-wider
-            text-cyan-300
-
-            shadow-[0_0_12px_rgba(34,211,238,0.15)]
-          "
-        >
+        <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan-300">
           {data.league}
         </span>
 
@@ -66,24 +66,12 @@ export default function MatchCard({ data }: Props) {
         {data.homeTeam} vs {data.awayTeam}
       </h3>
 
-      {/* ODDS STRONG FOCUS STRIP */}
-      <div
-        className="
-          relative mt-4 flex items-center justify-between
-          rounded-xl
-          border border-cyan-400/15
-          bg-[#0B1220]
-
-          px-4 py-3
-
-          shadow-[inset_0_0_20px_rgba(0,0,0,0.4)]
-        "
-      >
+      {/* ODDS STRIP */}
+      <div className="relative mt-4 flex items-center justify-between rounded-xl border border-cyan-400/15 bg-[#0B1220] px-4 py-3 shadow-inner">
         <div>
           <p className="text-[10px] uppercase tracking-wider text-slate-500">
             Bookmaker
           </p>
-
           <p className="text-sm font-semibold text-white">
             {data.bookmaker || "Unknown"}
           </p>
@@ -93,72 +81,48 @@ export default function MatchCard({ data }: Props) {
           <p className="text-[10px] uppercase tracking-wider text-slate-500">
             Odds
           </p>
-
-          <p
-            className="
-              text-xl font-black
-              text-emerald-300
-              drop-shadow-[0_0_10px_rgba(16,185,129,0.25)]
-            "
-          >
-            {data.odds ?? "—"}
+          <p className="text-xl font-black text-emerald-300 drop-shadow-[0_0_10px_rgba(16,185,129,0.25)]">
+            {bestOdds ?? data.odds ?? "—"}
           </p>
         </div>
       </div>
 
-      {/* STATS GRID */}
-      <div className="relative mt-4 grid grid-cols-2 gap-3">
-        <div
-          className="
-            rounded-xl
-            border border-cyan-400/10
-            bg-[#0B1220]
+      {/* EDGE + AI METRICS */}
+      {(edge !== undefined || implied !== undefined) && (
+        <div className="relative mt-4 grid grid-cols-3 gap-3">
+          <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
+            <p className="text-[10px] uppercase tracking-wider text-slate-500">
+              AI Edge
+            </p>
+            <p className="mt-1 text-lg font-black text-cyan-300">
+              {edge ? `+${edge.toFixed(1)}%` : "—"}
+            </p>
+          </div>
 
-            p-3
-            shadow-inner
-          "
-        >
-          <p className="text-[10px] uppercase tracking-wider text-slate-500">
-            Confidence
-          </p>
+          <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
+            <p className="text-[10px] uppercase tracking-wider text-slate-500">
+              Implied
+            </p>
+            <p className="mt-1 text-lg font-black text-orange-300">
+              {implied ? `${implied.toFixed(1)}%` : "—"}
+            </p>
+          </div>
 
-          <p className="mt-1 text-xl font-black text-cyan-300">
-            {data.confidence ?? 0}%
-          </p>
+          <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
+            <p className="text-[10px] uppercase tracking-wider text-slate-500">
+              Risk
+            </p>
+            <p className="mt-1 text-lg font-black text-red-300">
+              {data.risk ?? 0}/100
+            </p>
+          </div>
         </div>
+      )}
 
-        <div
-          className="
-            rounded-xl
-            border border-cyan-400/10
-            bg-[#0B1220]
-
-            p-3
-            shadow-inner
-          "
-        >
-          <p className="text-[10px] uppercase tracking-wider text-slate-500">
-            Risk
-          </p>
-
-          <p className="mt-1 text-xl font-black text-orange-400">
-            {data.risk ?? 0}/100
-          </p>
-        </div>
-      </div>
-
-      {/* RECOMMENDED BET */}
-      <div
-        className="
-          relative mt-4 rounded-xl
-          border border-cyan-400/15
-          bg-gradient-to-r from-[#0B1220] to-[#0E1A2B]
-
-          p-3
-        "
-      >
+      {/* AI RECOMMENDATION */}
+      <div className="relative mt-4 rounded-xl border border-cyan-400/15 bg-gradient-to-r from-[#0B1220] to-[#0E1A2B] p-3">
         <p className="text-[10px] uppercase tracking-wider text-slate-500">
-          Recommended Bet
+          AI Prediction
         </p>
 
         <p className="mt-2 text-base font-semibold text-white">

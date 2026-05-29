@@ -7,28 +7,55 @@ import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
 
-import { MatchCardData, SportType } from "./types/match";
+type PredictionCard = {
+  id: string;
 
-type SportSection = {
-  sport: SportType;
+  league: string;
+  eventId: string;
+
+  homeTeam: string;
+  awayTeam: string;
+
+  startTime: string;
+
+  recommendedBet: string;
+  betCode: string;
+
+  marketType: string;
+  selectionKey: string;
+
+  explanation: string;
+  confidence: number;
+  risk: number;
+
+  odds: number;
+  oddsLabel: string;
+
+  bookmaker: string;
+  bookmakerUrl: string;
+
+  ctaLabel: string;
+
+  isTopPick: boolean;
+  status: string;
+};
+
+type SportBlock = {
+  sport: string;
   hasMatches: boolean;
   message?: string;
-  topPicks: MatchCardData[];
+  topPicks: PredictionCard[];
 };
 
-type PredictionsFile = {
+type PredictionsData = {
   date: string;
   generatedAt: string;
-  sports: SportSection[];
+  sports: SportBlock[];
 };
 
-async function getPredictions(): Promise<PredictionsFile | null> {
+async function getPredictions(): Promise<PredictionsData | null> {
   try {
-    const filePath = path.join(
-      process.cwd(),
-      "data",
-      "predictions.json"
-    );
+    const filePath = path.join(process.cwd(), "data", "predictions.json");
 
     const data = fs.readFileSync(filePath, "utf-8");
 
@@ -42,60 +69,48 @@ export default async function HomePage() {
   const predictions = await getPredictions();
 
   return (
-    <main className="min-h-screen bg-[#060B14] text-white">
-      <div className="mx-auto max-w-[1600px] px-4 py-5 md:px-6">
-
-        {/* HERO */}
+    <main className="min-h-screen bg-[#060B14] text-white overflow-x-hidden">
+      <div className="mx-auto max-w-[1500px] px-4 py-5 md:px-6">
         <Hero />
 
-        {/* SPORT NAV */}
-        <div className="mt-5 flex justify-center">
+        <div className="mt-6 flex justify-center">
           <SportNav />
         </div>
 
-        {/* MAIN GRID */}
-        <div className="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-[1.45fr_0.7fr]">
-
-          {/* LEFT SIDE */}
-          <div className="space-y-10">
-
-            {predictions?.sports.map((section) => (
+        <div className="mt-10 grid grid-cols-1 gap-8 xl:grid-cols-[1.6fr_420px] items-start">
+          {/* LEFT */}
+          <div>
+            {predictions?.sports.map((sportBlock) => (
               <section
-                key={section.sport}
-                id={section.sport.toLowerCase()}
+                key={sportBlock.sport}
+                id={sportBlock.sport.toLowerCase()}
+                className="mb-12"
               >
-                {/* SECTION HEADER */}
                 <div className="mb-5 flex items-center gap-4">
                   <h2 className="text-2xl font-black tracking-tight text-white md:text-3xl">
-                    {section.sport}
+                    {sportBlock.sport}
                   </h2>
 
-                  <div className="h-px flex-1 bg-[#1E293B]" />
+                  <div className="h-[2px] flex-1 rounded-full bg-gradient-to-r from-cyan-400/40 to-transparent" />
                 </div>
 
-                {/* EMPTY STATE */}
-                {!section.hasMatches && (
-                  <div
-                    className="
-                      rounded-2xl
-                      border border-[#1E293B]
-                      bg-[#0F172A]
-                      p-6
-
-                      text-slate-400
-                    "
-                  >
-                    {section.message || "No events today"}
+                {!sportBlock.hasMatches ? (
+                  <div className="rounded-[24px] border border-[#334155] bg-[#0F172A] p-6">
+                    <p className="text-slate-300">{sportBlock.message}</p>
                   </div>
-                )}
-
-                {/* MATCH GRID */}
-                {section.hasMatches && (
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
-                    {section.topPicks.map((pick) => (
+                ) : (
+                  <div className="grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
+                    {sportBlock.topPicks.map((p) => (
                       <MatchCard
-                        key={pick.id}
-                        data={pick}
+                        key={p.id}
+                        data={{
+                          ...p,
+
+                          // FIXED mapping (NO fake fields)
+                          startTime: p.startTime,
+                          explanation: p.explanation,
+                          recommendedBet: p.recommendedBet,
+                        }}
                       />
                     ))}
                   </div>
@@ -104,37 +119,24 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* RIGHT SIDEBAR */}
-          <aside className="xl:sticky xl:top-5 h-fit">
-
-            <div
-              className="
-                rounded-2xl
-                border border-[#1E293B]
-                bg-[#0F172A]
-                p-5
-
-                shadow-[0_10px_30px_rgba(0,0,0,0.5)]
-              "
-            >
-              {/* HEADER */}
+          {/* RIGHT */}
+          <aside className="h-fit xl:sticky xl:top-5">
+            <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
               <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-xl font-black text-white">
+                <h2 className="text-2xl font-black text-white">
                   Top Betting Sites
                 </h2>
 
-                <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 text-[10px] uppercase tracking-wider text-cyan-300">
+                <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] text-cyan-300">
                   Sponsored
                 </span>
               </div>
 
-              {/* CARDS */}
               <TopBettingSites />
             </div>
           </aside>
         </div>
 
-        {/* FOOTER */}
         <Footer />
       </div>
     </main>

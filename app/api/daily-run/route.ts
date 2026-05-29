@@ -5,6 +5,13 @@ import { getDailyEvents } from "@/app/lib/odds";
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { generatePrediction } from "@/app/lib/openai";
 
+type SportResult = {
+  sport: string;
+  hasMatches: boolean;
+  message?: string;
+  topPicks: any[];
+};
+
 export async function GET() {
   try {
     const sportsData = await getDailyEvents();
@@ -12,7 +19,7 @@ export async function GET() {
     const cachePath = path.join(process.cwd(), "data", "cache.json");
 
     // =========================
-    // 1. DAILY CACHE CHECK
+    // DAILY CACHE CHECK
     // =========================
     if (fs.existsSync(cachePath)) {
       const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
@@ -27,20 +34,18 @@ export async function GET() {
       }
     }
 
-    const result = {
+    const result: {
+      date: string;
+      generatedAt: string;
+      sports: SportResult[];
+    } = {
       date: new Date().toISOString().split("T")[0],
       generatedAt: new Date().toISOString(),
-
-      sports: [] as {
-        sport: string;
-        hasMatches: boolean;
-        message?: string;
-        topPicks: any[];
-      }[],
+      sports: [],
     };
 
     // =========================
-    // 2. GLOBAL CACHE HELPERS
+    // DEDUPE + PROMPT CACHE
     // =========================
     const seenEvents = new Set<string>();
     const promptCache = new Map<string, string>();
@@ -49,17 +54,11 @@ export async function GET() {
       const topPicks: any[] = [];
 
       for (const event of sportBlock.events.slice(0, 3)) {
-        // =========================
-        // 3. DEDUPLICATION
-        // =========================
         const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
 
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);
 
-        // =========================
-        // 4. PROMPT CACHE
-        // =========================
         let prompt = promptCache.get(eventKey);
 
         if (!prompt) {
@@ -72,14 +71,14 @@ export async function GET() {
         if (!aiPrediction) continue;
 
         topPicks.push({
-          id: `${event.sport
-            .toLowerCase()
-            .replace(/\s+/g, "-")}-${event.homeTeam}-${event.awayTeam}`,
+          id: eventKey,
 
           league: event.league,
           eventId: event.id,
+
           homeTeam: event.homeTeam,
           awayTeam: event.awayTeam,
+
           startTime: event.commenceTime,
 
           recommendedBet: aiPrediction.recommendedBet,
@@ -117,13 +116,13 @@ export async function GET() {
     }
 
     // =========================
-    // 5. SAVE CACHE
+    // WRITE CACHE
     // =========================
     fs.writeFileSync(cachePath, JSON.stringify(result, null, 2));
-
-    const filePath = path.join(process.cwd(), "data", "predictions.json");
-
-    fs.writeFileSync(filePath, JSON.stringify(result, null, 2));
+    fs.writeFileSync(
+      path.join(process.cwd(), "data", "predictions.json"),
+      JSON.stringify(result, null, 2)
+    );
 
     return Response.json({
       success: true,
