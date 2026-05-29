@@ -100,15 +100,14 @@ export default async function HomePage() {
                   <div className="grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
                     {sportBlock.topPicks.map((p) => (
                       <MatchCard
-                        key={p.id}
-                        data={{
-                          ...p,
+  key={p.id}
+  data={{
+    ...p,
 
-                          sport: p.sport,
+    sport: sportBlock.sport, // ✅ EZ A HELYES
 
-                          startTime: p.startTime,
-
-                          explanation: p.explanation,
+    startTime: p.startTime,
+    explanation
 
                           recommendedBet: p.recommendedBet,
 
