@@ -1,4 +1,4 @@
-import type { PredictionCard } from "@/app/page";
+import type { PredictionCard } from "@/app/types/prediction";
 import type { MatchCardData, SportType } from "@/app/types/match";
 
 export function toMatchCardData(
