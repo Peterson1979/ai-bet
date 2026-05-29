@@ -31,7 +31,7 @@ export default function Header() {
             letterSpacing: 1,
           }}
         >
-         
+         <header className="relative z-50">
         </div>
 
         <nav
