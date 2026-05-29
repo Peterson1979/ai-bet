@@ -19,24 +19,40 @@ type PredictionCard = {
   startTime: string;
 
   recommendedBet: string;
-  betCode: "HOME_WIN" | "AWAY_WIN" | "DRAW" | "DOUBLE_CHANCE_1X" | "DOUBLE_CHANCE_X2" | "DRAW_NO_BET_HOME" | "DRAW_NO_BET_AWAY" | "OVER_1_5" | "UNDER_4_5";
+
+  betCode:
+    | "HOME_WIN"
+    | "AWAY_WIN"
+    | "DRAW"
+    | "DOUBLE_CHANCE_1X"
+    | "DOUBLE_CHANCE_X2"
+    | "DRAW_NO_BET_HOME"
+    | "DRAW_NO_BET_AWAY"
+    | "OVER_1_5"
+    | "UNDER_4_5";
 
   marketType: "h2h" | "totals" | "spreads" | "double_chance";
+
   selectionKey: string;
 
   explanation: string;
+
   confidence: number;
+
   risk: number;
 
   odds: number;
+
   oddsLabel: string;
 
   bookmaker: string;
+
   bookmakerUrl: string;
 
   ctaLabel: string;
 
   isTopPick: boolean;
+
   status: "scheduled" | "live" | "finished";
 };
 
@@ -92,22 +108,21 @@ export default async function HomePage() {
 
                 {!sportBlock.hasMatches ? (
                   <div className="rounded-[24px] border border-[#334155] bg-[#0F172A] p-6">
-                    <p className="text-slate-300">
-                      {sportBlock.message}
-                    </p>
+                    <p className="text-slate-300">{sportBlock.message}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
                     {sportBlock.topPicks.map((p) => (
                       <MatchCard
-  key={p.id}
-  data={{
-    ...p,
+                        key={p.id}
+                        data={{
+                          ...p,
 
-    sport: sportBlock.sport, // ✅ EZ A HELYES
+                          sport: sportBlock.sport,
 
-    startTime: p.startTime,
-    explanation
+                          startTime: p.startTime,
+
+                          explanation: p.explanation,
 
                           recommendedBet: p.recommendedBet,
 
