@@ -48,15 +48,14 @@ export async function GET() {
     // GLOBAL HELPERS
     // =========================
     const seenEvents = new Set<string>();
-    const promptCache = new Map<string, string>();
 
     // =========================
-    // MAIN LOOP (FIXED)
+    // MAIN LOOP (1 SPORT = 1 AI CALL)
     // =========================
     for (const sportBlock of sportsData) {
-      const topPicks: any[] = [];
+      const events = sportBlock.events?.slice(0, 3) ?? [];
 
-      const events = sportBlock.events.slice(0, 3);
+      const topPicks: any[] = [];
 
       if (events.length === 0) {
         result.sports.push({
@@ -68,16 +67,32 @@ export async function GET() {
         continue;
       }
 
-      // prompt per sport (batch AI call)
+      // =========================
+      // SAFE PROMPT BUILD (TYPE SAFE)
+      // =========================
       const prompt = buildPredictionPrompt({
         sport: sportBlock.sport,
-        events,
+        events: events.map((e) => ({
+          id: e.id,
+          league: e.league,
+          homeTeam: e.homeTeam,
+          awayTeam: e.awayTeam,
+          commenceTime: e.commenceTime,
+          odds: e.odds,
+          bookmaker: e.bookmaker,
+        })),
       });
 
+      // =========================
+      // SINGLE AI CALL PER SPORT
+      // =========================
       const aiResults = await generatePrediction(prompt);
 
-      if (!aiResults) continue;
+      if (!aiResults || !Array.isArray(aiResults)) continue;
 
+      // =========================
+      // MERGE AI + EVENTS
+      // =========================
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
         const ai = aiResults[i];
