@@ -1,4 +1,3 @@
-```tsx
 // app/components/Footer.tsx
 
 export default function Footer() {
@@ -118,4 +117,3 @@ export default function Footer() {
     </footer>
   );
 }
-```

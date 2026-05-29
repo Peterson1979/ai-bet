@@ -1,4 +1,3 @@
-```tsx
 // app/components/Hero.tsx
 
 export default function Hero() {
@@ -75,11 +74,9 @@ export default function Hero() {
             drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]
           "
         >
-          AI-powered predictions, analytics and betting insights across
-          Football, NBA, NFL, Hockey and Tennis.
+          AI-powered predictions, analytics and betting insights across Football, NBA, NFL, Hockey and Tennis.
         </p>
       </div>
     </section>
   );
 }
-```

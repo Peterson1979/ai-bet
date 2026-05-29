@@ -1,10 +1,15 @@
+// app/api/daily-run/route.ts
+
 import fs from "fs";
 import path from "path";
 
 import { getDailyEvents } from "@/app/lib/odds";
 import { buildPredictionPrompt } from "@/app/lib/prompts";
-import { generatePrediction } from "@/app/lib/openai";
 import { rankMatches } from "@/app/lib/ranking";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 type SportResult = {
   sport: string;
   hasMatches: boolean;
@@ -12,18 +17,35 @@ type SportResult = {
   topPicks: any[];
 };
 
+/**
+ * Lazy AI import → prevents build-time crash on Vercel / Next build
+ */
+async function generateAI(prompt: string) {
+  const { generatePrediction } = await import("@/app/lib/openai");
+  return generatePrediction(prompt);
+}
+
 export async function GET() {
   try {
     const sportsData = await getDailyEvents();
 
-    const cachePath = path.join(process.cwd(), "data", "cache.json");
+    const cachePath = path.join(
+      process.cwd(),
+      "data",
+      "cache.json"
+    );
 
     // =========================
     // DAILY CACHE CHECK
     // =========================
     if (fs.existsSync(cachePath)) {
-      const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
-      const today = new Date().toISOString().split("T")[0];
+      const cached = JSON.parse(
+        fs.readFileSync(cachePath, "utf-8")
+      );
+
+      const today = new Date()
+        .toISOString()
+        .split("T")[0];
 
       if (cached.date === today) {
         return Response.json({
@@ -47,7 +69,7 @@ export async function GET() {
     const seenEvents = new Set<string>();
 
     // =========================
-    // MAIN LOOP (1 SPORT = 1 AI CALL)
+    // MAIN LOOP
     // =========================
     for (const sportBlock of sportsData) {
       const events = sportBlock.events?.slice(0, 3) ?? [];
@@ -64,12 +86,9 @@ export async function GET() {
         continue;
       }
 
-      // =========================
-      // FIX: buildPredictionPrompt INPUT MATCH
-      // =========================
       const prompt = buildPredictionPrompt(events);
 
-      const aiResults = await generatePrediction(prompt);
+      const aiResults = await generateAI(prompt);
 
       if (!aiResults || !Array.isArray(aiResults)) continue;
 
@@ -117,17 +136,20 @@ export async function GET() {
 
       const rankedTopPicks = rankMatches(topPicks);
 
-result.sports.push({
-  sport: sportBlock.sport,
-  hasMatches: rankedTopPicks.length > 0,
-  topPicks: rankedTopPicks,
-});
+      result.sports.push({
+        sport: sportBlock.sport,
+        hasMatches: rankedTopPicks.length > 0,
+        topPicks: rankedTopPicks,
+      });
     }
 
     // =========================
     // WRITE CACHE
     // =========================
-    fs.writeFileSync(cachePath, JSON.stringify(result, null, 2));
+    fs.writeFileSync(
+      cachePath,
+      JSON.stringify(result, null, 2)
+    );
 
     fs.writeFileSync(
       path.join(process.cwd(), "data", "predictions.json"),

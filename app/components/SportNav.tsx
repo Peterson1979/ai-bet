@@ -1,4 +1,3 @@
-```tsx
 // app/components/SportNav.tsx
 
 import {
@@ -37,12 +36,8 @@ export default function SportNav() {
     <div className="space-y-5">
 
       {/* SPORT NAV */}
-      <nav
-        className="
-          flex flex-wrap items-center justify-center gap-3
-          px-2 py-3
-        "
-      >
+      <nav className="flex flex-wrap items-center justify-center gap-3 px-2 py-3">
+
         {sports.map((sport) => {
           const Icon = sport.icon;
 
@@ -77,13 +72,14 @@ export default function SportNav() {
                 active:scale-95
               "
             >
+              {/* glow background */}
               <div className="pointer-events-none absolute inset-0 opacity-40">
                 <div className="absolute -top-6 left-2 h-10 w-10 rounded-full bg-cyan-400/10 blur-xl" />
               </div>
 
               <Icon
                 size={16}
-                className="relative z-10 text-cyan-300 group-hover:scale-110 transition"
+                className="relative z-10 text-cyan-300 transition-transform duration-300 group-hover:scale-110"
               />
 
               <span className="relative z-10">
@@ -92,6 +88,7 @@ export default function SportNav() {
             </a>
           );
         })}
+
       </nav>
 
       {/* BANNER SLIDER PLACE */}
@@ -112,12 +109,14 @@ export default function SportNav() {
           shadow-[0_0_30px_rgba(56,189,248,0.08)]
         "
       >
+        {/* background glow */}
         <div className="absolute inset-0 opacity-30">
           <div className="absolute left-0 top-0 h-40 w-40 rounded-full bg-cyan-500/10 blur-3xl" />
           <div className="absolute right-0 bottom-0 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl" />
         </div>
 
         <div className="relative z-10 text-center">
+
           <p className="text-xs font-bold uppercase tracking-[0.3em] text-cyan-300">
             Banner Slider Area
           </p>
@@ -129,9 +128,10 @@ export default function SportNav() {
           <p className="mt-3 text-sm text-slate-300">
             Place your affiliate banners, sportsbook promos or rotating offers here.
           </p>
+
         </div>
       </div>
+
     </div>
   );
 }
-```

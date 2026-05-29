@@ -1,8 +1,4 @@
-```tsx
 // app/page.tsx
-
-import fs from "fs";
-import path from "path";
 
 import Header from "./components/Header";
 import Hero from "./components/Hero";
@@ -10,6 +6,8 @@ import SportNav from "./components/SportNav";
 import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
+
+import { getPredictions } from "@/app/lib/getPredictions";
 
 import type { SportType } from "./types/match";
 import type { PredictionCard } from "@/app/types/prediction";
@@ -28,20 +26,8 @@ type PredictionsData = {
   sports: SportBlock[];
 };
 
-async function getPredictions(): Promise<PredictionsData | null> {
-  try {
-    const filePath = path.join(process.cwd(), "data", "predictions.json");
-
-    const data = fs.readFileSync(filePath, "utf-8");
-
-    return JSON.parse(data);
-  } catch {
-    return null;
-  }
-}
-
 export default async function HomePage() {
-  const predictions = await getPredictions();
+  const predictions: PredictionsData | null = await getPredictions();
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[#060B14] text-white">
@@ -55,7 +41,7 @@ export default async function HomePage() {
         {/* HERO */}
         <Hero />
 
-        {/* SPORT NAV + BANNER */}
+        {/* SPORT NAV */}
         <div className="mt-8">
           <SportNav />
         </div>
@@ -64,13 +50,10 @@ export default async function HomePage() {
         <div
           className="
             mt-12
-
             grid
             grid-cols-1
             gap-8
-
             xl:grid-cols-[minmax(0,1.6fr)_420px]
-
             items-start
           "
         >
@@ -78,7 +61,7 @@ export default async function HomePage() {
           {/* LEFT COLUMN */}
           <div className="min-w-0">
 
-            {predictions?.sports.map((sportBlock) => (
+            {predictions?.sports?.map((sportBlock) => (
               <section
                 key={sportBlock.sport}
                 id={sportBlock.sport.toLowerCase()}
@@ -88,51 +71,22 @@ export default async function HomePage() {
                 {/* SECTION HEADER */}
                 <div className="mb-6 flex items-center gap-4">
 
-                  <h2
-                    className="
-                      shrink-0
-                      text-2xl
-                      font-black
-                      tracking-tight
-                      text-white
-
-                      md:text-3xl
-                    "
-                  >
+                  <h2 className="text-2xl font-black tracking-tight text-white md:text-3xl">
                     {sportBlock.sport}
                   </h2>
 
                   <div className="h-[2px] flex-1 rounded-full bg-gradient-to-r from-cyan-400/40 to-transparent" />
                 </div>
 
-                {/* EMPTY */}
+                {/* EMPTY STATE */}
                 {!sportBlock.hasMatches ? (
-                  <div
-                    className="
-                      rounded-[24px]
-                      border border-[#334155]
-                      bg-[#0F172A]
-                      p-6
-                    "
-                  >
+                  <div className="rounded-[24px] border border-[#334155] bg-[#0F172A] p-6">
                     <p className="text-slate-300">
                       {sportBlock.message}
                     </p>
                   </div>
                 ) : (
-
-                  /* MATCH GRID */
-                  <div
-                    className="
-                      grid
-                      grid-cols-1
-                      gap-5
-
-                      sm:grid-cols-2
-
-                      2xl:grid-cols-3
-                    "
-                  >
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
                     {sportBlock.topPicks.map((p) => {
                       const uiData = toMatchCardData(
                         p,
@@ -148,37 +102,15 @@ export default async function HomePage() {
                     })}
                   </div>
                 )}
+
               </section>
             ))}
           </div>
 
           {/* SIDEBAR */}
-          <aside
-            className="
-              h-fit
+          <aside className="h-fit xl:sticky xl:top-5">
 
-              xl:sticky
-              xl:top-5
-            "
-          >
-
-            <div
-              className="
-                overflow-hidden
-
-                rounded-[28px]
-
-                border border-cyan-400/30
-
-                bg-gradient-to-b
-                from-[#111827]
-                to-[#0F172A]
-
-                p-5
-
-                shadow-[0_0_40px_rgba(34,211,238,0.08)]
-              "
-            >
+            <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
 
               {/* SIDEBAR HEADER */}
               <div className="mb-6 flex items-center justify-between gap-3">
@@ -193,45 +125,17 @@ export default async function HomePage() {
                   </p>
                 </div>
 
-                {/* OPTIONAL LABEL */}
-                <span
-                  className="
-                    rounded-full
-
-                    border border-cyan-400/30
-                    bg-cyan-400/10
-
-                    px-3 py-1
-
-                    text-[11px]
-                    font-bold
-                    uppercase
-                    tracking-wider
-
-                    text-cyan-300
-                  "
-                >
+                <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-cyan-300">
                   Top Rated
                 </span>
               </div>
 
-              {/* TOP SITES */}
+              {/* CONTENT */}
               <TopBettingSites />
 
-              {/* EXTRA SIDEBAR BLOCK */}
-              <div
-                className="
-                  mt-6
+              {/* INFO BLOCK */}
+              <div className="mt-6 rounded-2xl border border-cyan-400/15 bg-[#0B1220] p-4">
 
-                  rounded-2xl
-
-                  border border-cyan-400/15
-
-                  bg-[#0B1220]
-
-                  p-4
-                "
-              >
                 <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-300">
                   AI Insights
                 </p>
@@ -241,10 +145,12 @@ export default async function HomePage() {
                   Hockey and Tennis with confidence scoring,
                   edge detection and market evaluation.
                 </p>
+
               </div>
 
             </div>
           </aside>
+
         </div>
 
         {/* FOOTER */}
@@ -254,4 +160,3 @@ export default async function HomePage() {
     </main>
   );
 }
-```
