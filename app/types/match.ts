@@ -27,6 +27,9 @@ export type MatchStatus =
   | "live"
   | "finished";
 
+/**
+ * MAIN UI MODEL
+ */
 export type MatchCardData = {
   /*
    * INTERNAL IDS
@@ -60,7 +63,7 @@ export type MatchCardData = {
 
   status: MatchStatus;
 
-  generatedAt: string;
+  generatedAt?: string;
 
   /*
    * AI PICK
@@ -93,10 +96,25 @@ export type MatchCardData = {
 
   bookmakerUrl: string;
 
+  bookmakerRank?: number;
+
+  /*
+   * VALUE BET ENGINE (NEW)
+   */
+  bestOdds?: number | null;
+
+  impliedProbability?: number | null;
+
+  edge?: number | null;
+
+  isValueBet?: boolean;
+
   /*
    * CTA
    */
   ctaLabel: string;
+
+  ctaUrl?: string;
 
   /*
    * UI FLAGS
@@ -104,7 +122,7 @@ export type MatchCardData = {
   isTopPick?: boolean;
 
   /*
-   * OPTIONAL
+   * OPTIONAL UI
    */
   disclaimer?: string;
 };
