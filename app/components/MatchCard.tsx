@@ -55,14 +55,16 @@ export default function MatchCard({ data }: Props) {
         </span>
 
         <span className="text-[11px] text-slate-400">
-  {new Date(data.startTime).toLocaleString()}
-</span>
+          {data.startTime
+            ? new Date(data.startTime).toLocaleString()
+            : "TBD"}
+        </span>
       </div>
 
       {/* MATCH TITLE */}
-<h3 className="relative mt-4 text-lg font-black leading-6 text-white tracking-wide">
-  {data.homeTeam} vs {data.awayTeam}
-</h3>
+      <h3 className="relative mt-4 text-lg font-black leading-6 text-white tracking-wide">
+        {data.homeTeam} vs {data.awayTeam}
+      </h3>
 
       {/* ODDS STRONG FOCUS STRIP */}
       <div
@@ -81,8 +83,9 @@ export default function MatchCard({ data }: Props) {
           <p className="text-[10px] uppercase tracking-wider text-slate-500">
             Bookmaker
           </p>
+
           <p className="text-sm font-semibold text-white">
-            {data.bookmaker || "—"}
+            {data.bookmaker || "Unknown"}
           </p>
         </div>
 
@@ -90,6 +93,7 @@ export default function MatchCard({ data }: Props) {
           <p className="text-[10px] uppercase tracking-wider text-slate-500">
             Odds
           </p>
+
           <p
             className="
               text-xl font-black
@@ -117,8 +121,9 @@ export default function MatchCard({ data }: Props) {
           <p className="text-[10px] uppercase tracking-wider text-slate-500">
             Confidence
           </p>
+
           <p className="mt-1 text-xl font-black text-cyan-300">
-            {data.confidence}%
+            {data.confidence ?? 0}%
           </p>
         </div>
 
@@ -135,8 +140,9 @@ export default function MatchCard({ data }: Props) {
           <p className="text-[10px] uppercase tracking-wider text-slate-500">
             Risk
           </p>
+
           <p className="mt-1 text-xl font-black text-orange-400">
-            {data.risk}/100
+            {data.risk ?? 0}/100
           </p>
         </div>
       </div>
@@ -154,19 +160,20 @@ export default function MatchCard({ data }: Props) {
         <p className="text-[10px] uppercase tracking-wider text-slate-500">
           Recommended Bet
         </p>
+
         <p className="mt-2 text-base font-semibold text-white">
-          {data.recommendedBet}
+          {data.recommendedBet || "No recommendation"}
         </p>
       </div>
 
       {/* ANALYSIS */}
       <p className="relative mt-4 text-sm leading-6 text-slate-300">
-        {data.shortAnalysis}
+        {data.explanation || "AI analysis unavailable."}
       </p>
 
       {/* CTA */}
       <a
-        href={data.ctaUrl}
+        href={data.bookmakerUrl || "#"}
         target="_blank"
         rel="noopener noreferrer sponsored"
         className="
