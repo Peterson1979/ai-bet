@@ -45,77 +45,49 @@ export async function GET() {
     };
 
     // =========================
-    // DEDUPE + PROMPT CACHE
+    // GLOBAL HELPERS
     // =========================
     const seenEvents = new Set<string>();
     const promptCache = new Map<string, string>();
 
+    // =========================
+    // MAIN LOOP (FIXED)
+    // =========================
     for (const sportBlock of sportsData) {
       const topPicks: any[] = [];
 
-      for (const sportBlock of sportsData) {
-  const events = sportBlock.events.slice(0, 3);
+      const events = sportBlock.events.slice(0, 3);
 
-  if (events.length === 0) continue;
+      if (events.length === 0) {
+        result.sports.push({
+          sport: sportBlock.sport,
+          hasMatches: false,
+          message: `No ${sportBlock.sport} events available today.`,
+          topPicks: [],
+        });
+        continue;
+      }
 
-  const prompt = buildPredictionPrompt({
-    sport: sportBlock.sport,
-    events,
-  });
+      // prompt per sport (batch AI call)
+      const prompt = buildPredictionPrompt({
+        sport: sportBlock.sport,
+        events,
+      });
 
-  const aiResults = await generatePrediction(prompt);
+      const aiResults = await generatePrediction(prompt);
 
-  if (!aiResults) continue;
+      if (!aiResults) continue;
 
-  for (let i = 0; i < events.length; i++) {
-    const event = events[i];
-    const ai = aiResults[i];
+      for (let i = 0; i < events.length; i++) {
+        const event = events[i];
+        const ai = aiResults[i];
 
-    if (!event || !ai) continue;
+        if (!event || !ai) continue;
 
-    topPicks.push({
-      id: `${event.sport}-${event.homeTeam}-${event.awayTeam}`,
-
-      league: event.league,
-      eventId: event.id,
-      homeTeam: event.homeTeam,
-      awayTeam: event.awayTeam,
-      startTime: event.commenceTime,
-
-      recommendedBet: ai.recommendedBet,
-      betCode: ai.betCode,
-
-      explanation: ai.explanation,
-      confidence: ai.confidence,
-      risk: ai.risk,
-
-      odds: event.odds || 0,
-      oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
-
-      bookmaker: event.bookmaker || "Unknown",
-      bookmakerUrl: "https://example.com",
-
-      ctaLabel: "View Odds",
-
-      isTopPick: true,
-      status: "scheduled",
-    });
-  }
-}
+        const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
 
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);
-
-        let prompt = promptCache.get(eventKey);
-
-        if (!prompt) {
-          prompt = buildPredictionPrompt(event);
-          promptCache.set(eventKey, prompt);
-        }
-
-        const aiPrediction = await generatePrediction(prompt);
-
-        if (!aiPrediction) continue;
 
         topPicks.push({
           id: eventKey,
@@ -128,18 +100,15 @@ export async function GET() {
 
           startTime: event.commenceTime,
 
-          recommendedBet: aiPrediction.recommendedBet,
-          betCode: aiPrediction.betCode,
+          recommendedBet: ai.recommendedBet,
+          betCode: ai.betCode,
 
-          marketType: "h2h",
-          selectionKey: "home",
-
-          explanation: aiPrediction.explanation,
-          confidence: aiPrediction.confidence,
-          risk: aiPrediction.risk,
+          explanation: ai.explanation,
+          confidence: ai.confidence,
+          risk: ai.risk,
 
           odds: event.odds || 0,
-          oddsLabel: `${aiPrediction.recommendedBet} @ ${event.odds}`,
+          oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
 
           bookmaker: event.bookmaker || "Unknown",
           bookmakerUrl: "https://example.com",
@@ -154,10 +123,6 @@ export async function GET() {
       result.sports.push({
         sport: sportBlock.sport,
         hasMatches: topPicks.length > 0,
-        message:
-          topPicks.length === 0
-            ? `No ${sportBlock.sport} events available today.`
-            : undefined,
         topPicks,
       });
     }
@@ -166,6 +131,7 @@ export async function GET() {
     // WRITE CACHE
     // =========================
     fs.writeFileSync(cachePath, JSON.stringify(result, null, 2));
+
     fs.writeFileSync(
       path.join(process.cwd(), "data", "predictions.json"),
       JSON.stringify(result, null, 2)
