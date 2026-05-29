@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 
 import type { SportType } from "./types/match";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
+import type { PredictionCard } from "@/app/types/prediction";
 
 type PredictionCard = {
   id: string;
