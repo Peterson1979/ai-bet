@@ -5,7 +5,7 @@ type Props = {
 };
 
 function getConfidenceLevel(confidence?: number) {
-  if (!confidence) return "low";
+  if (confidence === undefined || confidence === null) return "low";
   if (confidence >= 75) return "high";
   if (confidence >= 50) return "mid";
   return "low";
@@ -22,51 +22,61 @@ function getConfidenceColor(level: string) {
   }
 }
 
+function getConfidenceProgress(confidence?: number) {
+  if (!confidence) return 0;
+  return Math.max(0, Math.min(100, confidence));
+}
+
 export default function MatchCard({ data }: Props) {
-  const edge = data.edge;
-  const implied = data.impliedProbability;
-  const bestOdds = data.bestOdds;
+  const edge = data.edge ?? 0;
+  const implied = data.impliedProbability ?? 0;
+  const bestOdds = data.bestOdds ?? data.odds;
 
   const confidenceLevel = getConfidenceLevel(data.confidence);
   const confidenceStyle = getConfidenceColor(confidenceLevel);
+  const confidenceProgress = getConfidenceProgress(data.confidence);
 
   return (
-    <article
-      className="
-        relative overflow-hidden
-        rounded-[28px]
-        border border-cyan-400/25
-        bg-gradient-to-b from-[#0B1220] via-[#0F172A] to-[#070B14]
-        p-5
-        shadow-[0_0_35px_rgba(56,189,248,0.10)]
-        ring-1 ring-white/5
-        transition-all duration-300 ease-out
-        hover:-translate-y-1
-        hover:border-cyan-300/60
-        hover:shadow-[0_0_60px_rgba(56,189,248,0.25)]
-        hover:ring-cyan-400/20
-      "
-    >
+    <article className="
+      relative overflow-hidden
+      rounded-[28px]
+      border border-cyan-400/25
+      bg-gradient-to-b from-[#0B1220] via-[#0F172A] to-[#070B14]
+      p-5
+      shadow-[0_0_35px_rgba(56,189,248,0.10)]
+      ring-1 ring-white/5
+      transition-all duration-300 ease-out
+      hover:-translate-y-1
+      hover:border-cyan-300/60
+      hover:shadow-[0_0_60px_rgba(56,189,248,0.25)]
+      hover:ring-cyan-400/20
+    ">
+
       {/* TOP BAR */}
       <div className="relative flex items-start justify-between mb-4">
         <div className="flex flex-col gap-2">
+
           {/* AI PICK BADGE */}
           <span className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-200 w-fit">
             AI PICK
           </span>
 
           {/* CONFIDENCE BADGE */}
-          <span
-            className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider w-fit ${confidenceStyle}`}
-          >
-            confidence: {confidenceLevel}
+          <span className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider w-fit ${confidenceStyle}`}>
+            confidence: {confidenceLevel} ({data.confidence ?? 0}%)
           </span>
+
+          {/* PROGRESS BAR */}
+          <div className="w-28 h-1 bg-slate-800 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-cyan-400"
+              style={{ width: `${confidenceProgress}%` }}
+            />
+          </div>
         </div>
 
         <span className="text-[11px] text-slate-200 font-medium">
-          {data.startTime
-            ? new Date(data.startTime).toLocaleString()
-            : "TBD"}
+          {data.startTime ? new Date(data.startTime).toLocaleString() : "TBD"}
         </span>
       </div>
 
@@ -105,13 +115,14 @@ export default function MatchCard({ data }: Props) {
             Odds
           </p>
           <p className="text-xl font-black text-emerald-300">
-            {bestOdds ?? data.odds ?? "—"}
+            {bestOdds}
           </p>
         </div>
       </div>
 
       {/* AI METRICS */}
       <div className="relative mt-4 grid grid-cols-3 gap-3">
+
         <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
           <p className="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">
             AI Edge
@@ -140,7 +151,7 @@ export default function MatchCard({ data }: Props) {
         </div>
       </div>
 
-      {/* AI REASONING STRIP (NEW UX LAYER) */}
+      {/* AI REASONING */}
       <div className="relative mt-4 rounded-xl border border-cyan-400/20 bg-gradient-to-r from-[#0B1220] to-[#0E1A2B] p-3">
         <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold">
           AI Reasoning
