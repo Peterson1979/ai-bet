@@ -44,9 +44,6 @@ export async function GET() {
       sports: [],
     };
 
-    // =========================
-    // GLOBAL HELPERS
-    // =========================
     const seenEvents = new Set<string>();
 
     // =========================
@@ -68,20 +65,14 @@ export async function GET() {
       }
 
       // =========================
-      // FIX: buildPredictionPrompt SIGNATURE MATCH
+      // FIX: buildPredictionPrompt INPUT MATCH
       // =========================
-      const prompt = buildPredictionPrompt({
-        sport: sportBlock.sport,
-        events: events as any,
-      });
+      const prompt = buildPredictionPrompt(events);
 
       const aiResults = await generatePrediction(prompt);
 
       if (!aiResults || !Array.isArray(aiResults)) continue;
 
-      // =========================
-      // MERGE AI + EVENTS
-      // =========================
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
         const ai = aiResults[i];
