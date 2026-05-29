@@ -19,9 +19,9 @@ type PredictionCard = {
   startTime: string;
 
   recommendedBet: string;
-  betCode: string;
+  betCode: "HOME_WIN" | "AWAY_WIN" | "DRAW" | "DOUBLE_CHANCE_1X" | "DOUBLE_CHANCE_X2" | "DRAW_NO_BET_HOME" | "DRAW_NO_BET_AWAY" | "OVER_1_5" | "UNDER_4_5";
 
-  marketType: string;
+  marketType: "h2h" | "totals" | "spreads" | "double_chance";
   selectionKey: string;
 
   explanation: string;
@@ -37,7 +37,7 @@ type PredictionCard = {
   ctaLabel: string;
 
   isTopPick: boolean;
-  status: string;
+  status: "scheduled" | "live" | "finished";
 };
 
 type SportBlock = {
@@ -56,9 +56,7 @@ type PredictionsData = {
 async function getPredictions(): Promise<PredictionsData | null> {
   try {
     const filePath = path.join(process.cwd(), "data", "predictions.json");
-
     const data = fs.readFileSync(filePath, "utf-8");
-
     return JSON.parse(data);
   } catch {
     return null;
@@ -78,7 +76,6 @@ export default async function HomePage() {
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-8 xl:grid-cols-[1.6fr_420px] items-start">
-          {/* LEFT */}
           <div>
             {predictions?.sports.map((sportBlock) => (
               <section
@@ -90,28 +87,38 @@ export default async function HomePage() {
                   <h2 className="text-2xl font-black tracking-tight text-white md:text-3xl">
                     {sportBlock.sport}
                   </h2>
-
                   <div className="h-[2px] flex-1 rounded-full bg-gradient-to-r from-cyan-400/40 to-transparent" />
                 </div>
 
                 {!sportBlock.hasMatches ? (
                   <div className="rounded-[24px] border border-[#334155] bg-[#0F172A] p-6">
-                    <p className="text-slate-300">{sportBlock.message}</p>
+                    <p className="text-slate-300">
+                      {sportBlock.message}
+                    </p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
                     {sportBlock.topPicks.map((p) => (
                       <MatchCard
-  key={p.id}
-  data={{
-    ...p,
-    sport: p.sport,
-    startTime: p.startTime,
-    explanation: p.explanation,
-    recommendedBet: p.recommendedBet,
-    status: p.status as "scheduled" | "live" | "finished",
-  }}
-/>
+                        key={p.id}
+                        data={{
+                          ...p,
+
+                          sport: p.sport,
+
+                          startTime: p.startTime,
+
+                          explanation: p.explanation,
+
+                          recommendedBet: p.recommendedBet,
+
+                          status: p.status,
+
+                          betCode: p.betCode,
+
+                          marketType: p.marketType,
+                        }}
+                      />
                     ))}
                   </div>
                 )}
@@ -119,7 +126,6 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* RIGHT */}
           <aside className="h-fit xl:sticky xl:top-5">
             <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
               <div className="mb-5 flex items-center justify-between">
