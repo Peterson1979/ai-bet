@@ -5,28 +5,8 @@ type Props = {
 };
 
 /* =========================
-   SIMPLE SIGNAL SYSTEM
+   UI HELPERS
 ========================= */
-
-function getSignal(confidence?: number, edge?: number) {
-  const c = confidence ?? 0;
-  const e = edge ?? 0;
-
-  if (c >= 80 && e >= 8) return "STRONG";
-  if (c >= 65 && e >= 4) return "ACTIVE";
-  return "WEAK";
-}
-
-function getSignalStyle(signal: string) {
-  switch (signal) {
-    case "STRONG":
-      return "bg-emerald-500/20 text-emerald-300 border-emerald-400/40";
-    case "ACTIVE":
-      return "bg-cyan-500/15 text-cyan-200 border-cyan-400/40";
-    default:
-      return "bg-slate-500/10 text-slate-300 border-slate-500/20";
-  }
-}
 
 function clamp(n: number) {
   return Math.max(0, Math.min(100, n));
@@ -40,9 +20,6 @@ export default function MatchCard({ data }: Props) {
   const confidence = data.confidence ?? 0;
   const edge = data.edge ?? 0;
   const risk = data.risk ?? 0;
-
-  const signal = getSignal(confidence, edge);
-  const signalStyle = getSignalStyle(signal);
 
   return (
     <article
@@ -60,28 +37,35 @@ export default function MatchCard({ data }: Props) {
 
         <div className="flex flex-col gap-2">
 
-          {/* SIGNAL */}
-          <span
-            className={`
-              rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wider
-              ${signalStyle}
-            `}
-          >
-            {signal} SIGNAL
+          {/* AI PICK */}
+          <span className="
+            rounded-full border border-cyan-400/30
+            bg-cyan-500/10 px-3 py-1
+            text-[10px] font-bold uppercase tracking-wider
+            text-cyan-300
+          ">
+            AI PICK
           </span>
 
-          {/* CONFIDENCE BAR */}
-          <div className="w-40">
-            <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-gradient-to-r from-cyan-400 to-blue-400"
-                style={{ width: `${clamp(confidence)}%` }}
-              />
-            </div>
-            <p className="mt-1 text-[10px] text-slate-300">
-              Confidence: {confidence}%
-            </p>
-          </div>
+          {/* ⭐ RECOMMENDED MARKET (NEW CORE ELEMENT) */}
+          <span className="
+            rounded-full border border-emerald-400/40
+            bg-emerald-500/15 px-3 py-1
+            text-[11px] font-bold uppercase tracking-wider
+            text-emerald-300
+          ">
+            {data.recommendedBet}
+          </span>
+
+          {/* CONFIDENCE */}
+          <span className="
+            rounded-full border border-white/10
+            bg-white/5 px-3 py-1
+            text-[10px] font-bold uppercase
+            text-slate-200
+          ">
+            Confidence: {confidence}%
+          </span>
 
         </div>
 
@@ -121,17 +105,35 @@ export default function MatchCard({ data }: Props) {
 
       </div>
 
+      {/* SUPPORTING MARKETS (OPTIONAL) */}
+      <div className="mt-3 flex flex-wrap gap-2">
+
+        {data.supportingMarkets?.slice(0, 3)?.map((m, i) => (
+          <span
+            key={i}
+            className="
+              text-[10px] px-2 py-1
+              rounded-full
+              border border-white/10
+              bg-white/5
+              text-slate-300
+            "
+          >
+            {m}
+          </span>
+        ))}
+
+      </div>
+
       {/* EDGE / RISK (SIMPLIFIED) */}
-      <div className="mt-3 text-[11px] text-slate-300 flex justify-between">
+      <div className="mt-4 text-[11px] text-slate-300 flex justify-between">
         <span>Edge: {edge.toFixed(1)}%</span>
         <span className="text-red-300">Risk: {risk}/100</span>
       </div>
 
-      {/* REASONING (SHORTENED) */}
+      {/* AI REASONING */}
       <p className="mt-3 text-sm text-slate-200 leading-5">
-        {data.explanation
-          ? data.explanation.slice(0, 140) + "..."
-          : "AI analysis unavailable."}
+        {data.explanation || "AI analysis unavailable."}
       </p>
 
       {/* CTA */}
