@@ -28,7 +28,7 @@ export default function Header() {
       >
         {/* LOGO */}
         <div style={{ fontSize: 24, fontWeight: 900 }}>
-          AI Betting
+          
         </div>
 
         {/* NAV */}
