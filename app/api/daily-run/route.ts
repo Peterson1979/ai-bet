@@ -72,15 +72,7 @@ export async function GET() {
       // =========================
       const prompt = buildPredictionPrompt({
   sport: sportBlock.sport,
-  eventList: events.map((e) => ({
-    id: e.id,
-    league: e.league,
-    homeTeam: e.homeTeam,
-    awayTeam: e.awayTeam,
-    commenceTime: e.commenceTime,
-    odds: e.odds,
-    bookmaker: e.bookmaker,
-  })),
+  events,
 });
 
       // =========================
