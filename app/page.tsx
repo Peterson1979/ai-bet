@@ -33,7 +33,7 @@ export default async function HomePage() {
     <main className="min-h-screen overflow-x-hidden bg-[#060B14] text-white">
 
       {/* HEADER */}
-      <Header />
+      
 
       {/* PAGE WRAPPER */}
       <div className="mx-auto max-w-[1500px] px-4 pb-10 pt-24 md:px-6 md:pt-28">
