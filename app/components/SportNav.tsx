@@ -1,38 +1,25 @@
 // app/components/SportNav.tsx
 
-import {
-  FaFutbol,
-  FaBasketballBall,
-  FaFootballBall,
-  FaHockeyPuck,
-  FaTableTennis,
-} from "react-icons/fa";
-
 const sports = [
   {
     name: "Football",
-    icon: FaFutbol,
-    color: "text-green-400",
+    emoji: "⚽",
   },
   {
     name: "NBA",
-    icon: FaBasketballBall,
-    color: "text-orange-400",
+    emoji: "🏀",
   },
   {
     name: "NFL",
-    icon: FaFootballBall,
-    color: "text-red-400",
+    emoji: "🏈",
   },
   {
     name: "Hockey",
-    icon: FaHockeyPuck,
-    color: "text-cyan-300",
+    emoji: "🏒",
   },
   {
     name: "Tennis",
-    icon: FaTableTennis,
-    color: "text-yellow-300",
+    emoji: "🎾",
   },
 ];
 
@@ -44,8 +31,6 @@ export default function SportNav() {
       <nav className="flex flex-wrap items-center justify-center gap-3 px-2 py-3">
 
         {sports.map((sport) => {
-          const Icon = sport.icon;
-
           return (
             <a
               key={sport.name}
@@ -81,15 +66,16 @@ export default function SportNav() {
                 <div className="absolute -top-6 left-2 h-10 w-10 rounded-full bg-cyan-400/10 blur-xl" />
               </div>
 
-              <Icon
-                size={18}
-                className={`
+              <span
+                className="
                   relative z-10
+                  text-lg
                   transition-transform duration-300
                   group-hover:scale-110
-                  ${sport.color}
-                `}
-              />
+                "
+              >
+                {sport.emoji}
+              </span>
 
               <span className="relative z-10">
                 {sport.name}
