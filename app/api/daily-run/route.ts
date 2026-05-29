@@ -68,16 +68,13 @@ export async function GET() {
       }
 
       // =========================
-      // SAFE PROMPT BUILD (TYPE SAFE)
+      // FIX: buildPredictionPrompt SIGNATURE MATCH
       // =========================
       const prompt = buildPredictionPrompt({
-  sport: sportBlock.sport,
-  events,
-});
+        sport: sportBlock.sport,
+        events: events as any,
+      });
 
-      // =========================
-      // SINGLE AI CALL PER SPORT
-      // =========================
       const aiResults = await generatePrediction(prompt);
 
       if (!aiResults || !Array.isArray(aiResults)) continue;
