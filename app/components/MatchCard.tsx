@@ -66,13 +66,14 @@ export default function MatchCard({ data }: Props) {
             confidence: {confidenceLevel} ({data.confidence ?? 0}%)
           </span>
 
-          {/* PROGRESS BAR */}
-          <div className="w-28 h-1 bg-slate-800 rounded-full overflow-hidden">
+          {/* ✅ FIXED TRACK (VISIBLE SCALE) */}
+          <div className="w-28 h-2 bg-white/10 border border-white/10 rounded-full overflow-hidden shadow-inner">
             <div
-              className="h-full bg-cyan-400"
+              className="h-full bg-gradient-to-r from-cyan-400 to-blue-400 shadow-[0_0_10px_rgba(34,211,238,0.6)]"
               style={{ width: `${confidenceProgress}%` }}
             />
           </div>
+
         </div>
 
         <span className="text-[11px] text-slate-200 font-medium">
@@ -101,6 +102,7 @@ export default function MatchCard({ data }: Props) {
 
       {/* ODDS */}
       <div className="relative mt-4 flex items-center justify-between rounded-xl border border-cyan-400/15 bg-[#0B1220] px-4 py-3">
+
         <div>
           <p className="text-[10px] uppercase tracking-wider text-slate-300 font-semibold">
             Bookmaker
@@ -118,6 +120,7 @@ export default function MatchCard({ data }: Props) {
             {bestOdds}
           </p>
         </div>
+
       </div>
 
       {/* AI METRICS */}
@@ -149,10 +152,12 @@ export default function MatchCard({ data }: Props) {
             {data.risk ?? 0}/100
           </p>
         </div>
+
       </div>
 
       {/* AI REASONING */}
       <div className="relative mt-4 rounded-xl border border-cyan-400/20 bg-gradient-to-r from-[#0B1220] to-[#0E1A2B] p-3">
+
         <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold">
           AI Reasoning
         </p>
@@ -160,6 +165,7 @@ export default function MatchCard({ data }: Props) {
         <p className="mt-2 text-sm text-slate-200 leading-6">
           {data.explanation || "AI analysis unavailable."}
         </p>
+
       </div>
 
       {/* CTA */}
@@ -188,6 +194,7 @@ export default function MatchCard({ data }: Props) {
           {data.disclaimer}
         </p>
       )}
+
     </article>
   );
 }
