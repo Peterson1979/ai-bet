@@ -24,6 +24,7 @@ export default function Header() {
           color: "white",
         }}
       >
+        {/* LOGO / BRAND */}
         <div
           style={{
             fontSize: 28,
@@ -31,9 +32,10 @@ export default function Header() {
             letterSpacing: 1,
           }}
         >
-         <header className="relative z-50">
+          AI Betting
         </div>
 
+        {/* NAVIGATION */}
         <nav
           style={{
             display: "flex",
