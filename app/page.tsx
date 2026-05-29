@@ -8,57 +8,8 @@ import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
 
 import type { SportType } from "./types/match";
-import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 import type { PredictionCard } from "@/app/types/prediction";
-
-type PredictionCard = {
-  id: string;
-
-  league: string;
-  eventId: string;
-
-  homeTeam: string;
-  awayTeam: string;
-
-  startTime: string;
-
-  recommendedBet: string;
-
-  betCode:
-    | "HOME_WIN"
-    | "AWAY_WIN"
-    | "DRAW"
-    | "DOUBLE_CHANCE_1X"
-    | "DOUBLE_CHANCE_X2"
-    | "DRAW_NO_BET_HOME"
-    | "DRAW_NO_BET_AWAY"
-    | "OVER_1_5"
-    | "UNDER_4_5";
-
-  marketType: "h2h" | "totals" | "spreads" | "double_chance";
-
-  selectionKey: string;
-
-  explanation: string;
-
-  confidence: number;
-
-  risk: number;
-
-  odds: number;
-
-  oddsLabel: string;
-
-  bookmaker: string;
-
-  bookmakerUrl: string;
-
-  ctaLabel: string;
-
-  isTopPick: boolean;
-
-  status: "scheduled" | "live" | "finished";
-};
+import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 
 type SportBlock = {
   sport: string;
