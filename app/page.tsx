@@ -6,6 +6,7 @@ import SportNav from "./components/SportNav";
 import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
+import type { SportType } from "./types/match";
 
 type PredictionCard = {
   id: string;
