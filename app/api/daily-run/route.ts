@@ -53,8 +53,55 @@ export async function GET() {
     for (const sportBlock of sportsData) {
       const topPicks: any[] = [];
 
-      for (const event of sportBlock.events.slice(0, 3)) {
-        const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
+      for (const sportBlock of sportsData) {
+  const events = sportBlock.events.slice(0, 3);
+
+  if (events.length === 0) continue;
+
+  const prompt = buildPredictionPrompt({
+    sport: sportBlock.sport,
+    events,
+  });
+
+  const aiResults = await generatePrediction(prompt);
+
+  if (!aiResults) continue;
+
+  for (let i = 0; i < events.length; i++) {
+    const event = events[i];
+    const ai = aiResults[i];
+
+    if (!event || !ai) continue;
+
+    topPicks.push({
+      id: `${event.sport}-${event.homeTeam}-${event.awayTeam}`,
+
+      league: event.league,
+      eventId: event.id,
+      homeTeam: event.homeTeam,
+      awayTeam: event.awayTeam,
+      startTime: event.commenceTime,
+
+      recommendedBet: ai.recommendedBet,
+      betCode: ai.betCode,
+
+      explanation: ai.explanation,
+      confidence: ai.confidence,
+      risk: ai.risk,
+
+      odds: event.odds || 0,
+      oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
+
+      bookmaker: event.bookmaker || "Unknown",
+      bookmakerUrl: "https://example.com",
+
+      ctaLabel: "View Odds",
+
+      isTopPick: true,
+      status: "scheduled",
+    });
+  }
+}
 
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);

@@ -39,22 +39,27 @@ export default function MatchCard({ data }: Props) {
         </div>
       )}
 
+      {/* EDGE BADGE (AI LABEL) */}
+      <div className="absolute left-4 top-4 z-10 rounded-full bg-cyan-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-200 border border-cyan-400/30">
+        AI PICK
+      </div>
+
       {/* 3D EDGE */}
       <div className="pointer-events-none absolute inset-0 rounded-[28px] border border-white/5 shadow-inner" />
 
       {/* GLOW */}
-      <div className="pointer-events-none absolute inset-0 opacity-50">
+      <div className="pointer-events-none absolute inset-0 opacity-60">
         <div className="absolute -top-24 left-10 h-52 w-52 rounded-full bg-cyan-500/10 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-52 w-52 rounded-full bg-purple-500/10 blur-3xl" />
       </div>
 
       {/* HEADER */}
       <div className="relative flex items-center justify-between gap-3">
-        <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan-300">
+        <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-cyan-200">
           {data.league}
         </span>
 
-        <span className="text-[11px] text-slate-400">
+        <span className="text-[11px] text-slate-200 font-medium">
           {data.startTime
             ? new Date(data.startTime).toLocaleString()
             : "TBD"}
@@ -69,7 +74,7 @@ export default function MatchCard({ data }: Props) {
       {/* ODDS STRIP */}
       <div className="relative mt-4 flex items-center justify-between rounded-xl border border-cyan-400/15 bg-[#0B1220] px-4 py-3 shadow-inner">
         <div>
-          <p className="text-[10px] uppercase tracking-wider text-slate-500">
+          <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
             Bookmaker
           </p>
           <p className="text-sm font-semibold text-white">
@@ -78,7 +83,7 @@ export default function MatchCard({ data }: Props) {
         </div>
 
         <div className="text-right">
-          <p className="text-[10px] uppercase tracking-wider text-slate-500">
+          <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
             Odds
           </p>
           <p className="text-xl font-black text-emerald-300 drop-shadow-[0_0_10px_rgba(16,185,129,0.25)]">
@@ -91,7 +96,7 @@ export default function MatchCard({ data }: Props) {
       {(edge !== undefined || implied !== undefined) && (
         <div className="relative mt-4 grid grid-cols-3 gap-3">
           <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
-            <p className="text-[10px] uppercase tracking-wider text-slate-500">
+            <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
               AI Edge
             </p>
             <p className="mt-1 text-lg font-black text-cyan-300">
@@ -100,7 +105,7 @@ export default function MatchCard({ data }: Props) {
           </div>
 
           <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
-            <p className="text-[10px] uppercase tracking-wider text-slate-500">
+            <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
               Implied
             </p>
             <p className="mt-1 text-lg font-black text-orange-300">
@@ -109,7 +114,7 @@ export default function MatchCard({ data }: Props) {
           </div>
 
           <div className="rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3">
-            <p className="text-[10px] uppercase tracking-wider text-slate-500">
+            <p className="text-[10px] uppercase tracking-wider text-slate-200 font-semibold">
               Risk
             </p>
             <p className="mt-1 text-lg font-black text-red-300">
@@ -121,7 +126,7 @@ export default function MatchCard({ data }: Props) {
 
       {/* AI RECOMMENDATION */}
       <div className="relative mt-4 rounded-xl border border-cyan-400/15 bg-gradient-to-r from-[#0B1220] to-[#0E1A2B] p-3">
-        <p className="text-[10px] uppercase tracking-wider text-slate-500">
+        <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold">
           AI Prediction
         </p>
 
@@ -166,7 +171,7 @@ export default function MatchCard({ data }: Props) {
 
       {/* DISCLAIMER */}
       {data.disclaimer && (
-        <p className="relative mt-3 text-[11px] text-slate-500">
+        <p className="relative mt-3 text-[11px] text-slate-400">
           {data.disclaimer}
         </p>
       )}
