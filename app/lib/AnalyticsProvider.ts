@@ -1,7 +1,13 @@
 "use client";
-
 import { useEffect } from "react";
 import { getConsent } from "@/app/lib/consent";
+
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+    dataLayer: any[];
+  }
+}
 
 export default function AnalyticsProvider() {
   useEffect(() => {
@@ -10,9 +16,8 @@ export default function AnalyticsProvider() {
     // Google Consent Mode v2 default
     window.gtag =
       window.gtag ||
-      function () {
-        // @ts-ignore
-        (window.dataLayer = window.dataLayer || []).push(arguments);
+      function (...args: any[]) {
+        (window.dataLayer = window.dataLayer || []).push(args);
       };
 
     window.gtag("consent", "default", {
@@ -22,7 +27,7 @@ export default function AnalyticsProvider() {
       ad_personalization: consent.ads ? "granted" : "denied",
     });
 
-    // GA4 init (replace ID)
+    // GA4 init — cseréld le a saját GA4 ID-dre
     window.gtag("js", new Date());
     window.gtag("config", "G-XXXXXXXXXX");
   }, []);
