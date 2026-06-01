@@ -7,7 +7,6 @@ import NewsSection from "./components/NewsSection";
 import Footer from "./components/Footer";
 
 import { getPredictions } from "@/app/lib/getPredictions";
-
 import type { SportType } from "./types/match";
 import type { PredictionCard } from "@/app/types/prediction";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
@@ -30,40 +29,31 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#060B14] text-white">
-
-      {/* HEADER */}
       <Header />
 
-      {/* CONTENT WRAPPER */}
       <div className="pt-[70px]">
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
 
-          {/* HERO */}
           <Hero />
 
-          {/* SPORT NAV */}
           <div className="mt-8">
             <SportNav />
           </div>
 
-          {/* MAIN LAYOUT */}
-          <div className="
-            mt-12 grid grid-cols-1 gap-8
-            xl:grid-cols-[minmax(0,1.6fr)_420px]
-            items-start
-          ">
+          <div className="mt-12 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px] items-start">
 
             {/* LEFT COLUMN */}
             <div className="min-w-0">
 
-              {/* MATCH CARDS */}
+              {/* TOP PICKS anchor */}
+              <div id="top-picks" className="scroll-mt-24" />
+
               {predictions?.sports?.map((sportBlock) => (
                 <section
                   key={sportBlock.sport}
                   id={sportBlock.sport.toLowerCase()}
                   className="mb-14 scroll-mt-28"
                 >
-                  {/* SECTION HEADER */}
                   <div className="mb-6 flex items-center gap-4">
                     <h2 className="text-2xl font-black tracking-tight text-white md:text-3xl">
                       {sportBlock.sport}
@@ -86,16 +76,15 @@ export default async function HomePage() {
                 </section>
               ))}
 
-              {/* NEWS SECTION — MatchCardok alatt */}
-              <NewsSection />
-
+              {/* NEWS — MatchCardok alatt */}
+              <div id="sport-news" className="scroll-mt-24">
+                <NewsSection />
+              </div>
             </div>
 
             {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-5">
-              <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
-
-                {/* SIDEBAR HEADER */}
+              <div id="betting" className="scroll-mt-24 rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
                 <div className="mb-6 flex items-center justify-between gap-3">
                   <div>
                     <h2 className="text-2xl font-black text-white">Top Betting Sites</h2>
@@ -108,24 +97,18 @@ export default async function HomePage() {
 
                 <TopBettingSites />
 
-                {/* AI INSIGHTS */}
                 <div className="mt-6 rounded-2xl border border-cyan-400/15 bg-[#0B1220] p-4">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-300">
-                    AI Insights
-                  </p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-300">AI Insights</p>
                   <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Daily AI betting analysis across Football, NBA, NFL,
-                    Hockey, Tennis, MLB and MMA with confidence scoring,
-                    edge detection and market evaluation.
+                    Daily AI betting analysis across Football, NBA, NFL, Hockey, Tennis, MLB and MMA
+                    with confidence scoring, edge detection and market evaluation.
                   </p>
                 </div>
-
               </div>
             </aside>
 
           </div>
 
-          {/* FOOTER */}
           <div className="mt-16">
             <Footer />
           </div>
