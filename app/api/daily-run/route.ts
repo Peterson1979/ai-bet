@@ -6,6 +6,7 @@ import path from "path";
 import { getDailyEvents } from "@/app/lib/odds";
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { rankMatches } from "@/app/lib/ranking";
+import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,44 +18,28 @@ type SportResult = {
   topPicks: any[];
 };
 
-/**
- * Lazy AI import → prevents build-time crash on Vercel / Next build
- */
 async function generateAI(prompt: string) {
-  const { generatePrediction } = await import("@/app/lib/openai");
+  const { generatePrediction } = await import("@/app/lib/groq");
   return generatePrediction(prompt);
 }
 
 export async function GET() {
   try {
-    const sportsData = await getDailyEvents();
-
-    const cachePath = path.join(
-      process.cwd(),
-      "data",
-      "cache.json"
-    );
-
     // =========================
     // DAILY CACHE CHECK
     // =========================
-    if (fs.existsSync(cachePath)) {
-      const cached = JSON.parse(
-        fs.readFileSync(cachePath, "utf-8")
-      );
+    const cachePath = path.join(process.cwd(), "data", "cache.json");
 
-      const today = new Date()
-        .toISOString()
-        .split("T")[0];
+    if (fs.existsSync(cachePath)) {
+      const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
+      const today = new Date().toISOString().split("T")[0];
 
       if (cached.date === today) {
-        return Response.json({
-          success: true,
-          cached: true,
-          data: cached,
-        });
+        return Response.json({ success: true, cached: true, data: cached });
       }
     }
+
+    const sportsData = await getDailyEvents();
 
     const result: {
       date: string;
@@ -69,12 +54,10 @@ export async function GET() {
     const seenEvents = new Set<string>();
 
     // =========================
-    // MAIN LOOP
+    // MAIN LOOP — sport-onként
     // =========================
     for (const sportBlock of sportsData) {
       const events = sportBlock.events?.slice(0, 3) ?? [];
-
-      const topPicks: any[] = [];
 
       if (events.length === 0) {
         result.sports.push({
@@ -87,10 +70,19 @@ export async function GET() {
       }
 
       const prompt = buildPredictionPrompt(events);
-
       const aiResults = await generateAI(prompt);
 
-      if (!aiResults || !Array.isArray(aiResults)) continue;
+      if (!aiResults || !Array.isArray(aiResults)) {
+        result.sports.push({
+          sport: sportBlock.sport,
+          hasMatches: false,
+          message: `AI generation failed for ${sportBlock.sport}.`,
+          topPicks: [],
+        });
+        continue;
+      }
+
+      const topPicks: any[] = [];
 
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
@@ -99,36 +91,34 @@ export async function GET() {
         if (!event || !ai) continue;
 
         const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
-
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);
 
+        // Affiliate URL — bookmaker neve + sport + liga alapján
+        const bookmakerUrl = getBookmakerAffiliateUrl(
+          event.bookmaker || "",
+          event.sport,
+          event.league
+        );
+
         topPicks.push({
           id: eventKey,
-
           league: event.league,
           eventId: event.id,
-
           homeTeam: event.homeTeam,
           awayTeam: event.awayTeam,
-
           startTime: event.commenceTime,
-
           recommendedBet: ai.recommendedBet,
           betCode: ai.betCode,
-
           explanation: ai.explanation,
           confidence: ai.confidence,
           risk: ai.risk,
-
           odds: event.odds || 0,
+          bestOdds: event.bestOdds || 0,
           oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
-
           bookmaker: event.bookmaker || "Unknown",
-          bookmakerUrl: "https://example.com",
-
+          bookmakerUrl,           // ← valódi affiliate URL
           ctaLabel: "View Odds",
-
           isTopPick: true,
           status: "scheduled",
         });
@@ -144,16 +134,13 @@ export async function GET() {
     }
 
     // =========================
-    // WRITE CACHE
+    // WRITE CACHE + PREDICTIONS
     // =========================
-    fs.writeFileSync(
-      cachePath,
-      JSON.stringify(result, null, 2)
-    );
-
+    const jsonStr = JSON.stringify(result, null, 2);
+    fs.writeFileSync(cachePath, jsonStr);
     fs.writeFileSync(
       path.join(process.cwd(), "data", "predictions.json"),
-      JSON.stringify(result, null, 2)
+      jsonStr
     );
 
     return Response.json({
@@ -162,13 +149,9 @@ export async function GET() {
       generatedSports: result.sports.length,
     });
   } catch (error) {
-    console.error(error);
-
+    console.error("[daily-run] Error:", error);
     return Response.json(
-      {
-        success: false,
-        error: "Prediction generation failed.",
-      },
+      { success: false, error: "Prediction generation failed." },
       { status: 500 }
     );
   }
