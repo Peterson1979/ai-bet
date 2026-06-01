@@ -1,43 +1,97 @@
+// app/lib/prompts.ts
 import { OddsEvent } from "./odds";
 
-export function buildPredictionPrompt(events: OddsEvent[]) {
-  return `
-You are an AI sports betting analyst.
+const SPORT_RULES: Record<string, string> = {
+  Football: `Sport-specific markets (use ONLY these):
+- Double Chance
+- Draw No Bet
+- Over 1.5 Goals
+- Home Win
+- Away Win
+- Under 4.5 Goals`,
 
-Analyze the following events and return predictions for each one.
+  Tennis: `Sport-specific markets (use ONLY these):
+- Match Winner
+- Over 18.5 Games
+- Under 30.5 Games
+- Player to Win a Set
+- Handicap Games (+3.5)`,
+
+  NBA: `Sport-specific markets (use ONLY these):
+- Moneyline
+- Over 149.5 Points
+- Under 179.5 Points
+- Team Total Over
+- Team Total Under`,
+
+  Hockey: `Sport-specific markets (use ONLY these):
+- Moneyline
+- Over 4.5 Goals
+- Under 7.5 Goals
+- Double Chance
+- Team Total Over 1.5`,
+
+  NFL: `Sport-specific markets (use ONLY these):
+- Moneyline
+- Over 33.5 Points
+- Under 54.5 Points
+- Team Total Over
+- Team Total Under`,
+
+  MLB: `Sport-specific markets (use ONLY these):
+- Moneyline
+- Over 7.5 Runs
+- Under 9.5 Runs
+- Run Line (-1.5)
+- Team Total Over`,
+
+  MMA: `Sport-specific markets (use ONLY these):
+- Moneyline (Fight Winner)
+- Method of Victory (KO/TKO or Decision)
+- Over 2.5 Rounds
+- Under 2.5 Rounds`,
+};
+
+export function buildPredictionPrompt(events: OddsEvent[]): string {
+  const sport = events[0]?.sport ?? "Unknown";
+  const count = events.length;
+  const sportRules = SPORT_RULES[sport] ?? `- Moneyline\n- Over/Under`;
+
+  return `You are a professional sports betting analyst.
+Analyze the following ${count} ${sport} events and return exactly ${count} predictions.
+
+${sportRules}
 
 EVENTS:
 ${events
   .map(
-    (event, index) => `
-${index + 1}.
-SPORT: ${event.sport}
-LEAGUE: ${event.league}
-MATCH: ${event.homeTeam} vs ${event.awayTeam}
-START: ${event.commenceTime}
-BOOKMAKER: ${event.bookmaker}
-ODDS: ${event.odds}
-`
+    (e, i) => `
+EVENT ${i + 1}:
+MATCH: ${e.homeTeam} vs ${e.awayTeam}
+LEAGUE: ${e.league}
+START: ${e.commenceTime}
+BOOKMAKER: ${e.bookmaker}
+DECIMAL ODDS: ${e.odds}
+IMPLIED PROBABILITY: ${e.impliedProbability ?? "N/A"}%
+EDGE: ${e.edge ?? "N/A"}%`
   )
-  .join("\n")}
+  .join("\n---")}
 
-Return ONLY valid JSON array:
-
+Return ONLY a valid JSON array with EXACTLY ${count} objects (one per event, same order):
 [
   {
-    "recommendedBet": "string",
-    "betCode": "string",
-    "explanation": "string",
-    "confidence": number,
-    "risk": number
+    "recommendedBet": "<market type from the list above>",
+    "betCode": "<short code e.g. HOME_WIN, OVER_1_5, MONEYLINE_HOME>",
+    "explanation": "<max 20 words why this is a good bet>",
+    "confidence": <integer 1-100>,
+    "risk": <integer 1-100, lower = safer>
   }
 ]
 
-Rules:
-- explanation max 25 words
-- confidence 1-100
-- risk 1-100
-- no markdown
-- no extra text
-`;
+STRICT RULES:
+- Return EXACTLY ${count} objects
+- No markdown, no code fences, no extra text
+- confidence and risk must be plain integers
+- Choose the SAFEST, most conservative picks
+- Do NOT invent statistics not present in the input`;
 }

@@ -1,5 +1,4 @@
 // app/api/daily-run/route.ts
-
 import fs from "fs";
 import path from "path";
 
@@ -25,15 +24,12 @@ async function generateAI(prompt: string) {
 
 export async function GET() {
   try {
-    // =========================
     // DAILY CACHE CHECK
-    // =========================
     const cachePath = path.join(process.cwd(), "data", "cache.json");
 
     if (fs.existsSync(cachePath)) {
       const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
       const today = new Date().toISOString().split("T")[0];
-
       if (cached.date === today) {
         return Response.json({ success: true, cached: true, data: cached });
       }
@@ -53,9 +49,6 @@ export async function GET() {
 
     const seenEvents = new Set<string>();
 
-    // =========================
-    // MAIN LOOP — sport-onként
-    // =========================
     for (const sportBlock of sportsData) {
       const events = sportBlock.events?.slice(0, 3) ?? [];
 
@@ -69,10 +62,11 @@ export async function GET() {
         continue;
       }
 
+      // Sport-specifikus prompt — minden sporthoz saját szabályok
       const prompt = buildPredictionPrompt(events);
       const aiResults = await generateAI(prompt);
 
-      if (!aiResults || !Array.isArray(aiResults)) {
+      if (!aiResults || aiResults.length === 0) {
         result.sports.push({
           sport: sportBlock.sport,
           hasMatches: false,
@@ -86,7 +80,7 @@ export async function GET() {
 
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
-        const ai = aiResults[i];
+        const ai = aiResults[i] ?? aiResults[0]; // fallback az első elemre
 
         if (!event || !ai) continue;
 
@@ -94,7 +88,6 @@ export async function GET() {
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);
 
-        // Affiliate URL — bookmaker neve + sport + liga alapján
         const bookmakerUrl = getBookmakerAffiliateUrl(
           event.bookmaker || "",
           event.sport,
@@ -117,10 +110,12 @@ export async function GET() {
           bestOdds: event.bestOdds || 0,
           oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
           bookmaker: event.bookmaker || "Unknown",
-          bookmakerUrl,           // ← valódi affiliate URL
+          bookmakerUrl,
           ctaLabel: "View Odds",
           isTopPick: true,
           status: "scheduled",
+          marketType: "h2h",
+          selectionKey: ai.betCode,
         });
       }
 
@@ -133,9 +128,7 @@ export async function GET() {
       });
     }
 
-    // =========================
-    // WRITE CACHE + PREDICTIONS
-    // =========================
+    // WRITE CACHE
     const jsonStr = JSON.stringify(result, null, 2);
     fs.writeFileSync(cachePath, jsonStr);
     fs.writeFileSync(

@@ -1,7 +1,4 @@
 // app/lib/groq.ts
-// Replaces openai.ts — uses Groq API (OpenAI-compatible)
-// Model: meta-llama/llama-4-scout-17b-16e-instruct (free tier)
-
 import { z } from "zod";
 
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
@@ -11,8 +8,8 @@ const PredictionSchema = z.object({
   recommendedBet: z.string(),
   betCode: z.string(),
   explanation: z.string(),
-  confidence: z.number().min(1).max(100),
-  risk: z.number().min(1).max(100),
+  confidence: z.coerce.number().min(1).max(100),
+  risk: z.coerce.number().min(1).max(100),
 });
 
 export type PredictionResult = z.infer<typeof PredictionSchema>;
@@ -23,7 +20,7 @@ export async function generatePrediction(
   const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
-    console.warn("[groq] No GROQ_API_KEY — returning fallback");
+    console.warn("[groq] No GROQ_API_KEY — returning null");
     return null;
   }
 
@@ -36,7 +33,7 @@ export async function generatePrediction(
       },
       body: JSON.stringify({
         model: MODEL,
-        temperature: 0.4,
+        temperature: 0.3,
         max_tokens: 1024,
         messages: [
           {
@@ -62,20 +59,43 @@ export async function generatePrediction(
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
 
-    if (!content) return null;
+    if (!content) {
+      console.error("[groq] Empty content in response");
+      return null;
+    }
 
-    // Strip markdown fences if model adds them
+    // Strip markdown fences
     const cleaned = content
       .replace(/```json/gi, "")
       .replace(/```/g, "")
       .trim();
 
-    const parsed = JSON.parse(cleaned);
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(cleaned);
+    } catch {
+      console.error("[groq] JSON parse failed. Raw:", cleaned.slice(0, 300));
+      return null;
+    }
 
-    // Accept both array and single object
     const arr = Array.isArray(parsed) ? parsed : [parsed];
 
-    return arr.map((item: unknown) => PredictionSchema.parse(item));
+    // Parse individually — skip invalid items, log warnings
+    const results: PredictionResult[] = [];
+    for (const item of arr) {
+      try {
+        results.push(PredictionSchema.parse(item));
+      } catch (e) {
+        console.warn("[groq] Invalid prediction item skipped:", JSON.stringify(item));
+      }
+    }
+
+    if (results.length === 0) {
+      console.error("[groq] No valid predictions in response. Full content:", cleaned);
+      return null;
+    }
+
+    return results;
   } catch (error) {
     console.error("[groq] generatePrediction failed:", error);
     return null;
