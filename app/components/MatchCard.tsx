@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { MatchCardData } from "../types/match";
 
 type Props = {
@@ -12,15 +13,32 @@ function clamp(n: number) {
   return Math.max(0, Math.min(100, n));
 }
 
+function getBetLabel(confidence: number, edge: number) {
+  if (confidence >= 75 && edge >= 5) return "🟢 VALUE BET";
+  if (confidence >= 55) return "🟡 OK BET";
+  return "🔴 RISKY";
+}
+
+function getBetColor(label: string) {
+  if (label.includes("VALUE")) return "text-emerald-300 border-emerald-400/30 bg-emerald-500/10";
+  if (label.includes("OK")) return "text-yellow-300 border-yellow-400/30 bg-yellow-500/10";
+  return "text-red-300 border-red-400/30 bg-red-500/10";
+}
+
 /* =========================
    COMPONENT
 ========================= */
 
 export default function MatchCard({ data }: Props) {
+  const [open, setOpen] = useState(false);
+
   const confidence = data.confidence ?? 0;
   const edge = data.edge ?? 0;
-  const risk = data.risk ?? 0;
+  const risk = (data.risk ?? 0) / 10; // 🔥 FIXED SCALE (0–10)
   const bestOdds = data.bestOdds ?? data.odds ?? 0;
+
+  const betLabel = getBetLabel(confidence, edge);
+  const betColor = getBetColor(betLabel);
 
   return (
     <article
@@ -38,29 +56,23 @@ export default function MatchCard({ data }: Props) {
       "
     >
 
-      {/* BACKGROUND FX */}
-      <div className="pointer-events-none absolute inset-0 opacity-50">
-        <div className="absolute -top-20 left-10 h-48 w-48 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute bottom-0 right-0 h-48 w-48 rounded-full bg-purple-500/10 blur-3xl" />
-      </div>
-
       {/* HEADER */}
-      <div className="relative flex items-start justify-between mb-4">
+      <div className="flex items-start justify-between mb-4">
 
         <div className="flex flex-col gap-2">
 
-          {/* AI PICK (cleaned, no heavy badge feel) */}
-          <span className="text-[11px] font-black uppercase tracking-wider text-cyan-300">
-            AI PICK
+          {/* BET LABEL */}
+          <span className={`text-sm font-black px-3 py-1 rounded-full border w-fit ${betColor}`}>
+            {betLabel}
           </span>
 
-          {/* RECOMMENDED BET (HIGHLIGHTED CORE VALUE) */}
-          <span className="text-lg font-black text-white leading-tight">
+          {/* MAIN TIP (HIGHLIGHTED) */}
+          <span className="text-xl font-black text-white leading-tight">
             {data.recommendedBet}
           </span>
 
           {/* CONFIDENCE */}
-          <span className="text-[11px] font-bold text-slate-300">
+          <span className="text-[12px] text-slate-300 font-bold">
             Confidence: {confidence}%
           </span>
 
@@ -83,13 +95,13 @@ export default function MatchCard({ data }: Props) {
         {data.league}
       </span>
 
-      {/* ODDS */}
+      {/* ODDS (NO BOOKMAKER NAME) */}
       <div className="mt-4 flex justify-between items-center rounded-xl bg-[#0B1220] p-3 border border-cyan-400/10">
 
         <div>
           <p className="text-[10px] text-slate-400 uppercase">Bookmaker</p>
-          <p className="text-white font-semibold">
-            {data.bookmaker || "Unknown"}
+          <p className="text-white font-semibold opacity-0">
+            hidden
           </p>
         </div>
 
@@ -102,7 +114,7 @@ export default function MatchCard({ data }: Props) {
 
       </div>
 
-      {/* EDGE / RISK (kept, but cleaner) */}
+      {/* EDGE / RISK */}
       <div className="mt-4 flex justify-between text-[12px] text-slate-300">
 
         <span>
@@ -110,15 +122,28 @@ export default function MatchCard({ data }: Props) {
         </span>
 
         <span>
-          Risk: <span className="text-red-300 font-bold">{risk}/100</span>
+          Risk: <span className="text-red-300 font-bold">{risk.toFixed(1)}/10</span>
         </span>
 
       </div>
 
-      {/* AI EXPLANATION (IMPROVED UX) */}
-      <p className="mt-3 text-sm text-slate-200 leading-6 line-clamp-3">
-        {data.explanation || "AI analysis unavailable."}
-      </p>
+      {/* AI EXPLANATION (COLLAPSIBLE) */}
+      <div className="mt-3">
+
+        <button
+          onClick={() => setOpen(!open)}
+          className="text-xs text-cyan-300 font-bold"
+        >
+          {open ? "Hide AI explanation ▲" : "Show AI explanation ▼"}
+        </button>
+
+        {open && (
+          <p className="mt-2 text-sm text-slate-200 leading-6">
+            {data.explanation || "AI analysis unavailable."}
+          </p>
+        )}
+
+      </div>
 
       {/* CTA */}
       <a
