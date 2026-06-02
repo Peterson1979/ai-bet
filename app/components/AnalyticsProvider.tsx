@@ -3,16 +3,26 @@
 import { useEffect } from "react";
 import { getConsent } from "@/app/lib/consent";
 
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 export default function AnalyticsProvider() {
   useEffect(() => {
-    const consent = getConsent();
+    const consent = getConsent() ?? {
+      analytics: false,
+      ads: false,
+    };
 
-    // Google Consent Mode v2 default
+    window.dataLayer = window.dataLayer || [];
+
     window.gtag =
       window.gtag ||
-      function () {
-        // @ts-ignore
-        (window.dataLayer = window.dataLayer || []).push(arguments);
+      function (...args: any[]) {
+        window.dataLayer.push(args);
       };
 
     window.gtag("consent", "default", {
@@ -22,7 +32,6 @@ export default function AnalyticsProvider() {
       ad_personalization: consent.ads ? "granted" : "denied",
     });
 
-    // GA4 init (replace ID)
     window.gtag("js", new Date());
     window.gtag("config", "G-XXXXXXXXXX");
   }, []);
