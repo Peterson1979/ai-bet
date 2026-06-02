@@ -47,32 +47,38 @@ export default async function HomePage() {
           {/* HERO */}
           <Hero />
 
-          {/* SPORT NAV (overlay, single instance) */}
-          <div className="-mt-20 relative z-20 mb-14">
-            <div className="flex flex-wrap justify-center gap-3 rounded-full border border-white/10 bg-black/40 px-5 py-3 backdrop-blur-md">
-
-              {sportLinks.map((s) => (
-                <a
-                  key={s.id}
-                  href={`#${s.id}`}
-                  className="text-sm font-bold text-white hover:text-cyan-300 transition"
-                >
-                  {s.label}
-                </a>
-              ))}
-
-            </div>
+          {/* SPORT NAV (ONLY ONCE, CLICKABLE, OVER HERO BOTTOM AREA) */}
+          <div className="-mt-16 relative z-20 mb-10 flex flex-wrap justify-center gap-3">
+            {sportLinks.map((s) => (
+              <a
+                key={s.id}
+                href={`#${s.id}`}
+                className="
+                  px-4 py-2
+                  rounded-full
+                  bg-black/40
+                  border border-white/10
+                  text-sm font-bold text-white
+                  backdrop-blur-md
+                  hover:text-cyan-300
+                  hover:border-cyan-400/40
+                  transition
+                "
+              >
+                {s.label}
+              </a>
+            ))}
           </div>
 
           {/* AFFILIATE BLOCK (ONLY ONCE) */}
-          <section className="mt-10 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-10 min-h-[260px] flex items-center justify-center text-center">
+          <section className="mt-10 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-8 min-h-[260px] flex items-center justify-center text-center">
 
             <div>
-              <h3 className="text-2xl font-black text-white">
+              <h3 className="text-xl font-black text-white">
                 Premium Betting Offers
               </h3>
 
-              <p className="mt-3 text-sm text-slate-300">
+              <p className="mt-2 text-sm text-slate-300">
                 Place your affiliate banners, sportsbook promos or rotating offers here.
               </p>
             </div>
@@ -111,9 +117,7 @@ export default async function HomePage() {
                           sportBlock.sport as SportType
                         );
 
-                        return (
-                          <MatchCard key={p.id} data={uiData} />
-                        );
+                        return <MatchCard key={p.id} data={uiData} />;
                       })}
                     </div>
                   )}
@@ -143,7 +147,7 @@ export default async function HomePage() {
 
           </div>
 
-          {/* SINGLE UNIFIED METRICS BLOCK (NO DUPLICATES) */}
+          {/* UNIFIED METRICS (ONLY ONE BLOCK, NO DUPLICATION - OLD DUPLICATED SECTION REMOVED) */}
           <section className="mt-20 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
 
             <h2 className="text-xl font-black text-white">
@@ -160,28 +164,6 @@ export default async function HomePage() {
               <div className="text-yellow-300">🟡 OK BET</div>
               <div className="text-red-300">🔴 RISKY</div>
               <div className="text-cyan-300">✔️ AI EV SCORE</div>
-            </div>
-
-            <div className="mt-6 space-y-3 text-sm text-slate-300">
-              <p>
-                <span className="text-white font-bold">AI Edge:</span>{" "}
-                Difference between implied bookmaker probability and estimated AI probability. Higher edge may indicate stronger betting value.
-              </p>
-
-              <p>
-                <span className="text-white font-bold">Confidence:</span>{" "}
-                AI confidence score from 0–100 based on statistical signals, historical data and market analysis.
-              </p>
-
-              <p>
-                <span className="text-white font-bold">Implied Probability:</span>{" "}
-                Probability calculated from bookmaker odds. Lower implied probability usually means higher odds.
-              </p>
-
-              <p>
-                <span className="text-white font-bold">Risk:</span>{" "}
-                Estimated volatility and uncertainty level of the prediction. Lower risk indicates more stable betting conditions.
-              </p>
             </div>
 
           </section>
