@@ -61,7 +61,10 @@ export default function MatchCard({ data }: Props) {
       <div className="flex items-start justify-between mb-4">
 
         <div className="flex flex-col gap-2">
-
+{/* AI HEADER LABEL */}
+<span className="text-[11px] font-black uppercase tracking-[0.25em] text-cyan-300">
+  AI TIPS
+</span>
           {/* BET LABEL */}
           <span className={`text-sm font-black px-3 py-1 rounded-full border w-fit ${betColor}`}>
             {betLabel}
