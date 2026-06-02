@@ -31,7 +31,7 @@ export default function RootLayout({
         {/* 🔥 CONSENT + ADS + ANALYTICS LAYER */}
         <AnalyticsProvider />
         <AdSense />
-        <GDPRModal />
+       
         <CookieBanner />
 
         {/* APP */}
