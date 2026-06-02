@@ -47,8 +47,8 @@ export default async function HomePage() {
           {/* HERO */}
           <Hero />
 
-          {/* SPORT NAV (CLICKABLE BUTTONS UNDER HERO IMAGE) */}
-          <div className="-mt-14 mb-12 flex flex-wrap justify-center gap-3">
+          {/* SPORT NAV (CLICKABLE UNDER HERO IMAGE) */}
+          <div className="-mt-14 mb-12 flex flex-wrap justify-center gap-3 relative z-20">
             {sportLinks.map((s) => (
               <a
                 key={s.id}
@@ -71,7 +71,7 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* AFFILIATE BLOCK (ONLY ONCE, EXPANDED SPACE) */}
+          {/* AFFILIATE BLOCK */}
           <section className="mt-6 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-10 min-h-[260px] flex items-center justify-center text-center">
             <div>
               <h3 className="text-xl font-black text-white">
@@ -128,6 +128,7 @@ export default async function HomePage() {
 
             {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-5">
+
               <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
 
                 <h2 className="text-2xl font-black text-white">
@@ -140,11 +141,12 @@ export default async function HomePage() {
 
                 <TopBettingSites />
               </div>
+
             </aside>
 
           </div>
 
-          {/* SINGLE METRICS BLOCK (NO DUPLICATION) */}
+          {/* SINGLE METRICS BLOCK (ONLY ONE - NO DUPLICATION) */}
           <section className="mt-20 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
 
             <h2 className="text-xl font-black text-white">
@@ -156,7 +158,6 @@ export default async function HomePage() {
               This system highlights betting quality across all sports and markets.
             </p>
 
-            {/* SHORT LEGEND */}
             <div className="mt-5 flex flex-wrap gap-4 text-sm font-bold">
               <span className="text-emerald-300">🟢 VALUE BET</span>
               <span className="text-yellow-300">🟡 OK BET</span>
