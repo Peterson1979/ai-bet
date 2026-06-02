@@ -146,26 +146,7 @@ export default async function HomePage() {
 
           </div>
 
-          {/* SINGLE METRICS BLOCK (ONLY ONE - NO DUPLICATION) */}
-          <section className="mt-20 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
-
-            <h2 className="text-xl font-black text-white">
-              Betting Intelligence System
-            </h2>
-
-            <p className="mt-2 text-sm text-slate-300">
-              AI evaluates each pick using confidence, expected value and market risk signals.
-              This system highlights betting quality across all sports and markets.
-            </p>
-
-            <div className="mt-5 flex flex-wrap gap-4 text-sm font-bold">
-              <span className="text-emerald-300">🟢 VALUE BET</span>
-              <span className="text-yellow-300">🟡 OK BET</span>
-              <span className="text-red-300">🔴 RISKY</span>
-              <span className="text-cyan-300">✔️ AI EV SCORE</span>
-            </div>
-
-          </section>
+          
 
           {/* FOOTER */}
           <div className="mt-16">
