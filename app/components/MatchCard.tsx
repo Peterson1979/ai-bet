@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 import { MatchCardData } from "../types/match";
 
