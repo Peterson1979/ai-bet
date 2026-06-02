@@ -14,6 +14,10 @@ function clamp(n: number) {
   return Math.max(0, Math.min(100, n));
 }
 
+/* =========================
+   BET LABEL SYSTEM
+========================= */
+
 function getBetLabel(confidence: number, edge: number) {
   if (confidence >= 75 && edge >= 5) return "🟢 VALUE BET";
   if (confidence >= 55) return "🟡 OK BET";
@@ -21,8 +25,10 @@ function getBetLabel(confidence: number, edge: number) {
 }
 
 function getBetColor(label: string) {
-  if (label.includes("VALUE")) return "text-emerald-300 border-emerald-400/30 bg-emerald-500/10";
-  if (label.includes("OK")) return "text-yellow-300 border-yellow-400/30 bg-yellow-500/10";
+  if (label.includes("VALUE"))
+    return "text-emerald-300 border-emerald-400/30 bg-emerald-500/10";
+  if (label.includes("OK"))
+    return "text-yellow-300 border-yellow-400/30 bg-yellow-500/10";
   return "text-red-300 border-red-400/30 bg-red-500/10";
 }
 
@@ -35,11 +41,20 @@ export default function MatchCard({ data }: Props) {
 
   const confidence = data.confidence ?? 0;
   const edge = data.edge ?? 0;
-  const risk = (data.risk ?? 0) / 10; // 🔥 FIXED SCALE (0–10)
+
+  const risk = (data.risk ?? 0) / 10; // 0–10 scale FIX
   const bestOdds = data.bestOdds ?? data.odds ?? 0;
+
+  const implied = data.impliedProbability ?? 0;
 
   const betLabel = getBetLabel(confidence, edge);
   const betColor = getBetColor(betLabel);
+
+  /* =========================
+     📊 AI EV (EXPECTED VALUE)
+  ========================= */
+
+  const evScore = confidence - implied;
 
   return (
     <article
@@ -56,21 +71,24 @@ export default function MatchCard({ data }: Props) {
         hover:shadow-[0_0_60px_rgba(56,189,248,0.25)]
       "
     >
-
       {/* HEADER */}
       <div className="flex items-start justify-between mb-4">
 
         <div className="flex flex-col gap-2">
-{/* AI HEADER LABEL */}
-<span className="text-[11px] font-black uppercase tracking-[0.25em] text-cyan-300">
-  AI TIPS
-</span>
+
+          {/* AI HEADER */}
+          <span className="text-[11px] font-black uppercase tracking-[0.25em] text-cyan-300">
+            AI TIPS
+          </span>
+
           {/* BET LABEL */}
-          <span className={`text-sm font-black px-3 py-1 rounded-full border w-fit ${betColor}`}>
+          <span
+            className={`text-sm font-black px-3 py-1 rounded-full border w-fit ${betColor}`}
+          >
             {betLabel}
           </span>
 
-          {/* MAIN TIP (HIGHLIGHTED) */}
+          {/* MAIN TIP */}
           <span className="text-xl font-black text-white leading-tight">
             {data.recommendedBet}
           </span>
@@ -79,7 +97,6 @@ export default function MatchCard({ data }: Props) {
           <span className="text-[12px] text-slate-300 font-bold">
             Confidence: {confidence}%
           </span>
-
         </div>
 
         <span className="text-[11px] text-slate-300">
@@ -87,7 +104,6 @@ export default function MatchCard({ data }: Props) {
             ? new Date(data.startTime).toLocaleString()
             : "TBD"}
         </span>
-
       </div>
 
       {/* MATCH */}
@@ -99,23 +115,16 @@ export default function MatchCard({ data }: Props) {
         {data.league}
       </span>
 
-      {/* ODDS (NO BOOKMAKER NAME) */}
-      <div className="mt-4 flex justify-between items-center rounded-xl bg-[#0B1220] p-3 border border-cyan-400/10">
+      {/* ODDS (COMPACT) */}
+      <div className="mt-4 rounded-xl border border-cyan-400/10 bg-[#0B1220] p-3 flex items-center justify-between">
 
-        <div>
-          <p className="text-[10px] text-slate-400 uppercase">Bookmaker</p>
-          <p className="text-white font-semibold opacity-0">
-            hidden
-          </p>
-        </div>
+        <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+          Odds
+        </span>
 
-        <div className="text-right">
-          <p className="text-[10px] text-slate-400 uppercase">Odds</p>
-          <p className="text-emerald-300 font-black text-lg">
-            {bestOdds}
-          </p>
-        </div>
-
+        <span className="text-xl font-black text-emerald-300">
+          {bestOdds}
+        </span>
       </div>
 
       {/* EDGE / RISK */}
@@ -128,6 +137,37 @@ export default function MatchCard({ data }: Props) {
         <span>
           Risk: <span className="text-red-300 font-bold">{risk.toFixed(1)}/10</span>
         </span>
+
+      </div>
+
+      {/* =========================
+         📊 AI EV SCORE
+      ========================= */}
+
+      <div className="mt-4 rounded-xl border border-cyan-400/20 bg-gradient-to-r from-[#0B1220] to-[#0E1A2B] p-3">
+
+        <div className="flex items-center justify-between">
+
+          <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold">
+            AI EV (Expected Value)
+          </p>
+
+          <span
+            className={`text-sm font-black ${
+              evScore >= 0 ? "text-emerald-300" : "text-red-300"
+            }`}
+          >
+            {evScore >= 0 ? "+" : ""}
+            {evScore.toFixed(1)}
+          </span>
+
+        </div>
+
+        <p className="mt-2 text-[11px] text-slate-300 leading-5">
+          {evScore >= 0
+            ? "Positive expected value → statistically profitable signal"
+            : "Negative expected value → weak long-term value"}
+        </p>
 
       </div>
 
@@ -165,7 +205,6 @@ export default function MatchCard({ data }: Props) {
       >
         View Odds
       </a>
-
     </article>
   );
 }
