@@ -8,15 +8,19 @@ export default function AnalyticsToggle() {
 
   useEffect(() => {
     const consent = getConsent();
+    if (!consent) return;
+
     setEnabled(consent.analytics);
   }, []);
 
   const toggle = () => {
+    const current = getConsent();
+
     const newState = !enabled;
 
     setConsent({
       analytics: newState,
-      ads: getConsent().ads,
+      ads: current?.ads ?? false,
     });
 
     setEnabled(newState);
