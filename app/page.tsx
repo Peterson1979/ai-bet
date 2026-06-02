@@ -47,22 +47,23 @@ export default async function HomePage() {
           {/* HERO */}
           <Hero />
 
-          {/* SPORT NAV (ONLY ONCE, CLICKABLE, OVER HERO BOTTOM AREA) */}
-          <div className="-mt-16 relative z-20 mb-10 flex flex-wrap justify-center gap-3">
+          {/* SPORT NAV (CLICKABLE BUTTONS UNDER HERO IMAGE) */}
+          <div className="-mt-14 mb-12 flex flex-wrap justify-center gap-3">
             {sportLinks.map((s) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
                 className="
-                  px-4 py-2
                   rounded-full
-                  bg-black/40
-                  border border-white/10
-                  text-sm font-bold text-white
+                  border border-cyan-400/20
+                  bg-[#0B1220]/80
+                  px-4 py-2
+                  text-sm font-bold
+                  text-white
                   backdrop-blur-md
-                  hover:text-cyan-300
-                  hover:border-cyan-400/40
                   transition
+                  hover:border-cyan-300/50
+                  hover:text-cyan-300
                 "
               >
                 {s.label}
@@ -70,19 +71,16 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* AFFILIATE BLOCK (ONLY ONCE) */}
-          <section className="mt-10 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-8 min-h-[260px] flex items-center justify-center text-center">
-
+          {/* AFFILIATE BLOCK (ONLY ONCE, EXPANDED SPACE) */}
+          <section className="mt-6 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-10 min-h-[260px] flex items-center justify-center text-center">
             <div>
               <h3 className="text-xl font-black text-white">
                 Premium Betting Offers
               </h3>
-
               <p className="mt-2 text-sm text-slate-300">
                 Place your affiliate banners, sportsbook promos or rotating offers here.
               </p>
             </div>
-
           </section>
 
           {/* MAIN LAYOUT */}
@@ -117,7 +115,9 @@ export default async function HomePage() {
                           sportBlock.sport as SportType
                         );
 
-                        return <MatchCard key={p.id} data={uiData} />;
+                        return (
+                          <MatchCard key={p.id} data={uiData} />
+                        );
                       })}
                     </div>
                   )}
@@ -128,7 +128,6 @@ export default async function HomePage() {
 
             {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-5">
-
               <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
 
                 <h2 className="text-2xl font-black text-white">
@@ -140,14 +139,12 @@ export default async function HomePage() {
                 </p>
 
                 <TopBettingSites />
-
               </div>
-
             </aside>
 
           </div>
 
-          {/* UNIFIED METRICS (ONLY ONE BLOCK, NO DUPLICATION - OLD DUPLICATED SECTION REMOVED) */}
+          {/* SINGLE METRICS BLOCK (NO DUPLICATION) */}
           <section className="mt-20 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
 
             <h2 className="text-xl font-black text-white">
@@ -159,11 +156,12 @@ export default async function HomePage() {
               This system highlights betting quality across all sports and markets.
             </p>
 
-            <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm font-bold">
-              <div className="text-emerald-300">🟢 VALUE BET</div>
-              <div className="text-yellow-300">🟡 OK BET</div>
-              <div className="text-red-300">🔴 RISKY</div>
-              <div className="text-cyan-300">✔️ AI EV SCORE</div>
+            {/* SHORT LEGEND */}
+            <div className="mt-5 flex flex-wrap gap-4 text-sm font-bold">
+              <span className="text-emerald-300">🟢 VALUE BET</span>
+              <span className="text-yellow-300">🟡 OK BET</span>
+              <span className="text-red-300">🔴 RISKY</span>
+              <span className="text-cyan-300">✔️ AI EV SCORE</span>
             </div>
 
           </section>
