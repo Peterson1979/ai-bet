@@ -12,10 +12,10 @@ declare global {
 
 export default function AnalyticsProvider() {
   useEffect(() => {
-    const consent = getConsent();
-
-    const analytics = consent?.analytics ?? false;
-    const ads = consent?.ads ?? false;
+    const consent = getConsent() ?? {
+      analytics: false,
+      ads: false,
+    };
 
     window.dataLayer = window.dataLayer || [];
 
@@ -26,10 +26,10 @@ export default function AnalyticsProvider() {
       };
 
     window.gtag("consent", "default", {
-      analytics_storage: analytics ? "granted" : "denied",
-      ad_storage: ads ? "granted" : "denied",
-      ad_user_data: ads ? "granted" : "denied",
-      ad_personalization: ads ? "granted" : "denied",
+      analytics_storage: consent.analytics ? "granted" : "denied",
+      ad_storage: consent.ads ? "granted" : "denied",
+      ad_user_data: consent.ads ? "granted" : "denied",
+      ad_personalization: consent.ads ? "granted" : "denied",
     });
 
     window.gtag("js", new Date());
