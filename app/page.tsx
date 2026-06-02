@@ -47,8 +47,8 @@ export default async function HomePage() {
           {/* HERO */}
           <Hero />
 
-          {/* SPORT NAV OVERLAY (CLICKABLE + SCROLL TARGETS) */}
-          <div className="mt-[-40px] relative z-20 flex justify-center">
+          {/* SPORT NAV (overlay, single instance) */}
+          <div className="-mt-20 relative z-20 mb-14">
             <div className="flex flex-wrap justify-center gap-3 rounded-full border border-white/10 bg-black/40 px-5 py-3 backdrop-blur-md">
 
               {sportLinks.map((s) => (
@@ -65,14 +65,14 @@ export default async function HomePage() {
           </div>
 
           {/* AFFILIATE BLOCK (ONLY ONCE) */}
-          <section className="mt-10 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-8 min-h-[220px] flex items-center justify-center text-center">
+          <section className="mt-10 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-10 min-h-[260px] flex items-center justify-center text-center">
 
             <div>
-              <h3 className="text-xl font-black text-white">
+              <h3 className="text-2xl font-black text-white">
                 Premium Betting Offers
               </h3>
 
-              <p className="mt-2 text-sm text-slate-300">
+              <p className="mt-3 text-sm text-slate-300">
                 Place your affiliate banners, sportsbook promos or rotating offers here.
               </p>
             </div>
@@ -143,7 +143,7 @@ export default async function HomePage() {
 
           </div>
 
-          {/* UNIFIED METRICS (SINGLE BLOCK, NO DUPLICATION) */}
+          {/* SINGLE UNIFIED METRICS BLOCK (NO DUPLICATES) */}
           <section className="mt-20 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
 
             <h2 className="text-xl font-black text-white">
@@ -155,7 +155,6 @@ export default async function HomePage() {
               This system highlights betting quality across all sports and markets.
             </p>
 
-            {/* SHORT LEGEND */}
             <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm font-bold">
               <div className="text-emerald-300">🟢 VALUE BET</div>
               <div className="text-yellow-300">🟡 OK BET</div>
@@ -163,9 +162,7 @@ export default async function HomePage() {
               <div className="text-cyan-300">✔️ AI EV SCORE</div>
             </div>
 
-            {/* DETAILED EXPLANATION (NO DUPLICATION) */}
             <div className="mt-6 space-y-3 text-sm text-slate-300">
-
               <p>
                 <span className="text-white font-bold">AI Edge:</span>{" "}
                 Difference between implied bookmaker probability and estimated AI probability. Higher edge may indicate stronger betting value.
@@ -185,7 +182,6 @@ export default async function HomePage() {
                 <span className="text-white font-bold">Risk:</span>{" "}
                 Estimated volatility and uncertainty level of the prediction. Lower risk indicates more stable betting conditions.
               </p>
-
             </div>
 
           </section>
