@@ -1,161 +1,180 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import MatchCard from "./components/MatchCard";
-import TopBettingSites from "./components/TopBettingSites";
-import Footer from "./components/Footer";
+// app/sport-news/page.tsx
+import { getLatestNews } from "@/app/lib/news";
+import { getSidebarSites } from "@/app/lib/affiliates";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
-import { getPredictions } from "@/app/lib/getPredictions";
-
-import type { SportType } from "./types/match";
-import type { PredictionCard } from "@/app/types/prediction";
-import { toMatchCardData } from "@/app/lib/domain/matchMapper";
-
-type SportBlock = {
-  sport: string;
-  hasMatches: boolean;
-  message?: string;
-  topPicks: PredictionCard[];
+const SPORT_EMOJI: Record<string, string> = {
+  Football: "⚽", NBA: "🏀", NFL: "🏈",
+  Hockey: "🏒", Tennis: "🎾", MLB: "⚾", MMA: "🥊",
 };
 
-type PredictionsData = {
-  date: string;
-  generatedAt: string;
-  sports: SportBlock[];
-};
+function timeAgo(pubDate: string): string {
+  if (!pubDate) return "";
+  try {
+    const diff = Date.now() - new Date(pubDate).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return `${Math.floor(hrs / 24)}d ago`;
+  } catch {
+    return "";
+  }
+}
 
-const sportLinks = [
-  { id: "football", label: "⚽ Football" },
-  { id: "nba", label: "🏀 NBA" },
-  { id: "nfl", label: "🏈 NFL" },
-  { id: "hockey", label: "🏒 Hockey" },
-  { id: "tennis", label: "🎾 Tennis" },
-  { id: "mlb", label: "⚾ MLB" },
-  { id: "mma", label: "🥊 MMA" },
-];
+export default async function SportNewsPage() {
+  const [news, sites] = await Promise.all([
+    getLatestNews(),
+    Promise.resolve(getSidebarSites()),
+  ]);
 
-export default async function HomePage() {
-  const predictions: PredictionsData | null = await getPredictions();
+  const bySport = news.reduce<Record<string, typeof news>>((acc, item) => {
+    if (!acc[item.sport]) acc[item.sport] = [];
+    acc[item.sport].push(item);
+    return acc;
+  }, {});
 
   return (
-    <main className="min-h-screen bg-[#060B14] text-white">
+    <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D1A] to-[#050A12]">
 
       <Header />
 
-      <div className="pt-[70px]">
-        <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
+      {/* LIGHT GLOW BACKGROUND LAYER */}
+      <div className="pointer-events-none fixed inset-0 opacity-60">
+        <div className="absolute top-[-120px] left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-[120px]" />
+        <div className="absolute bottom-[-120px] right-20 h-[400px] w-[400px] rounded-full bg-purple-500/10 blur-[120px]" />
+      </div>
 
-          {/* HERO */}
-          <Hero />
+      <div className="pt-[70px] relative z-10">
+        <div className="mx-auto max-w-[1500px] px-4 md:px-6 pb-16">
 
-          {/* SPORT NAV (CLICKABLE UNDER HERO IMAGE) */}
-          <div className="-mt-14 mb-12 flex flex-wrap justify-center gap-3 relative z-20">
-            {sportLinks.map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                className="
-                  rounded-full
-                  border border-cyan-400/20
-                  bg-[#0B1220]/80
-                  px-4 py-2
-                  text-sm font-bold
-                  text-white
-                  backdrop-blur-md
-                  transition
-                  hover:border-cyan-300/50
-                  hover:text-cyan-300
-                "
-              >
-                {s.label}
-              </a>
-            ))}
+          {/* PAGE HEADER */}
+          <div className="py-12">
+            <h1 className="text-5xl font-black tracking-tight">
+              Sport <span className="text-cyan-400 drop-shadow-[0_0_15px_rgba(56,189,248,0.6)]">News</span>
+            </h1>
+
+            <p className="mt-4 max-w-2xl text-slate-300">
+              Latest sports news across Football, NBA, NFL, Hockey, Tennis, MLB and MMA — updated every 30 minutes.
+            </p>
           </div>
 
-          {/* AFFILIATE BLOCK */}
-          <section className="mt-6 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-10 min-h-[260px] flex items-center justify-center text-center">
-            <div>
-              <h3 className="text-xl font-black text-white">
-                Premium Betting Offers
-              </h3>
-              <p className="mt-2 text-sm text-slate-300">
-                Place your affiliate banners, sportsbook promos or rotating offers here.
-              </p>
-            </div>
-          </section>
+          <div className="grid grid-cols-1 gap-10 xl:grid-cols-[minmax(0,1fr)_380px] items-start">
 
-          {/* MAIN LAYOUT */}
-          <div className="mt-12 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px]">
+            {/* NEWS GRID */}
+            <div className="space-y-12">
 
-            {/* LEFT */}
-            <div className="min-w-0">
+              {Object.entries(bySport).map(([sport, items]) => (
+                <section key={sport}>
 
-              {predictions?.sports?.map((sportBlock) => (
-                <section
-                  key={sportBlock.sport}
-                  id={sportBlock.sport.toLowerCase()}
-                  className="mb-14 scroll-mt-28"
-                >
+                  {/* SPORT HEADER */}
+                  <div className="mb-6 flex items-center gap-3">
+                    <span className="text-3xl drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">
+                      {SPORT_EMOJI[sport] ?? "🏆"}
+                    </span>
 
-                  <div className="mb-6 flex items-center gap-4">
-                    <h2 className="text-2xl font-black md:text-3xl">
-                      {sportBlock.sport}
-                    </h2>
-                    <div className="h-[2px] flex-1 bg-gradient-to-r from-cyan-400/40 to-transparent" />
+                    <h2 className="text-2xl font-black">{sport}</h2>
+
+                    <div className="h-[2px] flex-1 rounded-full bg-gradient-to-r from-cyan-400/60 to-transparent" />
                   </div>
 
-                  {!sportBlock.hasMatches ? (
-                    <div className="rounded-[24px] border border-[#334155] bg-[#0F172A] p-6">
-                      <p className="text-slate-300">{sportBlock.message}</p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
-                      {sportBlock.topPicks.map((p) => {
-                        const uiData = toMatchCardData(
-                          p,
-                          sportBlock.sport as SportType
-                        );
+                  {/* CARDS */}
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-                        return (
-                          <MatchCard key={p.id} data={uiData} />
-                        );
-                      })}
-                    </div>
-                  )}
+                    {items.map((item, i) => (
+                      <a
+                        key={i}
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="
+                          group relative block rounded-2xl
+                          border border-cyan-400/20
+                          bg-gradient-to-b from-[#0B1220] via-[#0C1526] to-[#0F172A]
+                          p-5
+                          shadow-[0_10px_30px_rgba(0,0,0,0.45)]
+                          transition-all duration-300
+                          hover:-translate-y-1
+                          hover:border-cyan-300/60
+                          hover:shadow-[0_20px_60px_rgba(56,189,248,0.15)]
+                        "
+                      >
+                        {/* glow overlay */}
+                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-cyan-500/5 rounded-2xl" />
 
+                        <p className="relative text-sm font-semibold leading-6 text-slate-200 group-hover:text-white line-clamp-3">
+                          {item.title}
+                        </p>
+
+                        <div className="relative mt-4 flex items-center justify-between">
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-300">
+                            {item.source}
+                          </span>
+                          <span className="text-[10px] text-slate-400">
+                            {timeAgo(item.pubDate)}
+                          </span>
+                        </div>
+                      </a>
+                    ))}
+
+                  </div>
                 </section>
               ))}
+
             </div>
 
             {/* SIDEBAR */}
-            <aside className="h-fit xl:sticky xl:top-5">
+            <aside className="h-fit xl:sticky xl:top-24 space-y-6">
 
-              <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
+              <h2 className="text-xl font-black text-white">
+                Top Betting Sites
+              </h2>
 
-                <h2 className="text-2xl font-black text-white">
-                  Top Betting Sites
-                </h2>
+              {sites.map((site) => (
+                <a
+                  key={site.id}
+                  href={site.url}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="
+                    group block rounded-2xl
+                    border border-cyan-400/20
+                    bg-gradient-to-b from-[#0B1220] via-[#0C1526] to-[#0F172A]
+                    p-5
+                    shadow-[0_10px_30px_rgba(0,0,0,0.4)]
+                    transition
+                    hover:-translate-y-1
+                    hover:border-cyan-300/60
+                    hover:shadow-[0_25px_60px_rgba(34,211,238,0.15)]
+                  "
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-black text-white">{site.name}</p>
+                      <p className="mt-1 text-sm text-cyan-300">{site.bonus}</p>
+                    </div>
 
-                <p className="mt-1 text-sm text-slate-300 mb-5">
-                  Recommended sportsbooks & offers
-                </p>
+                    <div className="rounded-xl border border-emerald-400/40 bg-emerald-500/10 px-3 py-2">
+                      <div className="text-[10px] text-slate-400">Rating</div>
+                      <div className="font-black text-emerald-300">
+                        {site.rating}
+                      </div>
+                    </div>
+                  </div>
 
-                <TopBettingSites />
-              </div>
+                  <div className="mt-4 rounded-full border border-cyan-400/30 bg-cyan-500/10 py-2 text-center text-xs font-bold text-cyan-300 group-hover:bg-cyan-400/20">
+                    Visit Site →
+                  </div>
+                </a>
+              ))}
 
             </aside>
-
           </div>
-
-          
-
-          {/* FOOTER */}
-          <div className="mt-16">
-            <Footer />
-          </div>
-
         </div>
-      </div>
 
+        <Footer />
+      </div>
     </main>
   );
 }
