@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import AnalyticsProvider from "./components/AnalyticsProvider";
 import AdSense from "./components/AdSense";
 import CookieBanner from "./components/CookieBanner";
-import GDPRModal from "./components/GDPRModal";
+
 
 export const metadata: Metadata = {
   title: "AI Betting Tips - Daily Value Bets",
