@@ -19,11 +19,11 @@ export default function AnalyticsProvider() {
 
     window.dataLayer = window.dataLayer || [];
 
-    function gtag(...args: any[]) {
-      window.dataLayer.push(args);
-    }
-
-    window.gtag = window.gtag || gtag;
+    window.gtag =
+      window.gtag ||
+      function (...args: any[]) {
+        window.dataLayer.push(args);
+      };
 
     window.gtag("consent", "default", {
       analytics_storage: analytics ? "granted" : "denied",
