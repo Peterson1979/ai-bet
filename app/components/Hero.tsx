@@ -33,6 +33,21 @@ export default function Hero() {
           AI-powered predictions, analytics and betting insights across Football, NBA, NFL, Hockey and Tennis.
         </p>
 
+        {/* SPORT NAV OVERLAY (BOTTOM OF HERO IMAGE) */}
+        <div className="absolute bottom-0 left-0 right-0 flex justify-center pb-5">
+          <div className="flex flex-wrap justify-center gap-4 text-sm font-bold text-white bg-black/40 px-6 py-3 rounded-full backdrop-blur-md border border-white/10">
+
+            <span>⚽ Football</span>
+            <span>🏀 NBA</span>
+            <span>🏈 NFL</span>
+            <span>🏒 Hockey</span>
+            <span>🎾 Tennis</span>
+            <span>⚾ MLB</span>
+            <span>🥊 MMA</span>
+
+          </div>
+        </div>
+
       </div>
     </section>
   );

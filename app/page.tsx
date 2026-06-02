@@ -1,6 +1,5 @@
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import SportNav from "./components/SportNav";
 import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
@@ -30,21 +29,18 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-[#060B14] text-white">
 
+      {/* HEADER */}
       <Header />
 
       <div className="pt-[70px]">
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
 
-          {/* HERO */}
+          {/* HERO (sport nav overlay benne van a Hero.tsx-ben) */}
           <Hero />
 
-          {/* SPORT NAV (hero alatt) */}
-          <div className="mt-6">
-            <SportNav />
-          </div>
+          {/* AFFILIATE BLOCK (ONLY ONCE) */}
+          <section className="mt-8 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-8 min-h-[220px] flex items-center justify-center text-center">
 
-          {/* AFFILIATE BLOCK (hero + nav alatt) */}
-          <section className="mt-8 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-8 min-h-[180px] flex items-center justify-center text-center">
             <div>
               <h3 className="text-xl font-black text-white">
                 Premium Betting Offers
@@ -54,9 +50,10 @@ export default async function HomePage() {
                 Place your affiliate banners, sportsbook promos or rotating offers here.
               </p>
             </div>
+
           </section>
 
-          {/* LEFT + RIGHT LAYOUT */}
+          {/* MAIN LAYOUT */}
           <div
             className="
               mt-12
@@ -68,7 +65,7 @@ export default async function HomePage() {
             "
           >
 
-            {/* LEFT */}
+            {/* LEFT COLUMN */}
             <div className="min-w-0">
 
               {predictions?.sports?.map((sportBlock) => (
@@ -118,6 +115,7 @@ export default async function HomePage() {
 
             {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-5">
+
               <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
 
                 <div className="mb-6">
@@ -132,22 +130,13 @@ export default async function HomePage() {
 
                 <TopBettingSites />
 
-                <div className="mt-6 rounded-2xl border border-cyan-400/15 bg-[#0B1220] p-4">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-300">
-                    AI Insights
-                  </p>
-
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Daily AI betting analysis across Football, NBA, NFL, Hockey and Tennis.
-                  </p>
-                </div>
-
               </div>
+
             </aside>
 
           </div>
 
-          {/* UNIFIED METRICS (ONLY HERE, BOTTOM) */}
+          {/* UNIFIED METRICS (ONLY ONE BLOCK, NO DUPLICATION) */}
           <section className="mt-20 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6 shadow-[0_0_40px_rgba(56,189,248,0.08)]">
 
             <h2 className="text-xl font-black text-white">
@@ -165,6 +154,30 @@ export default async function HomePage() {
               <div className="text-yellow-300">🟡 OK BET</div>
               <div className="text-red-300">🔴 RISKY</div>
               <div className="text-cyan-300">✔️ AI EV SCORE</div>
+
+            </div>
+
+            <div className="mt-5 text-sm text-slate-300 space-y-2">
+
+              <p>
+                <span className="text-white font-bold">AI Edge:</span>{" "}
+                Difference between bookmaker probability and AI estimation.
+              </p>
+
+              <p>
+                <span className="text-white font-bold">Confidence:</span>{" "}
+                Model confidence score from 0–100.
+              </p>
+
+              <p>
+                <span className="text-white font-bold">Implied Probability:</span>{" "}
+                Probability derived from bookmaker odds.
+              </p>
+
+              <p>
+                <span className="text-white font-bold">Risk:</span>{" "}
+                Volatility and uncertainty indicator.
+              </p>
 
             </div>
 
