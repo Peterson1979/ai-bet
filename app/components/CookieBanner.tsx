@@ -7,7 +7,10 @@ export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const consent = getConsent();
+    const consent = getConsent() ?? {
+      analytics: false,
+      ads: false,
+    };
 
     if (!consent.analytics && !consent.ads) {
       setVisible(true);
@@ -49,6 +52,7 @@ export default function CookieBanner() {
             Accept All
           </button>
         </div>
+
       </div>
     </div>
   );
