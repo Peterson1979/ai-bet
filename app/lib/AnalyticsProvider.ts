@@ -14,26 +14,25 @@ export default function AnalyticsProvider() {
   useEffect(() => {
     const consent = getConsent();
 
-    const analyticsGranted = consent?.analytics ?? false;
-    const adsGranted = consent?.ads ?? false;
+    const analytics = consent?.analytics ?? false;
+    const ads = consent?.ads ?? false;
 
     window.dataLayer = window.dataLayer || [];
 
-    window.gtag =
-      window.gtag ||
-      function () {
-        window.dataLayer.push(arguments);
-      };
+    function gtag(...args: any[]) {
+      window.dataLayer.push(args);
+    }
+
+    window.gtag = window.gtag || gtag;
 
     window.gtag("consent", "default", {
-      analytics_storage: analyticsGranted ? "granted" : "denied",
-      ad_storage: adsGranted ? "granted" : "denied",
-      ad_user_data: adsGranted ? "granted" : "denied",
-      ad_personalization: adsGranted ? "granted" : "denied",
+      analytics_storage: analytics ? "granted" : "denied",
+      ad_storage: ads ? "granted" : "denied",
+      ad_user_data: ads ? "granted" : "denied",
+      ad_personalization: ads ? "granted" : "denied",
     });
 
     window.gtag("js", new Date());
-
     window.gtag("config", "G-XXXXXXXXXX");
   }, []);
 
