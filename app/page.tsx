@@ -30,55 +30,33 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-[#060B14] text-white">
 
-      {/* HEADER */}
       <Header />
 
       <div className="pt-[70px]">
-
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
 
           {/* HERO */}
           <Hero />
 
-          {/* SPORT NAV */}
-          <div className="mt-8">
+          {/* SPORT NAV (hero alatt) */}
+          <div className="mt-6">
             <SportNav />
           </div>
 
-          {/* LEGEND / HIGH-TECH EXPLANATION BLOCK */}
-          <div className="mt-10 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-5 shadow-[0_0_30px_rgba(56,189,248,0.08)]">
+          {/* AFFILIATE BLOCK (hero + nav alatt) */}
+          <section className="mt-8 rounded-[28px] border border-cyan-400/20 bg-[#0B1220] p-8 min-h-[180px] flex items-center justify-center text-center">
+            <div>
+              <h3 className="text-xl font-black text-white">
+                Premium Betting Offers
+              </h3>
 
-            <h2 className="text-xl font-black text-white">
-              Betting Metrics Explained
-            </h2>
-
-            <p className="mt-2 text-sm text-slate-300">
-              Understanding AI betting signals, value detection and risk scoring.
-            </p>
-
-            {/* ICON LEGEND */}
-            <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4 text-sm">
-
-              <div className="flex items-center gap-2 text-emerald-300 font-bold">
-                🟢 VALUE BET
-              </div>
-
-              <div className="flex items-center gap-2 text-yellow-300 font-bold">
-                🟡 OK BET
-              </div>
-
-              <div className="flex items-center gap-2 text-red-300 font-bold">
-                🔴 RISKY
-              </div>
-
-              <div className="flex items-center gap-2 text-cyan-300 font-bold">
-                ✔️ AI EV SCORE
-              </div>
-
+              <p className="mt-2 text-sm text-slate-300">
+                Place your affiliate banners, sportsbook promos or rotating offers here.
+              </p>
             </div>
-          </div>
+          </section>
 
-          {/* MAIN LAYOUT */}
+          {/* LEFT + RIGHT LAYOUT */}
           <div
             className="
               mt-12
@@ -90,7 +68,7 @@ export default async function HomePage() {
             "
           >
 
-            {/* LEFT COLUMN */}
+            {/* LEFT */}
             <div className="min-w-0">
 
               {predictions?.sports?.map((sportBlock) => (
@@ -140,40 +118,27 @@ export default async function HomePage() {
 
             {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-5">
-
               <div className="rounded-[28px] border border-cyan-400/30 bg-gradient-to-b from-[#111827] to-[#0F172A] p-5">
 
-                {/* SIDEBAR HEADER */}
-                <div className="mb-6 flex items-center justify-between gap-3">
+                <div className="mb-6">
+                  <h2 className="text-2xl font-black text-white">
+                    Top Betting Sites
+                  </h2>
 
-                  <div>
-                    <h2 className="text-2xl font-black text-white">
-                      Top Betting Sites
-                    </h2>
-
-                    <p className="mt-1 text-sm text-slate-300">
-                      Recommended sportsbooks & offers
-                    </p>
-                  </div>
-
-                  <span className="rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-cyan-300">
-                    Top Rated
-                  </span>
+                  <p className="mt-1 text-sm text-slate-300">
+                    Recommended sportsbooks & offers
+                  </p>
                 </div>
 
-                {/* CONTENT */}
                 <TopBettingSites />
 
-                {/* INFO BLOCK */}
                 <div className="mt-6 rounded-2xl border border-cyan-400/15 bg-[#0B1220] p-4">
                   <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-300">
                     AI Insights
                   </p>
 
                   <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Daily AI betting analysis across Football, NBA, NFL,
-                    Hockey and Tennis with confidence scoring,
-                    edge detection and market evaluation.
+                    Daily AI betting analysis across Football, NBA, NFL, Hockey and Tennis.
                   </p>
                 </div>
 
@@ -182,6 +147,29 @@ export default async function HomePage() {
 
           </div>
 
+          {/* UNIFIED METRICS (ONLY HERE, BOTTOM) */}
+          <section className="mt-20 rounded-[28px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6 shadow-[0_0_40px_rgba(56,189,248,0.08)]">
+
+            <h2 className="text-xl font-black text-white">
+              Betting Intelligence System
+            </h2>
+
+            <p className="mt-2 text-sm text-slate-300">
+              AI evaluates each pick using confidence, expected value and market risk signals.
+              This system highlights betting quality across all sports and markets.
+            </p>
+
+            <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-4 text-sm font-bold">
+
+              <div className="text-emerald-300">🟢 VALUE BET</div>
+              <div className="text-yellow-300">🟡 OK BET</div>
+              <div className="text-red-300">🔴 RISKY</div>
+              <div className="text-cyan-300">✔️ AI EV SCORE</div>
+
+            </div>
+
+          </section>
+
           {/* FOOTER */}
           <div className="mt-16">
             <Footer />
@@ -189,6 +177,7 @@ export default async function HomePage() {
 
         </div>
       </div>
+
     </main>
   );
 }
