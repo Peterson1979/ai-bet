@@ -23,12 +23,19 @@ export default function Header() {
           display: "flex",
           justifyContent: "flex-end",
           alignItems: "center",
-          gap: 28,
           color: "white",
         }}
       >
-        <nav style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
-          
+        <nav
+          style={{
+            display: "flex",
+            gap: 22,
+            flexWrap: "nowrap",
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
           <Link href="/" style={linkStyle}>
             Home
           </Link>
@@ -42,13 +49,12 @@ export default function Header() {
           </Link>
 
           <Link href="/sport-news" style={linkStyle}>
-            Sport News
+            News
           </Link>
 
           <Link href="/betting-tools" style={linkStyle}>
             Tools
           </Link>
-
         </nav>
       </div>
     </header>
