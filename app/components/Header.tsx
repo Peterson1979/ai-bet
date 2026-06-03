@@ -21,24 +21,29 @@ export default function Header() {
           margin: "0 auto",
           padding: "18px 24px",
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           alignItems: "center",
+          gap: 28,
           color: "white",
         }}
       >
-        {/* LEFT: HOME */}
-        <div style={{ fontSize: 14, fontWeight: 800 }}>
-          <Link href="/" style={{ color: "#22d3ee", textDecoration: "none" }}>
+        {/* NAV (ALL ITEMS RIGHT SIDE, INCLUDING HOME) */}
+        <nav style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
+          <Link href="/" style={linkStyle}>
             Home
           </Link>
-        </div>
 
-        {/* NAV */}
-        <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-          <Link href="/" style={linkStyle}>Top Picks</Link>
-          <Link href="/betting" style={linkStyle}>Betting</Link>
-          <Link href="/sport-news" style={linkStyle}>Sport News</Link>
-          <Link href="/betting-tools" style={linkStyle}>Tools</Link>
+          <Link href="/betting" style={linkStyle}>
+            Betting
+          </Link>
+
+          <Link href="/sport-news" style={linkStyle}>
+            Sport News
+          </Link>
+
+          <Link href="/betting-tools" style={linkStyle}>
+            Tools
+          </Link>
         </nav>
       </div>
     </header>
@@ -48,6 +53,6 @@ export default function Header() {
 const linkStyle = {
   color: "white",
   textDecoration: "none",
-  fontWeight: 700,
+  fontWeight: 800,
   fontSize: 14,
 };
