@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import MatchCard from "./components/MatchCard";
@@ -24,6 +26,7 @@ type PredictionsData = {
 };
 
 const sportLinks = [
+  { id: "top-picks", label: "🔥 Top Picks" },
   { id: "football", label: "⚽ Football" },
   { id: "nba", label: "🏀 NBA" },
   { id: "nfl", label: "🏈 NFL" },
@@ -36,25 +39,27 @@ const sportLinks = [
 export default async function HomePage() {
   const predictions: PredictionsData | null = await getPredictions();
 
+  const allTopPicks =
+    predictions?.sports?.flatMap((s) => s.topPicks) ?? [];
+
   return (
-    <main className="min-h-screen text-white bg-gradient-to-b from-[#050A12] via-[#060C16] to-[#04070F]">
+    <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12]">
 
       <Header />
 
-      {/* HARD GLOW BACKDROP */}
-      <div className="pointer-events-none fixed inset-0 opacity-90">
-        <div className="absolute top-[-160px] left-1/2 h-[650px] w-[650px] -translate-x-1/2 rounded-full bg-cyan-400/20 blur-[160px]" />
-        <div className="absolute bottom-[-160px] right-10 h-[650px] w-[650px] rounded-full bg-purple-500/20 blur-[160px]" />
+      {/* GLOBAL GLOW BACKDROP */}
+      <div className="pointer-events-none fixed inset-0 opacity-80">
+        <div className="absolute top-[-140px] left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-400/15 blur-[130px]" />
+        <div className="absolute bottom-[-140px] right-10 h-[500px] w-[500px] rounded-full bg-purple-500/15 blur-[130px]" />
       </div>
 
       <div className="pt-[70px] relative z-10">
-        <div className="mx-auto max-w-[1500px] px-4 pb-12 md:px-6">
+        <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
 
           <Hero />
 
-          {/* HARD EDGE SPORT NAV */}
-          <div className="-mt-10 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
-
+          {/* SPORT NAV */}
+          <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
             {sportLinks.map((s) => (
               <a
                 key={s.id}
@@ -62,24 +67,15 @@ export default async function HomePage() {
                 className="
                   group relative
                   rounded-full
-
                   border-2 border-cyan-300/40
                   bg-[#0A1220]/80
-
                   px-6 py-2
-
                   text-sm font-extrabold
-                  tracking-wide
-
                   text-white
-
                   backdrop-blur-md
-
                   transition-all duration-200
-
                   hover:-translate-y-2
                   hover:scale-[1.06]
-
                   hover:border-cyan-200
                   hover:shadow-[0_0_35px_rgba(34,211,238,0.55)]
                   hover:text-cyan-100
@@ -92,42 +88,60 @@ export default async function HomePage() {
             ))}
           </div>
 
-          {/* AFFILIATE BLOCK - STRONG 3D */}
+          {/* AFFILIATE BLOCK */}
           <section className="
-            mt-6
-            rounded-[28px]
-
+            mt-6 rounded-[28px]
             border-2 border-cyan-300/50
-
             bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
-
             p-10 min-h-[260px]
-
             flex items-center justify-center text-center
-
             shadow-[0_40px_120px_rgba(0,0,0,0.65)]
-
-            hover:shadow-[0_50px_140px_rgba(34,211,238,0.20)]
-
-            transition
           ">
-
             <div>
-              <h3 className="text-2xl font-black text-white tracking-wide">
+              <h3 className="text-2xl font-black text-white">
                 Premium Betting Offers
               </h3>
-
               <p className="mt-3 text-sm text-slate-300">
                 Place your affiliate banners, sportsbook promos or rotating offers here.
               </p>
             </div>
+          </section>
 
+          {/* TOP PICKS SECTION (FIX) */}
+          <section id="top-picks" className="mt-16 mb-16 scroll-mt-28">
+
+            <div className="mb-6 flex items-center gap-4">
+              <h2 className="text-3xl font-black tracking-tight">
+                Top Picks
+              </h2>
+              <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+            </div>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
+
+              {allTopPicks.slice(0, 6).map((p) => {
+                const uiData = toMatchCardData(p, "Football" as SportType);
+
+                return (
+                  <div
+                    key={p.id}
+                    className="
+                      transition-all duration-200
+                      hover:-translate-y-3
+                      hover:scale-[1.05]
+                      hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
+                    "
+                  >
+                    <MatchCard data={uiData} />
+                  </div>
+                );
+              })}
+            </div>
           </section>
 
           {/* MAIN GRID */}
-          <div className="mt-12 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px]">
+          <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px]">
 
-            {/* LEFT */}
             <div className="min-w-0">
 
               {predictions?.sports?.map((sportBlock) => (
@@ -141,22 +155,11 @@ export default async function HomePage() {
                     <h2 className="text-3xl font-black tracking-tight">
                       {sportBlock.sport}
                     </h2>
-
                     <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
                   </div>
 
                   {!sportBlock.hasMatches ? (
-                    <div className="
-                      rounded-[24px]
-
-                      border-2 border-cyan-300/20
-
-                      bg-[#0B1220]
-
-                      p-6
-
-                      shadow-[0_25px_70px_rgba(0,0,0,0.55)]
-                    ">
+                    <div className="rounded-[24px] border-2 border-cyan-300/20 bg-[#0B1220] p-6">
                       <p className="text-slate-300">{sportBlock.message}</p>
                     </div>
                   ) : (
@@ -173,10 +176,8 @@ export default async function HomePage() {
                             key={p.id}
                             className="
                               transition-all duration-200
-
                               hover:-translate-y-3
                               hover:scale-[1.05]
-
                               hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
                             "
                           >
@@ -192,18 +193,13 @@ export default async function HomePage() {
               ))}
             </div>
 
-            {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-5">
 
               <div className="
                 rounded-[28px]
-
                 border-2 border-cyan-300/50
-
                 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
-
                 p-5
-
                 shadow-[0_40px_120px_rgba(0,0,0,0.65)]
               ">
 
