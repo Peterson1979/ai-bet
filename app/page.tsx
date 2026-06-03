@@ -36,14 +36,39 @@ const sportLinks = [
   { id: "mma", label: "🥊 MMA" },
 ];
 
+export const metadata = {
+  title: "Home",
+  description: "AI-generated betting predictions and value bets for multiple sports.",
+};
+
 export default async function HomePage() {
   const predictions: PredictionsData | null = await getPredictions();
 
   const allTopPicks =
     predictions?.sports?.flatMap((s) => s.topPicks) ?? [];
 
+  /* =========================
+     STRUCTURED DATA (ADDED)
+  ========================= */
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "AI Betting Predictions",
+    description:
+      "AI-generated betting predictions and value bets across multiple sports.",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+  };
+
   return (
     <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12]">
+
+      {/* STRUCTURED DATA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
 
       <Header />
 
@@ -82,7 +107,6 @@ export default async function HomePage() {
                 "
               >
                 {s.label}
-
                 <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
               </a>
             ))}
@@ -107,9 +131,8 @@ export default async function HomePage() {
             </div>
           </section>
 
-          {/* TOP PICKS SECTION (FIX) */}
+          {/* TOP PICKS */}
           <section id="top-picks" className="mt-16 mb-16 scroll-mt-28">
-
             <div className="mb-6 flex items-center gap-4">
               <h2 className="text-3xl font-black tracking-tight">
                 Top Picks
@@ -118,20 +141,11 @@ export default async function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
-
               {allTopPicks.slice(0, 6).map((p) => {
                 const uiData = toMatchCardData(p, "Football" as SportType);
 
                 return (
-                  <div
-                    key={p.id}
-                    className="
-                      transition-all duration-200
-                      hover:-translate-y-3
-                      hover:scale-[1.05]
-                      hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
-                    "
-                  >
+                  <div key={p.id}>
                     <MatchCard data={uiData} />
                   </div>
                 );
@@ -143,14 +157,12 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px]">
 
             <div className="min-w-0">
-
               {predictions?.sports?.map((sportBlock) => (
                 <section
                   key={sportBlock.sport}
                   id={sportBlock.sport.toLowerCase()}
                   className="mb-16 scroll-mt-28"
                 >
-
                   <div className="mb-6 flex items-center gap-4">
                     <h2 className="text-3xl font-black tracking-tight">
                       {sportBlock.sport}
@@ -164,7 +176,6 @@ export default async function HomePage() {
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
-
                       {sportBlock.topPicks.map((p) => {
                         const uiData = toMatchCardData(
                           p,
@@ -172,29 +183,18 @@ export default async function HomePage() {
                         );
 
                         return (
-                          <div
-                            key={p.id}
-                            className="
-                              transition-all duration-200
-                              hover:-translate-y-3
-                              hover:scale-[1.05]
-                              hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
-                            "
-                          >
+                          <div key={p.id}>
                             <MatchCard data={uiData} />
                           </div>
                         );
                       })}
-
                     </div>
                   )}
-
                 </section>
               ))}
             </div>
 
             <aside className="h-fit xl:sticky xl:top-5">
-
               <div className="
                 rounded-[28px]
                 border-2 border-cyan-300/50
@@ -202,7 +202,6 @@ export default async function HomePage() {
                 p-5
                 shadow-[0_40px_120px_rgba(0,0,0,0.65)]
               ">
-
                 <h2 className="text-2xl font-black text-white">
                   Top Betting Sites
                 </h2>
@@ -212,9 +211,7 @@ export default async function HomePage() {
                 </p>
 
                 <TopBettingSites />
-
               </div>
-
             </aside>
 
           </div>

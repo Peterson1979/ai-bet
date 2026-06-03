@@ -3,11 +3,15 @@ import { getLatestNews } from "@/app/lib/news";
 import { getSidebarSites } from "@/app/lib/affiliates";
 import Header from "@/app/components/Header";
 import SimpleFooter from "@/app/components/SimpleFooter";
-import Link from "next/link";
 
 const SPORT_EMOJI: Record<string, string> = {
-  Football: "⚽", NBA: "🏀", NFL: "🏈",
-  Hockey: "🏒", Tennis: "🎾", MLB: "⚾", MMA: "🥊",
+  Football: "⚽",
+  NBA: "🏀",
+  NFL: "🏈",
+  Hockey: "🏒",
+  Tennis: "🎾",
+  MLB: "⚾",
+  MMA: "🥊",
 };
 
 function timeAgo(pubDate: string): string {
@@ -19,7 +23,9 @@ function timeAgo(pubDate: string): string {
     const hrs = Math.floor(mins / 60);
     if (hrs < 24) return `${hrs}h ago`;
     return `${Math.floor(hrs / 24)}d ago`;
-  } catch { return ""; }
+  } catch {
+    return "";
+  }
 }
 
 export default async function SportNewsPage() {
@@ -34,9 +40,28 @@ export default async function SportNewsPage() {
     return acc;
   }, {});
 
+  // ✅ STRUCTURED DATA (SPORT NEWS PAGE)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Sport News",
+    description:
+      "Latest sports news across Football, NBA, NFL, Hockey, Tennis, MLB and MMA",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL}/sport-news`,
+  };
+
   return (
     <main className="min-h-screen bg-[#060B14] text-white">
       <Header />
+
+      {/* SEO STRUCTURED DATA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
+
       <div className="pt-[70px]">
         <div className="mx-auto max-w-[1500px] px-4 md:px-6 pb-16">
 
@@ -78,7 +103,9 @@ export default async function SportNewsPage() {
                           <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">
                             {item.source}
                           </span>
-                          <span className="text-[10px] text-slate-400">{timeAgo(item.pubDate)}</span>
+                          <span className="text-[10px] text-slate-400">
+                            {timeAgo(item.pubDate)}
+                          </span>
                         </div>
                       </a>
                     ))}
@@ -87,9 +114,10 @@ export default async function SportNewsPage() {
               ))}
             </div>
 
-            {/* SIDEBAR — affiliate */}
+            {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-24 space-y-5">
               <h2 className="text-xl font-black text-white">Top Betting Sites</h2>
+
               {sites.map((site) => (
                 <a
                   key={site.id}
@@ -105,9 +133,12 @@ export default async function SportNewsPage() {
                     </div>
                     <div className="rounded-xl border border-emerald-400/40 bg-emerald-500/10 px-3 py-2 text-center">
                       <div className="text-[10px] text-slate-400">Rating</div>
-                      <div className="font-black text-emerald-300">{site.rating}</div>
+                      <div className="font-black text-emerald-300">
+                        {site.rating}
+                      </div>
                     </div>
                   </div>
+
                   <div className="mt-4 rounded-full border border-cyan-400/30 bg-cyan-500/10 py-2 text-center text-xs font-bold text-cyan-300 group-hover:bg-cyan-400/20">
                     Visit Site →
                   </div>
@@ -116,6 +147,7 @@ export default async function SportNewsPage() {
             </aside>
           </div>
         </div>
+
         <SimpleFooter />
       </div>
     </main>
