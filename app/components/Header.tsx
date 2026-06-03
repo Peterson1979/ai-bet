@@ -1,4 +1,4 @@
-import Header from "./components/Header";
+import Header from "../components/Header";
 import Hero from "./components/Hero";
 import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
