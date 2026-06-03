@@ -27,10 +27,14 @@ export default function Header() {
           color: "white",
         }}
       >
-        {/* NAV (ALL ITEMS RIGHT SIDE, INCLUDING HOME) */}
         <nav style={{ display: "flex", gap: 22, flexWrap: "wrap" }}>
+          
           <Link href="/" style={linkStyle}>
             Home
+          </Link>
+
+          <Link href="/#top-picks" style={linkStyle}>
+            Top Picks
           </Link>
 
           <Link href="/betting" style={linkStyle}>
@@ -44,6 +48,7 @@ export default function Header() {
           <Link href="/betting-tools" style={linkStyle}>
             Tools
           </Link>
+
         </nav>
       </div>
     </header>
