@@ -36,19 +36,16 @@ const sportLinks = [
 export default async function HomePage() {
   const predictions: PredictionsData | null = await getPredictions();
 
-  /* ========================= STRUCTURED DATA ========================= */
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "AI Betting Predictions",
-    description:
-      "AI-generated betting predictions and value bets for multiple sports.",
+    description: "AI-generated betting predictions and value bets for multiple sports.",
     url: process.env.NEXT_PUBLIC_SITE_URL,
   };
 
   return (
     <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12]">
-      {/* STRUCTURED DATA */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -56,7 +53,6 @@ export default async function HomePage() {
 
       <Header />
 
-      {/* GLOBAL GLOW BACKDROP */}
       <div className="pointer-events-none fixed inset-0 opacity-80">
         <div className="absolute top-[-140px] left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-400/15 blur-[130px]" />
         <div className="absolute bottom-[-140px] right-10 h-[500px] w-[500px] rounded-full bg-purple-500/15 blur-[130px]" />
@@ -66,36 +62,24 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
           <Hero />
 
-         {sportLinks.map((s) => (
-  
-    key={s.id}
-    href={`#${s.id}`}
-    className="
-      group relative rounded-full border-2 border-cyan-300/40
-      bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white
-      backdrop-blur-md transition-all duration-200
-      hover:-translate-y-2 hover:scale-[1.06]
-      hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)]
-      hover:text-cyan-100
-    "
-  >
-    {s.label}
-    <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
-  </a>
-))}
+          {/* SPORT NAV */}
+          <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
+            {sportLinks.map((s) => (
+              
+                key={s.id}
+                href={"#" + s.id}
+                className="group relative rounded-full border-2 border-cyan-300/40 bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-2 hover:scale-[1.06] hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)] hover:text-cyan-100"
+              >
+                {s.label}
+                <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
+              </a>
+            ))}
           </div>
 
           {/* AFFILIATE BLOCK */}
-          <section className="
-            mt-6 rounded-[28px] border-2 border-cyan-300/50
-            bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
-            p-10 min-h-[260px] flex items-center justify-center text-center
-            shadow-[0_40px_120px_rgba(0,0,0,0.65)]
-          ">
+          <section className="mt-6 rounded-[28px] border-2 border-cyan-300/50 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220] p-10 min-h-[260px] flex items-center justify-center text-center shadow-[0_40px_120px_rgba(0,0,0,0.65)]">
             <div>
-              <h3 className="text-2xl font-black text-white">
-                Premium Betting Offers
-              </h3>
+              <h3 className="text-2xl font-black text-white">Premium Betting Offers</h3>
               <p className="mt-3 text-sm text-slate-300">
                 Place your affiliate banners, sportsbook promos or rotating offers here.
               </p>
@@ -105,12 +89,11 @@ export default async function HomePage() {
           {/* MAIN GRID */}
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px] mt-16">
             <div className="min-w-0">
-              {/* TOP PICKS ANCHOR — cím, grid nélkül */}
+
+              {/* TOP PICKS ANCHOR */}
               <section id="top-picks" className="mb-16 scroll-mt-28">
                 <div className="mb-6 flex items-center gap-4">
-                  <h2 className="text-3xl font-black tracking-tight">
-                    Top Picks
-                  </h2>
+                  <h2 className="text-3xl font-black tracking-tight">Top Picks</h2>
                   <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
                 </div>
               </section>
@@ -135,18 +118,11 @@ export default async function HomePage() {
                   ) : (
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
                       {sportBlock.topPicks.map((p) => {
-                        const uiData = toMatchCardData(
-                          p,
-                          sportBlock.sport as SportType
-                        );
+                        const uiData = toMatchCardData(p, sportBlock.sport as SportType);
                         return (
                           <div
                             key={p.id}
-                            className="
-                              transition-all duration-200
-                              hover:-translate-y-3 hover:scale-[1.05]
-                              hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
-                            "
+                            className="transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]"
                           >
                             <MatchCard data={uiData} />
                           </div>
@@ -159,14 +135,8 @@ export default async function HomePage() {
             </div>
 
             <aside className="h-fit xl:sticky xl:top-5">
-              <div className="
-                rounded-[28px] border-2 border-cyan-300/50
-                bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
-                p-5 shadow-[0_40px_120px_rgba(0,0,0,0.65)]
-              ">
-                <h2 className="text-2xl font-black text-white">
-                  Top Betting Sites
-                </h2>
+              <div className="rounded-[28px] border-2 border-cyan-300/50 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220] p-5 shadow-[0_40px_120px_rgba(0,0,0,0.65)]">
+                <h2 className="text-2xl font-black text-white">Top Betting Sites</h2>
                 <p className="mt-1 text-sm text-slate-300 mb-5">
                   Recommended sportsbooks & offers
                 </p>
