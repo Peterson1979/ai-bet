@@ -7,7 +7,8 @@ import Footer from "./Footer";
 import { getPredictions } from "../lib/getPredictions";
 
 import type { SportType } from "../types/match";
-import type { PredictionCard, MarketType } from "@/app/types/prediction";
+import type { PredictionCard } from "@/app/types/prediction";
+import type { MarketType } from "@/app/types/match";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 
 type SportBlock = {
