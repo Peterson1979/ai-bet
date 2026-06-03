@@ -21,7 +21,7 @@ export default function Hero() {
       </div>
 
       {/* CONTENT */}
-      <div className="absolute top-0 left-0 right-0 z-10 flex flex-col px-4 md:px-8 pt-10 md:pt-16 text-center">
+      <div className="absolute top-0 left-0 right-0 z-10 flex flex-col px-4 md:px-8 pt-5 md:pt-8 text-center">
 
         <h1 className="text-4xl md:text-6xl font-black text-white drop-shadow-md">
           AI Tips
