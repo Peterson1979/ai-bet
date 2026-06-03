@@ -1,7 +1,7 @@
 // app/betting/page.tsx
 import { getSidebarSites } from "@/app/lib/affiliates";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+
 
 export default function BettingPage() {
   const sites = getSidebarSites();

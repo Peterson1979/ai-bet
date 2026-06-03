@@ -21,7 +21,7 @@ export default function Hero() {
       </div>
 
       {/* CONTENT */}
-      <div className="relative z-10 flex flex-col justify-start h-full px-4 pt-16 pb-20 md:px-8 md:pt-24 md:pb-28 text-center">
+      <div className="relative z-10 flex flex-col justify-start h-full px-4 pt-12 pb-20 md:px-8 md:pt-20 md:pb-28 text-center">
 
         <h1 className="text-4xl md:text-6xl font-black text-white drop-shadow-md">
           AI Tips
