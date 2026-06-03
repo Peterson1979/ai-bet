@@ -4,7 +4,7 @@ import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
 
-import { getPredictions } from "@/app/lib/getPredictions";
+import { getPredictions } from "./lib/getPredictions";
 
 import type { SportType } from "./types/match";
 import type { PredictionCard } from "@/app/types/prediction";
