@@ -1,7 +1,7 @@
 // app/betting/page.tsx
 import { getSidebarSites } from "@/app/lib/affiliates";
 import Header from "@/app/components/Header";
-
+import SimpleFooter from "@/app/components/SimpleFooter";
 
 export default function BettingPage() {
   const sites = getSidebarSites();
@@ -69,7 +69,7 @@ export default function BettingPage() {
           </div>
 
         </div>
-        <Footer />
+        <SimpleFooter />
       </div>
     </main>
   );

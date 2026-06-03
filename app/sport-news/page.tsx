@@ -2,7 +2,7 @@
 import { getLatestNews } from "@/app/lib/news";
 import { getSidebarSites } from "@/app/lib/affiliates";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+import SimpleFooter from "@/app/components/SimpleFooter";
 import Link from "next/link";
 
 const SPORT_EMOJI: Record<string, string> = {
@@ -116,7 +116,7 @@ export default async function SportNewsPage() {
             </aside>
           </div>
         </div>
-        <Footer />
+        <SimpleFooter />
       </div>
     </main>
   );

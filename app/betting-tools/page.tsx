@@ -2,7 +2,7 @@
 "use client";
 import { useState } from "react";
 import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
+import SimpleFooter from "@/app/components/SimpleFooter";
 
 // ========================
 // ODDS CONVERTER
@@ -280,7 +280,7 @@ export default function BettingToolsPage() {
           </div>
 
         </div>
-        <Footer />
+        <SimpleFooter />
       </div>
     </main>
   );
