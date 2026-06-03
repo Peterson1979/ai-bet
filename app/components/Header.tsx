@@ -1,12 +1,12 @@
-import Header from "../components/Header";
-import Hero from "./components/Hero";
-import MatchCard from "./components/MatchCard";
-import TopBettingSites from "./components/TopBettingSites";
-import Footer from "./components/Footer";
+import Header from "./Header";
+import Hero from "./Hero";
+import MatchCard from "./MatchCard";
+import TopBettingSites from "./TopBettingSites";
+import Footer from "./Footer";
 
-import { getPredictions } from "./lib/getPredictions";
+import { getPredictions } from "../lib/getPredictions";
 
-import type { SportType } from "./types/match";
+import type { SportType } from "../types/match";
 import type { PredictionCard } from "@/app/types/prediction";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 
