@@ -1,3 +1,4 @@
+import type { PredictionCard } from "@/app/types/prediction";
 import type { MarketType } from "@/app/types/match";
 
 export type PredictionCard = {
