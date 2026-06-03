@@ -5,49 +5,59 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        zIndex: 100,
-        backgroundColor: "rgba(6,11,20,0.75)",
-        backdropFilter: "blur(10px)",
-      }}
+      className="
+        fixed top-0 left-0 w-full z-50
+        bg-[#060B14]/75 backdrop-blur-md
+        border-b border-cyan-400/10
+      "
     >
       <div
-        style={{
-          maxWidth: 1400,
-          margin: "0 auto",
-          padding: "18px 24px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          color: "white",
-        }}
+        className="
+          max-w-[1400px] mx-auto
+          px-4 py-4
+          flex items-center justify-between
+        "
       >
-        {/* LEFT: HOME */}
-        <div style={{ fontSize: 14, fontWeight: 800 }}>
-          <Link href="/" style={{ color: "#22d3ee", textDecoration: "none" }}>
+
+        {/* NAV LEFT (desktop: nav, mobile: hidden Home handled in right) */}
+        <nav
+          className="
+            flex items-center gap-5
+            text-sm font-bold
+          "
+        >
+          <Link href="/" className={linkClass}>
+            Top Picks
+          </Link>
+          <Link href="/betting" className={linkClass}>
+            Betting
+          </Link>
+          <Link href="/sport-news" className={linkClass}>
+            Sport News
+          </Link>
+          <Link href="/betting-tools" className={linkClass}>
+            Tools
+          </Link>
+        </nav>
+
+        {/* RIGHT SIDE (Home moved here + fixes mobile crowding) */}
+        <div className="flex items-center gap-6">
+          <Link
+            href="/"
+            className="
+              text-cyan-300 font-black text-sm
+              hover:text-cyan-200
+              transition
+            "
+          >
             Home
           </Link>
         </div>
 
-        {/* NAV */}
-        <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-          <Link href="/" style={linkStyle}>Top Picks</Link>
-          <Link href="/betting" style={linkStyle}>Betting</Link>
-          <Link href="/sport-news" style={linkStyle}>Sport News</Link>
-          <Link href="/betting-tools" style={linkStyle}>Tools</Link>
-        </nav>
       </div>
     </header>
   );
 }
 
-const linkStyle = {
-  color: "white",
-  textDecoration: "none",
-  fontWeight: 700,
-  fontSize: 14,
-};
+const linkClass =
+  "text-white font-bold text-sm transition hover:text-cyan-300";
