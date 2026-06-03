@@ -64,7 +64,7 @@ export default async function HomePage() {
 
           {/* SPORT NAV */}
           <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
-            {sportLinks.map((s) => (
+            {sportLinks.map((s) => (<a
               
                 key={s.id}
                 href={"#" + s.id}
