@@ -66,25 +66,23 @@ export default async function HomePage() {
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
           <Hero />
 
-          {/* SPORT NAV */}
-          <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
-            {sportLinks.map((s) => (
-              
-                key={s.id}
-                href={`#${s.id}`}
-                className="
-                  group relative rounded-full border-2 border-cyan-300/40
-                  bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white
-                  backdrop-blur-md transition-all duration-200
-                  hover:-translate-y-2 hover:scale-[1.06]
-                  hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)]
-                  hover:text-cyan-100
-                "
-              >
-                {s.label}
-                <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
-              </a>
-            ))}
+         {sportLinks.map((s) => (
+  
+    key={s.id}
+    href={`#${s.id}`}
+    className="
+      group relative rounded-full border-2 border-cyan-300/40
+      bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white
+      backdrop-blur-md transition-all duration-200
+      hover:-translate-y-2 hover:scale-[1.06]
+      hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)]
+      hover:text-cyan-100
+    "
+  >
+    {s.label}
+    <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
+  </a>
+))}
           </div>
 
           {/* AFFILIATE BLOCK */}
