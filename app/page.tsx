@@ -36,11 +36,6 @@ const sportLinks = [
   { id: "mma", label: "🥊 MMA" },
 ];
 
-export const metadata = {
-  title: "Home",
-  description: "AI-generated betting predictions and value bets for multiple sports.",
-};
-
 export default async function HomePage() {
   const predictions: PredictionsData | null = await getPredictions();
 
@@ -48,15 +43,15 @@ export default async function HomePage() {
     predictions?.sports?.flatMap((s) => s.topPicks) ?? [];
 
   /* =========================
-     STRUCTURED DATA (ADDED)
+     STRUCTURED DATA
   ========================= */
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "AI Betting Predictions",
     description:
-      "AI-generated betting predictions and value bets across multiple sports.",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}`,
+      "AI-generated betting predictions and value bets for multiple sports.",
+    url: process.env.NEXT_PUBLIC_SITE_URL,
   };
 
   return (
@@ -107,6 +102,7 @@ export default async function HomePage() {
                 "
               >
                 {s.label}
+
                 <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
               </a>
             ))}
@@ -131,7 +127,7 @@ export default async function HomePage() {
             </div>
           </section>
 
-          {/* TOP PICKS */}
+          {/* TOP PICKS SECTION */}
           <section id="top-picks" className="mt-16 mb-16 scroll-mt-28">
             <div className="mb-6 flex items-center gap-4">
               <h2 className="text-3xl font-black tracking-tight">
@@ -145,7 +141,15 @@ export default async function HomePage() {
                 const uiData = toMatchCardData(p, "Football" as SportType);
 
                 return (
-                  <div key={p.id}>
+                  <div
+                    key={p.id}
+                    className="
+                      transition-all duration-200
+                      hover:-translate-y-3
+                      hover:scale-[1.05]
+                      hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
+                    "
+                  >
                     <MatchCard data={uiData} />
                   </div>
                 );
@@ -183,7 +187,15 @@ export default async function HomePage() {
                         );
 
                         return (
-                          <div key={p.id}>
+                          <div
+                            key={p.id}
+                            className="
+                              transition-all duration-200
+                              hover:-translate-y-3
+                              hover:scale-[1.05]
+                              hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
+                            "
+                          >
                             <MatchCard data={uiData} />
                           </div>
                         );
