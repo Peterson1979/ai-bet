@@ -1,13 +1,10 @@
 "use client";
-
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import MatchCard from "./components/MatchCard";
 import TopBettingSites from "./components/TopBettingSites";
 import Footer from "./components/Footer";
-
 import { getPredictions } from "./lib/getPredictions";
-
 import type { SportType } from "./types/match";
 import type { PredictionCard } from "@/app/types/prediction";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
@@ -39,12 +36,7 @@ const sportLinks = [
 export default async function HomePage() {
   const predictions: PredictionsData | null = await getPredictions();
 
-  const allTopPicks =
-    predictions?.sports?.flatMap((s) => s.topPicks) ?? [];
-
-  /* =========================
-     STRUCTURED DATA
-  ========================= */
+  /* ========================= STRUCTURED DATA ========================= */
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -56,13 +48,10 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12]">
-
       {/* STRUCTURED DATA */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd),
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <Header />
@@ -75,34 +64,24 @@ export default async function HomePage() {
 
       <div className="pt-[70px] relative z-10">
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
-
           <Hero />
 
           {/* SPORT NAV */}
           <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
             {sportLinks.map((s) => (
-              <a
+              
                 key={s.id}
                 href={`#${s.id}`}
                 className="
-                  group relative
-                  rounded-full
-                  border-2 border-cyan-300/40
-                  bg-[#0A1220]/80
-                  px-6 py-2
-                  text-sm font-extrabold
-                  text-white
-                  backdrop-blur-md
-                  transition-all duration-200
-                  hover:-translate-y-2
-                  hover:scale-[1.06]
-                  hover:border-cyan-200
-                  hover:shadow-[0_0_35px_rgba(34,211,238,0.55)]
+                  group relative rounded-full border-2 border-cyan-300/40
+                  bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white
+                  backdrop-blur-md transition-all duration-200
+                  hover:-translate-y-2 hover:scale-[1.06]
+                  hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)]
                   hover:text-cyan-100
                 "
               >
                 {s.label}
-
                 <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
               </a>
             ))}
@@ -110,11 +89,9 @@ export default async function HomePage() {
 
           {/* AFFILIATE BLOCK */}
           <section className="
-            mt-6 rounded-[28px]
-            border-2 border-cyan-300/50
+            mt-6 rounded-[28px] border-2 border-cyan-300/50
             bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
-            p-10 min-h-[260px]
-            flex items-center justify-center text-center
+            p-10 min-h-[260px] flex items-center justify-center text-center
             shadow-[0_40px_120px_rgba(0,0,0,0.65)]
           ">
             <div>
@@ -127,40 +104,19 @@ export default async function HomePage() {
             </div>
           </section>
 
-          {/* TOP PICKS SECTION */}
-          <section id="top-picks" className="mt-16 mb-16 scroll-mt-28">
-            <div className="mb-6 flex items-center gap-4">
-              <h2 className="text-3xl font-black tracking-tight">
-                Top Picks
-              </h2>
-              <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
-            </div>
-
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
-              {allTopPicks.slice(0, 6).map((p) => {
-                const uiData = toMatchCardData(p, "Football" as SportType);
-
-                return (
-                  <div
-                    key={p.id}
-                    className="
-                      transition-all duration-200
-                      hover:-translate-y-3
-                      hover:scale-[1.05]
-                      hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
-                    "
-                  >
-                    <MatchCard data={uiData} />
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
           {/* MAIN GRID */}
-          <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px]">
-
+          <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px] mt-16">
             <div className="min-w-0">
+              {/* TOP PICKS ANCHOR — cím, grid nélkül */}
+              <section id="top-picks" className="mb-16 scroll-mt-28">
+                <div className="mb-6 flex items-center gap-4">
+                  <h2 className="text-3xl font-black tracking-tight">
+                    Top Picks
+                  </h2>
+                  <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+                </div>
+              </section>
+
               {predictions?.sports?.map((sportBlock) => (
                 <section
                   key={sportBlock.sport}
@@ -185,14 +141,12 @@ export default async function HomePage() {
                           p,
                           sportBlock.sport as SportType
                         );
-
                         return (
                           <div
                             key={p.id}
                             className="
                               transition-all duration-200
-                              hover:-translate-y-3
-                              hover:scale-[1.05]
+                              hover:-translate-y-3 hover:scale-[1.05]
                               hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
                             "
                           >
@@ -208,33 +162,26 @@ export default async function HomePage() {
 
             <aside className="h-fit xl:sticky xl:top-5">
               <div className="
-                rounded-[28px]
-                border-2 border-cyan-300/50
+                rounded-[28px] border-2 border-cyan-300/50
                 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
-                p-5
-                shadow-[0_40px_120px_rgba(0,0,0,0.65)]
+                p-5 shadow-[0_40px_120px_rgba(0,0,0,0.65)]
               ">
                 <h2 className="text-2xl font-black text-white">
                   Top Betting Sites
                 </h2>
-
                 <p className="mt-1 text-sm text-slate-300 mb-5">
                   Recommended sportsbooks & offers
                 </p>
-
                 <TopBettingSites />
               </div>
             </aside>
-
           </div>
 
           <div className="mt-16">
             <Footer />
           </div>
-
         </div>
       </div>
-
     </main>
   );
 }
