@@ -37,23 +37,24 @@ export default async function HomePage() {
   const predictions: PredictionsData | null = await getPredictions();
 
   return (
-    <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12]">
+    <main className="min-h-screen text-white bg-gradient-to-b from-[#050A12] via-[#060C16] to-[#04070F]">
 
       <Header />
 
-      {/* GLOBAL GLOW LAYER */}
-      <div className="pointer-events-none fixed inset-0 opacity-80">
-        <div className="absolute top-[-140px] left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-400/15 blur-[130px]" />
-        <div className="absolute bottom-[-140px] right-10 h-[500px] w-[500px] rounded-full bg-purple-500/15 blur-[130px]" />
+      {/* HARD GLOW BACKDROP */}
+      <div className="pointer-events-none fixed inset-0 opacity-90">
+        <div className="absolute top-[-160px] left-1/2 h-[650px] w-[650px] -translate-x-1/2 rounded-full bg-cyan-400/20 blur-[160px]" />
+        <div className="absolute bottom-[-160px] right-10 h-[650px] w-[650px] rounded-full bg-purple-500/20 blur-[160px]" />
       </div>
 
       <div className="pt-[70px] relative z-10">
-        <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
+        <div className="mx-auto max-w-[1500px] px-4 pb-12 md:px-6">
 
           <Hero />
 
-          {/* SPORT NAV (STRONGER 3D + BORDER) */}
-          <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
+          {/* HARD EDGE SPORT NAV */}
+          <div className="-mt-10 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
+
             {sportLinks.map((s) => (
               <a
                 key={s.id}
@@ -61,38 +62,62 @@ export default async function HomePage() {
                 className="
                   group relative
                   rounded-full
-                  border-2 border-cyan-400/30
-                  bg-[#0B1220]/70
-                  px-5 py-2
-                  text-sm font-bold
+
+                  border-2 border-cyan-300/40
+                  bg-[#0A1220]/80
+
+                  px-6 py-2
+
+                  text-sm font-extrabold
+                  tracking-wide
+
                   text-white
+
                   backdrop-blur-md
-                  transition-all duration-300
 
-                  hover:-translate-y-1
-                  hover:scale-[1.03]
+                  transition-all duration-200
 
-                  hover:border-cyan-200/80
-                  hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]
-                  hover:text-cyan-200
+                  hover:-translate-y-2
+                  hover:scale-[1.06]
+
+                  hover:border-cyan-200
+                  hover:shadow-[0_0_35px_rgba(34,211,238,0.55)]
+                  hover:text-cyan-100
                 "
               >
                 {s.label}
 
-                <span className="absolute left-1/2 bottom-0 h-[2px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-2/3" />
+                <span className="absolute left-1/2 bottom-0 h-[3px] w-0 -translate-x-1/2 bg-cyan-300 transition-all duration-300 group-hover:w-3/4" />
               </a>
             ))}
           </div>
 
-          {/* AFFILIATE BLOCK */}
-          <section className="mt-6 rounded-[28px] border-2 border-cyan-400/30 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-10 min-h-[260px] flex items-center justify-center text-center shadow-[0_25px_70px_rgba(0,0,0,0.45)]">
+          {/* AFFILIATE BLOCK - STRONG 3D */}
+          <section className="
+            mt-6
+            rounded-[28px]
+
+            border-2 border-cyan-300/50
+
+            bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
+
+            p-10 min-h-[260px]
+
+            flex items-center justify-center text-center
+
+            shadow-[0_40px_120px_rgba(0,0,0,0.65)]
+
+            hover:shadow-[0_50px_140px_rgba(34,211,238,0.20)]
+
+            transition
+          ">
 
             <div>
-              <h3 className="text-2xl font-black text-white">
+              <h3 className="text-2xl font-black text-white tracking-wide">
                 Premium Betting Offers
               </h3>
 
-              <p className="mt-2 text-sm text-slate-300">
+              <p className="mt-3 text-sm text-slate-300">
                 Place your affiliate banners, sportsbook promos or rotating offers here.
               </p>
             </div>
@@ -102,6 +127,7 @@ export default async function HomePage() {
           {/* MAIN GRID */}
           <div className="mt-12 grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px]">
 
+            {/* LEFT */}
             <div className="min-w-0">
 
               {predictions?.sports?.map((sportBlock) => (
@@ -112,15 +138,25 @@ export default async function HomePage() {
                 >
 
                   <div className="mb-6 flex items-center gap-4">
-                    <h2 className="text-2xl font-black md:text-3xl">
+                    <h2 className="text-3xl font-black tracking-tight">
                       {sportBlock.sport}
                     </h2>
 
-                    <div className="h-[2px] flex-1 bg-gradient-to-r from-cyan-400/60 to-transparent" />
+                    <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
                   </div>
 
                   {!sportBlock.hasMatches ? (
-                    <div className="rounded-[24px] border-2 border-[#334155] bg-[#0F172A] p-6 shadow-[0_15px_40px_rgba(0,0,0,0.35)]">
+                    <div className="
+                      rounded-[24px]
+
+                      border-2 border-cyan-300/20
+
+                      bg-[#0B1220]
+
+                      p-6
+
+                      shadow-[0_25px_70px_rgba(0,0,0,0.55)]
+                    ">
                       <p className="text-slate-300">{sportBlock.message}</p>
                     </div>
                   ) : (
@@ -136,10 +172,12 @@ export default async function HomePage() {
                           <div
                             key={p.id}
                             className="
-                              transition-all duration-300
-                              hover:-translate-y-2
-                              hover:scale-[1.02]
-                              hover:shadow-[0_25px_60px_rgba(56,189,248,0.15)]
+                              transition-all duration-200
+
+                              hover:-translate-y-3
+                              hover:scale-[1.05]
+
+                              hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]
                             "
                           >
                             <MatchCard data={uiData} />
@@ -154,9 +192,20 @@ export default async function HomePage() {
               ))}
             </div>
 
+            {/* SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-5">
 
-              <div className="rounded-[28px] border-2 border-cyan-400/30 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-5 shadow-[0_25px_70px_rgba(0,0,0,0.5)]">
+              <div className="
+                rounded-[28px]
+
+                border-2 border-cyan-300/50
+
+                bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220]
+
+                p-5
+
+                shadow-[0_40px_120px_rgba(0,0,0,0.65)]
+              ">
 
                 <h2 className="text-2xl font-black text-white">
                   Top Betting Sites
@@ -167,6 +216,7 @@ export default async function HomePage() {
                 </p>
 
                 <TopBettingSites />
+
               </div>
 
             </aside>
