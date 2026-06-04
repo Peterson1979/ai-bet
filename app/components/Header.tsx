@@ -44,15 +44,15 @@ export default function Header() {
             Top Picks
           </Link>
 
-          <Link href="/betting" style={linkStyle}>
+          <Link href="/en/betting" style={linkStyle}>
             Betting
           </Link>
 
-          <Link href="/sport-news" style={linkStyle}>
+          <Link href="/en/sport-news" style={linkStyle}>
             News
           </Link>
 
-          <Link href="/betting-tools" style={linkStyle}>
+          <Link href="/en/betting-tools" style={linkStyle}>
             Tools
           </Link>
         </nav>

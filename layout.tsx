@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "AI Betting Tips - Daily Value Bets",
@@ -17,12 +18,11 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return (
     <html lang="en">
       <body className="min-h-screen bg-[#060B14] text-white antialiased">
-        {/* GLOBAL APP WRAPPER */}
         <div className="flex min-h-screen flex-col">
           {children}
         </div>
