@@ -1,4 +1,22 @@
+"use client";
+
+import { useParams } from "next/navigation";
+import { translations, Lang } from "@/app/lib/i18n";
+
 export default function SimpleFooter() {
+  const params = useParams();
+  const lang = (params?.lang as Lang) || "en";
+
+  const t = translations[lang] ?? translations.en;
+
+  const links = [
+    { href: "/legal/privacy-policy", label: t.footer.navPrivacy },
+    { href: "/legal/terms", label: t.footer.navTerms },
+    { href: "/legal/affiliate-disclosure", label: t.footer.navAffiliate },
+    { href: "/legal/responsible-gambling", label: t.footer.navResponsible },
+    { href: "/legal/cookie-policy", label: t.footer.navCookie },
+  ];
+
   return (
     <footer className="mt-20 border-t border-[#1E293B] bg-[#060B14]">
 
@@ -8,50 +26,24 @@ export default function SimpleFooter() {
 
           <div>
             <h4 className="text-lg font-black text-white">
-              AI Betting Insights
+              {t.footer.aiBettingInsights}
             </h4>
 
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-              This platform provides AI-generated sports betting analysis for informational
-              purposes only. No guarantee of winnings. Gamble responsibly.
+              {t.footer.aiBettingInsightsDesc}
             </p>
           </div>
 
           <div className="flex flex-wrap gap-5 text-sm text-slate-400">
-            <a
-              href="/legal/privacy-policy"
-              className="transition hover:text-cyan-300"
-            >
-              Privacy Policy
-            </a>
-
-            <a
-              href="/legal/terms"
-              className="transition hover:text-cyan-300"
-            >
-              Terms
-            </a>
-
-            <a
-              href="/legal/affiliate-disclosure"
-              className="transition hover:text-cyan-300"
-            >
-              Affiliate Disclosure
-            </a>
-
-            <a
-              href="/legal/responsible-gambling"
-              className="transition hover:text-cyan-300"
-            >
-              Responsible Gaming
-            </a>
-
-            <a
-              href="/legal/cookie-policy"
-              className="transition hover:text-cyan-300"
-            >
-              Cookie Policy
-            </a>
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="transition hover:text-cyan-300"
+              >
+                {l.label}
+              </a>
+            ))}
           </div>
 
         </div>
@@ -59,11 +51,11 @@ export default function SimpleFooter() {
         <div className="mt-8 flex flex-col gap-3 border-t border-[#1E293B] pt-6 md:flex-row md:items-center md:justify-between">
 
           <p className="text-[12px] text-slate-500">
-            © {new Date().getFullYear()} AI Betting Platform
+            © {new Date().getFullYear()} {t.footer.platformName}
           </p>
 
           <div className="text-[12px] text-slate-500">
-            Built with AI + Data Analytics
+            {t.footer.builtWithAi}
           </div>
 
         </div>

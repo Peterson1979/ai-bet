@@ -1,8 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { translations, Lang } from "@/app/lib/i18n";
 
 export default function Header() {
+  const params = useParams();
+  const lang = (params?.lang as Lang) || "en";
+
+  const t = translations[lang] ?? translations.en;
+
+  const nav = [
+    { href: "/", label: t.system.navHome },
+    { href: "/#top-picks", label: t.system.navTopPicks },
+    { href: "/betting", label: t.system.navBetting },
+    { href: "/news", label: t.system.navNews },
+    { href: "/tools", label: t.system.navTools },
+  ];
+
   return (
     <header
       style={{
@@ -36,25 +51,11 @@ export default function Header() {
             WebkitOverflowScrolling: "touch",
           }}
         >
-          <Link href="/" style={linkStyle}>
-            Home
-          </Link>
-
-          <Link href="/#top-picks" style={linkStyle}>
-            Top Picks
-          </Link>
-
-          <Link href="/en/betting" style={linkStyle}>
-            Betting
-          </Link>
-
-          <Link href="/en/sport-news" style={linkStyle}>
-            News
-          </Link>
-
-          <Link href="/en/betting-tools" style={linkStyle}>
-            Tools
-          </Link>
+          {nav.map((item) => (
+            <Link key={item.href} href={`/${lang}${item.href}`} style={linkStyle}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
       </div>
     </header>

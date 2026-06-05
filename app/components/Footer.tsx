@@ -1,8 +1,39 @@
-// app/components/Footer.tsx
+"use client";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { translations, Lang } from "@/app/lib/i18n";
 
 export default function Footer() {
+  const params = useParams();
+  const lang = (params?.lang as Lang) || "en";
+
+  const t = translations[lang] ?? translations.en;
+
+  const valueBetTypes = [
+    { label: t.footer.valueBet, color: "emerald-300", emoji: "🟢", desc: t.footer.valueBetDesc },
+    { label: t.footer.okBet, color: "yellow-300", emoji: "🟡", desc: t.footer.okBetDesc },
+    { label: t.footer.riskyBet, color: "red-300", emoji: "🔴", desc: t.footer.riskyBetDesc },
+    { label: t.footer.aiEvScore, color: "cyan-300", emoji: "✔️", desc: t.footer.aiEvScoreDesc },
+  ];
+
+  const metrics = [
+    { label: t.footer.aiEdge, desc: t.footer.aiEdgeDesc },
+    { label: t.footer.confidence, desc: t.footer.confidenceDesc },
+    { label: t.footer.impliedProb, desc: t.footer.impliedProbDesc },
+    { label: t.footer.risk, desc: t.footer.riskDesc },
+  ];
+
+  const navLinks = [
+    { href: "/about", label: t.footer.navAbout },
+    { href: "/contact", label: t.footer.navContact },
+    { href: "/legal/privacy-policy", label: t.footer.navPrivacy },
+    { href: "/legal/terms", label: t.footer.navTerms },
+    { href: "/legal/affiliate-disclosure", label: t.footer.navAffiliate },
+    { href: "/legal/responsible-gambling", label: t.footer.navResponsible },
+    { href: "/legal/cookie-policy", label: t.footer.navCookie },
+  ];
+
   return (
     <footer className="mt-20 border-t border-[#1E293B] bg-[#060B14]">
 
@@ -12,79 +43,36 @@ export default function Footer() {
 
           <div className="mb-10">
             <h3 className="text-3xl font-black text-white">
-              Betting Intelligence System
+              {t.footer.betIntelligence}
             </h3>
 
             <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-300">
-              AI evaluates each pick using confidence, expected value and market risk signals.
-              This system helps identify betting quality across all sports and markets.
+              {t.footer.betIntelligenceDesc}
             </p>
           </div>
 
           {/* VALUE BET TYPES */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8">
-
-            <div className="rounded-2xl border border-emerald-400/20 bg-[#0F172A] p-5">
-              <h4 className="font-black text-emerald-300">🟢 VALUE BET</h4>
-              <p className="mt-3 text-sm text-slate-300 leading-6">
-                Strong positive expected value according to the AI model.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-yellow-400/20 bg-[#0F172A] p-5">
-              <h4 className="font-black text-yellow-300">🟡 OK BET</h4>
-              <p className="mt-3 text-sm text-slate-300 leading-6">
-                Acceptable betting opportunity with moderate value.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-red-400/20 bg-[#0F172A] p-5">
-              <h4 className="font-black text-red-300">🔴 RISKY</h4>
-              <p className="mt-3 text-sm text-slate-300 leading-6">
-                Higher uncertainty or lower expected betting value.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-cyan-400/20 bg-[#0F172A] p-5">
-              <h4 className="font-black text-cyan-300">✔️ AI EV SCORE</h4>
-              <p className="mt-3 text-sm text-slate-300 leading-6">
-                AI-calculated expected value score used to rank betting opportunities.
-              </p>
-            </div>
-
+            {valueBetTypes.map((type) => (
+              <div key={type.label} className={`rounded-2xl border border-${type.color}/20 bg-[#0F172A] p-5`}>
+                <h4 className={`font-black text-${type.color}`}>
+                  {type.emoji} {type.label}
+                </h4>
+                <p className="mt-3 text-sm text-slate-300 leading-6">
+                  {type.desc}
+                </p>
+              </div>
+            ))}
           </div>
 
           {/* METRICS */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-
-            <div className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5">
-              <h4 className="text-sm font-black text-cyan-300">AI Edge</h4>
-              <p className="mt-3 text-sm leading-6 text-slate-300">
-                Difference between implied bookmaker probability and estimated AI probability.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5">
-              <h4 className="text-sm font-black text-cyan-300">Confidence</h4>
-              <p className="mt-3 text-sm leading-6 text-slate-300">
-                AI confidence score from 0–100 based on statistical signals and data.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5">
-              <h4 className="text-sm font-black text-cyan-300">Implied Probability</h4>
-              <p className="mt-3 text-sm leading-6 text-slate-300">
-                Probability derived from bookmaker odds.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5">
-              <h4 className="text-sm font-black text-cyan-300">Risk</h4>
-              <p className="mt-3 text-sm leading-6 text-slate-300">
-                Volatility and uncertainty level of predictions.
-              </p>
-            </div>
-
+            {metrics.map((metric) => (
+              <div key={metric.label} className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5">
+                <h4 className="text-sm font-black text-cyan-300">{metric.label}</h4>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{metric.desc}</p>
+              </div>
+            ))}
           </div>
 
         </div>
@@ -97,46 +85,39 @@ export default function Footer() {
 
           <div>
             <h4 className="text-lg font-black text-white">
-              AI Betting Insights
+              {t.footer.aiBettingInsights}
             </h4>
 
             <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
-              This platform provides AI-generated sports betting analysis for informational purposes only.
-              No guarantee of winnings. Gamble responsibly.
+              {t.footer.aiBettingInsightsDesc}
             </p>
           </div>
 
-          {/* NAVIGATION LINKS (FIXED) */}
+          {/* NAVIGATION LINKS */}
           <div className="flex flex-wrap gap-5 text-sm text-slate-400">
-
-            <Link href="/en/about" className="transition hover:text-cyan-300">
-              About
-            </Link>
-
-            <Link href="/en/contact" className="transition hover:text-cyan-300">
-              Contact
-            </Link>
-
-            <a href="/legal/privacy-policy" className="transition hover:text-cyan-300">
-              Privacy Policy
-            </a>
-
-            <a href="/legal/terms" className="transition hover:text-cyan-300">
-              Terms
-            </a>
-
-            <a href="/legal/affiliate-disclosure" className="transition hover:text-cyan-300">
-              Affiliate Disclosure
-            </a>
-
-            <a href="/legal/responsible-gambling" className="transition hover:text-cyan-300">
-              Responsible Gaming
-            </a>
-
-            <a href="/legal/cookie-policy" className="transition hover:text-cyan-300">
-              Cookie Policy
-            </a>
-
+            {navLinks.map((link) => {
+              const isInternal = link.href.startsWith("/");
+              if (isInternal) {
+                return (
+                  <Link
+                    key={link.href}
+                    href={`/${lang}${link.href}`}
+                    className="transition hover:text-cyan-300"
+                  >
+                    {link.label}
+                  </Link>
+                );
+              }
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="transition hover:text-cyan-300"
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </div>
 
         </div>
@@ -144,11 +125,11 @@ export default function Footer() {
         <div className="mt-8 flex flex-col gap-3 border-t border-[#1E293B] pt-6 md:flex-row md:items-center md:justify-between">
 
           <p className="text-[12px] text-slate-500">
-            © {new Date().getFullYear()} AI Betting Platform
+            © {new Date().getFullYear()} {t.footer.platformName}
           </p>
 
           <div className="text-[12px] text-slate-500">
-            Built with AI + Data Analytics
+            {t.footer.builtWithAi}
           </div>
 
         </div>
