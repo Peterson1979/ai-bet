@@ -28,7 +28,7 @@ export default function Footer() {
     { href: "/about", label: t.footer.navAbout },
     { href: "/contact", label: t.footer.navContact },
     { href: "/legal/privacy-policy", label: t.footer.navPrivacy },
-    { href: "/legal/terms", label: t.footer.navTerms },
+    { href: "/legal/terms-of-use", label: t.footer.navTerms },
     { href: "/legal/affiliate-disclosure", label: t.footer.navAffiliate },
     { href: "/legal/responsible-gambling", label: t.footer.navResponsible },
     { href: "/legal/cookie-policy", label: t.footer.navCookie },
