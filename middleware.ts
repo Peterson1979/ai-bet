@@ -1,31 +1,33 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-const LANGS = ["en","es","de","fr","pt","it","hi","ar","zh","ja"];
+const LANGS = ["en", "hu", "de", "fr", "es", "it", "pt", "ar", "zh", "ja", "hi"];
 
-export function middleware(req: Request) {
-  const url = new URL(req.url);
-  const { pathname } = url;
+function detectLang(req: NextRequest): string {
+  const acceptLang = req.headers.get("accept-language");
+  if (!acceptLang) return "en";
+  const preferred = acceptLang
+    .split(",")
+    .map((l) => l.split(";")[0].trim().slice(0, 2).toLowerCase());
+  return preferred.find((l) => LANGS.includes(l)) ?? "en";
+}
 
-  // ❌ ne nyúlj static assetekhez
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.startsWith("/api") ||
-    pathname.startsWith("/favicon.ico") ||
-    pathname.startsWith("/hero.jpg") ||
-    pathname.includes(".") // minden file: .jpg .png .svg stb.
-  ) {
+export function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
+
+  // Ha már van nyelv az URL-ben, ne csinálj semmit
+  if (LANGS.some((l) => pathname.startsWith(`/${l}`))) {
     return NextResponse.next();
   }
 
-  const hasLang = LANGS.some(
-    (l) => pathname === `/${l}` || pathname.startsWith(`/${l}/`)
-  );
+  // Csak a gyökér "/" route-ot irányítsuk át
+  if (pathname === "/") {
+    const lang = detectLang(req);
+    return NextResponse.redirect(new URL(`/${lang}`, req.url));
+  }
 
-  if (hasLang) return NextResponse.next();
-
-  return NextResponse.redirect(new URL(`/en${pathname}`, req.url));
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|favicon.ico).*)"],
+  matcher: ["/"],
 };
