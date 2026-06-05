@@ -25,11 +25,13 @@ type PredictionsData = {
 export default async function HomePage({
   params,
 }: {
-  params: { lang: Lang };
+  params: Promise<{ lang: Lang }>;
 }) {
+  const { lang } = await params;
+
   const predictions: PredictionsData | null = await getPredictions();
 
-  const t = translations[params.lang] ?? translations.en;
+  const t = translations[lang] ?? translations.en;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -78,14 +80,14 @@ export default async function HomePage({
       <div className="pt-[70px] relative z-10">
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
 
-          <Hero lang={params.lang} />
+          <Hero lang={lang} />
 
           {/* SPORT NAV */}
           <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
             {sportLinks.map((s) => (
               <a
                 key={s.id}
-                href={"#" + s.id}
+                href={`#${s.id}`}
                 className="group relative rounded-full border-2 border-cyan-300/40 bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-2 hover:scale-[1.06] hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)] hover:text-cyan-100"
               >
                 {s.label}
@@ -100,6 +102,7 @@ export default async function HomePage({
               <h3 className="text-2xl font-black text-white">
                 {t.premiumOffers}
               </h3>
+
               <p className="mt-3 text-sm text-slate-300">
                 {t.premiumOffersDesc}
               </p>
@@ -110,12 +113,14 @@ export default async function HomePage({
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px] mt-16">
             <div className="min-w-0">
 
+              {/* TOP PICKS */}
               <section id="top-picks" className="mb-16 scroll-mt-28">
-                <div className="mb-6 flex items-center gap-4">
-                  <h2 className="text-3xl font-black tracking-tight">
+                <div className="mb-6 flex flex-col items-center">
+                  <h2 className="text-3xl font-black tracking-tight text-center">
                     {t.topPicks}
                   </h2>
-                  <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+
+                  <div className="mt-3 h-[3px] w-64 bg-gradient-to-r from-transparent via-cyan-300/80 to-transparent" />
                 </div>
               </section>
 
@@ -127,10 +132,15 @@ export default async function HomePage({
                 >
                   <div className="mb-6 flex items-center gap-4">
                     <h2 className="text-3xl font-black tracking-tight">
-                      {t.sports[
-                        sportKeyMap[sportBlock.sport.toLowerCase()] ?? "football"
-                      ]}
+                      {
+                        t.sports[
+                          sportKeyMap[
+                            sportBlock.sport.toLowerCase()
+                          ] ?? "football"
+                        ]
+                      }
                     </h2>
+
                     <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
                   </div>
 
@@ -153,7 +163,10 @@ export default async function HomePage({
                             key={p.id}
                             className="transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]"
                           >
-                            <MatchCard data={uiData} lang={params.lang} />
+                            <MatchCard
+                              data={uiData}
+                              lang={lang}
+                            />
                           </div>
                         );
                       })}
