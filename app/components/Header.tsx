@@ -51,11 +51,18 @@ export default function Header() {
             WebkitOverflowScrolling: "touch",
           }}
         >
-          {nav.map((item) => (
-            <Link key={item.href} href={`/${lang}${item.href}`} style={linkStyle}>
-              {item.label}
-            </Link>
-          ))}
+          {nav.map((item) => {
+            const href =
+              item.href === "/"
+                ? `/${lang}`
+                : `/${lang}${item.href}`;
+
+            return (
+              <Link key={item.href} href={href} style={linkStyle}>
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
       </div>
     </header>

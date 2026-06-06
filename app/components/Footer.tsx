@@ -11,17 +11,17 @@ export default function Footer() {
   const t = translations[lang] ?? translations.en;
 
   const valueBetTypes = [
-    { label: t.footer.valueBet, color: "emerald-300", emoji: "🟢", desc: t.footer.valueBetDesc },
-    { label: t.footer.okBet, color: "yellow-300", emoji: "🟡", desc: t.footer.okBetDesc },
-    { label: t.footer.riskyBet, color: "red-300", emoji: "🔴", desc: t.footer.riskyBetDesc },
-    { label: t.footer.aiEvScore, color: "cyan-300", emoji: "✔️", desc: t.footer.aiEvScoreDesc },
+    { key: "valueBet", color: "emerald-300", emoji: "🟢" },
+    { key: "okBet", color: "yellow-300", emoji: "🟡" },
+    { key: "riskyBet", color: "red-300", emoji: "🔴" },
+    { key: "aiEvScore", color: "cyan-300", emoji: "✔️" },
   ];
 
   const metrics = [
-    { label: t.footer.aiEdge, desc: t.footer.aiEdgeDesc },
-    { label: t.footer.confidence, desc: t.footer.confidenceDesc },
-    { label: t.footer.impliedProb, desc: t.footer.impliedProbDesc },
-    { label: t.footer.risk, desc: t.footer.riskDesc },
+    { key: "aiEdge" },
+    { key: "confidence" },
+    { key: "impliedProb" },
+    { key: "risk" },
   ];
 
   const navLinks = [
@@ -53,24 +53,39 @@ export default function Footer() {
 
           {/* VALUE BET TYPES */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8">
-            {valueBetTypes.map((type) => (
-              <div key={type.label} className={`rounded-2xl border border-${type.color}/20 bg-[#0F172A] p-5`}>
-                <h4 className={`font-black text-${type.color}`}>
-                  {type.emoji} {type.label}
-                </h4>
-                <p className="mt-3 text-sm text-slate-300 leading-6">
-                  {type.desc}
-                </p>
-              </div>
-            ))}
+            {valueBetTypes.map((type) => {
+              const label = t.footer[type.key];
+              const desc = t.footer[`${type.key}Desc`];
+
+              return (
+                <div
+                  key={type.key}
+                  className={`rounded-2xl border border-${type.color}/20 bg-[#0F172A] p-5`}
+                >
+                  <h4 className={`font-black text-${type.color}`}>
+                    {type.emoji} {label}
+                  </h4>
+                  <p className="mt-3 text-sm text-slate-300 leading-6">
+                    {desc}
+                  </p>
+                </div>
+              );
+            })}
           </div>
 
           {/* METRICS */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {metrics.map((metric) => (
-              <div key={metric.label} className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5">
-                <h4 className="text-sm font-black text-cyan-300">{metric.label}</h4>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{metric.desc}</p>
+            {metrics.map((m) => (
+              <div
+                key={m.key}
+                className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5"
+              >
+                <h4 className="text-sm font-black text-cyan-300">
+                  {t.footer[m.key]}
+                </h4>
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  {t.footer[`${m.key}Desc`]}
+                </p>
               </div>
             ))}
           </div>
@@ -96,26 +111,16 @@ export default function Footer() {
           {/* NAVIGATION LINKS */}
           <div className="flex flex-wrap gap-5 text-sm text-slate-400">
             {navLinks.map((link) => {
-              const isInternal = link.href.startsWith("/");
-              if (isInternal) {
-                return (
-                  <Link
-                    key={link.href}
-                    href={`/${lang}${link.href}`}
-                    className="transition hover:text-cyan-300"
-                  >
-                    {link.label}
-                  </Link>
-                );
-              }
+              const href = `/${lang}${link.href}`;
+
               return (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
+                  href={href}
                   className="transition hover:text-cyan-300"
                 >
                   {link.label}
-                </a>
+                </Link>
               );
             })}
           </div>
