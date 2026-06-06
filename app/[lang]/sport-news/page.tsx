@@ -92,7 +92,7 @@ export default async function SportNewsPage({
                     </span>
 
                     <h2 className="text-xl font-black text-white">
-                      {t.sports?.[sport.toLowerCase()] ?? sport}
+                      {(t.sports as Record<string, string>)[sport.toLowerCase()] ?? sport}
                     </h2>
 
                     <div className="h-[2px] flex-1 rounded-full bg-gradient-to-r from-cyan-400/40 to-transparent" />
