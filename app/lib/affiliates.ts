@@ -17,6 +17,16 @@ export type AffiliateSite = {
 // ======================
 export const AFFILIATE_SITES: AffiliateSite[] = [
   {
+    id: "1win",
+    name: "1win",
+    rating: 9.2,
+    bonus: "Multiple bet bonus",
+    baseUrl: "https://r1wfmvd.life/betting?p=3q5b",
+    trackingParams: "?affid=YOUR_ID",
+    sports: ["Football", "NBA", "NFL", "Hockey", "Tennis", "Baseball", "MMA"],
+  },
+
+  {
     id: "betlabel",
     name: "BetLabel",
     rating: 9.8,
@@ -34,15 +44,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     trackingParams: "?mid=YOUR_ID",
     sports: ["Football", "NBA", "NFL", "Hockey", "Tennis", "Baseball", "MMA"],
   },
-  {
-    id: "1win",
-    name: "1win",
-    rating: 9.2,
-    bonus: "Multiple bet bonus",
-    baseUrl: "https://r1wfmvd.life/betting?p=3q5b",
-    trackingParams: "?affid=YOUR_ID",
-    sports: ["Football", "NBA", "NFL", "Hockey", "Tennis", "Baseball", "MMA"],
-  },
+
 ];
 
 // ======================

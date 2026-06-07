@@ -1,5 +1,3 @@
-// app/types/match.ts
-
 export type SportType =
   | "Football"
   | "NBA"
@@ -43,7 +41,7 @@ export type BetCode =
   | "MONEYLINE"
   | "OVER"
   | "UNDER"
-  | string; // fallback for new markets
+  | string;
 
 export type MarketType =
   | "h2h"
@@ -70,24 +68,33 @@ export type MatchCardData = {
   startTime: string;
   status: MatchStatus;
   generatedAt?: string;
+
   recommendedBet: string;
   betCode: BetCode;
   explanation: string;
+
   confidence: number;
   risk: number;
+
   marketType: MarketType;
   selectionKey: string;
+
   odds: number;
   oddsLabel: string;
+
   bookmaker: string;
   bookmakerUrl: string;
+
   bookmakerRank?: number;
   bestOdds?: number | null;
+
   impliedProbability?: number | null;
   edge?: number | null;
+
   isValueBet?: boolean;
-  ctaLabel: string;
-  ctaUrl?: string;
   isTopPick?: boolean;
+
   disclaimer?: string;
+
+  ctaLabel: string;
 };
