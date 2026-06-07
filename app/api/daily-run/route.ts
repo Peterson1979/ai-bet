@@ -1,7 +1,4 @@
-// app/api/daily-run/route.ts
-import fs from "fs";
-import path from "path";
-
+import { Redis } from "@upstash/redis";
 import { getDailyEvents } from "@/app/lib/odds";
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { rankMatches } from "@/app/lib/ranking";
@@ -9,6 +6,14 @@ import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
+
+const CACHE_KEY = "predictions";
+const CACHE_TTL = 60 * 60 * 23; // 23 óra
 
 type SportResult = {
   sport: string;
@@ -24,16 +29,10 @@ async function generateAI(prompt: string) {
 
 export async function GET() {
   try {
-    const cachePath = path.join(process.cwd(), "data", "cache.json");
-
     // CACHE CHECK
-    if (fs.existsSync(cachePath)) {
-      const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
-      const today = new Date().toISOString().split("T")[0];
-
-      if (cached.date === today) {
-        return Response.json({ success: true, cached: true, data: cached });
-      }
+    const cached = await redis.get(CACHE_KEY);
+    if (cached) {
+      return Response.json({ success: true, cached: true, data: cached });
     }
 
     const sportsData = await getDailyEvents();
@@ -85,36 +84,31 @@ export async function GET() {
         if (!event || !ai) continue;
 
         const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
-
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);
 
         const bookmakerUrl = getBookmakerAffiliateUrl(
-  (event.bookmaker || "").toLowerCase().replace(/\s/g, ""),
-  event.sport
-);
+          (event.bookmaker || "").toLowerCase().replace(/\s/g, ""),
+          event.sport
+        );
 
         topPicks.push({
           id: eventKey,
-          league: event.league, // még marad, ha máshol használod
+          league: event.league,
           eventId: event.id,
           homeTeam: event.homeTeam,
           awayTeam: event.awayTeam,
           startTime: event.commenceTime,
-
           recommendedBet: ai.recommendedBet,
           betCode: ai.betCode,
           explanation: ai.explanation,
           confidence: ai.confidence,
           risk: ai.risk,
-
           odds: event.odds || 0,
           bestOdds: event.bestOdds || 0,
           oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
-
           bookmaker: event.bookmaker || "Unknown",
           bookmakerUrl,
-
           ctaLabel: "View Odds",
           isTopPick: true,
           status: "scheduled",
@@ -132,23 +126,18 @@ export async function GET() {
       });
     }
 
-    // CACHE WRITE
-    const jsonStr = JSON.stringify(result, null, 2);
-
-    fs.writeFileSync(cachePath, jsonStr);
-    fs.writeFileSync(
-      path.join(process.cwd(), "data", "predictions.json"),
-      jsonStr
-    );
+    // CACHE WRITE - 23 óráig tárolja
+    await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
 
     return Response.json({
       success: true,
+      data: result,
       message: "Predictions generated successfully.",
       generatedSports: result.sports.length,
     });
+
   } catch (error) {
     console.error("[daily-run] Error:", error);
-
     return Response.json(
       { success: false, error: "Prediction generation failed." },
       { status: 500 }
