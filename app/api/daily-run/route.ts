@@ -90,9 +90,9 @@ export async function GET() {
         seenEvents.add(eventKey);
 
         const bookmakerUrl = getBookmakerAffiliateUrl(
-          event.bookmaker || "",
-          event.sport
-        );
+  (event.bookmaker || "").toLowerCase().replace(/\s/g, ""),
+  event.sport
+);
 
         topPicks.push({
           id: eventKey,
