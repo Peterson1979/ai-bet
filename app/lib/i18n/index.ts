@@ -10,7 +10,7 @@ export const LANGS = [
 export type Lang = (typeof LANGS)[number];
 
 const de: Partial<Translation> = {
-  heroTitle: "AI Tipps",
+  heroTitle: "MATCH SIGNAL",
   heroSubtitle: "KI-gestützte Wettanalysen",
   heroDesc: "KI-generierte Vorhersagen für mehrere Sportarten.",
   heroImageAlt: "KI Wettvorhersagen Hero Hintergrund",
@@ -23,26 +23,18 @@ const de: Partial<Translation> = {
   tbd: "Noch nicht bekannt",
   noExplanation: "Keine Erklärung verfügbar",
   aiTips: "KI TIPPS",
-  odds: "Quote",
-  confidence: "Vertrauen",
-  edge: "Vorteil",
-  risk: "Risiko",
+  odds: "Quote", confidence: "Vertrauen", edge: "Vorteil", risk: "Risiko",
   ev: "Erwartungswert (EV)",
-  valueBet: "🟢 VALUE BET",
-  okBet: "🟡 OK WETTE",
-  riskyBet: "🔴 RISKANT",
-  positiveEV: "Positives Erwartungswert-Signal",
-  negativeEV: "Negatives Erwartungswert-Signal",
-  showExplanation: "Erklärung anzeigen ▼",
-  hideExplanation: "Erklärung ausblenden ▲",
+  valueBet: "🟢 VALUE BET", okBet: "🟡 OK WETTE", riskyBet: "🔴 RISKANT",
+  positiveEV: "Positives Erwartungswert-Signal", negativeEV: "Negatives Erwartungswert-Signal",
+  showExplanation: "Erklärung anzeigen ▼", hideExplanation: "Erklärung ausblenden ▲",
   viewOdds: "Quoten ansehen",
   seoTitle: "KI Wettvorhersagen",
   seoDescription: "KI-generierte Wettvorhersagen und Value Bets für mehrere Sportarten.",
   sports: { topPicks: "Top Tipps", football: "Fußball", nba: "NBA", nfl: "NFL", hockey: "Eishockey", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
   system: { navHome: "Startseite", navTopPicks: "Top Tipps", navBetting: "Wetten", navNews: "Neuigkeiten", navTools: "Tools" },
   footer: {
-    betIntelligence: "Wettintelligenz-System",
-    betIntelligenceDesc: "Die KI bewertet jeden Tipp anhand von Vertrauen, Erwartungswert und Marktrisikoignal.",
+    betIntelligence: "Wettintelligenz-System", betIntelligenceDesc: "Die KI bewertet jeden Tipp anhand von Vertrauen, Erwartungswert und Marktrisikoignal.",
     valueBet: "VALUE BET", valueBetDesc: "Starker positiver Erwartungswert laut KI-Modell.",
     okBet: "OK WETTE", okBetDesc: "Akzeptable Wettmöglichkeit mit moderatem Wert.",
     riskyBet: "RISKANT", riskyBetDesc: "Höhere Unsicherheit oder geringerer erwarteter Wettwert.",
@@ -54,37 +46,28 @@ const de: Partial<Translation> = {
     aiBettingInsights: "KI Wettanalysen", aiBettingInsightsDesc: "Diese Plattform bietet KI-generierte Sportwettanalysen nur zu Informationszwecken. Keine Gewinngarantie. Bitte verantwortungsvoll spielen.",
     navAbout: "Über uns", navContact: "Kontakt", navPrivacy: "Datenschutz", navTerms: "Nutzungsbedingungen",
     navAffiliate: "Affiliate-Offenlegung", navResponsible: "Verantwortungsvolles Spielen", navCookie: "Cookie-Richtlinie",
-    platformName: "AiTips.com", builtWithAi: "Mit KI erstellt",
+    platformName: "MatchSignal", builtWithAi: "Mit KI erstellt",
   },
 };
 
 const fr: Partial<Translation> = {
-  heroTitle: "Conseils IA",
+  heroTitle: "MATCH SIGNAL",
   heroSubtitle: "Analyses de paris alimentées par IA",
   heroDesc: "Prédictions générées par IA pour plusieurs sports.",
   heroImageAlt: "Fond hero des prédictions de paris IA",
-  topPicks: "Meilleurs choix",
-  premiumOffers: "Offres de paris premium",
+  topPicks: "Meilleurs choix", premiumOffers: "Offres de paris premium",
   premiumOffersDesc: "Placez vos bannières affiliées et promotions de bookmakers ici.",
-  recommendedSites: "Bookmakers recommandés",
-  recommendedSitesDesc: "Bookmakers recommandés et offres affiliées.",
-  noMatches: "Aucun match disponible",
-  tbd: "À déterminer",
-  noExplanation: "Aucune explication disponible",
-  aiTips: "CONSEILS IA",
-  odds: "Cotes", confidence: "Confiance", edge: "Avantage", risk: "Risque",
-  ev: "Valeur attendue (EV)",
-  valueBet: "🟢 VALUE BET", okBet: "🟡 PARI OK", riskyBet: "🔴 RISQUÉ",
+  recommendedSites: "Bookmakers recommandés", recommendedSitesDesc: "Bookmakers recommandés et offres affiliées.",
+  noMatches: "Aucun match disponible", tbd: "À déterminer", noExplanation: "Aucune explication disponible",
+  aiTips: "CONSEILS IA", odds: "Cotes", confidence: "Confiance", edge: "Avantage", risk: "Risque",
+  ev: "Valeur attendue (EV)", valueBet: "🟢 VALUE BET", okBet: "🟡 PARI OK", riskyBet: "🔴 RISQUÉ",
   positiveEV: "Signal de valeur attendue positive", negativeEV: "Signal de valeur attendue négative",
-  showExplanation: "Afficher l'explication ▼", hideExplanation: "Masquer l'explication ▲",
-  viewOdds: "Voir les cotes",
-  seoTitle: "Prédictions de paris IA",
-  seoDescription: "Prédictions de paris et value bets générés par IA pour plusieurs sports.",
+  showExplanation: "Afficher l'explication ▼", hideExplanation: "Masquer l'explication ▲", viewOdds: "Voir les cotes",
+  seoTitle: "Prédictions de paris IA", seoDescription: "Prédictions de paris et value bets générés par IA pour plusieurs sports.",
   sports: { topPicks: "Meilleurs choix", football: "Football", nba: "NBA", nfl: "NFL", hockey: "Hockey sur glace", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
   system: { navHome: "Accueil", navTopPicks: "Meilleurs choix", navBetting: "Paris", navNews: "Actualités", navTools: "Outils" },
   footer: {
-    betIntelligence: "Système d'intelligence de paris",
-    betIntelligenceDesc: "L'IA évalue chaque sélection en utilisant la confiance, la valeur attendue et les signaux de risque de marché.",
+    betIntelligence: "Système d'intelligence de paris", betIntelligenceDesc: "L'IA évalue chaque sélection en utilisant la confiance, la valeur attendue et les signaux de risque de marché.",
     valueBet: "VALUE BET", valueBetDesc: "Forte valeur attendue positive selon le modèle IA.",
     okBet: "PARI OK", okBetDesc: "Opportunité de pari acceptable avec une valeur modérée.",
     riskyBet: "RISQUÉ", riskyBetDesc: "Incertitude plus élevée ou valeur de pari attendue plus faible.",
@@ -96,12 +79,12 @@ const fr: Partial<Translation> = {
     aiBettingInsights: "Analyses de paris IA", aiBettingInsightsDesc: "Cette plateforme fournit des analyses de paris sportifs générées par IA à des fins d'information uniquement. Jouez responsablement.",
     navAbout: "À propos", navContact: "Contact", navPrivacy: "Politique de confidentialité", navTerms: "Conditions d'utilisation",
     navAffiliate: "Divulgation d'affiliation", navResponsible: "Jeu responsable", navCookie: "Politique de cookies",
-    platformName: "AiTips.com", builtWithAi: "Construit avec l'IA",
+    platformName: "MatchSignal", builtWithAi: "Construit avec l'IA",
   },
 };
 
 const es: Partial<Translation> = {
-  heroTitle: "Consejos IA", heroSubtitle: "Análisis de apuestas con IA",
+  heroTitle: "MATCH SIGNAL", heroSubtitle: "Análisis de apuestas con IA",
   heroDesc: "Predicciones generadas por IA para múltiples deportes.",
   heroImageAlt: "Fondo hero de predicciones de apuestas IA",
   topPicks: "Mejores picks", premiumOffers: "Ofertas premium de apuestas",
@@ -128,12 +111,12 @@ const es: Partial<Translation> = {
     aiBettingInsights: "Análisis de apuestas IA", aiBettingInsightsDesc: "Esta plataforma proporciona análisis de apuestas deportivas generados por IA solo con fines informativos. Juega responsablemente.",
     navAbout: "Acerca de", navContact: "Contacto", navPrivacy: "Política de privacidad", navTerms: "Términos de uso",
     navAffiliate: "Divulgación de afiliados", navResponsible: "Juego responsable", navCookie: "Política de cookies",
-    platformName: "AiTips.com", builtWithAi: "Construido con IA",
+    platformName: "MatchSignal", builtWithAi: "Construido con IA",
   },
 };
 
 const it: Partial<Translation> = {
-  heroTitle: "Consigli IA", heroSubtitle: "Analisi scommesse con IA",
+  heroTitle: "MATCH SIGNAL", heroSubtitle: "Analisi scommesse con IA",
   heroDesc: "Previsioni generate dall'IA per più sport.",
   heroImageAlt: "Sfondo hero previsioni scommesse IA",
   topPicks: "Le migliori scelte", premiumOffers: "Offerte premium scommesse",
@@ -160,12 +143,12 @@ const it: Partial<Translation> = {
     aiBettingInsights: "Analisi scommesse IA", aiBettingInsightsDesc: "Questa piattaforma fornisce analisi di scommesse sportive generate dall'IA solo a scopo informativo. Gioca responsabilmente.",
     navAbout: "Chi siamo", navContact: "Contatto", navPrivacy: "Informativa sulla privacy", navTerms: "Termini di utilizzo",
     navAffiliate: "Divulgazione affiliati", navResponsible: "Gioco responsabile", navCookie: "Politica sui cookie",
-    platformName: "AiTips.com", builtWithAi: "Costruito con IA",
+    platformName: "MatchSignal", builtWithAi: "Costruito con IA",
   },
 };
 
 const pt: Partial<Translation> = {
-  heroTitle: "Dicas IA", heroSubtitle: "Análises de apostas com IA",
+  heroTitle: "MATCH SIGNAL", heroSubtitle: "Análises de apostas com IA",
   heroDesc: "Previsões geradas por IA para vários desportos.",
   heroImageAlt: "Fundo hero de previsões de apostas IA",
   topPicks: "Melhores escolhas", premiumOffers: "Ofertas premium de apostas",
@@ -192,12 +175,12 @@ const pt: Partial<Translation> = {
     aiBettingInsights: "Análises de apostas IA", aiBettingInsightsDesc: "Esta plataforma fornece análises de apostas desportivas geradas por IA apenas para fins informativos. Jogue responsavelmente.",
     navAbout: "Sobre nós", navContact: "Contacto", navPrivacy: "Política de privacidade", navTerms: "Termos de utilização",
     navAffiliate: "Divulgação de afiliados", navResponsible: "Jogo responsável", navCookie: "Política de cookies",
-    platformName: "AiTips.com", builtWithAi: "Construído com IA",
+    platformName: "MatchSignal", builtWithAi: "Construído com IA",
   },
 };
 
 const ar: Partial<Translation> = {
-  heroTitle: "نصائح الذكاء الاصطناعي", heroSubtitle: "تحليلات الرهان بالذكاء الاصطناعي",
+  heroTitle: "MATCH SIGNAL", heroSubtitle: "تحليلات الرهان بالذكاء الاصطناعي",
   heroDesc: "تنبؤات مدعومة بالذكاء الاصطناعي لرياضات متعددة.",
   heroImageAlt: "خلفية نصائح الرهان بالذكاء الاصطناعي",
   topPicks: "أفضل الاختيارات", premiumOffers: "عروض الرهان المميزة",
@@ -224,12 +207,12 @@ const ar: Partial<Translation> = {
     aiBettingInsights: "تحليلات الرهان", aiBettingInsightsDesc: "لأغراض إعلامية فقط. لا ضمان للمكاسب. العب بمسؤولية.",
     navAbout: "حول", navContact: "اتصل بنا", navPrivacy: "سياسة الخصوصية", navTerms: "شروط الاستخدام",
     navAffiliate: "الإفصاح عن الشركاء", navResponsible: "المقامرة المسؤولة", navCookie: "سياسة الكوكيز",
-    platformName: "AiTips.com", builtWithAi: "مبني بالذكاء الاصطناعي",
+    platformName: "MatchSignal", builtWithAi: "مبني بالذكاء الاصطناعي",
   },
 };
 
 const zh: Partial<Translation> = {
-  heroTitle: "AI 竞猜建议", heroSubtitle: "AI驱动的投注分析",
+  heroTitle: "MATCH SIGNAL", heroSubtitle: "AI驱动的投注分析",
   heroDesc: "AI生成的多项运动预测。", heroImageAlt: "AI投注预测主图背景",
   topPicks: "精选推荐", premiumOffers: "优质投注优惠",
   premiumOffersDesc: "在此放置您的联盟横幅和体育博彩促销活动。",
@@ -255,12 +238,12 @@ const zh: Partial<Translation> = {
     aiBettingInsights: "AI投注分析", aiBettingInsightsDesc: "本平台仅出于信息目的提供AI生成的体育投注分析。请负责任地赌博。",
     navAbout: "关于我们", navContact: "联系我们", navPrivacy: "隐私政策", navTerms: "使用条款",
     navAffiliate: "联盟披露", navResponsible: "负责任赌博", navCookie: "Cookie政策",
-    platformName: "AiTips.com", builtWithAi: "由AI构建",
+    platformName: "MatchSignal", builtWithAi: "由AI构建",
   },
 };
 
 const ja: Partial<Translation> = {
-  heroTitle: "AI予想", heroSubtitle: "AIによるベッティング分析",
+  heroTitle: "MATCH SIGNAL", heroSubtitle: "AIによるベッティング分析",
   heroDesc: "複数のスポーツに対応したAI予想。", heroImageAlt: "AIベッティング予想ヒーロー背景",
   topPicks: "注目のピック", premiumOffers: "プレミアムベッティングオファー",
   premiumOffersDesc: "アフィリエイトバナーやスポーツブックのプロモーションをここに配置してください。",
@@ -286,12 +269,12 @@ const ja: Partial<Translation> = {
     aiBettingInsights: "AIベッティング分析", aiBettingInsightsDesc: "情報提供のみを目的としたAI生成のスポーツベッティング分析。責任を持ってギャンブルしてください。",
     navAbout: "会社概要", navContact: "お問い合わせ", navPrivacy: "プライバシーポリシー", navTerms: "利用規約",
     navAffiliate: "アフィリエイト開示", navResponsible: "責任あるギャンブル", navCookie: "Cookieポリシー",
-    platformName: "AiTips.com", builtWithAi: "AIで構築",
+    platformName: "MatchSignal", builtWithAi: "AIで構築",
   },
 };
 
 const hi: Partial<Translation> = {
-  heroTitle: "AI टिप्स", heroSubtitle: "AI-संचालित सट्टेबाजी विश्लेषण",
+  heroTitle: "MATCH SIGNAL", heroSubtitle: "AI-संचालित सट्टेबाजी विश्लेषण",
   heroDesc: "कई खेलों के लिए AI-जनित भविष्यवाणियां।",
   heroImageAlt: "AI सट्टेबाजी भविष्यवाणी हीरो पृष्ठभूमि",
   topPicks: "शीर्ष चुनाव", premiumOffers: "प्रीमियम सट्टेबाजी ऑफर",
@@ -318,7 +301,7 @@ const hi: Partial<Translation> = {
     aiBettingInsights: "AI सट्टेबाजी विश्लेषण", aiBettingInsightsDesc: "केवल सूचनात्मक उद्देश्यों के लिए। जीत की कोई गारंटी नहीं। जिम्मेदारी से जुआ खेलें।",
     navAbout: "हमारे बारे में", navContact: "संपर्क", navPrivacy: "गोपनीयता नीति", navTerms: "उपयोग की शर्तें",
     navAffiliate: "एफिलिएट प्रकटीकरण", navResponsible: "जिम्मेदार जुआ", navCookie: "कुकी नीति",
-    platformName: "AiTips.com", builtWithAi: "AI के साथ बनाया गया",
+    platformName: "MatchSignal", builtWithAi: "AI के साथ बनाया गया",
   },
 };
 

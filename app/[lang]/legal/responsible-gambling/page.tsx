@@ -6,7 +6,7 @@ export default function ResponsibleGamblingPage() {
       </h1>
 
       <p className="mt-6">
-        AI Tips promotes responsible gambling practices.
+        MatchSignal promotes responsible gambling practices.
       </p>
 
       <p className="mt-4">

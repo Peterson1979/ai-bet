@@ -1,7 +1,7 @@
 import type { Translation } from "./types";
 
 const hu: Partial<Translation> = {
-  heroTitle: "AI tippek",
+  heroTitle: "MATCH SIGNAL",
   heroSubtitle: "AI-alapú fogadási elemzések",
   heroDesc: "AI által generált sport előrejelzések több sportágra.",
   heroImageAlt: "AI fogadási előrejelzések hero háttér",
@@ -13,7 +13,8 @@ const hu: Partial<Translation> = {
   noMatches: "Nincs elérhető mérkőzés",
   tbd: "Időpont nincs megadva",
   noExplanation: "Nincs elérhető magyarázat",
-  aiTips: "AI TIPPEK",
+  aiTips: "MATCH SIGNAL",
+  matchSignal: "MATCH SIGNAL",
   odds: "Szorzó",
   confidence: "Megbízhatóság",
   edge: "Előny",
@@ -27,7 +28,7 @@ const hu: Partial<Translation> = {
   showExplanation: "Magyarázat ▼",
   hideExplanation: "Magyarázat ▲",
   viewOdds: "Szorzók megtekintése",
-  seoTitle: "AI Fogadási Tippek",
+  seoTitle: "MatchSignal – AI Fogadási Tippek",
   seoDescription: "AI által generált fogadási tippek és value betek több sportágra.",
   contactTitle: "Kapcsolat",
   contactSuccess: "Üzenet sikeresen elküldve.",
@@ -118,7 +119,7 @@ const hu: Partial<Translation> = {
     impliedProbDesc: "A bookmaker szorzóiból levezetett valószínűség.",
     risk: "Kockázat",
     riskDesc: "Az előrejelzések volatilitási és bizonytalansági szintje.",
-    aiBettingInsights: "AI Fogadási Elemzések",
+    aiBettingInsights: "MatchSignal Fogadási Elemzések",
     aiBettingInsightsDesc: "Ez a platform kizárólag tájékoztató jelleggel nyújt AI-alapú sportfogadási elemzéseket. Nyeremény nem garantált. Felelősségteljesen játssz.",
     navAbout: "Rólunk",
     navContact: "Kapcsolat",
@@ -127,7 +128,7 @@ const hu: Partial<Translation> = {
     navAffiliate: "Affiliate közzététel",
     navResponsible: "Felelős játék",
     navCookie: "Cookie szabályzat",
-    platformName: "AiTips.com",
+    platformName: "MatchSignal",
     builtWithAi: "AI segítségével készült",
   },
 };

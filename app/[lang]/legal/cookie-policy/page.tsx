@@ -1,13 +1,12 @@
 export default function CookiePolicyPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-16 text-slate-200">
-
       <h1 className="text-3xl font-black text-white mb-6">
         Cookie Policy
       </h1>
 
       <p className="mb-6">
-        AI Tips uses cookies to improve user experience, analyze traffic,
+        MatchSignal uses cookies to improve user experience, analyze traffic,
         and serve relevant advertising through Google AdSense.
       </p>
 
@@ -63,10 +62,9 @@ export default function CookiePolicyPage() {
       </p>
 
       <p className="mt-10 text-sm text-slate-400">
-        Operator: AI Tips<br />
+        Operator: MatchSignal<br />
         Contact: kicksignalhq@gmail.com
       </p>
-
     </main>
   );
 }

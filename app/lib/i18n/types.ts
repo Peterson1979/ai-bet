@@ -27,6 +27,7 @@ export type Translation = {
   viewOdds: string;
   seoTitle: string;
   seoDescription: string;
+  matchSignal: string;
   contactTitle: string;
   contactSuccess: string;
   contactName: string;
@@ -127,5 +128,6 @@ export type Translation = {
     navCookie: string;
     platformName: string;
     builtWithAi: string;
+	
   };
 };

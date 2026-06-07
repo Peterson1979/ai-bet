@@ -68,7 +68,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       <div className="flex items-start justify-between mb-4">
         <div className="flex flex-col gap-2">
           <span className="text-[11px] font-black uppercase tracking-[0.25em] text-cyan-300">
-            {t.aiTips}
+            {t.matchSignal}
           </span>
 
           <span
@@ -82,7 +82,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           </span>
 
           <span className="text-[12px] text-slate-300 font-bold">
-            {t.confidence}: {confidence}%
+            {t.confidence}: {confidence}%<span className="text-[11px] opacity-60 ml-1"></span>
           </span>
         </div>
 

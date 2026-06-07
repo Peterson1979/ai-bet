@@ -4,7 +4,7 @@ export default function PrivacyPolicyPage() {
       <h1 className="text-4xl font-black text-white">Privacy Policy</h1>
 
       <p className="mt-6">
-        This Privacy Policy explains how AI Tips collects, uses and protects
+        This Privacy Policy explains how MatchSignal collects, uses and protects
         information when you visit our website.
       </p>
 
@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage() {
 
       <p className="mt-4">
         If you subscribe to our newsletter, we may store your email address
-        for communication related to AI Tips.
+        for communication related to MatchSignal.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
       </h2>
 
       <p className="mt-4">
-        Operator: AI Tips
+        Operator: MatchSignal
         <br />
         Country: Hungary
         <br />

@@ -4,7 +4,7 @@ export default function TermsOfUsePage() {
       <h1 className="text-4xl font-black text-white">Terms of Use</h1>
 
       <p className="mt-6">
-        By using AI Tips, you agree to these Terms of Use.
+        By using MatchSignal, you agree to these Terms of Use.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
@@ -12,7 +12,7 @@ export default function TermsOfUsePage() {
       </h2>
 
       <p className="mt-4">
-        AI Tips provides informational sports analysis, statistics,
+        MatchSignal provides informational sports analysis, statistics,
         predictions and betting-related content for educational and
         entertainment purposes only.
       </p>
@@ -22,7 +22,7 @@ export default function TermsOfUsePage() {
       </h2>
 
       <p className="mt-4">
-        AI Tips does not accept bets, process gambling transactions,
+        MatchSignal does not accept bets, process gambling transactions,
         hold player funds or operate as a sportsbook.
       </p>
 
@@ -49,7 +49,7 @@ export default function TermsOfUsePage() {
       </h2>
 
       <p className="mt-4">
-        AI Tips shall not be liable for any losses, damages or costs arising
+        MatchSignal shall not be liable for any losses, damages or costs arising
         from the use of this website.
       </p>
 

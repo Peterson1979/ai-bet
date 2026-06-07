@@ -1,17 +1,13 @@
-// app/lib/odds.ts
-// Fix: getDailyEvents() sport-onként ad vissza blokkokat
-// (a route.ts sportBlock.sport alapján iterál)
+import { SPORT_CONFIG, DEFAULT_CONFIG } from "./sportsConfig";
 
 const API_KEY = process.env.ODDS_API_KEY;
-
-const IS_BUILD =
-  process.env.NODE_ENV === "production" && !process.env.VERCEL_ENV;
+const IS_BUILD = process.env.NODE_ENV === "production" && !process.env.VERCEL_ENV;
 
 const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
-const CACHE_TTL = 1000 * 60 * 10; // 10 perc
+const CACHE_TTL = 1000 * 60 * 10;
 
 const SPORTS = [
-  { key: "soccer_fifa_world_cup",       label: "Football",  league: "FIFA World Cup 2026" },
+  { key: "soccer_epl",                  label: "Football",  league: "Premier League" },
   { key: "basketball_nba",              label: "NBA",       league: "NBA" },
   { key: "americanfootball_nfl",        label: "NFL",       league: "NFL" },
   { key: "icehockey_nhl",               label: "Hockey",    league: "NHL" },
@@ -45,9 +41,6 @@ const BOOKMAKER_RANKINGS: Record<string, number> = {
   Unibet: 7,
 };
 
-// ========================
-// CACHE
-// ========================
 function getCache(key: string): OddsEvent[] | null {
   const entry = cache.get(key);
   if (!entry) return null;
@@ -62,9 +55,6 @@ function setCache(key: string, data: OddsEvent[]) {
   cache.set(key, { data, timestamp: Date.now() });
 }
 
-// ========================
-// HELPERS
-// ========================
 function dedupeEvents(events: OddsEvent[]): OddsEvent[] {
   const seen = new Set<string>();
   return events.filter((e) => {
@@ -83,10 +73,6 @@ function calculateEdge(impliedProbability?: number | null): number | null {
   if (!impliedProbability) return null;
   const aiProbability = impliedProbability + Math.random() * 12;
   return Number((aiProbability - impliedProbability).toFixed(2));
-}
-
-function isValueBet(edge?: number | null): boolean {
-  return (edge ?? 0) >= 5;
 }
 
 function extractBestOdds(event: any): {
@@ -113,9 +99,13 @@ function extractBestOdds(event: any): {
   return { bestOdds, bestBookmaker, bookmakerRank };
 }
 
-// ========================
-// FETCH SINGLE SPORT
-// ========================
+function isWithinTimeWindow(commenceTime: string, maxHoursAhead: number): boolean {
+  const eventTime = new Date(commenceTime).getTime();
+  const now = Date.now();
+  const maxMs = maxHoursAhead * 60 * 60 * 1000;
+  return eventTime >= now && eventTime <= now + maxMs;
+}
+
 async function fetchSportEvents(
   sportKey: string,
   sportLabel: string,
@@ -126,6 +116,8 @@ async function fetchSportEvents(
   const cacheKey = `odds_${sportKey}`;
   const cached = getCache(cacheKey);
   if (cached) return cached;
+
+  const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
 
   try {
     const url =
@@ -162,14 +154,30 @@ async function fetchSportEvents(
         bestOdds,
         impliedProbability,
         edge,
-        isValueBet: isValueBet(edge),
+        isValueBet: (edge ?? 0) >= config.minEdge,
       };
     });
 
     events = dedupeEvents(events);
-    events = events.filter((e) => e.isValueBet);
+
+    // SPORTSPECIFIKUS SZŰRŐK
+    events = events.filter((e) => {
+      const odds = e.bestOdds ?? 0;
+      const edge = e.edge ?? 0;
+      const rank = e.bookmakerRank ?? 0;
+
+      return (
+        odds >= config.minOdds &&
+        odds <= config.maxOdds &&
+        edge >= config.minEdge &&
+        rank >= config.minBookmakerRank &&
+        isWithinTimeWindow(e.commenceTime, config.maxHoursAhead)
+      );
+    });
+
+    // Edge szerint rendezés, legjobb 3 kiválasztása
     events.sort((a, b) => (b.edge ?? 0) - (a.edge ?? 0));
-    events = events.slice(0, 10);
+    events = events.slice(0, config.maxEvents);
 
     setCache(cacheKey, events);
     return events;
@@ -179,14 +187,8 @@ async function fetchSportEvents(
   }
 }
 
-// ========================
-// PUBLIC API
-// ========================
-export async function getDailyEvents(): Promise<
-  { sport: string; events: OddsEvent[] }[]
-> {
+export async function getDailyEvents(): Promise<{ sport: string; events: OddsEvent[] }[]> {
   if (!API_KEY || IS_BUILD) {
-    // Build-safe: sport-onkénti üres blokkok
     return SPORTS.map((s) => ({ sport: s.label, events: [] }));
   }
 
@@ -196,7 +198,6 @@ export async function getDailyEvents(): Promise<
     )
   );
 
-  // Sport-onkénti blokkok visszaadása (route.ts ezt várja)
   return SPORTS.map((sport, i) => ({
     sport: sport.label,
     events: results[i],
