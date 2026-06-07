@@ -1,5 +1,6 @@
 import type { PredictionCard } from "@/app/types/prediction";
 import type { MatchCardData, SportType } from "@/app/types/match";
+import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
 
 export function toMatchCardData(
   p: PredictionCard,
@@ -34,7 +35,11 @@ export function toMatchCardData(
     oddsLabel: p.oddsLabel,
 
     bookmaker: p.bookmaker,
-    bookmakerUrl: p.bookmakerUrl,
+
+    bookmakerUrl: getBookmakerAffiliateUrl(
+      p.bookmaker || "",
+      sport
+    ),
 
     ctaLabel: p.ctaLabel,
 
