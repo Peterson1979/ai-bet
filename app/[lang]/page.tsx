@@ -96,18 +96,18 @@ export default async function HomePage({
             ))}
           </div>
 
-          {/* AFFILIATE BLOCK */}
-          <section className="mt-6 rounded-[28px] border-2 border-cyan-300/50 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220] p-10 min-h-[260px] flex items-center justify-center text-center shadow-[0_40px_120px_rgba(0,0,0,0.65)]">
-            <div>
-              <h3 className="text-2xl font-black text-white">
-                {t.premiumOffers}
-              </h3>
-
-              <p className="mt-3 text-sm text-slate-300">
-                {t.premiumOffersDesc}
-              </p>
-            </div>
-          </section>
+          {/* AFFILIATE BLOCK - uncomment when ready
+<section className="mt-6 rounded-[28px] border-2 border-cyan-300/50 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220] p-10 min-h-[260px] flex items-center justify-center text-center shadow-[0_40px_120px_rgba(0,0,0,0.65)]">
+  <div>
+    <h3 className="text-2xl font-black text-white">
+      {t.premiumOffers}
+    </h3>
+    <p className="mt-3 text-sm text-slate-300">
+      {t.premiumOffersDesc}
+    </p>
+  </div>
+</section>
+*/}
 
           {/* MAIN GRID */}
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px] mt-16">

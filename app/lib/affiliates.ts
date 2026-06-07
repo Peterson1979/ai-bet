@@ -8,48 +8,40 @@ export type AffiliateSite = {
   rating: number;
   bonus: string;
   baseUrl: string;
-  // UTM / affiliate tracking params — a sportsbook által adott
   trackingParams?: string;
-  // Melyik sportokhoz jelenik meg a MatchCard CTA-ban
   sports?: string[];
-  // Melyik ligákhoz releváns
-  leagues?: string[];
 };
 
 // ======================
 // AFFILIATE SITES CONFIG
-// Cseréld le a baseUrl-eket a valódi affiliate linkekre!
 // ======================
 export const AFFILIATE_SITES: AffiliateSite[] = [
   {
-    id: "bet365",
-    name: "Bet365",
+    id: "betlabel",
+    name: "BetLabel",
     rating: 9.8,
-    bonus: "Up to $150 Bonus",
-    baseUrl: "https://www.bet365.com",       // ← cseréld affiliate linkre
+    bonus: "Up to 100 EUR Bonus",
+    baseUrl: "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1650&redirectURL=https://blmedia.world/",
     trackingParams: "?affid=YOUR_ID",
-    sports: ["Football", "NBA", "NFL", "Hockey", "Tennis"],
-    leagues: ["Premier League", "Bundesliga", "Serie A", "La Liga"],
+    sports: ["Football", "NBA", "NFL", "Hockey", "Tennis", "Baseball", "MMA"],
   },
   {
-    id: "1xbet",
-    name: "1xBet",
+    id: "22bet",
+    name: "22Bet",
     rating: 9.5,
-    bonus: "Up to $200 Bonus",
-    baseUrl: "https://refpa1xbet.top/L",     // ← cseréld affiliate linkre
+    bonus: "Up to %100 Bonus",
+    baseUrl: "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1484&redirectURL=https://22link.world/",
     trackingParams: "?mid=YOUR_ID",
-    sports: ["Football", "NBA", "NHL", "Tennis"],
-    leagues: ["Premier League", "La Liga", "Serie A"],
+    sports: ["Football", "NBA", "NFL", "Hockey", "Tennis", "Baseball", "MMA"],
   },
   {
-    id: "bwin",
-    name: "Bwin",
+    id: "1win",
+    name: "1win",
     rating: 9.2,
-    bonus: "Up to $100 Bonus",
-    baseUrl: "https://affiliates.bwin.com",  // ← cseréld affiliate linkre
+    bonus: "Multiple bet bonus",
+    baseUrl: "https://r1wfmvd.life/betting?p=3q5b",
     trackingParams: "?affid=YOUR_ID",
-    sports: ["Football", "NBA", "Tennis"],
-    leagues: ["Bundesliga", "Serie A", "La Liga"],
+    sports: ["Football", "NBA", "NFL", "Hockey", "Tennis", "Baseball", "MMA"],
   },
 ];
 
@@ -57,9 +49,6 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
 // HELPERS
 // ======================
 
-/**
- * Teljes affiliate URL összerakása tracking paraméterekkel
- */
 export function buildAffiliateUrl(
   site: AffiliateSite,
   source: "sidebar" | "matchcard" | "banner" = "sidebar"
@@ -77,7 +66,7 @@ export function buildAffiliateUrl(
 }
 
 /**
- * Sidebar "Top Betting Sites" lista — mind a 3 site
+ * Sidebar "Top Betting Sites"
  */
 export function getSidebarSites() {
   return AFFILIATE_SITES.map((site) => ({
@@ -87,43 +76,33 @@ export function getSidebarSites() {
 }
 
 /**
- * MatchCard CTA URL — sport és liga alapján legjobb affiliate
+ * MatchCard CTA URL — sport alapján választ
  */
-export function getMatchCardUrl(
-  sport: string,
-  league: string
-): string {
-  // Keressünk ligára illő site-ot
-  const byLeague = AFFILIATE_SITES.find(
-    (s) => s.leagues?.includes(league)
+export function getMatchCardUrl(sport: string): string {
+  const bySport = AFFILIATE_SITES.find((s) =>
+    s.sports?.includes(sport)
   );
-  if (byLeague) return buildAffiliateUrl(byLeague, "matchcard");
 
-  // Sportra illő site
-  const bySport = AFFILIATE_SITES.find(
-    (s) => s.sports?.includes(sport)
-  );
   if (bySport) return buildAffiliateUrl(bySport, "matchcard");
 
-  // Fallback: legjobb értékelésű
   return buildAffiliateUrl(AFFILIATE_SITES[0], "matchcard");
 }
 
 /**
- * Bookmaker neve alapján megkeresi a megfelelő affiliate URL-t
+ * Bookmaker neve alapján affiliate URL
  */
 export function getBookmakerAffiliateUrl(
   bookmakerName: string,
-  sport: string,
-  league: string
+  sport: string
 ): string {
   const normalized = bookmakerName.toLowerCase().replace(/\s/g, "");
 
   const match = AFFILIATE_SITES.find((s) =>
-    s.id === normalized || s.name.toLowerCase().replace(/\s/g, "") === normalized
+    s.id === normalized ||
+    s.name.toLowerCase().replace(/\s/g, "") === normalized
   );
 
   if (match) return buildAffiliateUrl(match, "matchcard");
 
-  return getMatchCardUrl(sport, league);
+  return getMatchCardUrl(sport);
 }

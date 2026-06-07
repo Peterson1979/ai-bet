@@ -24,12 +24,13 @@ async function generateAI(prompt: string) {
 
 export async function GET() {
   try {
-    // DAILY CACHE CHECK
     const cachePath = path.join(process.cwd(), "data", "cache.json");
 
+    // CACHE CHECK
     if (fs.existsSync(cachePath)) {
       const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
       const today = new Date().toISOString().split("T")[0];
+
       if (cached.date === today) {
         return Response.json({ success: true, cached: true, data: cached });
       }
@@ -62,7 +63,6 @@ export async function GET() {
         continue;
       }
 
-      // Sport-specifikus prompt — minden sporthoz saját szabályok
       const prompt = buildPredictionPrompt(events);
       const aiResults = await generateAI(prompt);
 
@@ -80,37 +80,41 @@ export async function GET() {
 
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
-        const ai = aiResults[i] ?? aiResults[0]; // fallback az első elemre
+        const ai = aiResults[i] ?? aiResults[0];
 
         if (!event || !ai) continue;
 
         const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
+
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);
 
         const bookmakerUrl = getBookmakerAffiliateUrl(
           event.bookmaker || "",
-          event.sport,
-          event.league
+          event.sport
         );
 
         topPicks.push({
           id: eventKey,
-          league: event.league,
+          league: event.league, // még marad, ha máshol használod
           eventId: event.id,
           homeTeam: event.homeTeam,
           awayTeam: event.awayTeam,
           startTime: event.commenceTime,
+
           recommendedBet: ai.recommendedBet,
           betCode: ai.betCode,
           explanation: ai.explanation,
           confidence: ai.confidence,
           risk: ai.risk,
+
           odds: event.odds || 0,
           bestOdds: event.bestOdds || 0,
           oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
+
           bookmaker: event.bookmaker || "Unknown",
           bookmakerUrl,
+
           ctaLabel: "View Odds",
           isTopPick: true,
           status: "scheduled",
@@ -128,8 +132,9 @@ export async function GET() {
       });
     }
 
-    // WRITE CACHE
+    // CACHE WRITE
     const jsonStr = JSON.stringify(result, null, 2);
+
     fs.writeFileSync(cachePath, jsonStr);
     fs.writeFileSync(
       path.join(process.cwd(), "data", "predictions.json"),
@@ -143,6 +148,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error("[daily-run] Error:", error);
+
     return Response.json(
       { success: false, error: "Prediction generation failed." },
       { status: 500 }
