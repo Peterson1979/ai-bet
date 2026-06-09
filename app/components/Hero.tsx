@@ -26,9 +26,10 @@ export default function Hero({ lang = "en" }: Props) {
       <div className="absolute top-0 left-0 right-0 z-10 flex flex-col px-0 md:px-0 pt-0 md:pt-3 text-center">
         <div className="flex justify-center mt-4">
           <img
-            src="/title.jpeg"
+            src="/title.png"
             alt="MatchSignal"
-            className="h-48 md:h-64 object-contain -ml-8"
+            style={{ height: "220px" }}
+            className="object-contain -ml-8"
           />
         </div>
 
