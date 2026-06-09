@@ -12,7 +12,7 @@ export default function Header() {
 
   const nav = [
     { href: "/", label: t.system.navHome },
-    { href: "/#top-picks", label: t.system.navTopPicks },
+   
     { href: "/betting", label: t.system.navBetting },
     { href: "/news", label: t.system.navNews },
     { href: "/tools", label: t.system.navTools },

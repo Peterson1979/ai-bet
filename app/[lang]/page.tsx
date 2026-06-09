@@ -53,7 +53,7 @@ export default async function HomePage({
   };
 
   const sportLinks = [
-    { id: "top-picks", label: t.sports.topPicks },
+   
     { id: "football", label: t.sports.football },
     { id: "nba", label: t.sports.nba },
     { id: "nfl", label: t.sports.nfl },
