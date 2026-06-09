@@ -15,6 +15,9 @@ export type PredictionCard = {
   explanation: string;
   confidence: number;
   risk: number;
+  edge?: number;
+  bestOdds?: number;
+  impliedProbability?: number;
   odds: number;
   oddsLabel: string;
   bookmaker: string;
