@@ -92,7 +92,7 @@ export async function GET() {
           event.sport
         );
 
-        topPicks.push({
+       topPicks.push({
           id: eventKey,
           league: event.league,
           eventId: event.id,
@@ -106,6 +106,8 @@ export async function GET() {
           risk: ai.risk,
           odds: event.odds || 0,
           bestOdds: event.bestOdds || 0,
+          edge: event.edge ?? 0,
+          impliedProbability: event.impliedProbability ?? 0,
           oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
           bookmaker: event.bookmaker || "Unknown",
           bookmakerUrl,
@@ -114,7 +116,7 @@ export async function GET() {
           status: "scheduled",
           marketType: "h2h",
           selectionKey: ai.betCode,
-        });
+        }); 
       }
 
       const rankedTopPicks = rankMatches(topPicks);
