@@ -28,7 +28,7 @@ export default function Hero({ lang = "en" }: Props) {
           <img
             src="/title.png"
             alt="MatchSignal"
-            style={{ height: "440px" }}
+            style={{ height: "330px" }}
             className="object-contain -ml-8"
           />
         </div>
