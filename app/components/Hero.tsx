@@ -9,14 +9,12 @@ export default function Hero({ lang = "en" }: Props) {
 
   return (
     <section className="relative overflow-hidden rounded-[28px] border border-cyan-400/20 shadow-[0_0_50px_rgba(56,189,248,0.10)] min-h-[520px]">
-
       <div className="absolute inset-0">
         <img
           src="/hero.jpg"
           alt={t.heroImageAlt ?? "hero background"}
           className="h-full w-full object-cover object-center scale-105"
         />
-
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-black/20" />
       </div>
 
@@ -26,10 +24,13 @@ export default function Hero({ lang = "en" }: Props) {
       </div>
 
       <div className="absolute top-0 left-0 right-0 z-10 flex flex-col px-0 md:px-0 pt-0 md:pt-3 text-center">
-
-        <h1 className="text-4xl md:text-6xl font-black text-white">
-          {t.heroTitle}
-        </h1>
+        <div className="flex justify-center mt-4">
+          <img
+            src="/title.jpeg"
+            alt="MatchSignal"
+            className="h-16 md:h-24 object-contain -ml-8"
+          />
+        </div>
 
         <h2 className="mt-4 text-xl md:text-3xl font-bold text-cyan-300">
           {t.heroSubtitle}
@@ -38,7 +39,6 @@ export default function Hero({ lang = "en" }: Props) {
         <p className="mx-auto mt-6 max-w-3xl text-sm md:text-lg text-white/90">
           {t.heroDesc}
         </p>
-
       </div>
     </section>
   );
