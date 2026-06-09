@@ -28,7 +28,7 @@ export default function Hero({ lang = "en" }: Props) {
           <img
             src="/title.png"
             alt="MatchSignal"
-            className="h-64 md:h-64 object-contain -ml-8"
+            className="h-48 md:h-96 object-contain -ml-8"
           />
         </div>
 
