@@ -53,7 +53,6 @@ export default async function HomePage({
   };
 
   const sportLinks = [
-   
     { id: "football", label: t.sports.football },
     { id: "nba", label: t.sports.nba },
     { id: "nfl", label: t.sports.nfl },
@@ -124,56 +123,62 @@ export default async function HomePage({
                 </div>
               </section>
 
-              {predictions?.sports?.map((sportBlock) => (
-                <section
-                  key={sportBlock.sport}
-                  id={sportBlock.sport.toLowerCase()}
-                  className="mb-16 scroll-mt-28"
-                >
-                  <div className="mb-6 flex items-center gap-4">
-                    <h2 className="text-3xl font-black tracking-tight">
-                      {
-                        t.sports[
-                          sportKeyMap[
-                            sportBlock.sport.toLowerCase()
-                          ] ?? "football"
-                        ]
-                      }
-                    </h2>
+              {predictions?.sports?.map((sportBlock) => {
+                const activePicks = sportBlock.topPicks.filter(
+                  (p) => new Date(p.startTime) > new Date()
+                );
 
-                    <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
-                  </div>
+                return (
+                  <section
+                    key={sportBlock.sport}
+                    id={sportBlock.sport.toLowerCase()}
+                    className="mb-16 scroll-mt-28"
+                  >
+                    <div className="mb-6 flex items-center gap-4">
+                      <h2 className="text-3xl font-black tracking-tight">
+                        {
+                          t.sports[
+                            sportKeyMap[
+                              sportBlock.sport.toLowerCase()
+                            ] ?? "football"
+                          ]
+                        }
+                      </h2>
 
-                  {!sportBlock.hasMatches ? (
-                    <div className="rounded-[24px] border-2 border-cyan-300/20 bg-[#0B1220] p-6">
-                      <p className="text-slate-300">
-                        {sportBlock.message ?? t.noMatches}
-                      </p>
+                      <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
                     </div>
-                  ) : (
-                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
-                      {sportBlock.topPicks.map((p) => {
-                        const uiData = toMatchCardData(
-                          p,
-                          sportBlock.sport as SportType
-                        );
 
-                        return (
-                          <div
-                            key={p.id}
-                            className="transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]"
-                          >
-                            <MatchCard
-                              data={uiData}
-                              lang={lang}
-                            />
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </section>
-              ))}
+                    {!sportBlock.hasMatches || activePicks.length === 0 ? (
+                      <div className="rounded-[24px] border-2 border-cyan-300/20 bg-[#0B1220] p-6">
+                        <p className="text-slate-300">
+                          {sportBlock.message ?? t.noMatches}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
+                        {activePicks.map((p) => {
+                          const uiData = toMatchCardData(
+                            p,
+                            sportBlock.sport as SportType
+                          );
+
+                          return (
+                            <div
+                              key={p.id}
+                              className="transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]"
+                            >
+                              <MatchCard
+                                data={uiData}
+                                lang={lang}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </section>
+                );
+              })}
             </div>
 
             <aside className="h-fit xl:sticky xl:top-5">
