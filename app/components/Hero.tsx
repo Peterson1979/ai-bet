@@ -32,7 +32,7 @@ export default function Hero({ lang = "en" }: Props) {
           />
         </div>
 
-        <h2 className="mt-4 text-xl md:text-3xl font-bold text-cyan-300">
+        <h2 className="-mt-8 text-xl md:text-3xl font-bold text-cyan-300">
           {t.heroSubtitle}
         </h2>
       </div>
