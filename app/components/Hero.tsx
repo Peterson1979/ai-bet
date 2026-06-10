@@ -24,7 +24,7 @@ export default function Hero({ lang = "en" }: Props) {
       </div>
 
       <div className="absolute top-0 left-0 right-0 z-10 flex flex-col px-0 md:px-0 pt-0 md:pt-3 text-center">
-        <div className="flex justify-center -mt-36">
+        <div className="flex justify-center -mt-24">
           <img
             src="/title.png"
             alt="MatchSignal"
