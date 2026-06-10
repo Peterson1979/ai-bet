@@ -35,10 +35,6 @@ export default function Hero({ lang = "en" }: Props) {
         <h2 className="mt-4 text-xl md:text-3xl font-bold text-cyan-300">
           {t.heroSubtitle}
         </h2>
-
-        <p className="mx-auto mt-6 max-w-3xl text-sm md:text-lg text-white/90">
-          {t.heroDesc}
-        </p>
       </div>
     </section>
   );
