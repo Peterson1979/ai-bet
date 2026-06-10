@@ -12,8 +12,7 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
-const CACHE_KEY = "predictions";
-const CACHE_TTL = 60 * 60 * 23; // 23 óra
+const CACHE_TTL = 60 * 60 * 25; // 25 óra – szándékosan több mint 1 nap
 
 type SportResult = {
   sport: string;
@@ -29,6 +28,9 @@ async function generateAI(prompt: string) {
 
 export async function GET() {
   try {
+    const today = new Date().toISOString().split("T")[0]; // pl. "2026-06-10"
+    const CACHE_KEY = `predictions:${today}`;
+
     // CACHE CHECK
     const cached = await redis.get(CACHE_KEY);
     if (cached) {
@@ -92,7 +94,7 @@ export async function GET() {
           event.sport
         );
 
-       topPicks.push({
+        topPicks.push({
           id: eventKey,
           league: event.league,
           eventId: event.id,
@@ -116,7 +118,7 @@ export async function GET() {
           status: "scheduled",
           marketType: "h2h",
           selectionKey: ai.betCode,
-        }); 
+        });
       }
 
       const rankedTopPicks = rankMatches(topPicks);
@@ -128,7 +130,7 @@ export async function GET() {
       });
     }
 
-    // CACHE WRITE - 23 óráig tárolja
+    // CACHE WRITE - 25 óráig tárolja (garantáltan lejár a következő napi futás előtt)
     await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
 
     return Response.json({
