@@ -13,7 +13,7 @@ export const SPORT_CONFIG: Record<string, SportConfig> = {
     maxOdds: 6.0,
     minEdge: 4,
     maxHoursAhead: 48,
-    minBookmakerRank: 5,
+    minBookmakerRank: 3, // FIX: 5→3, hogy több bookmaker átmenjen a szűrőn
     maxEvents: 3,
   },
   NBA: {
@@ -21,7 +21,7 @@ export const SPORT_CONFIG: Record<string, SportConfig> = {
     maxOdds: 4.0,
     minEdge: 5,
     maxHoursAhead: 36,
-    minBookmakerRank: 5,
+    minBookmakerRank: 3, // FIX: 5→3
     maxEvents: 3,
   },
   NFL: {
@@ -29,7 +29,7 @@ export const SPORT_CONFIG: Record<string, SportConfig> = {
     maxOdds: 5.0,
     minEdge: 5,
     maxHoursAhead: 72,
-    minBookmakerRank: 5,
+    minBookmakerRank: 3, // FIX: 5→3
     maxEvents: 3,
   },
   Hockey: {
@@ -37,7 +37,7 @@ export const SPORT_CONFIG: Record<string, SportConfig> = {
     maxOdds: 5.0,
     minEdge: 4,
     maxHoursAhead: 36,
-    minBookmakerRank: 4,
+    minBookmakerRank: 3, // FIX: 4→3
     maxEvents: 3,
   },
   Tennis: {
@@ -45,7 +45,7 @@ export const SPORT_CONFIG: Record<string, SportConfig> = {
     maxOdds: 4.0,
     minEdge: 3,
     maxHoursAhead: 24,
-    minBookmakerRank: 4,
+    minBookmakerRank: 3, // FIX: 4→3
     maxEvents: 3,
   },
   MLB: {
@@ -53,7 +53,7 @@ export const SPORT_CONFIG: Record<string, SportConfig> = {
     maxOdds: 4.5,
     minEdge: 5,
     maxHoursAhead: 24,
-    minBookmakerRank: 5,
+    minBookmakerRank: 3, // FIX: 5→3
     maxEvents: 3,
   },
   MMA: {
@@ -61,7 +61,7 @@ export const SPORT_CONFIG: Record<string, SportConfig> = {
     maxOdds: 8.0,
     minEdge: 6,
     maxHoursAhead: 72,
-    minBookmakerRank: 4,
+    minBookmakerRank: 3, // FIX: 4→3
     maxEvents: 3,
   },
 };
@@ -71,6 +71,6 @@ export const DEFAULT_CONFIG: SportConfig = {
   maxOdds: 6.0,
   minEdge: 5,
   maxHoursAhead: 48,
-  minBookmakerRank: 4,
+  minBookmakerRank: 3, // FIX: 4→3
   maxEvents: 3,
 };

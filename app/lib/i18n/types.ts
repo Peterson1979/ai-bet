@@ -52,6 +52,7 @@ export type Translation = {
     navBetting: string;
     navNews: string;
     navTools: string;
+    navGlossary: string;
   };
   common: {
     rating: string;
@@ -128,6 +129,41 @@ export type Translation = {
     navCookie: string;
     platformName: string;
     builtWithAi: string;
-	
+	glossary: {
+    pageTitle: string;
+    pageSubtitle: string;
+    learnMore: string;
+    tooltipLearnMore: string;
+    markets: {
+		doubleChance: { term: string; definition: string };
+drawNoBet: { term: string; definition: string };
+      homeWin: { term: string; definition: string };
+      awayWin: { term: string; definition: string };
+      matchWinner: { term: string; definition: string };
+      moneyline: { term: string; definition: string };
+      over15: { term: string; definition: string };
+      under45: { term: string; definition: string };
+      over45: { term: string; definition: string };
+      under75: { term: string; definition: string };
+      over185Games: { term: string; definition: string };
+      under305Games: { term: string; definition: string };
+      playerToWinSet: { term: string; definition: string };
+      handicapGames: { term: string; definition: string };
+      over1495Points: { term: string; definition: string };
+      under1795Points: { term: string; definition: string };
+      over335Points: { term: string; definition: string };
+      under545Points: { term: string; definition: string };
+      over75Runs: { term: string; definition: string };
+      under95Runs: { term: string; definition: string };
+      teamTotalOver: { term: string; definition: string };
+      teamTotalUnder: { term: string; definition: string };
+      teamTotalOver15: { term: string; definition: string };
+      runLine: { term: string; definition: string };
+      methodOfVictory: { term: string; definition: string };
+      over25Rounds: { term: string; definition: string };
+      under25Rounds: { term: string; definition: string };
+    };
+    quickNote: { title: string; text: string };
+  };
   };
 };

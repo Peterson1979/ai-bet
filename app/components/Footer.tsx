@@ -8,7 +8,10 @@ export default function Footer() {
   const params = useParams();
   const lang = (params?.lang as Lang) || "en";
   const t = translations[lang] ?? translations.en;
-  const f = t.footer as Record<string, string>;
+  const f = t.footer;
+
+  // SAFE accessor (fix TS indexing error)
+  const getText = (key: string) => (f as any)[key];
 
   const valueBetTypes = [
     { key: "valueBet", color: "emerald-300", emoji: "🟢" },
@@ -53,12 +56,15 @@ export default function Footer() {
           {/* VALUE BET TYPES */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8">
             {valueBetTypes.map((type) => (
-              <div key={type.key} className={`rounded-2xl border border-${type.color}/20 bg-[#0F172A] p-5`}>
+              <div
+                key={type.key}
+                className={`rounded-2xl border border-${type.color}/20 bg-[#0F172A] p-5`}
+              >
                 <h4 className={`font-black text-${type.color}`}>
-                  {type.emoji} {f[type.key]}
+                  {type.emoji} {getText(type.key)}
                 </h4>
                 <p className="mt-3 text-sm text-slate-300 leading-6">
-                  {f[`${type.key}Desc`]}
+                  {getText(`${type.key}Desc`)}
                 </p>
               </div>
             ))}
@@ -67,9 +73,16 @@ export default function Footer() {
           {/* METRICS */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
             {metrics.map((m) => (
-              <div key={m.key} className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5">
-                <h4 className="text-sm font-black text-cyan-300">{f[m.key]}</h4>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{f[`${m.key}Desc`]}</p>
+              <div
+                key={m.key}
+                className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5"
+              >
+                <h4 className="text-sm font-black text-cyan-300">
+                  {getText(m.key)}
+                </h4>
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  {getText(`${m.key}Desc`)}
+                </p>
               </div>
             ))}
           </div>
@@ -81,13 +94,21 @@ export default function Footer() {
       <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-6">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h4 className="text-lg font-black text-white">{t.footer.aiBettingInsights}</h4>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">{t.footer.aiBettingInsightsDesc}</p>
+            <h4 className="text-lg font-black text-white">
+              {t.footer.aiBettingInsights}
+            </h4>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
+              {t.footer.aiBettingInsightsDesc}
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-5 text-sm text-slate-400">
             {navLinks.map((link) => (
-              <Link key={link.href} href={`/${lang}${link.href}`} className="transition hover:text-cyan-300">
+              <Link
+                key={link.href}
+                href={`/${lang}${link.href}`}
+                className="transition hover:text-cyan-300"
+              >
                 {link.label}
               </Link>
             ))}
@@ -95,8 +116,12 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 flex flex-col gap-3 border-t border-[#1E293B] pt-6 md:flex-row md:items-center md:justify-between">
-          <p className="text-[12px] text-slate-500">© {new Date().getFullYear()} {t.footer.platformName}</p>
-          <div className="text-[12px] text-slate-500">{t.footer.builtWithAi}</div>
+          <p className="text-[12px] text-slate-500">
+            © {new Date().getFullYear()} {t.footer.platformName}
+          </p>
+          <div className="text-[12px] text-slate-500">
+            {t.footer.builtWithAi}
+          </div>
         </div>
       </div>
     </footer>

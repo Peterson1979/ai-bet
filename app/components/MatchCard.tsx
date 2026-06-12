@@ -30,7 +30,49 @@ function getBetColor(label: string) {
 /* =========================
    COMPONENT
 ========================= */
+/* =========================
+   BET TOOLTIP
+========================= */
 
+function BetTooltip({ betType, t, lang }: { betType: string; t: any; lang: string }) {
+  const [visible, setVisible] = useState(false);
+
+  const glossary = t.glossary?.markets ?? {};
+  const entry = Object.values(glossary as Record<string, { term: string; definition: string }>)
+    .find((m) => m.term.toLowerCase() === betType?.toLowerCase());
+
+  if (!entry) return null;
+
+  return (
+    <div className="relative inline-flex items-center">
+      <button
+        onClick={(e) => { e.stopPropagation(); setVisible(!visible); }}
+        className="text-cyan-400 hover:text-cyan-200 transition text-[14px] leading-none"
+        aria-label="Bet type info"
+      >
+        ⓘ
+      </button>
+
+      {visible && (
+        <div className="absolute left-6 top-0 z-50 w-64 rounded-[14px] border-2 border-cyan-300/40 bg-[#0B1220] p-3 shadow-[0_8px_40px_rgba(34,211,238,0.2)] text-left">
+          <p className="text-[11px] font-black text-cyan-300 uppercase tracking-wider mb-1">
+            {entry.term}
+          </p>
+          <p className="text-[12px] text-slate-300 leading-5">
+            {entry.definition}
+          </p>
+          
+            <a
+  href={`/${lang}/betting-glossary`}
+  className="mt-2 inline-block text-[11px] text-cyan-400 hover:text-cyan-200 font-bold"
+>
+  {t.glossary?.learnMore ?? "Learn more →"}
+</a>
+        </div>
+      )}
+    </div>
+  );
+}
 export default function MatchCard({ data, lang = "en" }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -77,9 +119,12 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             {betLabel}
           </span>
 
-          <span className="text-xl font-black text-white leading-tight">
-            {data.recommendedBet}
-          </span>
+          <div className="flex items-center gap-2 group relative">
+            <span className="text-xl font-black text-white leading-tight">
+              {data.recommendedBet}
+            </span>
+            <BetTooltip betType={data.recommendedBet} t={t} lang={lang} />
+          </div>
 
           <span className="text-[12px] text-slate-300 font-bold">
             {t.confidence}: {confidence}%<span className="text-[11px] opacity-60 ml-1"></span>

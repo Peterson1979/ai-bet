@@ -88,6 +88,14 @@ const BOOKMAKER_RANKINGS: Record<string, number> = {
   Stake: 8,
   DraftKings: 8,
   Unibet: 7,
+  Bwin: 6,
+  "William Hill": 6,
+  Ladbrokes: 6,
+  Betway: 5,
+  "888sport": 5,
+  Betsson: 5,
+  NordicBet: 4,
+  Coolbet: 4,
 };
 
 function getCache(key: string): OddsEvent[] | null {
@@ -119,6 +127,8 @@ function calculateImpliedProbability(odds?: number | null): number | null {
 }
 
 function calculateEdge(impliedProbability?: number | null): number | null {
+  // NOTE: Ez jelenleg egy placeholder véletlenszerű értékkel dolgozik (0-12%).
+  // Valódi edge számításhoz saját modell vagy külső valószínűségi adat szükséges.
   if (!impliedProbability) return null;
   const aiProbability = impliedProbability + Math.random() * 12;
   return Number((aiProbability - impliedProbability).toFixed(2));
@@ -141,7 +151,8 @@ function extractBestOdds(event: any): {
     if (bestOdds === null || homeOutcome.price > bestOdds) {
       bestOdds = homeOutcome.price;
       bestBookmaker = bookmaker.title || "Unknown";
-      bookmakerRank = BOOKMAKER_RANKINGS[bookmaker.title] || 1;
+      // FIX: fallback rank 1 helyett 3, hogy az ismeretlen bookmakers ne szűrődjön ki automatikusan
+      bookmakerRank = BOOKMAKER_RANKINGS[bookmaker.title] ?? 3;
     }
   }
 

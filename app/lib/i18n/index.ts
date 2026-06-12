@@ -3,13 +3,18 @@ import { deepMerge } from "./deepMerge";
 import en from "./en";
 import hu from "./hu";
 
+// ÚJ TÍPUS: Rekurzívan opcionálissá teszi az objektum összes tulajdonságát
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
+};
+
 export const LANGS = [
   "en", "hu", "de", "fr", "es", "it", "pt", "ar", "zh", "ja", "hi",
 ] as const;
 
 export type Lang = (typeof LANGS)[number];
 
-const de: Partial<Translation> = {
+const de: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "KI-gestützte Wettanalysen",
   heroDesc: "KI-generierte Vorhersagen für mehrere Sportarten.",
@@ -32,7 +37,7 @@ const de: Partial<Translation> = {
   seoTitle: "KI Wettvorhersagen",
   seoDescription: "KI-generierte Wettvorhersagen und Value Bets für mehrere Sportarten.",
   sports: { topPicks: "Top Tipps", football: "Fußball", nba: "NBA", nfl: "NFL", hockey: "Eishockey", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
-  system: { navHome: "Startseite", navTopPicks: "Top Tipps", navBetting: "Wetten", navNews: "Neuigkeiten", navTools: "Tools" },
+  system: { navHome: "Startseite", navTopPicks: "Top Tipps", navBetting: "Wetten", navNews: "Neuigkeiten", navTools: "Tools", navGlossary: "Glossar" },
   footer: {
     betIntelligence: "Wettintelligenz-System", betIntelligenceDesc: "Die KI bewertet jeden Tipp anhand von Vertrauen, Erwartungswert und Marktrisikoignal.",
     valueBet: "VALUE BET", valueBetDesc: "Starker positiver Erwartungswert laut KI-Modell.",
@@ -50,7 +55,7 @@ const de: Partial<Translation> = {
   },
 };
 
-const fr: Partial<Translation> = {
+const fr: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "Analyses de paris alimentées par IA",
   heroDesc: "Prédictions générées par IA pour plusieurs sports.",
@@ -65,7 +70,7 @@ const fr: Partial<Translation> = {
   showExplanation: "Afficher l'explication ▼", hideExplanation: "Masquer l'explication ▲", viewOdds: "Voir les cotes",
   seoTitle: "Prédictions de paris IA", seoDescription: "Prédictions de paris et value bets générés par IA pour plusieurs sports.",
   sports: { topPicks: "Meilleurs choix", football: "Football", nba: "NBA", nfl: "NFL", hockey: "Hockey sur glace", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
-  system: { navHome: "Accueil", navTopPicks: "Meilleurs choix", navBetting: "Paris", navNews: "Actualités", navTools: "Outils" },
+  system: { navHome: "Accueil", navTopPicks: "Meilleurs choix", navBetting: "Paris", navNews: "Actualités", navTools: "Outils", navGlossary: "Glossaire" },
   footer: {
     betIntelligence: "Système d'intelligence de paris", betIntelligenceDesc: "L'IA évalue chaque sélection en utilisant la confiance, la valeur attendue et les signaux de risque de marché.",
     valueBet: "VALUE BET", valueBetDesc: "Forte valeur attendue positive selon le modèle IA.",
@@ -83,7 +88,7 @@ const fr: Partial<Translation> = {
   },
 };
 
-const es: Partial<Translation> = {
+const es: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL", heroSubtitle: "Análisis de apuestas con IA",
   heroDesc: "Predicciones generadas por IA para múltiples deportes.",
   heroImageAlt: "Fondo hero de predicciones de apuestas IA",
@@ -97,7 +102,7 @@ const es: Partial<Translation> = {
   showExplanation: "Mostrar explicación ▼", hideExplanation: "Ocultar explicación ▲", viewOdds: "Ver cuotas",
   seoTitle: "Predicciones de apuestas IA", seoDescription: "Predicciones de apuestas y value bets generados por IA para múltiples deportes.",
   sports: { topPicks: "Mejores picks", football: "Fútbol", nba: "NBA", nfl: "NFL", hockey: "Hockey sobre hielo", tennis: "Tenis", mlb: "Béisbol", mma: "MMA" },
-  system: { navHome: "Inicio", navTopPicks: "Mejores picks", navBetting: "Apuestas", navNews: "Noticias", navTools: "Herramientas" },
+  system: { navHome: "Inicio", navTopPicks: "Mejores picks", navBetting: "Apuestas", navNews: "Noticias", navTools: "Herramientas", navGlossary: "Glosario" },
   footer: {
     betIntelligence: "Sistema de inteligencia de apuestas", betIntelligenceDesc: "La IA evalúa cada selección usando confianza, valor esperado y señales de riesgo de mercado.",
     valueBet: "VALUE BET", valueBetDesc: "Fuerte valor esperado positivo según el modelo de IA.",
@@ -115,7 +120,7 @@ const es: Partial<Translation> = {
   },
 };
 
-const it: Partial<Translation> = {
+const it: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL", heroSubtitle: "Analisi scommesse con IA",
   heroDesc: "Previsioni generate dall'IA per più sport.",
   heroImageAlt: "Sfondo hero previsioni scommesse IA",
@@ -129,7 +134,7 @@ const it: Partial<Translation> = {
   showExplanation: "Mostra spiegazione ▼", hideExplanation: "Nascondi spiegazione ▲", viewOdds: "Vedi quote",
   seoTitle: "Previsioni scommesse IA", seoDescription: "Previsioni scommesse e value bet generate dall'IA per più sport.",
   sports: { topPicks: "Le migliori scelte", football: "Calcio", nba: "NBA", nfl: "NFL", hockey: "Hockey su ghiaccio", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
-  system: { navHome: "Home", navTopPicks: "Le migliori scelte", navBetting: "Scommesse", navNews: "Notizie", navTools: "Strumenti" },
+  system: { navHome: "Home", navTopPicks: "Le migliori scelte", navBetting: "Scommesse", navNews: "Notizie", navTools: "Strumenti", navGlossary: "Glossario" },
   footer: {
     betIntelligence: "Sistema di intelligenza scommesse", betIntelligenceDesc: "L'IA valuta ogni selezione usando fiducia, valore atteso e segnali di rischio di mercato.",
     valueBet: "VALUE BET", valueBetDesc: "Forte valore atteso positivo secondo il modello IA.",
@@ -147,7 +152,7 @@ const it: Partial<Translation> = {
   },
 };
 
-const pt: Partial<Translation> = {
+const pt: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL", heroSubtitle: "Análises de apostas com IA",
   heroDesc: "Previsões geradas por IA para vários desportos.",
   heroImageAlt: "Fundo hero de previsões de apostas IA",
@@ -161,7 +166,7 @@ const pt: Partial<Translation> = {
   showExplanation: "Mostrar explicação ▼", hideExplanation: "Ocultar explicação ▲", viewOdds: "Ver odds",
   seoTitle: "Previsões de apostas IA", seoDescription: "Previsões de apostas e value bets gerados por IA para vários desportos.",
   sports: { topPicks: "Melhores escolhas", football: "Futebol", nba: "NBA", nfl: "NFL", hockey: "Hóquei no gelo", tennis: "Ténis", mlb: "Baseball", mma: "MMA" },
-  system: { navHome: "Início", navTopPicks: "Melhores escolhas", navBetting: "Apostas", navNews: "Notícias", navTools: "Ferramentas" },
+  system: { navHome: "Início", navTopPicks: "Melhores escolhas", navBetting: "Apostas", navNews: "Notícias", navTools: "Ferramentas", navGlossary: "Glossário"  },
   footer: {
     betIntelligence: "Sistema de inteligência de apostas", betIntelligenceDesc: "A IA avalia cada seleção usando confiança, valor esperado e sinais de risco de mercado.",
     valueBet: "VALUE BET", valueBetDesc: "Forte valor esperado positivo segundo o modelo de IA.",
@@ -179,7 +184,7 @@ const pt: Partial<Translation> = {
   },
 };
 
-const ar: Partial<Translation> = {
+const ar: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL", heroSubtitle: "تحليلات الرهان بالذكاء الاصطناعي",
   heroDesc: "تنبؤات مدعومة بالذكاء الاصطناعي لرياضات متعددة.",
   heroImageAlt: "خلفية نصائح الرهان بالذكاء الاصطناعي",
@@ -193,7 +198,7 @@ const ar: Partial<Translation> = {
   showExplanation: "إظهار الشرح ▼", hideExplanation: "إخفاء الشرح ▲", viewOdds: "عرض الأوفاق",
   seoTitle: "تنبؤات الرهان بالذكاء الاصطناعي", seoDescription: "تنبؤات رهان مولدة بالذكاء الاصطناعي لرياضات متعددة.",
   sports: { topPicks: "أفضل الاختيارات", football: "كرة القدم", nba: "NBA", nfl: "NFL", hockey: "هوكي الجليد", tennis: "التنس", mlb: "البيسبول", mma: "MMA" },
-  system: { navHome: "الرئيسية", navTopPicks: "أفضل الاختيارات", navBetting: "الرهان", navNews: "الأخبار", navTools: "الأدوات" },
+  system: { navHome: "الرئيسية", navTopPicks: "أفضل الاختيارات", navBetting: "الرهان", navNews: "الأخبار", navTools: "الأدوات", navGlossary: "المسرد" },
   footer: {
     betIntelligence: "نظام ذكاء الرهان", betIntelligenceDesc: "يقيّم الذكاء الاصطناعي كل اختيار باستخدام الثقة والقيمة المتوقعة وإشارات مخاطر السوق.",
     valueBet: "رهان ذو قيمة", valueBetDesc: "قيمة متوقعة إيجابية قوية.",
@@ -211,7 +216,7 @@ const ar: Partial<Translation> = {
   },
 };
 
-const zh: Partial<Translation> = {
+const zh: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL", heroSubtitle: "AI驱动的投注分析",
   heroDesc: "AI生成的多项运动预测。", heroImageAlt: "AI投注预测主图背景",
   topPicks: "精选推荐", premiumOffers: "优质投注优惠",
@@ -224,7 +229,14 @@ const zh: Partial<Translation> = {
   showExplanation: "显示说明 ▼", hideExplanation: "隐藏说明 ▲", viewOdds: "查看赔率",
   seoTitle: "AI投注预测", seoDescription: "AI生成的多项运动投注预测和价值投注。",
   sports: { topPicks: "精选推荐", football: "足球", nba: "NBA", nfl: "NFL", hockey: "冰球", tennis: "网球", mlb: "棒球", mma: "综合格斗" },
-  system: { navHome: "首页", navTopPicks: "精选推荐", navBetting: "投注", navNews: "新闻", navTools: "工具" },
+system: {
+  navHome: "首页",
+  navTopPicks: "精选推荐",
+  navBetting: "投注",
+  navNews: "新闻",
+  navTools: "工具",
+  navGlossary: "术语表"
+},
   footer: {
     betIntelligence: "投注智能系统", betIntelligenceDesc: "AI使用置信度、期望值和市场风险信号评估每个选择。",
     valueBet: "价值投注", valueBetDesc: "根据AI模型，具有强烈正期望值。",
@@ -242,7 +254,7 @@ const zh: Partial<Translation> = {
   },
 };
 
-const ja: Partial<Translation> = {
+const ja: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL", heroSubtitle: "AIによるベッティング分析",
   heroDesc: "複数のスポーツに対応したAI予想。", heroImageAlt: "AIベッティング予想ヒーロー背景",
   topPicks: "注目のピック", premiumOffers: "プレミアムベッティングオファー",
@@ -255,7 +267,14 @@ const ja: Partial<Translation> = {
   showExplanation: "説明を表示 ▼", hideExplanation: "説明を非表示 ▲", viewOdds: "オッズを見る",
   seoTitle: "AIベッティング予想", seoDescription: "AIが生成した複数スポーツのベッティング予想とバリューベット。",
   sports: { topPicks: "注目のピック", football: "サッカー", nba: "NBA", nfl: "NFL", hockey: "アイスホッケー", tennis: "テニス", mlb: "野球", mma: "MMA" },
-  system: { navHome: "ホーム", navTopPicks: "注目のピック", navBetting: "ベッティング", navNews: "ニュース", navTools: "ツール" },
+  system: {
+  navHome: "ホーム",
+  navTopPicks: "注目のピック",
+  navBetting: "ベッティング",
+  navNews: "ニュース",
+  navTools: "ツール",
+  navGlossary: "用語集"
+},
   footer: {
     betIntelligence: "ベッティングインテリジェンスシステム", betIntelligenceDesc: "AIは信頼度、期待値、市場リスクシグナルを使用して各ピックを評価します。",
     valueBet: "バリューベット", valueBetDesc: "AIモデルによる強い正の期待値。",
@@ -273,7 +292,7 @@ const ja: Partial<Translation> = {
   },
 };
 
-const hi: Partial<Translation> = {
+const hi: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL", heroSubtitle: "AI-संचालित सट्टेबाजी विश्लेषण",
   heroDesc: "कई खेलों के लिए AI-जनित भविष्यवाणियां।",
   heroImageAlt: "AI सट्टेबाजी भविष्यवाणी हीरो पृष्ठभूमि",
@@ -287,7 +306,7 @@ const hi: Partial<Translation> = {
   showExplanation: "स्पष्टीकरण दिखाएं ▼", hideExplanation: "स्पष्टीकरण छुपाएं ▲", viewOdds: "ऑड्स देखें",
   seoTitle: "AI सट्टेबाजी भविष्यवाणियां", seoDescription: "कई खेलों के लिए AI-जनित सट्टेबाजी भविष्यवाणियां।",
   sports: { topPicks: "शीर्ष चुनाव", football: "फुटबॉल", nba: "NBA", nfl: "NFL", hockey: "आइस हॉकी", tennis: "टेनिस", mlb: "बेसबॉल", mma: "MMA" },
-  system: { navHome: "होम", navTopPicks: "शीर्ष चुनाव", navBetting: "सट्टेबाजी", navNews: "समाचार", navTools: "उपकरण" },
+  system: { navHome: "होम", navTopPicks: "शीर्ष चुनाव", navBetting: "सट्टेबाजी", navNews: "समाचार", navTools: "उपकरण", navGlossary: "शब्दकोश" },
   footer: {
     betIntelligence: "बेटिंग इंटेलिजेंस सिस्टम", betIntelligenceDesc: "AI विश्वास, अपेक्षित मूल्य और बाजार जोखिम संकेतों का उपयोग करके प्रत्येक चुनाव का मूल्यांकन करता है।",
     valueBet: "वैल्यू बेट", valueBetDesc: "AI मॉडल के अनुसार मजबूत सकारात्मक अपेक्षित मूल्य।",
@@ -305,14 +324,14 @@ const hi: Partial<Translation> = {
   },
 };
 
-const overrides: Partial<Record<Lang, Partial<Translation>>> = {
+const overrides: Partial<Record<Lang, DeepPartial<Translation>>> = {
   hu, de, fr, es, it, pt, ar, zh, ja, hi,
 };
 
 function buildTranslation(lang: Lang): Translation {
   const override = overrides[lang];
   if (!override) return en;
-  return deepMerge(en, override);
+  return deepMerge(en, override as any); // 'as any' biztosítja, hogy a deepMerge típuskezelése ne okozzon gondot
 }
 
 export const translations = Object.fromEntries(

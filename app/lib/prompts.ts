@@ -9,42 +9,36 @@ const SPORT_RULES: Record<string, string> = {
 - Home Win
 - Away Win
 - Under 4.5 Goals`,
-
   Tennis: `Sport-specific markets (use ONLY these):
 - Match Winner
 - Over 18.5 Games
 - Under 30.5 Games
 - Player to Win a Set
 - Handicap Games (+3.5)`,
-
   NBA: `Sport-specific markets (use ONLY these):
 - Moneyline
 - Over 149.5 Points
 - Under 179.5 Points
 - Team Total Over
 - Team Total Under`,
-
   Hockey: `Sport-specific markets (use ONLY these):
 - Moneyline
 - Over 4.5 Goals
 - Under 7.5 Goals
 - Double Chance
 - Team Total Over 1.5`,
-
   NFL: `Sport-specific markets (use ONLY these):
 - Moneyline
 - Over 33.5 Points
 - Under 54.5 Points
 - Team Total Over
 - Team Total Under`,
-
   MLB: `Sport-specific markets (use ONLY these):
 - Moneyline
 - Over 7.5 Runs
 - Under 9.5 Runs
 - Run Line (-1.5)
 - Team Total Over`,
-
   MMA: `Sport-specific markets (use ONLY these):
 - Moneyline (Fight Winner)
 - Method of Victory (KO/TKO or Decision)
@@ -57,7 +51,7 @@ export function buildPredictionPrompt(events: OddsEvent[]): string {
   const count = events.length;
   const sportRules = SPORT_RULES[sport] ?? `- Moneyline\n- Over/Under`;
 
-  return `You are a professional sports betting analyst.
+  return `You are a professional sports betting analyst with expertise in quantitative modeling and market inefficiency detection.
 Analyze the following ${count} ${sport} events and return exactly ${count} predictions.
 
 ${sportRules}
@@ -70,8 +64,8 @@ EVENT ${i + 1}:
 MATCH: ${e.homeTeam} vs ${e.awayTeam}
 LEAGUE: ${e.league}
 START: ${e.commenceTime}
-BOOKMAKER: ${e.bookmaker}
-DECIMAL ODDS: ${e.odds}
+BOOKMAKER: ${e.bookmaker ?? "Unknown"}
+DECIMAL ODDS: ${e.odds ?? "N/A"}
 IMPLIED PROBABILITY: ${e.impliedProbability ?? "N/A"}%
 EDGE: ${e.edge ?? "N/A"}%`
   )
@@ -82,7 +76,7 @@ Return ONLY a valid JSON array with EXACTLY ${count} objects (one per event, sam
   {
     "recommendedBet": "<market type from the list above>",
     "betCode": "<short code e.g. HOME_WIN, OVER_1_5, MONEYLINE_HOME>",
-    "explanation": "<max 20 words why this is a good bet>",
+    "explanation": "<exactly one sentence, max 25 words: reference the specific market, odds value, implied probability or edge to justify the pick professionally>",
     "confidence": <integer 1-100>,
     "risk": <integer 1-100, lower = safer>
   }
@@ -93,5 +87,6 @@ STRICT RULES:
 - No markdown, no code fences, no extra text
 - confidence and risk must be plain integers
 - Choose the SAFEST, most conservative picks
+- The explanation must be a single sentence referencing at least one quantitative data point (odds, probability, or edge)
 - Do NOT invent statistics not present in the input`;
 }
