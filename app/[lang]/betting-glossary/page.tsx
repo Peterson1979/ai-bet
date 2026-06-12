@@ -9,7 +9,7 @@ export default async function BettingGlossaryPage({
 }) {
   const { lang } = await params;
   const t = translations[lang] ?? translations.en;
-  const g = t.footer.glossary;
+  const g = t.glossary;
   const markets = Object.values(g.markets as Record<string, { term: string; definition: string }>);
 
   return (

@@ -129,14 +129,15 @@ export type Translation = {
     navCookie: string;
     platformName: string;
     builtWithAi: string;
-	glossary: {
+  };
+  glossary: {
     pageTitle: string;
     pageSubtitle: string;
     learnMore: string;
     tooltipLearnMore: string;
     markets: {
-		doubleChance: { term: string; definition: string };
-drawNoBet: { term: string; definition: string };
+      doubleChance: { term: string; definition: string };
+      drawNoBet: { term: string; definition: string };
       homeWin: { term: string; definition: string };
       awayWin: { term: string; definition: string };
       matchWinner: { term: string; definition: string };
@@ -164,6 +165,5 @@ drawNoBet: { term: string; definition: string };
       under25Rounds: { term: string; definition: string };
     };
     quickNote: { title: string; text: string };
-  };
   };
 };

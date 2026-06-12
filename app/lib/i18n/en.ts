@@ -5,40 +5,31 @@ const en: Translation = {
   heroSubtitle: "AI-Powered Betting Insights",
   heroDesc: "AI-powered predictions across multiple sports.",
   heroImageAlt: "MatchSignal betting predictions hero background",
-
   topPicks: "Top Picks",
   premiumOffers: "Premium Betting Offers",
   premiumOffersDesc: "Place your affiliate banners, sportsbook promos or rotating offers here.",
   recommendedSites: "Recommended sportsbooks & offers",
   recommendedSitesDesc: "Recommended sportsbooks and affiliate offers curated for users.",
-
   noMatches: "No matches available",
   tbd: "TBD",
   noExplanation: "No explanation available",
-
   aiTips: "MATCH SIGNAL",
   matchSignal: "MATCH SIGNAL",
-
   odds: "Odds",
   confidence: "Confidence",
   edge: "Edge",
   risk: "Risk",
   ev: "Expected Value (EV)",
-
   valueBet: "🟢 VALUE BET",
   okBet: "🟡 OK BET",
   riskyBet: "🔴 RISKY",
-
   positiveEV: "Positive expected value signal",
   negativeEV: "Negative expected value signal",
-
   showExplanation: "Show explanation ▼",
   hideExplanation: "Hide explanation ▲",
   viewOdds: "View Odds",
-
   seoTitle: "MatchSignal – AI Betting Predictions",
   seoDescription: "AI-generated betting predictions and value bets across multiple sports.",
-
   contactTitle: "Contact",
   contactSuccess: "Message sent successfully.",
   contactName: "Your name",
@@ -47,7 +38,6 @@ const en: Translation = {
   sending: "Sending...",
   send: "Send Message",
   contactError: "Failed to send message",
-
   sports: {
     topPicks: "Top Picks",
     football: "Football",
@@ -58,7 +48,6 @@ const en: Translation = {
     mlb: "MLB",
     mma: "MMA",
   },
-
   system: {
     navHome: "Home",
     navTopPicks: "Top Picks",
@@ -67,12 +56,10 @@ const en: Translation = {
     navTools: "Tools",
     navGlossary: "Glossary",
   },
-
   common: {
     rating: "Rating",
     visitSite: "Visit Site",
   },
-
   bettingPage: {
     title: "Best Betting Sites",
     description: "Top recommended sportsbooks with the best bonuses and odds.",
@@ -84,10 +71,8 @@ const en: Translation = {
     claimBonus: "Claim your welcome bonus",
     visitSite: "Visit Site",
     affiliateTitle: "Affiliate Disclosure:",
-    affiliateText:
-      "This page contains affiliate links. We may earn a commission when you sign up through our links. This does not affect our editorial independence.",
+    affiliateText: "This page contains affiliate links. We may earn a commission when you sign up through our links. This does not affect our editorial independence.",
   },
-
   sportNews: {
     title: "Sport News",
     description: "Latest sports news across football, NBA, NFL, hockey, tennis and more.",
@@ -95,7 +80,6 @@ const en: Translation = {
     subtitle: "Stay up to date with the latest news across all major sports.",
     sidebarTitle: "Top Betting Sites",
   },
-
   tools: {
     title: "Betting Tools",
     oddsConverter: "Odds Converter",
@@ -117,43 +101,27 @@ const en: Translation = {
     fairOdds: "Your fair odds",
     bookOdds: "Bookmaker odds",
   },
-
   footer: {
     betIntelligence: "Betting Intelligence System",
-    betIntelligenceDesc:
-      "AI evaluates each pick using confidence, expected value and market risk signals. This system helps identify betting quality across all sports and markets.",
-
+    betIntelligenceDesc: "AI evaluates each pick using confidence, expected value and market risk signals. This system helps identify betting quality across all sports and markets.",
     valueBet: "VALUE BET",
     valueBetDesc: "Strong positive expected value according to the AI model.",
-
     okBet: "OK BET",
     okBetDesc: "Acceptable betting opportunity with moderate value.",
-
     riskyBet: "RISKY",
     riskyBetDesc: "Higher uncertainty or lower expected betting value.",
-
     aiEvScore: "AI EV SCORE",
-    aiEvScoreDesc:
-      "AI-calculated expected value score used to rank betting opportunities.",
-
+    aiEvScoreDesc: "AI-calculated expected value score used to rank betting opportunities.",
     aiEdge: "AI Edge",
-    aiEdgeDesc:
-      "Difference between implied bookmaker probability and estimated AI probability.",
-
+    aiEdgeDesc: "Difference between implied bookmaker probability and estimated AI probability.",
     confidence: "Confidence",
-    confidenceDesc:
-      "AI confidence score from 0–100 based on statistical signals and data.",
-
+    confidenceDesc: "AI confidence score from 0–100 based on statistical signals and data.",
     impliedProb: "Implied Probability",
     impliedProbDesc: "Probability derived from bookmaker odds.",
-
     risk: "Risk",
     riskDesc: "Volatility and uncertainty level of predictions.",
-
     aiBettingInsights: "MatchSignal Betting Insights",
-    aiBettingInsightsDesc:
-      "This platform provides AI-generated sports betting analysis for informational purposes only. No guarantee of winnings. Gamble responsibly.",
-
+    aiBettingInsightsDesc: "This platform provides AI-generated sports betting analysis for informational purposes only. No guarantee of winnings. Gamble responsibly.",
     navAbout: "About",
     navContact: "Contact",
     navPrivacy: "Privacy Policy",
@@ -161,160 +129,129 @@ const en: Translation = {
     navAffiliate: "Affiliate Disclosure",
     navResponsible: "Responsible Gambling",
     navCookie: "Cookie Policy",
-
     platformName: "MatchSignal",
     builtWithAi: "Built with AI",
-
-    // 👇 A glossary MOST a footer BELSEJÉBE került 👇
-    glossary: {
-      pageTitle: "Betting Markets Explained",
-      pageSubtitle:
-        "Everything you need to know about the betting markets used on MatchSignal.",
-      learnMore: "Learn about betting markets →",
-      tooltipLearnMore: "Learn more",
-
-      markets: {
-        doubleChance: {
-          term: "Double Chance",
-          definition:
-            "A bet that covers two possible outcomes instead of one. For example, Home Win or Draw. This increases your chances of winning but usually offers lower odds.",
-        },
-        drawNoBet: {
-          term: "Draw No Bet",
-          definition:
-            "You win if your selected team wins. If the match ends in a draw, your stake is refunded.",
-        },
-        homeWin: {
-          term: "Home Win",
-          definition: "A bet on the home team to win the match in regular time.",
-        },
-        awayWin: {
-          term: "Away Win",
-          definition: "A bet on the away team to win the match in regular time.",
-        },
-        matchWinner: {
-          term: "Match Winner",
-          definition: "A bet on the player or team that will win the match.",
-        },
-        moneyline: {
-          term: "Moneyline",
-          definition:
-            "A simple bet on which team, player, or fighter will win the event. No point spreads or handicaps are involved.",
-        },
-        over15: {
-          term: "Over 1.5 Goals",
-          definition:
-            "The match must have at least 2 total goals for the bet to win.",
-        },
-        under45: {
-          term: "Under 4.5 Goals",
-          definition:
-            "The match must have 4 goals or fewer in total.",
-        },
-        over45: {
-          term: "Over 4.5 Goals",
-          definition:
-            "The game must produce at least 5 total goals.",
-        },
-        under75: {
-          term: "Under 7.5 Goals",
-          definition:
-            "The game must produce 7 goals or fewer.",
-        },
-        over185Games: {
-          term: "Over 18.5 Games",
-          definition:
-            "In tennis, at least 19 total games must be played during the match.",
-        },
-        under305Games: {
-          term: "Under 30.5 Games",
-          definition:
-            "In tennis, the match must contain 30 games or fewer.",
-        },
-        playerToWinSet: {
-          term: "Player to Win a Set",
-          definition:
-            "Your selected player must win at least one set during the match, regardless of the final result.",
-        },
-        handicapGames: {
-          term: "Handicap Games (+3.5)",
-          definition:
-            "Your selected player starts with a virtual advantage of +3.5 games. After applying the handicap, they must have more total games than their opponent.",
-        },
-        over1495Points: {
-          term: "Over 149.5 Points",
-          definition:
-            "The combined score of both teams must be 150 points or more.",
-        },
-        under1795Points: {
-          term: "Under 179.5 Points",
-          definition:
-            "The combined score of both teams must be 179 points or fewer.",
-        },
-        over335Points: {
-          term: "Over 33.5 Points",
-          definition:
-            "The combined score of both teams must be 34 points or more.",
-        },
-        under545Points: {
-          term: "Under 54.5 Points",
-          definition:
-            "The combined score of both teams must be 54 points or fewer.",
-        },
-        over75Runs: {
-          term: "Over 7.5 Runs",
-          definition:
-            "In baseball, at least 8 total runs must be scored.",
-        },
-        under95Runs: {
-          term: "Under 9.5 Runs",
-          definition:
-            "In baseball, 9 runs or fewer must be scored.",
-        },
-        teamTotalOver: {
-          term: "Team Total Over",
-          definition:
-            "Your selected team must score more than the specified line. Example: Team Total Over 2.5 Goals wins if the team scores 3 or more goals.",
-        },
-        teamTotalUnder: {
-          term: "Team Total Under",
-          definition:
-            "Your selected team must score fewer than the specified line. Example: Team Total Under 24.5 Points wins if the team scores 24 points or fewer.",
-        },
-        teamTotalOver15: {
-          term: "Team Total Over 1.5",
-          definition:
-            "Your selected team must score at least 2 goals.",
-        },
-        runLine: {
-          term: "Run Line (-1.5)",
-          definition:
-            "A baseball handicap bet. Your selected team must win by 2 or more runs for the bet to win.",
-        },
-        methodOfVictory: {
-          term: "Method of Victory",
-          definition:
-            "A bet on how a fighter will win: KO/TKO (knockout or technical knockout) or Decision (judges' scorecards).",
-        },
-        over25Rounds: {
-          term: "Over 2.5 Rounds",
-          definition:
-            "The fight must last into the third round. At least 2 full rounds and half of Round 3 must be completed.",
-        },
-        under25Rounds: {
-          term: "Under 2.5 Rounds",
-          definition:
-            "The fight must end before the halfway point of Round 3.",
-        },
+  },
+  glossary: {
+    pageTitle: "Betting Markets Explained",
+    pageSubtitle: "Everything you need to know about the betting markets used on MatchSignal.",
+    learnMore: "Learn about betting markets →",
+    tooltipLearnMore: "Learn more",
+    markets: {
+      doubleChance: {
+        term: "Double Chance",
+        definition: "A bet that covers two possible outcomes instead of one. For example, Home Win or Draw. This increases your chances of winning but usually offers lower odds.",
       },
-
-      quickNote: {
-        title: "Quick Note",
-        text:
-          "Over/Under markets predict total goals, points, runs, or rounds. Moneyline/Match Winner predicts the winner. Handicap markets balance odds by giving a virtual advantage.",
+      drawNoBet: {
+        term: "Draw No Bet",
+        definition: "You win if your selected team wins. If the match ends in a draw, your stake is refunded.",
       },
-    }, // 👇 A glossary lezárása
-  }, // 👇 A footer MOST záródik le
+      homeWin: {
+        term: "Home Win",
+        definition: "A bet on the home team to win the match in regular time.",
+      },
+      awayWin: {
+        term: "Away Win",
+        definition: "A bet on the away team to win the match in regular time.",
+      },
+      matchWinner: {
+        term: "Match Winner",
+        definition: "A bet on the player or team that will win the match.",
+      },
+      moneyline: {
+        term: "Moneyline",
+        definition: "A simple bet on which team, player, or fighter will win the event. No point spreads or handicaps are involved.",
+      },
+      over15: {
+        term: "Over 1.5 Goals",
+        definition: "The match must have at least 2 total goals for the bet to win.",
+      },
+      under45: {
+        term: "Under 4.5 Goals",
+        definition: "The match must have 4 goals or fewer in total.",
+      },
+      over45: {
+        term: "Over 4.5 Goals",
+        definition: "The game must produce at least 5 total goals.",
+      },
+      under75: {
+        term: "Under 7.5 Goals",
+        definition: "The game must produce 7 goals or fewer.",
+      },
+      over185Games: {
+        term: "Over 18.5 Games",
+        definition: "In tennis, at least 19 total games must be played during the match.",
+      },
+      under305Games: {
+        term: "Under 30.5 Games",
+        definition: "In tennis, the match must contain 30 games or fewer.",
+      },
+      playerToWinSet: {
+        term: "Player to Win a Set",
+        definition: "Your selected player must win at least one set during the match, regardless of the final result.",
+      },
+      handicapGames: {
+        term: "Handicap Games (+3.5)",
+        definition: "Your selected player starts with a virtual advantage of +3.5 games. After applying the handicap, they must have more total games than their opponent.",
+      },
+      over1495Points: {
+        term: "Over 149.5 Points",
+        definition: "The combined score of both teams must be 150 points or more.",
+      },
+      under1795Points: {
+        term: "Under 179.5 Points",
+        definition: "The combined score of both teams must be 179 points or fewer.",
+      },
+      over335Points: {
+        term: "Over 33.5 Points",
+        definition: "The combined score of both teams must be 34 points or more.",
+      },
+      under545Points: {
+        term: "Under 54.5 Points",
+        definition: "The combined score of both teams must be 54 points or fewer.",
+      },
+      over75Runs: {
+        term: "Over 7.5 Runs",
+        definition: "In baseball, at least 8 total runs must be scored.",
+      },
+      under95Runs: {
+        term: "Under 9.5 Runs",
+        definition: "In baseball, 9 runs or fewer must be scored.",
+      },
+      teamTotalOver: {
+        term: "Team Total Over",
+        definition: "Your selected team must score more than the specified line. Example: Team Total Over 2.5 Goals wins if the team scores 3 or more goals.",
+      },
+      teamTotalUnder: {
+        term: "Team Total Under",
+        definition: "Your selected team must score fewer than the specified line. Example: Team Total Under 24.5 Points wins if the team scores 24 points or fewer.",
+      },
+      teamTotalOver15: {
+        term: "Team Total Over 1.5",
+        definition: "Your selected team must score at least 2 goals.",
+      },
+      runLine: {
+        term: "Run Line (-1.5)",
+        definition: "A baseball handicap bet. Your selected team must win by 2 or more runs for the bet to win.",
+      },
+      methodOfVictory: {
+        term: "Method of Victory",
+        definition: "A bet on how a fighter will win: KO/TKO (knockout or technical knockout) or Decision (judges' scorecards).",
+      },
+      over25Rounds: {
+        term: "Over 2.5 Rounds",
+        definition: "The fight must last into the third round. At least 2 full rounds and half of Round 3 must be completed.",
+      },
+      under25Rounds: {
+        term: "Under 2.5 Rounds",
+        definition: "The fight must end before the halfway point of Round 3.",
+      },
+    },
+    quickNote: {
+      title: "Quick Note",
+      text: "Over/Under markets predict the total number of goals, points, runs, or rounds in an event, while Moneyline/Match Winner markets predict who will win. Handicap markets give one side a virtual advantage or disadvantage to create more balanced odds.",
+    },
+  },
 };
 
 export default en;
