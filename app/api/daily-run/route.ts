@@ -12,7 +12,7 @@ const redis = new Redis({
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
-const CACHE_TTL = 60 * 60 * 25; // 25 óra – szándékosan több mint 1 nap
+const CACHE_TTL = 60 * 60 * 25;
 
 type SportResult = {
   sport: string;
@@ -26,14 +26,16 @@ async function generateAI(prompt: string) {
   return generatePrediction(prompt);
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    const today = new Date().toISOString().split("T")[0]; // pl. "2026-06-10"
+    const today = new Date().toISOString().split("T")[0];
     const CACHE_KEY = `predictions:${today}`;
 
-    // CACHE CHECK
+    const url = new URL(request.url);
+    const force = url.searchParams.get("force") === "1";
+
     const cached = await redis.get(CACHE_KEY);
-    if (cached) {
+    if (cached && !force) {
       return Response.json({ success: true, cached: true, data: cached });
     }
 
@@ -130,11 +132,11 @@ export async function GET() {
       });
     }
 
-    // CACHE WRITE - 25 óráig tárolja (garantáltan lejár a következő napi futás előtt)
     await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
 
     return Response.json({
       success: true,
+      cached: false,
       data: result,
       message: "Predictions generated successfully.",
       generatedSports: result.sports.length,
