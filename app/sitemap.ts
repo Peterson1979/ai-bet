@@ -1,52 +1,30 @@
 import type { MetadataRoute } from "next";
-import fs from "fs";
-import path from "path";
 
-type Prediction = {
-  slug: string;
-};
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
+
+const langs = ["en", "hu", "de", "fr", "es", "it", "pt", "ar", "zh", "ja", "hi"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
-  let urls: MetadataRoute.Sitemap = [];
+  const staticPages = [
+    { path: "", changeFrequency: "daily" as const, priority: 1 },
+    { path: "/betting", changeFrequency: "monthly" as const, priority: 0.8 },
+    { path: "/news", changeFrequency: "hourly" as const, priority: 0.9 },
+    { path: "/tools", changeFrequency: "monthly" as const, priority: 0.7 },
+    { path: "/betting-glossary", changeFrequency: "monthly" as const, priority: 0.7 },
+  ];
 
-  try {
-    const filePath = path.join(process.cwd(), "data", "predictions.json");
-    const data = fs.readFileSync(filePath, "utf-8");
-    const predictions: Prediction[] = JSON.parse(data);
-    urls = predictions.map((p) => ({
-      url: `${baseUrl}/predictions/${p.slug}`,
-      lastModified: new Date(),
-    }));
-  } catch {
-    urls = [];
+  const entries: MetadataRoute.Sitemap = [];
+
+  for (const lang of langs) {
+    for (const page of staticPages) {
+      entries.push({
+        url: `${baseUrl}/${lang}${page.path}`,
+        lastModified: new Date(),
+        changeFrequency: page.changeFrequency,
+        priority: page.priority,
+      });
+    }
   }
 
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/betting`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/news`,
-      lastModified: new Date(),
-      changeFrequency: 'hourly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/tools`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    ...urls,
-  ];
+  return entries;
 }

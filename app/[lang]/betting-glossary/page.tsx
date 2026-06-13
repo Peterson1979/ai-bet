@@ -1,7 +1,25 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { translations, Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const t = translations[lang] ?? translations.en;
+  const g = t.glossary;
+
+  return {
+    title: g.pageTitle + " – MatchSignal",
+    description: g.pageSubtitle,
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/betting-glossary`,
+    },
+  };
+}
 export default async function BettingGlossaryPage({
   params,
 }: {
