@@ -26,7 +26,35 @@ function getBetColor(label: string) {
     return "text-yellow-300 border-yellow-400/40 bg-yellow-500/10";
   return "text-red-300 border-red-400/40 bg-red-500/10";
 }
-
+const BET_TYPE_TO_KEY: Record<string, string> = {
+  "home win": "homeWin",
+  "away win": "awayWin",
+  "draw no bet": "drawNoBet",
+  "double chance": "doubleChance",
+  "match winner": "matchWinner",
+  "moneyline": "moneyline",
+  "over 1.5 goals": "over15",
+  "under 4.5 goals": "under45",
+  "over 4.5 goals": "over45",
+  "under 7.5 goals": "under75",
+  "over 18.5 games": "over185Games",
+  "under 30.5 games": "under305Games",
+  "player to win a set": "playerToWinSet",
+  "handicap games (+3.5)": "handicapGames",
+  "over 149.5 points": "over1495Points",
+  "under 179.5 points": "under1795Points",
+  "over 33.5 points": "over335Points",
+  "under 54.5 points": "under545Points",
+  "over 7.5 runs": "over75Runs",
+  "under 9.5 runs": "under95Runs",
+  "team total over": "teamTotalOver",
+  "team total under": "teamTotalUnder",
+  "team total over 1.5": "teamTotalOver15",
+  "run line (-1.5)": "runLine",
+  "method of victory": "methodOfVictory",
+  "over 2.5 rounds": "over25Rounds",
+  "under 2.5 rounds": "under25Rounds",
+};
 /* =========================
    COMPONENT
 ========================= */
@@ -38,8 +66,8 @@ function BetTooltip({ betType, t, lang }: { betType: string; t: any; lang: strin
   const [visible, setVisible] = useState(false);
 
   const glossary = t.glossary?.markets ?? {};
-  const entry = Object.values(glossary as Record<string, { term: string; definition: string }>)
-    .find((m) => m.term.toLowerCase() === betType?.toLowerCase());
+  const key = BET_TYPE_TO_KEY[betType?.toLowerCase() ?? ""];
+  const entry = key ? (glossary as Record<string, { term: string; definition: string }>)[key] : undefined;
 
   if (!entry) return null;
 
