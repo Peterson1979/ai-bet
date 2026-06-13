@@ -149,7 +149,11 @@ export default function MatchCard({ data, lang = "en" }: Props) {
 
           <div className="flex items-center gap-2 group relative">
             <span className="text-xl font-black text-white leading-tight">
-              {data.recommendedBet}
+              {(() => {
+                const key = BET_TYPE_TO_KEY[data.recommendedBet?.toLowerCase() ?? ""];
+                const markets = t.glossary?.markets as Record<string, { term: string; definition: string }> ?? {};
+                return key && markets[key] ? markets[key].term : data.recommendedBet;
+              })()}
             </span>
             <BetTooltip betType={data.recommendedBet} t={t} lang={lang} />
           </div>
