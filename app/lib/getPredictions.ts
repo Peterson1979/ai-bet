@@ -1,4 +1,10 @@
+import { Redis } from "@upstash/redis";
 import type { MarketType } from "@/app/types/match";
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
 
 type Prediction = {
   id: string;
@@ -36,17 +42,10 @@ type PredictionsData = {
 
 export async function getPredictions(): Promise<PredictionsData | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-    const res = await fetch(`${baseUrl}/api/daily-run`, {
-  cache: "no-store",
-});
-
-    if (!res.ok) return null;
-
-    const json = await res.json();
-    if (!json.success || !json.data) return null;
-
-    return json.data as PredictionsData;
+    const today = new Date().toISOString().split("T")[0];
+    const CACHE_KEY = `predictions:${today}`;
+    const data = await redis.get<PredictionsData>(CACHE_KEY);
+    return data ?? null;
   } catch {
     return null;
   }
