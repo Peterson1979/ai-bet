@@ -40,13 +40,41 @@ type PredictionsData = {
   }[];
 };
 
+// Hány napra menjünk visszafelé, ha a mai (vagy egy adott napi) kulcs hiányzik
+const MAX_FALLBACK_DAYS = 3;
+
+function getDateKey(offsetDays: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - offsetDays);
+  return d.toISOString().split("T")[0];
+}
+
 export async function getPredictions(): Promise<PredictionsData | null> {
   try {
-    const today = new Date().toISOString().split("T")[0];
-    const CACHE_KEY = `predictions:${today}`;
-    const data = await redis.get<PredictionsData>(CACHE_KEY);
-    return data ?? null;
-  } catch {
+    for (let offset = 0; offset <= MAX_FALLBACK_DAYS; offset++) {
+      const dateKey = getDateKey(offset);
+      const CACHE_KEY = `predictions:${dateKey}`;
+      const data = await redis.get<PredictionsData>(CACHE_KEY);
+
+      if (data) {
+        if (offset > 0) {
+          // Jelezzük, ha nem a mai adatot szolgáltatjuk ki - hasznos logolásra,
+          // illetve a UI-n megjeleníthető egy "utoljára frissítve" infóhoz
+          console.warn(
+            `[getPredictions] Mai (${getDateKey(0)}) kulcs hiányzik, visszaesés: ${CACHE_KEY}`
+          );
+        }
+        return data;
+      }
+    }
+
+    // Ha semelyik napra nincs adat, csak akkor adjunk vissza null-t
+    console.error(
+      `[getPredictions] Nincs elérhető predictions adat az utóbbi ${MAX_FALLBACK_DAYS + 1} napra.`
+    );
+    return null;
+  } catch (err) {
+    console.error("[getPredictions] Redis hiba:", err);
     return null;
   }
 }
