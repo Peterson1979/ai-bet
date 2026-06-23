@@ -245,21 +245,21 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       </div>
 
       {/* CTA */}
-      <a
-        href={data.bookmakerUrl || "#"}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="
-          mt-4 flex justify-center
-          rounded-xl border-2 border-cyan-300/40
-          bg-cyan-500/10
-          py-2 text-sm font-bold text-cyan-200
-          hover:bg-cyan-400/20
-          transition
-        "
-      >
-        {t.viewOdds}
-      </a>
+<a
+  href="https://www.betonline.ag/sportsbook?btag=8etS8wq56dXa1BGKkv2UomNd7ZgqdRLk&affid=115086"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="
+    mt-4 flex justify-center
+    rounded-xl border-2 border-cyan-300/40
+    bg-cyan-500/10
+    py-2 text-sm font-bold text-cyan-200
+    hover:bg-cyan-400/20
+    transition
+  "
+>
+  {t.viewOdds}
+</a>
     </article>
   );
 }
