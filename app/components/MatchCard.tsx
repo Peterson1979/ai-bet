@@ -246,7 +246,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
 
       {/* CTA */}
 <a
-  href="https://www.betonline.ag/sportsbook?btag=8etS8wq56dXa1BGKkv2UomNd7ZgqdRLk&affid=115086"
+  href="https://r1wfmvd.life/betting?p=3q5b"
   target="_blank"
   rel="noopener noreferrer"
   className="
