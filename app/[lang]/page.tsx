@@ -9,6 +9,9 @@ import type { SportType } from "../types/match";
 import type { PredictionCard } from "@/app/types/prediction";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 import type { Metadata } from "next";
+import AffiliateSlider from "../components/AffiliateSlider";
+
+
 
 const SUPPORTED_LANGS = ["en", "hu", "es", "de", "fr", "pt", "it", "hi", "ar", "zh", "ja"];
 
@@ -104,6 +107,8 @@ export default async function HomePage({
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
 
           <Hero lang={lang} />
+
+<AffiliateSlider />
 
           {/* SPORT NAV */}
           <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
