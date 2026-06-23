@@ -108,7 +108,7 @@ export default async function HomePage({
 
           <Hero lang={lang} />
 
-<AffiliateSlider />
+
 
           {/* SPORT NAV */}
           <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
@@ -123,7 +123,7 @@ export default async function HomePage({
               </a>
             ))}
           </div>
-
+<AffiliateSlider />
           {/* MAIN GRID */}
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px] mt-16">
             <div className="min-w-0">
