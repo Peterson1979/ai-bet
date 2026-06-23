@@ -82,7 +82,7 @@ function BetTooltip({ betType, t, lang }: { betType: string; t: any; lang: strin
       </button>
 
       {visible && (
-        <div className="absolute left-6 top-0 z-50 w-64 rounded-[14px] border-2 border-cyan-300/40 bg-[#0B1220] p-3 shadow-[0_8px_40px_rgba(34,211,238,0.2)] text-left">
+       <div className="absolute left-1/2 -translate-x-1/2 top-6 z-50 w-56 max-w-[calc(100vw-2rem)] rounded-[14px] border-2 border-cyan-300/40 bg-[#0B1220] p-3 shadow-[0_8px_40px_rgba(34,211,238,0.2)] text-left"> 
           <p className="text-[11px] font-black text-cyan-300 uppercase tracking-wider mb-1">
             {entry.term}
           </p>
@@ -119,9 +119,9 @@ export default function MatchCard({ data, lang = "en" }: Props) {
   const evScore = confidence - implied;
 
   return (
-    <article
+   <article
       className="
-        relative overflow-hidden
+        relative overflow-visible
         rounded-[26px]
         border-4 border-cyan-300/80
         bg-gradient-to-b from-[#070D18] via-[#0B1220] to-[#050A12]

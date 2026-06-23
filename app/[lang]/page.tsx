@@ -8,6 +8,30 @@ import { translations, Lang } from "@/app/lib/i18n";
 import type { SportType } from "../types/match";
 import type { PredictionCard } from "@/app/types/prediction";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
+import type { Metadata } from "next";
+
+const SUPPORTED_LANGS = ["en", "hu", "es", "de", "fr", "pt", "it", "hi", "ar", "zh", "ja"];
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
+
+  const languages: Record<string, string> = {};
+  SUPPORTED_LANGS.forEach((l) => {
+    languages[l] = `${baseUrl}/${l}`;
+  });
+
+  return {
+    alternates: {
+      canonical: `${baseUrl}/${lang}`,
+      languages,
+    },
+  };
+}
 
 type SportBlock = {
   sport: string;
@@ -84,7 +108,7 @@ export default async function HomePage({
           {/* SPORT NAV */}
           <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
             {sportLinks.map((s) => (
-              <a
+              
                 key={s.id}
                 href={`#${s.id}`}
                 className="group relative rounded-full border-2 border-cyan-300/40 bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-2 hover:scale-[1.06] hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)] hover:text-cyan-100"
@@ -94,19 +118,6 @@ export default async function HomePage({
               </a>
             ))}
           </div>
-
-          {/* AFFILIATE BLOCK - uncomment when ready
-<section className="mt-6 rounded-[28px] border-2 border-cyan-300/50 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220] p-10 min-h-[260px] flex items-center justify-center text-center shadow-[0_40px_120px_rgba(0,0,0,0.65)]">
-  <div>
-    <h3 className="text-2xl font-black text-white">
-      {t.premiumOffers}
-    </h3>
-    <p className="mt-3 text-sm text-slate-300">
-      {t.premiumOffersDesc}
-    </p>
-  </div>
-</section>
-*/}
 
           {/* MAIN GRID */}
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1.6fr)_420px] mt-16">

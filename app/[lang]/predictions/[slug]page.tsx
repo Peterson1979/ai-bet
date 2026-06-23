@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import type { Metadata } from "next";
 
 type Prediction = {
   slug: string;
@@ -9,6 +10,8 @@ type Prediction = {
   analysis: string;
   odds?: number;
 };
+
+const SUPPORTED_LANGS = ["en", "hu", "es", "de", "fr", "pt", "it", "hi", "ar", "zh", "ja"]; // ide írd be az összes támogatott nyelvet
 
 function getPrediction(slug: string): Prediction | null {
   try {
@@ -21,6 +24,27 @@ function getPrediction(slug: string): Prediction | null {
   }
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; lang: string }>;
+}): Promise<Metadata> {
+  const { slug, lang } = await params;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
+
+  const languages: Record<string, string> = {};
+  SUPPORTED_LANGS.forEach((l) => {
+    languages[l] = `${baseUrl}/${l}/predictions/${slug}`;
+  });
+
+  return {
+    alternates: {
+      canonical: `${baseUrl}/${lang}/predictions/${slug}`,
+      languages,
+    },
+  };
+}
+
 export default async function Page({
   params,
 }: {
@@ -28,7 +52,6 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const p = getPrediction(slug);
-
   if (!p) {
     return (
       <main style={{ color: "#fff", padding: 24 }}>
@@ -36,11 +59,9 @@ export default async function Page({
       </main>
     );
   }
-
   const implied = p.odds ? 100 / p.odds : null;
   const edge = implied !== null ? p.confidence - implied : null;
   const isValue = edge !== null && edge >= 6;
-
   return (
     <main style={{ padding: 24, background: "#0b0f14", color: "#fff", minHeight: "100vh" }}>
       <h1 style={{ fontSize: 28 }}>{p.slug}</h1>
