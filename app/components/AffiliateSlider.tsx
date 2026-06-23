@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 const banners = [
   {
-    href: "https://record.betonlineaffiliates.ag/_6DV8-IUj_sYeEUhaOBLMuPriQBoxlSRK/1/",
-    img: "https://media.commissionkings.ag/uploads/BOL_AQC_banner_468x60.gif",
-  },
+  href: "https://record.betonlineaffiliates.ag/_6DV8-IUj_sYeEUhaOBLMuPriQBoxlSRK/1/",
+  img: "https://media.commissionkings.ag/uploads/BOL_AQC_banner_468x601.gif",
+},
   {
     href: "https://record.sportsbettingaffiliates.ag/_6DV8-IUj_sbgvJkXWt21LsKHjvjtg3Pf/1/",
     img: "https://media.commissionkings.ag/uploads/SB_AQC_banner_468x60__1220261.gif",
