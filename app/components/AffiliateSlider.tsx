@@ -31,7 +31,13 @@ export default function AffiliateSlider() {
     script.src = banners[index];
     script.async = true;
 
+    document.body.appendChild(script);
+
     container.appendChild(script);
+
+    return () => {
+      container.innerHTML = "";
+    };
 
   }, [index]);
 
@@ -41,7 +47,17 @@ export default function AffiliateSlider() {
 
       <div
         id="affiliate-banner"
-        className="flex min-h-[90px] w-full max-w-[798px] items-center justify-center overflow-hidden"
+        className="
+          flex
+          min-h-[90px]
+          w-full
+          max-w-[320px]
+          sm:max-w-[468px]
+          lg:max-w-[728px]
+          items-center
+          justify-center
+          overflow-hidden
+        "
       />
 
     </div>
