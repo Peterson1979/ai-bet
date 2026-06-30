@@ -11,13 +11,11 @@ export type AffiliateSite = {
   sports?: string[];
 };
 
-
 // ======================
 // AFFILIATE SITES CONFIG
 // ======================
 
 export const AFFILIATE_SITES: AffiliateSite[] = [
-
   {
     id: "betonline",
     name: "BetOnline",
@@ -36,7 +34,6 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     ],
   },
 
-
   {
     id: "sportsbetting",
     name: "SportsBetting.ag",
@@ -54,7 +51,6 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "MMA",
     ],
   },
-
 
   {
     id: "22bet",
@@ -75,7 +71,6 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     ],
   },
 
-
   {
     id: "1win",
     name: "1win",
@@ -94,7 +89,6 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "MMA",
     ],
   },
-
 
   {
     id: "betlabel",
@@ -115,47 +109,74 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     ],
   },
 
-];
+  // NEW
+  {
+    id: "flexlinks1",
+    name: "FlexLinks Partner 1",
+    rating: 8.7,
+    bonus: "Exclusive Offer",
+    baseUrl:
+      "https://track.flexlinkspro.com/g.ashx?foid=1.53600.1000000017&trid=1549943.243014&foc=16&fot=9999&fos=6",
+    sports: [
+      "Football",
+      "NBA",
+      "NFL",
+      "Hockey",
+      "Tennis",
+      "Baseball",
+      "MMA",
+    ],
+  },
 
+  // NEW
+  {
+    id: "flexlinks2",
+    name: "FlexLinks Partner 2",
+    rating: 8.6,
+    bonus: "Exclusive Offer",
+    baseUrl:
+      "https://track.flexlinkspro.com/g.ashx?foid=24.244100.6669976&trid=1549943.244100&foc=16&fot=9999&fos=6",
+    sports: [
+      "Football",
+      "NBA",
+      "NFL",
+      "Hockey",
+      "Tennis",
+      "Baseball",
+      "MMA",
+    ],
+  },
+];
 
 // ======================
 // HELPERS
 // ======================
 
-
 export function buildAffiliateUrl(
   site: AffiliateSite,
   source: "sidebar" | "matchcard" | "banner" = "sidebar"
 ): string {
-
   const utmParams = new URLSearchParams({
     utm_source: "betai",
     utm_medium: source,
     utm_campaign: site.id,
   }).toString();
 
-
   const base = site.baseUrl + (site.trackingParams ?? "");
-
   const separator = base.includes("?") ? "&" : "?";
-
 
   return `${base}${separator}${utmParams}`;
 }
-
 
 /**
  * Sidebar "Top Betting Sites"
  */
 export function getSidebarSites() {
-
   return AFFILIATE_SITES.map((site) => ({
     ...site,
     url: buildAffiliateUrl(site, "sidebar"),
   }));
-
 }
-
 
 /**
  * MatchCard CTA URL — sport alapján választ
@@ -163,11 +184,9 @@ export function getSidebarSites() {
 export function getMatchCardUrl(
   sport: string
 ): string {
-
   const bySport = AFFILIATE_SITES.find((s) =>
     s.sports?.includes(sport)
   );
-
 
   if (bySport) {
     return buildAffiliateUrl(
@@ -176,13 +195,11 @@ export function getMatchCardUrl(
     );
   }
 
-
   return buildAffiliateUrl(
     AFFILIATE_SITES[0],
     "matchcard"
   );
 }
-
 
 /**
  * Bookmaker neve alapján affiliate URL
@@ -191,21 +208,15 @@ export function getBookmakerAffiliateUrl(
   bookmakerName: string,
   sport: string
 ): string {
-
-  const normalized =
-    bookmakerName
-      .toLowerCase()
-      .replace(/\s/g, "");
-
+  const normalized = bookmakerName
+    .toLowerCase()
+    .replace(/\s/g, "");
 
   const match = AFFILIATE_SITES.find(
     (s) =>
       s.id === normalized ||
-      s.name
-        .toLowerCase()
-        .replace(/\s/g, "") === normalized
+      s.name.toLowerCase().replace(/\s/g, "") === normalized
   );
-
 
   if (match) {
     return buildAffiliateUrl(
@@ -213,7 +224,6 @@ export function getBookmakerAffiliateUrl(
       "matchcard"
     );
   }
-
 
   return getMatchCardUrl(sport);
 }
