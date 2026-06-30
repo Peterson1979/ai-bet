@@ -65,6 +65,13 @@ const WATCHED_SPORTS = [
   { key: "boxing_boxing",                     label: "MMA",      league: "Boxing",                priority: 2 },
 ];
 
+export type BookmakerOffer = {
+  bookmaker: string;
+  bookmakerRank: number;
+  homeOdds: number | null;
+  awayOdds: number | null;
+};
+
 export type OddsEvent = {
   id: string;
   sport: string;
@@ -77,8 +84,8 @@ export type OddsEvent = {
   odds?: number | null;
   bestOdds?: number | null;
   impliedProbability?: number | null;
-  edge?: number | null;
-  isValueBet?: boolean;
+  topOffers: BookmakerOffer[];
+  bookmakerCount: number;
 };
 
 const BOOKMAKER_RANKINGS: Record<string, number> = {
@@ -126,37 +133,31 @@ function calculateImpliedProbability(odds?: number | null): number | null {
   return Number((100 / odds).toFixed(2));
 }
 
-function calculateEdge(impliedProbability?: number | null): number | null {
-  // NOTE: Ez jelenleg egy placeholder véletlenszerű értékkel dolgozik (0-12%).
-  // Valódi edge számításhoz saját modell vagy külső valószínűségi adat szükséges.
-  if (!impliedProbability) return null;
-  const aiProbability = impliedProbability + Math.random() * 12;
-  return Number((aiProbability - impliedProbability).toFixed(2));
-}
-
-function extractBestOdds(event: any): {
-  bestOdds: number | null;
-  bestBookmaker: string;
-  bookmakerRank: number;
-} {
-  let bestOdds: number | null = null;
-  let bestBookmaker = "Unknown";
-  let bookmakerRank = 0;
+/**
+ * Extracts ALL bookmaker offers for an event (home/away odds),
+ * ranks them, and returns the top N by rank + odds quality.
+ * This replaces the old "best odds only" approach with a real
+ * market-comparison dataset.
+ */
+function extractAllOffers(event: any): BookmakerOffer[] {
+  const offers: BookmakerOffer[] = [];
 
   for (const bookmaker of event.bookmakers || []) {
     const outcomes = bookmaker.markets?.[0]?.outcomes || [];
     const homeOutcome = outcomes.find((o: any) => o.name === event.home_team);
-    if (!homeOutcome?.price) continue;
+    const awayOutcome = outcomes.find((o: any) => o.name === event.away_team);
 
-    if (bestOdds === null || homeOutcome.price > bestOdds) {
-      bestOdds = homeOutcome.price;
-      bestBookmaker = bookmaker.title || "Unknown";
-      // FIX: fallback rank 1 helyett 3, hogy az ismeretlen bookmakers ne szűrődjön ki automatikusan
-      bookmakerRank = BOOKMAKER_RANKINGS[bookmaker.title] ?? 3;
-    }
+    if (!homeOutcome?.price && !awayOutcome?.price) continue;
+
+    offers.push({
+      bookmaker: bookmaker.title || "Unknown",
+      bookmakerRank: BOOKMAKER_RANKINGS[bookmaker.title] ?? 3,
+      homeOdds: homeOutcome?.price ?? null,
+      awayOdds: awayOutcome?.price ?? null,
+    });
   }
 
-  return { bestOdds, bestBookmaker, bookmakerRank };
+  return offers;
 }
 
 function isWithinTimeWindow(commenceTime: string, maxHoursAhead: number): boolean {
@@ -197,9 +198,16 @@ async function fetchSportEvents(
     const data = await response.json();
 
     let events: OddsEvent[] = data.map((event: any) => {
-      const { bestOdds, bestBookmaker, bookmakerRank } = extractBestOdds(event);
+      const allOffers = extractAllOffers(event);
+
+      // Sort by best home odds first, then rank, take top 3 for display
+      const topOffers = [...allOffers]
+        .sort((a, b) => (b.homeOdds ?? 0) - (a.homeOdds ?? 0))
+        .slice(0, 3);
+
+      const bestOffer = topOffers[0];
+      const bestOdds = bestOffer?.homeOdds ?? null;
       const impliedProbability = calculateImpliedProbability(bestOdds);
-      const edge = calculateEdge(impliedProbability);
 
       return {
         id: event.id,
@@ -208,13 +216,13 @@ async function fetchSportEvents(
         homeTeam: event.home_team,
         awayTeam: event.away_team,
         commenceTime: event.commence_time,
-        bookmaker: bestBookmaker,
-        bookmakerRank,
+        bookmaker: bestOffer?.bookmaker ?? "Unknown",
+        bookmakerRank: bestOffer?.bookmakerRank ?? 0,
         odds: bestOdds,
         bestOdds,
         impliedProbability,
-        edge,
-        isValueBet: (edge ?? 0) >= config.minEdge,
+        topOffers,
+        bookmakerCount: allOffers.length,
       };
     });
 
@@ -222,19 +230,25 @@ async function fetchSportEvents(
 
     events = events.filter((e) => {
       const odds = e.bestOdds ?? 0;
-      const edge = e.edge ?? 0;
       const rank = e.bookmakerRank ?? 0;
 
       return (
         odds >= config.minOdds &&
         odds <= config.maxOdds &&
-        edge >= config.minEdge &&
         rank >= config.minBookmakerRank &&
+        e.bookmakerCount >= 1 &&
         isWithinTimeWindow(e.commenceTime, config.maxHoursAhead)
       );
     });
 
-    events.sort((a, b) => (b.edge ?? 0) - (a.edge ?? 0));
+    // Rank by market depth (more bookmakers = more liquid/relevant market) then by odds
+    events.sort((a, b) => {
+      if (b.bookmakerCount !== a.bookmakerCount) {
+        return b.bookmakerCount - a.bookmakerCount;
+      }
+      return (b.bestOdds ?? 0) - (a.bestOdds ?? 0);
+    });
+
     events = events.slice(0, config.maxEvents);
 
     setCache(cacheKey, events);
@@ -290,7 +304,12 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
       }
 
       allEvents = dedupeEvents(allEvents);
-      allEvents.sort((a, b) => (b.edge ?? 0) - (a.edge ?? 0));
+      allEvents.sort((a, b) => {
+        if (b.bookmakerCount !== a.bookmakerCount) {
+          return b.bookmakerCount - a.bookmakerCount;
+        }
+        return (b.bestOdds ?? 0) - (a.bestOdds ?? 0);
+      });
       allEvents = allEvents.slice(0, config.maxEvents);
 
       results.push({ sport: label, events: allEvents });

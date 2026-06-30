@@ -4,21 +4,16 @@ import { z } from "zod";
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
 const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
 
-const PredictionSchema = z.object({
-  recommendedBet: z.string(),
-  betCode: z.string(),
-  explanation: z.string(),
-  confidence: z.coerce.number().min(1).max(100),
-  risk: z.coerce.number().min(1).max(100),
+const PreviewSchema = z.object({
+  preview: z.string(),
 });
 
-export type PredictionResult = z.infer<typeof PredictionSchema>;
+export type PreviewResult = z.infer<typeof PreviewSchema>;
 
 export async function generatePrediction(
   prompt: string
-): Promise<PredictionResult[] | null> {
+): Promise<PreviewResult[] | null> {
   const apiKey = process.env.GROQ_API_KEY;
-
   if (!apiKey) {
     console.warn("[groq] No GROQ_API_KEY — returning null");
     return null;
@@ -39,7 +34,7 @@ export async function generatePrediction(
           {
             role: "system",
             content:
-              "You are a professional sports betting analyst. " +
+              "You are a neutral sports journalist writing short, factual match previews. " +
               "Always respond with ONLY a valid JSON array. No markdown, no explanation outside JSON.",
           },
           {
@@ -64,7 +59,6 @@ export async function generatePrediction(
       return null;
     }
 
-    // Strip markdown fences
     const cleaned = content
       .replace(/```json/gi, "")
       .replace(/```/g, "")
@@ -80,18 +74,17 @@ export async function generatePrediction(
 
     const arr = Array.isArray(parsed) ? parsed : [parsed];
 
-    // Parse individually — skip invalid items, log warnings
-    const results: PredictionResult[] = [];
+    const results: PreviewResult[] = [];
     for (const item of arr) {
       try {
-        results.push(PredictionSchema.parse(item));
+        results.push(PreviewSchema.parse(item));
       } catch (e) {
-        console.warn("[groq] Invalid prediction item skipped:", JSON.stringify(item));
+        console.warn("[groq] Invalid preview item skipped:", JSON.stringify(item));
       }
     }
 
     if (results.length === 0) {
-      console.error("[groq] No valid predictions in response. Full content:", cleaned);
+      console.error("[groq] No valid previews in response. Full content:", cleaned);
       return null;
     }
 

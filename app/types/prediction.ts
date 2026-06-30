@@ -1,5 +1,5 @@
 // app/types/prediction.ts
-import type { BetCode, MarketType, MatchStatus } from "./match";
+import type { MatchStatus } from "./match";
 
 export type PredictionCard = {
   id: string;
@@ -8,21 +8,15 @@ export type PredictionCard = {
   homeTeam: string;
   awayTeam: string;
   startTime: string;
-  recommendedBet: string;
-  betCode: BetCode;
-  marketType: MarketType;
-  selectionKey: string;
-  explanation: string;
-  confidence: number;
-  risk: number;
-  edge?: number;
+
+  preview: string;
+
   bestOdds?: number;
   impliedProbability?: number;
-  odds: number;
-  oddsLabel: string;
+  bookmakerCount: number;
+
   bookmaker: string;
   bookmakerUrl: string;
   ctaLabel: string;
-  isTopPick: boolean;
   status: MatchStatus;
 };

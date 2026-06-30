@@ -8,24 +8,14 @@ export default function Footer() {
   const params = useParams();
   const lang = (params?.lang as Lang) || "en";
   const t = translations[lang] ?? translations.en;
-  const f = t.footer;
 
-  // SAFE accessor (fix TS indexing error)
-  const getText = (key: string) => (f as any)[key];
-
-  const valueBetTypes = [
-    { key: "valueBet", color: "emerald-300", emoji: "🟢" },
-    { key: "okBet", color: "yellow-300", emoji: "🟡" },
-    { key: "riskyBet", color: "red-300", emoji: "🔴" },
-    { key: "aiEvScore", color: "cyan-300", emoji: "✔️" },
+  const features = [
+    { key: "matchPreviewFeature" },
+    { key: "oddsComparisonFeature" },
+    { key: "marketDepthFeature" },
   ];
 
-  const metrics = [
-    { key: "aiEdge" },
-    { key: "confidence" },
-    { key: "impliedProb" },
-    { key: "risk" },
-  ];
+  const getText = (key: string) => (t.footer as any)[key];
 
   const navLinks = [
     { href: "/about", label: t.footer.navAbout },
@@ -40,7 +30,7 @@ export default function Footer() {
   return (
     <footer className="mt-20 border-t border-[#1E293B] bg-[#060B14]">
 
-      {/* BETTING INTELLIGENCE */}
+      {/* PLATFORM EXPLANATION */}
       <div className="border-b border-[#1E293B]">
         <div className="mx-auto max-w-[1500px] px-4 py-14 md:px-6">
 
@@ -53,35 +43,18 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* VALUE BET TYPES */}
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4 mb-8">
-            {valueBetTypes.map((type) => (
+          {/* FEATURES */}
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {features.map((f) => (
               <div
-                key={type.key}
-                className={`rounded-2xl border border-${type.color}/20 bg-[#0F172A] p-5`}
+                key={f.key}
+                className="rounded-2xl border border-cyan-400/20 bg-[#0F172A] p-5"
               >
-                <h4 className={`font-black text-${type.color}`}>
-                  {type.emoji} {getText(type.key)}
+                <h4 className="font-black text-cyan-300">
+                  {getText(`${f.key}Title`)}
                 </h4>
                 <p className="mt-3 text-sm text-slate-300 leading-6">
-                  {getText(`${type.key}Desc`)}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {/* METRICS */}
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {metrics.map((m) => (
-              <div
-                key={m.key}
-                className="rounded-2xl border border-cyan-400/10 bg-[#0F172A] p-5"
-              >
-                <h4 className="text-sm font-black text-cyan-300">
-                  {getText(m.key)}
-                </h4>
-                <p className="mt-3 text-sm leading-6 text-slate-300">
-                  {getText(`${m.key}Desc`)}
+                  {getText(`${f.key}Desc`)}
                 </p>
               </div>
             ))}

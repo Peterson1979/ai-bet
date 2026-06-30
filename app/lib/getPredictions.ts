@@ -1,5 +1,4 @@
 import { Redis } from "@upstash/redis";
-import type { MarketType } from "@/app/types/match";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
@@ -13,19 +12,13 @@ type Prediction = {
   homeTeam: string;
   awayTeam: string;
   startTime: string;
-  recommendedBet: string;
-  betCode: string;
-  marketType: MarketType;
-  selectionKey: string;
-  explanation: string;
-  confidence: number;
-  risk: number;
-  odds: number;
-  oddsLabel: string;
+  preview: string;
+  bestOdds: number;
+  impliedProbability: number;
+  bookmakerCount: number;
   bookmaker: string;
   bookmakerUrl: string;
   ctaLabel: string;
-  isTopPick: boolean;
   status: "scheduled" | "live" | "finished";
 };
 
@@ -40,7 +33,6 @@ type PredictionsData = {
   }[];
 };
 
-// Hány napra menjünk visszafelé, ha a mai (vagy egy adott napi) kulcs hiányzik
 const MAX_FALLBACK_DAYS = 3;
 
 function getDateKey(offsetDays: number): string {
@@ -55,11 +47,8 @@ export async function getPredictions(): Promise<PredictionsData | null> {
       const dateKey = getDateKey(offset);
       const CACHE_KEY = `predictions:${dateKey}`;
       const data = await redis.get<PredictionsData>(CACHE_KEY);
-
       if (data) {
         if (offset > 0) {
-          // Jelezzük, ha nem a mai adatot szolgáltatjuk ki - hasznos logolásra,
-          // illetve a UI-n megjeleníthető egy "utoljára frissítve" infóhoz
           console.warn(
             `[getPredictions] Mai (${getDateKey(0)}) kulcs hiányzik, visszaesés: ${CACHE_KEY}`
           );
@@ -67,8 +56,6 @@ export async function getPredictions(): Promise<PredictionsData | null> {
         return data;
       }
     }
-
-    // Ha semelyik napra nincs adat, csak akkor adjunk vissza null-t
     console.error(
       `[getPredictions] Nincs elérhető predictions adat az utóbbi ${MAX_FALLBACK_DAYS + 1} napra.`
     );

@@ -103,23 +103,14 @@ export async function GET(request: Request) {
           homeTeam: event.homeTeam,
           awayTeam: event.awayTeam,
           startTime: event.commenceTime,
-          recommendedBet: ai.recommendedBet,
-          betCode: ai.betCode,
-          explanation: ai.explanation,
-          confidence: ai.confidence,
-          risk: ai.risk,
-          odds: event.odds || 0,
+          preview: ai.preview ?? "",
           bestOdds: event.bestOdds || 0,
-          edge: event.edge ?? 0,
           impliedProbability: event.impliedProbability ?? 0,
-          oddsLabel: `${ai.recommendedBet} @ ${event.odds}`,
+          bookmakerCount: event.bookmakerCount ?? 0,
           bookmaker: event.bookmaker || "Unknown",
           bookmakerUrl,
-          ctaLabel: "View Odds",
-          isTopPick: true,
+          ctaLabel: "Compare Odds",
           status: "scheduled",
-          marketType: "h2h",
-          selectionKey: ai.betCode,
         });
       }
 
@@ -138,14 +129,14 @@ export async function GET(request: Request) {
       success: true,
       cached: false,
       data: result,
-      message: "Predictions generated successfully.",
+      message: "Match previews generated successfully.",
       generatedSports: result.sports.length,
     });
 
   } catch (error) {
     console.error("[daily-run] Error:", error);
     return Response.json(
-      { success: false, error: "Prediction generation failed." },
+      { success: false, error: "Generation failed." },
       { status: 500 }
     );
   }

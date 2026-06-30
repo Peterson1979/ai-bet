@@ -1,60 +1,12 @@
 // app/lib/prompts.ts
 import { OddsEvent } from "./odds";
 
-const SPORT_RULES: Record<string, string> = {
-  Football: `Sport-specific markets (use ONLY these):
-- Double Chance
-- Draw No Bet
-- Over 1.5 Goals
-- Home Win
-- Away Win
-- Under 4.5 Goals`,
-  Tennis: `Sport-specific markets (use ONLY these):
-- Match Winner
-- Over 18.5 Games
-- Under 30.5 Games
-- Player to Win a Set
-- Handicap Games (+3.5)`,
-  NBA: `Sport-specific markets (use ONLY these):
-- Moneyline
-- Over 149.5 Points
-- Under 179.5 Points
-- Team Total Over
-- Team Total Under`,
-  Hockey: `Sport-specific markets (use ONLY these):
-- Moneyline
-- Over 4.5 Goals
-- Under 7.5 Goals
-- Double Chance
-- Team Total Over 1.5`,
-  NFL: `Sport-specific markets (use ONLY these):
-- Moneyline
-- Over 33.5 Points
-- Under 54.5 Points
-- Team Total Over
-- Team Total Under`,
-  MLB: `Sport-specific markets (use ONLY these):
-- Moneyline
-- Over 7.5 Runs
-- Under 9.5 Runs
-- Run Line (-1.5)
-- Team Total Over`,
-  MMA: `Sport-specific markets (use ONLY these):
-- Moneyline (Fight Winner)
-- Method of Victory (KO/TKO or Decision)
-- Over 2.5 Rounds
-- Under 2.5 Rounds`,
-};
-
 export function buildPredictionPrompt(events: OddsEvent[]): string {
   const sport = events[0]?.sport ?? "Unknown";
   const count = events.length;
-  const sportRules = SPORT_RULES[sport] ?? `- Moneyline\n- Over/Under`;
 
-  return `You are a professional sports betting analyst with expertise in quantitative modeling and market inefficiency detection.
-Analyze the following ${count} ${sport} events and return exactly ${count} predictions.
-
-${sportRules}
+  return `You are a neutral sports journalist writing short, factual match previews.
+Analyze the following ${count} ${sport} events and return exactly ${count} previews.
 
 EVENTS:
 ${events
@@ -64,29 +16,23 @@ EVENT ${i + 1}:
 MATCH: ${e.homeTeam} vs ${e.awayTeam}
 LEAGUE: ${e.league}
 START: ${e.commenceTime}
-BOOKMAKER: ${e.bookmaker ?? "Unknown"}
-DECIMAL ODDS: ${e.odds ?? "N/A"}
-IMPLIED PROBABILITY: ${e.impliedProbability ?? "N/A"}%
-EDGE: ${e.edge ?? "N/A"}%`
+BEST AVAILABLE ODDS (home side): ${e.bestOdds ?? "N/A"}
+MARKET DEPTH: ${e.bookmakerCount ?? 0} bookmakers offering odds on this match`
   )
   .join("\n---")}
 
 Return ONLY a valid JSON array with EXACTLY ${count} objects (one per event, same order):
 [
   {
-    "recommendedBet": "<market type from the list above>",
-    "betCode": "<short code e.g. HOME_WIN, OVER_1_5, MONEYLINE_HOME>",
-    "explanation": "<exactly one sentence, max 25 words: reference the specific market, odds value, implied probability or edge to justify the pick professionally>",
-    "confidence": <integer 1-100>,
-    "risk": <integer 1-100, lower = safer>
+    "preview": "<exactly one neutral sentence, max 30 words: context about the match, league, or matchup. Do NOT predict a winner, do NOT recommend a bet, do NOT mention odds as a justification for a pick. Pure context only.>"
   }
 ]
 
 STRICT RULES:
 - Return EXACTLY ${count} objects
 - No markdown, no code fences, no extra text
-- confidence and risk must be plain integers
-- Choose the SAFEST, most conservative picks
-- The explanation must be a single sentence referencing at least one quantitative data point (odds, probability, or edge)
-- Do NOT invent statistics not present in the input`;
+- The preview must be neutral and informational, NOT a betting recommendation
+- Do NOT use words like "value bet", "edge", "should bet", "best pick"
+- Do NOT invent statistics, scores, or facts not present in the input
+- If you have no meaningful context, write a simple factual sentence about the fixture (e.g. league stage, competition importance)`;
 }

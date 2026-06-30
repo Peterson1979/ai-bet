@@ -16,22 +16,16 @@ export function toMatchCardData(
     startTime: p.startTime,
     status: p.status,
     generatedAt: new Date().toISOString(),
-    recommendedBet: p.recommendedBet,
-    betCode: p.betCode,
-    explanation: p.explanation,
-    confidence: p.confidence,
-    risk: p.risk,
-    edge: p.edge ?? 0,
-    bestOdds: p.bestOdds ?? p.odds ?? 0,
+
+    preview: p.preview,
+
+    bestOdds: p.bestOdds ?? 0,
     impliedProbability: p.impliedProbability ?? 0,
-    marketType: p.marketType,
-    selectionKey: p.selectionKey,
-    odds: p.odds,
-    oddsLabel: p.oddsLabel,
+    bookmakerCount: p.bookmakerCount ?? 0,
+
     bookmaker: p.bookmaker,
     bookmakerUrl: getBookmakerAffiliateUrl(p.bookmaker || "", sport),
     ctaLabel: p.ctaLabel,
-    isTopPick: p.isTopPick,
     disclaimer: "Odds may change before match start.",
   };
 }

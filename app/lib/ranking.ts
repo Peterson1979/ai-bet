@@ -9,14 +9,10 @@ export function rankMatches(matches: MatchCardData[]) {
 }
 
 function computeScore(m: MatchCardData) {
-  const edge = m.edge ?? 0;
-  const confidence = m.confidence ?? 0;
-  const risk = m.risk ?? 100;
+  const bookmakerCount = m.bookmakerCount ?? 0;
+  const odds = m.bestOdds ?? 0;
 
-  // core betting logic
-  const edgeWeight = edge * 1.6;
-  const confidenceWeight = confidence * 1.2;
-  const riskPenalty = risk * 1.4;
-
-  return edgeWeight + confidenceWeight - riskPenalty;
+  // More bookmakers offering odds = more relevant / liquid market.
+  // Higher odds among comparable markets get a slight boost as a tiebreaker.
+  return bookmakerCount * 10 + odds;
 }

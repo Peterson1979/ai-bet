@@ -28,6 +28,8 @@ export type Translation = {
   seoTitle: string;
   seoDescription: string;
   matchSignal: string;
+  matchPreview: string;
+  basedOnBookmakers: string;
   contactTitle: string;
   contactSuccess: string;
   contactName: string;
@@ -102,22 +104,12 @@ export type Translation = {
   footer: {
     betIntelligence: string;
     betIntelligenceDesc: string;
-    valueBet: string;
-    valueBetDesc: string;
-    okBet: string;
-    okBetDesc: string;
-    riskyBet: string;
-    riskyBetDesc: string;
-    aiEvScore: string;
-    aiEvScoreDesc: string;
-    aiEdge: string;
-    aiEdgeDesc: string;
-    confidence: string;
-    confidenceDesc: string;
-    impliedProb: string;
-    impliedProbDesc: string;
-    risk: string;
-    riskDesc: string;
+    matchPreviewFeatureTitle: string;
+    matchPreviewFeatureDesc: string;
+    oddsComparisonFeatureTitle: string;
+    oddsComparisonFeatureDesc: string;
+    marketDepthFeatureTitle: string;
+    marketDepthFeatureDesc: string;
     aiBettingInsights: string;
     aiBettingInsightsDesc: string;
     navAbout: string;
@@ -129,6 +121,7 @@ export type Translation = {
     navCookie: string;
     platformName: string;
     builtWithAi: string;
+  
   };
   glossary: {
     pageTitle: string;
