@@ -3,6 +3,7 @@ import { getDailyEvents } from "@/app/lib/odds";
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { rankMatches } from "@/app/lib/ranking";
 import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
+import { calculateRiskTier } from "@/app/lib/sportsConfig";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -96,6 +97,11 @@ export async function GET(request: Request) {
           event.sport
         );
 
+        const riskTier = calculateRiskTier(
+          event.bestOdds ?? 0,
+          event.bookmakerCount ?? 0
+        );
+
         topPicks.push({
           id: eventKey,
           league: event.league,
@@ -103,13 +109,16 @@ export async function GET(request: Request) {
           homeTeam: event.homeTeam,
           awayTeam: event.awayTeam,
           startTime: event.commenceTime,
-          preview: ai.preview ?? "",
+          market: ai.market ?? "",
+          prediction: ai.prediction ?? "",
+          reasoning: ai.reasoning ?? "",
+          riskTier,
           bestOdds: event.bestOdds || 0,
           impliedProbability: event.impliedProbability ?? 0,
           bookmakerCount: event.bookmakerCount ?? 0,
           bookmaker: event.bookmaker || "Unknown",
           bookmakerUrl,
-          ctaLabel: "Compare Odds",
+          ctaLabel: "View Odds",
           status: "scheduled",
         });
       }
@@ -129,7 +138,7 @@ export async function GET(request: Request) {
       success: true,
       cached: false,
       data: result,
-      message: "Match previews generated successfully.",
+      message: "Picks generated successfully.",
       generatedSports: result.sports.length,
     });
 

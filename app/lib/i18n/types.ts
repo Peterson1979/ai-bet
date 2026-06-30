@@ -29,6 +29,7 @@ export type Translation = {
   seoDescription: string;
   matchSignal: string;
   matchPreview: string;
+  matchMarket: string;
   basedOnBookmakers: string;
   contactTitle: string;
   contactSuccess: string;

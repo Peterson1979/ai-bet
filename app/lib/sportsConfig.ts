@@ -65,3 +65,15 @@ export const DEFAULT_CONFIG: SportConfig = {
   minBookmakerRank: 3,
   maxEvents: 3,
 };
+
+/**
+ * Risk tier derived from real market data (odds + market depth),
+ * NOT from AI guesswork. Lower odds + more bookmakers = lower risk.
+ */
+export type RiskTier = "Low" | "Medium" | "High";
+
+export function calculateRiskTier(odds: number, bookmakerCount: number): RiskTier {
+  if (odds <= 1.8 && bookmakerCount >= 5) return "Low";
+  if (odds <= 3.0 && bookmakerCount >= 3) return "Medium";
+  return "High";
+}

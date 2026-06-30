@@ -1,5 +1,5 @@
 // app/types/prediction.ts
-import type { MatchStatus } from "./match";
+import type { MatchStatus, RiskTier } from "./match";
 
 export type PredictionCard = {
   id: string;
@@ -9,7 +9,10 @@ export type PredictionCard = {
   awayTeam: string;
   startTime: string;
 
-  preview: string;
+  market: string;
+  prediction: string;
+  reasoning: string;
+  riskTier: RiskTier;
 
   bestOdds?: number;
   impliedProbability?: number;

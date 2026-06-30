@@ -17,7 +17,10 @@ export function toMatchCardData(
     status: p.status,
     generatedAt: new Date().toISOString(),
 
-    preview: p.preview,
+    market: p.market,
+    prediction: p.prediction,
+    reasoning: p.reasoning,
+    riskTier: p.riskTier,
 
     bestOdds: p.bestOdds ?? 0,
     impliedProbability: p.impliedProbability ?? 0,

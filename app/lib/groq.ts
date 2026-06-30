@@ -4,15 +4,17 @@ import { z } from "zod";
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
 const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
 
-const PreviewSchema = z.object({
-  preview: z.string(),
+const PickSchema = z.object({
+  market: z.string(),
+  prediction: z.string(),
+  reasoning: z.string(),
 });
 
-export type PreviewResult = z.infer<typeof PreviewSchema>;
+export type PickResult = z.infer<typeof PickSchema>;
 
 export async function generatePrediction(
   prompt: string
-): Promise<PreviewResult[] | null> {
+): Promise<PickResult[] | null> {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     console.warn("[groq] No GROQ_API_KEY — returning null");
@@ -34,7 +36,7 @@ export async function generatePrediction(
           {
             role: "system",
             content:
-              "You are a neutral sports journalist writing short, factual match previews. " +
+              "You are a sports betting analyst writing concise, professional match notes based strictly on the provided market data. " +
               "Always respond with ONLY a valid JSON array. No markdown, no explanation outside JSON.",
           },
           {
@@ -74,17 +76,17 @@ export async function generatePrediction(
 
     const arr = Array.isArray(parsed) ? parsed : [parsed];
 
-    const results: PreviewResult[] = [];
+    const results: PickResult[] = [];
     for (const item of arr) {
       try {
-        results.push(PreviewSchema.parse(item));
+        results.push(PickSchema.parse(item));
       } catch (e) {
-        console.warn("[groq] Invalid preview item skipped:", JSON.stringify(item));
+        console.warn("[groq] Invalid pick item skipped:", JSON.stringify(item));
       }
     }
 
     if (results.length === 0) {
-      console.error("[groq] No valid previews in response. Full content:", cleaned);
+      console.error("[groq] No valid picks in response. Full content:", cleaned);
       return null;
     }
 

@@ -12,7 +12,10 @@ type Prediction = {
   homeTeam: string;
   awayTeam: string;
   startTime: string;
-  preview: string;
+  market: string;
+  prediction: string;
+  reasoning: string;
+  riskTier: "Low" | "Medium" | "High";
   bestOdds: number;
   impliedProbability: number;
   bookmakerCount: number;

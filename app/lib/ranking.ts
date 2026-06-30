@@ -8,11 +8,15 @@ export function rankMatches(matches: MatchCardData[]) {
   });
 }
 
+function riskTierScore(tier: string): number {
+  if (tier === "Low") return 2;
+  if (tier === "Medium") return 1;
+  return 0;
+}
+
 function computeScore(m: MatchCardData) {
   const bookmakerCount = m.bookmakerCount ?? 0;
-  const odds = m.bestOdds ?? 0;
+  const tierScore = riskTierScore(m.riskTier ?? "High");
 
-  // More bookmakers offering odds = more relevant / liquid market.
-  // Higher odds among comparable markets get a slight boost as a tiebreaker.
-  return bookmakerCount * 10 + odds;
+  return tierScore * 100 + bookmakerCount;
 }

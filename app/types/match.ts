@@ -12,6 +12,8 @@ export type MatchStatus =
   | "live"
   | "finished";
 
+export type RiskTier = "Low" | "Medium" | "High";
+
 export type BookmakerOffer = {
   bookmaker: string;
   bookmakerRank: number;
@@ -32,7 +34,10 @@ export type MatchCardData = {
   status: MatchStatus;
   generatedAt?: string;
 
-  preview: string;
+  market: string;
+  prediction: string;
+  reasoning: string;
+  riskTier: RiskTier;
 
   bestOdds?: number | null;
   impliedProbability?: number | null;
