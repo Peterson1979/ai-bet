@@ -112,7 +112,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
   // NEW
   {
     id: "flexlinks1",
-    name: "FlexLinks Partner 1",
+    name: "Oddsjam",
     rating: 8.7,
     bonus: "Exclusive Offer",
     baseUrl:
@@ -131,7 +131,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
   // NEW
   {
     id: "flexlinks2",
-    name: "FlexLinks Partner 2",
+    name: "BetQL",
     rating: 8.6,
     bonus: "Exclusive Offer",
     baseUrl:
