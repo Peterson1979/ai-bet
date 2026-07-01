@@ -31,7 +31,14 @@ export type Translation = {
   matchPreview: string;
   matchMarket: string;
   basedOnBookmakers: string;
-  impliedProb: string;
+ impliedProb: string;
+  riskLow: string;
+  riskMedium: string;
+  riskHigh: string;
+  valueSignalValue: string;
+  valueSignalBelow: string;
+  valueSignalFair: string;
+  aiAnalysisLabel: string;
   contactTitle: string;
   contactSuccess: string;
   contactName: string;
@@ -112,6 +119,8 @@ export type Translation = {
     oddsComparisonFeatureDesc: string;
     marketDepthFeatureTitle: string;
     marketDepthFeatureDesc: string;
+    impliedProbFeatureTitle: string;
+    impliedProbFeatureDesc: string;
     aiBettingInsights: string;
     aiBettingInsightsDesc: string;
     navAbout: string;

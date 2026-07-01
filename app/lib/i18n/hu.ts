@@ -18,7 +18,14 @@ const hu: Partial<Translation> = {
   matchPreview: "Elemzés",
   matchMarket: "Piac",
   basedOnBookmakers: "{count} fogadóiroda alapján",
-  impliedProb: "Implied valószínűség",
+  impliedProb: "Piaci valószínűség",
+  riskLow: "Alacsony kockázat",
+  riskMedium: "Közepes kockázat",
+  riskHigh: "Magas kockázat",
+  valueSignalValue: "⚡ Értékes szorzó",
+  valueSignalBelow: "⚠ Piaci átlag alatt",
+  valueSignalFair: "≈ Piaci ár",
+  aiAnalysisLabel: "AI Elemzés (EN)",
   odds: "Szorzó",
   confidence: "Megbízhatóság",
   edge: "Előny",
@@ -105,7 +112,7 @@ const hu: Partial<Translation> = {
     fairOdds: "Saját fair szorzó",
     bookOdds: "Fogadóiroda szorzója",
   },
-  footer: {
+ footer: {
     betIntelligence: "Hogyan működik a MatchSignal",
     betIntelligenceDesc: "A MatchSignal valós idejű, több fogadóirodától származó szorzóadatokat kombinál AI által generált mérkőzés-kontextussal, hogy könnyebben össze tudd hasonlítani az ajánlatokat és átláthasd az adott mérkőzést.",
     matchPreviewFeatureTitle: "AI mérkőzés előzetes",
@@ -114,6 +121,8 @@ const hu: Partial<Translation> = {
     oddsComparisonFeatureDesc: "Megmutatjuk az elérhető legjobb szorzókat minden mérkőzéshez, több fogadóiroda valós idejű összevetésével.",
     marketDepthFeatureTitle: "Piaci mélység",
     marketDepthFeatureDesc: "Minden mérkőzésnél látható, hány fogadóiroda kínál rá szorzót, ami jelzi mennyire aktívan árazott a piac.",
+    impliedProbFeatureTitle: "Piaci valószínűség",
+    impliedProbFeatureDesc: "Minden mérkőzésnél megjelenítjük a fogadóirodák szorzóiból levezetett piaci valószínűséget — ez azt mutatja, mekkora esélyt tulajdonít a piac a hazai csapat győzelmének.",
     aiBettingInsights: "A MatchSignal-ról",
     aiBettingInsightsDesc: "Ez a platform kizárólag tájékoztató jelleggel nyújt AI által generált tartalmat. Kérjük, játssz felelősségteljesen.",
     navAbout: "Rólunk",
@@ -125,7 +134,6 @@ const hu: Partial<Translation> = {
     navCookie: "Cookie szabályzat",
     platformName: "MatchSignal",
     builtWithAi: "AI segítségével készült",
-  
   },
   glossary: {
     pageTitle: "Fogadási piacok magyarázata",

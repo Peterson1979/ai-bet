@@ -10,28 +10,6 @@ type Props = {
 };
 
 /* =========================
-   RISK TIER
-========================= */
-
-function getRiskConfig(tier: string) {
-  if (tier === "Low") return {
-    emoji: "🟢",
-    label: "Low Risk",
-    color: "text-emerald-300 border-emerald-400/40 bg-emerald-500/10",
-  };
-  if (tier === "Medium") return {
-    emoji: "🟡",
-    label: "Medium Risk",
-    color: "text-yellow-300 border-yellow-400/40 bg-yellow-500/10",
-  };
-  return {
-    emoji: "🔴",
-    label: "High Risk",
-    color: "text-red-300 border-red-400/40 bg-red-500/10",
-  };
-}
-
-/* =========================
    BET TYPE → GLOSSARY KEY
 ========================= */
 
@@ -91,40 +69,29 @@ function MarketTooltip({ market, t, lang }: { market: string; t: any; lang: stri
         ⓘ
       </button>
       {visible && (
-        <div className="absolute left-6 top-0 z-50 w-56 max-w-[calc(100vw-2rem)] rounded-[14px] border-2 border-cyan-300/40 bg-[#0B1220] p-3 shadow-[0_8px_40px_rgba(34,211,238,0.2)] text-left">
-          <p className="text-[11px] font-black text-cyan-300 uppercase tracking-wider mb-1">
-            {entry.term}
-          </p>
+        <div className="fixed left-4 right-4 z-[100] max-w-[320px] mx-auto rounded-[14px] border-2 border-cyan-300/40 bg-[#0B1220] p-3 shadow-[0_8px_40px_rgba(34,211,238,0.3)] text-left"
+          style={{ top: "auto", transform: "none" }}
+        >
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-[11px] font-black text-cyan-300 uppercase tracking-wider">
+              {entry.term}
+            </p>
+            <button
+              onClick={(e) => { e.stopPropagation(); setVisible(false); }}
+              className="text-slate-400 hover:text-white text-[14px] ml-2"
+            >✕</button>
+          </div>
           <p className="text-[12px] text-slate-300 leading-5">
-  {entry.definition}
-</p>
-
-<a
-  href={`/${lang}/betting-glossary`}
-  className="mt-2 inline-block text-[11px] text-cyan-400 hover:text-cyan-200 font-bold"
->
-  {t.glossary?.learnMore ?? "Learn more →"}
-</a>
+            {entry.definition}
+          </p>
+          <a
+            href={`/${lang}/betting-glossary`}
+            className="mt-2 inline-block text-[11px] text-cyan-400 hover:text-cyan-200 font-bold"
+          >{t.glossary?.learnMore ?? "Learn more →"}</a>
         </div>
       )}
     </div>
   );
-}
-
-/* =========================
-   VALUE SIGNAL
-========================= */
-
-function getValueSignal(bestOdds: number, impliedProbability: number): {
-  label: string;
-  color: string;
-} | null {
-  if (!bestOdds || !impliedProbability) return null;
-  const fairOdds = 100 / impliedProbability;
-  const diff = ((bestOdds - fairOdds) / fairOdds) * 100;
-  if (diff >= 5) return { label: "⚡ Value odds", color: "text-emerald-300" };
-  if (diff <= -5) return { label: "⚠ Below market", color: "text-red-300" };
-  return { label: "≈ Fair price", color: "text-slate-400" };
 }
 
 /* =========================
@@ -152,11 +119,48 @@ function LocalTime({ utcTime }: { utcTime: string }) {
 
 export default function MatchCard({ data, lang = "en" }: Props) {
   const t = translations[lang] ?? translations.en;
-  const riskConfig = getRiskConfig(data.riskTier ?? "High");
+
   const bestOdds = data.bestOdds ?? 0;
   const bookmakerCount = data.bookmakerCount ?? 0;
   const implied = data.impliedProbability ?? 0;
-  const valueSignal = getValueSignal(bestOdds, implied);
+
+  // Risk tier — translated
+  const tier = data.riskTier ?? "High";
+  const riskLabel = tier === "Low"
+    ? (t.riskLow ?? "Low Risk")
+    : tier === "Medium"
+    ? (t.riskMedium ?? "Medium Risk")
+    : (t.riskHigh ?? "High Risk");
+  const riskEmoji = tier === "Low" ? "🟢" : tier === "Medium" ? "🟡" : "🔴";
+  const riskColor = tier === "Low"
+    ? "text-emerald-300 border-emerald-400/40 bg-emerald-500/10"
+    : tier === "Medium"
+    ? "text-yellow-300 border-yellow-400/40 bg-yellow-500/10"
+    : "text-red-300 border-red-400/40 bg-red-500/10";
+
+  // Prediction — translated via glossary if available
+  const predKey = BET_TYPE_TO_KEY[data.prediction?.toLowerCase() ?? ""];
+  const glossaryMarkets = t.glossary?.markets as Record<string, { term: string; definition: string }> ?? {};
+  const translatedPrediction = predKey && glossaryMarkets[predKey]
+    ? glossaryMarkets[predKey].term
+    : data.prediction;
+
+  // Market — translated via glossary if available
+  const marketKey = BET_TYPE_TO_KEY[data.market?.toLowerCase() ?? ""];
+  const translatedMarket = marketKey && glossaryMarkets[marketKey]
+    ? glossaryMarkets[marketKey].term
+    : data.market;
+
+  // Value signal — translated
+  const getValueSignal = (): { label: string; color: string } | null => {
+    if (!bestOdds || !implied) return null;
+    const fairOdds = 100 / implied;
+    const diff = ((bestOdds - fairOdds) / fairOdds) * 100;
+    if (diff >= 5) return { label: t.valueSignalValue ?? "⚡ Value odds", color: "text-emerald-300" };
+    if (diff <= -5) return { label: t.valueSignalBelow ?? "⚠ Below market", color: "text-red-300" };
+    return { label: t.valueSignalFair ?? "≈ Fair price", color: "text-slate-400" };
+  };
+  const valueSignal = getValueSignal();
 
   return (
     <article
@@ -199,33 +203,33 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         {data.homeTeam} vs {data.awayTeam}
       </h3>
 
-      {/* RISK TIER + PICK */}
+      {/* RISK TIER + PREDICTION */}
       <div className="flex items-center gap-3 mb-4 flex-wrap">
-        <span className={`text-sm font-black px-3 py-1 rounded-full border w-fit ${riskConfig.color}`}>
-          {riskConfig.emoji} {riskConfig.label}
+        <span className={`text-sm font-black px-3 py-1 rounded-full border w-fit ${riskColor}`}>
+          {riskEmoji} {riskLabel}
         </span>
         <span className="text-sm font-black text-white">
-          {data.prediction}
+          {translatedPrediction}
         </span>
       </div>
 
-      {/* MARKET LABEL + TOOLTIP */}
+      {/* MARKET + TOOLTIP */}
       <div className="mb-4">
         <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
           {t.matchMarket ?? "Market"}
         </span>
         <div className="flex items-center mt-1">
           <p className="text-sm text-cyan-300 font-bold">
-            {data.market}
+            {translatedMarket}
           </p>
           <MarketTooltip market={data.market} t={t} lang={lang} />
         </div>
       </div>
 
-      {/* REASONING */}
+      {/* ANALYSIS */}
       <div className="rounded-xl border-2 border-cyan-300/20 bg-[#0B1220] p-3 mb-4">
         <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold mb-1">
-          {t.matchPreview ?? "Analysis"}
+          {t.aiAnalysisLabel ?? "AI Analysis (EN)"}
         </p>
         <p className="text-sm text-slate-200 leading-6">
           {data.reasoning || t.noExplanation}
@@ -237,7 +241,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
             <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-              {t.odds} · {data.prediction}
+              {t.odds} · {translatedPrediction}
             </span>
             {bookmakerCount > 0 && (
               <span className="text-[10px] text-slate-500 mt-1">
@@ -248,7 +252,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             )}
             {implied > 0 && (
               <span className="text-[10px] text-slate-400 mt-1">
-                {t.impliedProb ?? "Implied"}: {implied.toFixed(1)}%
+                {t.impliedProb ?? "Market prob."}: {implied.toFixed(1)}%
               </span>
             )}
             {valueSignal && (
@@ -264,21 +268,21 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       </div>
 
       {/* CTA */}
-<a
-  href={data.bookmakerUrl || "#"}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="
-    mt-2 flex justify-center
-    rounded-xl border-2 border-cyan-300/40
-    bg-cyan-500/10
-    py-2 text-sm font-bold text-cyan-200
-    hover:bg-cyan-400/20
-    transition
-  "
->
-  {t.viewOdds}
-</a>
+      <a
+        href={data.bookmakerUrl || "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="
+          mt-2 flex justify-center
+          rounded-xl border-2 border-cyan-300/40
+          bg-cyan-500/10
+          py-2 text-sm font-bold text-cyan-200
+          hover:bg-cyan-400/20
+          transition
+        "
+      >
+        {t.viewOdds}
+      </a>
     </article>
   );
 }
