@@ -18,6 +18,7 @@ const en: Translation = {
   matchPreview: "Analysis",
   matchMarket: "Market",
   basedOnBookmakers: "Based on {count} bookmakers",
+  impliedProb: "Implied prob.",
   odds: "Odds",
   confidence: "Confidence",
   edge: "Edge",

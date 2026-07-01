@@ -31,6 +31,7 @@ export type Translation = {
   matchPreview: string;
   matchMarket: string;
   basedOnBookmakers: string;
+  impliedProb: string;
   contactTitle: string;
   contactSuccess: string;
   contactName: string;

@@ -18,6 +18,7 @@ const hu: Partial<Translation> = {
   matchPreview: "Elemzés",
   matchMarket: "Piac",
   basedOnBookmakers: "{count} fogadóiroda alapján",
+  impliedProb: "Implied valószínűség",
   odds: "Szorzó",
   confidence: "Megbízhatóság",
   edge: "Előny",
