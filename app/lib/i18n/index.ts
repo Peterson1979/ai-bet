@@ -15,7 +15,7 @@ export type Lang = (typeof LANGS)[number];
 
 const de: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "KI-gestützte Wettanalysen",
+  heroSubtitle: "Kostenlose KI-Wetttipps – Fußball, NBA, Tennis & mehr",
   heroDesc: "KI-generierte Vorhersagen für mehrere Sportarten.",
   heroImageAlt: "KI Wettvorhersagen Hero Hintergrund",
   topPicks: "Top Tipps",
@@ -65,7 +65,7 @@ const de: DeepPartial<Translation> = {
 
 const fr: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "Analyses de paris alimentées par IA",
+  heroSubtitle: "Pronostics IA gratuits – Football, NBA, Tennis & plus",
   heroDesc: "Prédictions générées par IA pour plusieurs sports.",
   heroImageAlt: "Fond hero des prédictions de paris IA",
   topPicks: "Meilleurs choix",
@@ -115,7 +115,7 @@ const fr: DeepPartial<Translation> = {
 
 const es: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "Análisis de apuestas con IA",
+  heroSubtitle: "Tips de apuestas IA gratis – Fútbol, NBA, Tenis y más",
   heroDesc: "Predicciones generadas por IA para múltiples deportes.",
   heroImageAlt: "Fondo hero de predicciones de apuestas IA",
   topPicks: "Mejores picks",
@@ -165,7 +165,7 @@ const es: DeepPartial<Translation> = {
 
 const it: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "Analisi scommesse con IA",
+  heroSubtitle: "Pronostici IA gratuiti – Calcio, NBA, Tennis e altro",
   heroDesc: "Previsioni generate dall'IA per più sport.",
   heroImageAlt: "Sfondo hero previsioni scommesse IA",
   topPicks: "Le migliori scelte",
@@ -215,7 +215,7 @@ const it: DeepPartial<Translation> = {
 
 const pt: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "Análises de apostas com IA",
+  heroSubtitle: "Dicas IA gratuitas – Futebol, NBA, Ténis e mais",
   heroDesc: "Previsões geradas por IA para vários desportos.",
   heroImageAlt: "Fundo hero de previsões de apostas IA",
   topPicks: "Melhores escolhas",
@@ -265,7 +265,7 @@ const pt: DeepPartial<Translation> = {
 
 const ar: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "تحليلات الرهان بالذكاء الاصطناعي",
+  heroSubtitle: "نصائح رهان ذكاء اصطناعي مجانية – كرة القدم، NBA، التنس والمزيد",
   heroDesc: "تنبؤات مدعومة بالذكاء الاصطناعي لرياضات متعددة.",
   heroImageAlt: "خلفية نصائح الرهان بالذكاء الاصطناعي",
   topPicks: "أفضل الاختيارات",
@@ -315,7 +315,7 @@ const ar: DeepPartial<Translation> = {
 
 const zh: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "AI驱动的投注分析",
+  heroSubtitle: "免费AI投注建议 – 足球、NBA、网球及更多",
   heroDesc: "AI生成的多项运动预测。",
   heroImageAlt: "AI投注预测主图背景",
   topPicks: "精选推荐",
@@ -365,7 +365,7 @@ const zh: DeepPartial<Translation> = {
 
 const ja: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "AIによるベッティング分析",
+heroSubtitle: "無料AIベッティングヒント – サッカー、NBA、テニス他",
   heroDesc: "複数のスポーツに対応したAI予想。",
   heroImageAlt: "AIベッティング予想ヒーロー背景",
   topPicks: "注目のピック",
@@ -415,7 +415,7 @@ const ja: DeepPartial<Translation> = {
 
 const hi: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "AI-संचालित सट्टेबाजी विश्लेषण",
+  heroSubtitle: "मुफ्त AI सट्टेबाजी टिप्स – फुटबॉल, NBA, टेनिस और अधिक",
   heroDesc: "कई खेलों के लिए AI-जनित भविष्यवाणियां।",
   heroImageAlt: "AI सट्टेबाजी भविष्यवाणी हीरो पृष्ठभूमि",
   topPicks: "शीर्ष चुनाव",

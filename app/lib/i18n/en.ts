@@ -2,7 +2,7 @@ import type { Translation } from "./types";
 
 const en: Translation = {
   heroTitle: "MatchSignal",
-  heroSubtitle: "AI-Powered Betting Insights",
+  heroSubtitle: "Free AI Betting Tips – Football, NBA, Tennis & More",
   heroDesc: "AI-powered predictions across multiple sports.",
   heroImageAlt: "MatchSignal betting predictions hero background",
   topPicks: "Top Picks",
@@ -39,9 +39,9 @@ const en: Translation = {
   showExplanation: "Show explanation ▼",
   hideExplanation: "Hide explanation ▲",
   viewOdds: "View Odds",
-  seoTitle: "MatchSignal – AI Betting Predictions",
-  seoDescription: "AI-generated betting predictions and value bets across multiple sports.",
-  contactTitle: "Contact",
+ seoTitle: "MatchSignal – Free AI Betting Tips",
+  seoDescription: "Free AI-generated betting tips for Football, NBA, Tennis, MLB, NHL and more. Daily picks with odds comparison and market analysis.",
+   contactTitle: "Contact",
   contactSuccess: "Message sent successfully.",
   contactName: "Your name",
   contactEmail: "Your email",

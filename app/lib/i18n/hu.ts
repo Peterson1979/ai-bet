@@ -2,7 +2,7 @@ import type { Translation } from "./types";
 
 const hu: Partial<Translation> = {
   heroTitle: "MATCH SIGNAL",
-  heroSubtitle: "AI-alapú fogadási elemzések",
+  heroSubtitle: "Ingyenes AI fogadási tippek – Foci, NBA, Tenisz és még több",
   heroDesc: "AI által generált sport előrejelzések több sportágra.",
   heroImageAlt: "AI fogadási előrejelzések hero háttér",
   topPicks: "Top tippek",
