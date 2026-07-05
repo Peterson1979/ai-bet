@@ -9,7 +9,7 @@ const en: Translation = {
   premiumOffers: "Premium Betting Offers",
   premiumOffersDesc: "Place your affiliate banners, sportsbook promos or rotating offers here.",
   recommendedSites: "Recommended sportsbooks & offers",
-  recommendedSitesDesc: "Recommended sportsbooks and affiliate offers curated for users.",
+  recommendedSitesDesc: "Handpicked sportsbooks with the best bonuses, odds and reliability.",
   noMatches: "No matches available",
   tbd: "TBD",
   noExplanation: "No explanation available",

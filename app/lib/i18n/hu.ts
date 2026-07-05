@@ -9,7 +9,7 @@ const hu: Partial<Translation> = {
   premiumOffers: "Prémium ajánlatok",
   premiumOffersDesc: "Ide kerülnek az affiliate bannerek és sportsbook ajánlatok.",
   recommendedSites: "Ajánlott fogadóirodák",
-  recommendedSitesDesc: "Ajánlott fogadóirodák és affiliate ajánlatok.",
+  recommendedSitesDesc: "A legjobb bónuszokat, szorzókat és megbízhatóságot kínáló, gondosan válogatott fogadóirodák.",
   noMatches: "Nincs elérhető mérkőzés",
   tbd: "Időpont nincs megadva",
   noExplanation: "Nincs elérhető magyarázat",
