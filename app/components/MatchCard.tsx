@@ -283,18 +283,20 @@ export default function MatchCard({ data, lang = "en" }: Props) {
               </span>
             )}
 
-            {consensus !== null && (
-              <span className="text-[10px] text-slate-400 mt-1">
-                {t.consensusProb ?? "Market consensus"}: {consensus.toFixed(1)}%
-              </span>
-            )}
+            {consensus != null && (
+  <span className="text-[10px] text-slate-400 mt-1">
+    {t.consensusProb ?? "Market consensus"}: {consensus.toFixed(1)}%
+    <span className="text-slate-500 ml-1 text-[9px]">
+      ({t.consensusProbHint ?? "avg. all bookmakers"})
+    </span>
+  </span>
+)}
 
-            {valueSignal && (
-              <span className="text-[10px] text-slate-400 mt-1">
-                {t.consensusProb ?? "Market consensus"}: {consensus.toFixed(1)}%
-                <span className="text-slate-500 ml-1 text-[9px]">({t.consensusProbHint ?? "avg. all bookmakers"})</span>
-              </span>
-            )}
+{valueSignal && (
+  <span className={`text-[10px] mt-1 block ${valueSignal.color}`}>
+    {valueSignal.label}
+  </span>
+)}
           </div>
 
           <span className="text-xl font-black text-emerald-300">
