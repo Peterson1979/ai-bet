@@ -290,8 +290,9 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             )}
 
             {valueSignal && (
-              <span className={`text-[10px] font-bold mt-1 ${valueSignal.color}`}>
-                {valueSignal.label}
+              <span className="text-[10px] text-slate-400 mt-1">
+                {t.consensusProb ?? "Market consensus"}: {consensus.toFixed(1)}%
+                <span className="text-slate-500 ml-1 text-[9px]">({t.consensusProbHint ?? "avg. all bookmakers"})</span>
               </span>
             )}
           </div>

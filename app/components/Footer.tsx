@@ -14,6 +14,7 @@ export default function Footer() {
     { key: "oddsComparisonFeature" },
     { key: "marketDepthFeature" },
     { key: "impliedProbFeature" },
+    { key: "consensusProbFeature" },
   ];
 
   const getText = (key: string) => (t.footer as any)[key];

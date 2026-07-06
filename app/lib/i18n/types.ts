@@ -48,6 +48,7 @@ export type Translation = {
   send: string;
   contactError: string;
   consensusProb: string;
+  consensusProbHint: string;
   sports: {
     topPicks: string;
     football: string;
@@ -122,6 +123,8 @@ export type Translation = {
     marketDepthFeatureDesc: string;
     impliedProbFeatureTitle: string;
     impliedProbFeatureDesc: string;
+    consensusProbFeatureTitle: string;
+    consensusProbFeatureDesc: string;
     aiBettingInsights: string;
     aiBettingInsightsDesc: string;
     navAbout: string;

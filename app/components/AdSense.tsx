@@ -1,33 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Script from "next/script";
 import { getConsent } from "@/app/lib/consent";
 
 export default function AdSense() {
+  const [allowed, setAllowed] = useState(false);
+
   useEffect(() => {
     const consent = getConsent();
-
-    if (!consent?.ads) return;
-
-    if (typeof window === "undefined") return;
-
-    const existingScript = document.querySelector(
-      'script[src*="adsbygoogle.js"]'
-    );
-
-    if (existingScript) return;
-
-    const script = document.createElement("script");
-
-    script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js";
-
-    script.async = true;
-
-    script.setAttribute("data-ad-client", "ca-pub-XXXXXXXXXXXX");
-
-    document.head.appendChild(script);
+    setAllowed(!!consent?.ads);
   }, []);
 
-  return null;
+  if (!allowed) return null;
+
+  return (
+    <Script
+      id="adsense-script"
+      strategy="afterInteractive"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6847785471613763"
+      crossOrigin="anonymous"
+    />
+  );
 }
