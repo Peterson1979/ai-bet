@@ -1,4 +1,3 @@
-// VERCEL_TEST_123
 import { SPORT_CONFIG, DEFAULT_CONFIG } from "./sportsConfig";
 
 const API_KEY = process.env.ODDS_API_KEY;
@@ -123,7 +122,16 @@ export type OddsEvent = {
   // Raw API data for market-specific odds lookup
   rawBookmakers?: any[];
 };
-
+export function getConsensusForMarket(
+  rawBookmakers: any[],
+  marketType: string,
+  homeTeam: string,
+  awayTeam: string
+): number | null {
+  const isAway = marketType?.toLowerCase().includes("away");
+  const targetTeam = isAway ? awayTeam : homeTeam;
+  return calculateConsensusImpliedProb(rawBookmakers, targetTeam);
+}
 const BOOKMAKER_RANKINGS: Record<string, number> = {
   Pinnacle: 10,
   bet365: 9,
@@ -174,18 +182,24 @@ function calculateImpliedProbability(odds?: number | null): number | null {
  * This is the B) option: weighted average of all bookmaker implied probs,
  * which approximates the "true" market probability.
  */
-function calculateConsensusImpliedProb(bookmakers: any[], homeTeam: string): number | null {
+function calculateConsensusImpliedProb(
+  bookmakers: any[],
+  homeTeam: string,
+  awayTeam?: string,
+  marketType?: string
+): number | null {
   const probs: number[] = [];
+  const isAway = marketType?.toLowerCase().includes("away");
+  const targetTeam = isAway ? awayTeam : homeTeam;
 
   for (const bookmaker of bookmakers) {
     const h2hMarket = bookmaker.markets?.find((m: any) => m.key === "h2h");
     if (!h2hMarket) continue;
 
-    const homeOutcome = h2hMarket.outcomes?.find((o: any) => o.name === homeTeam);
-    if (!homeOutcome?.price || homeOutcome.price <= 0) continue;
+    const outcome = h2hMarket.outcomes?.find((o: any) => o.name === targetTeam);
+    if (!outcome?.price || outcome.price <= 0) continue;
 
-    // Remove bookmaker margin by using raw implied prob
-    probs.push(100 / homeOutcome.price);
+    probs.push(100 / outcome.price);
   }
 
   if (probs.length === 0) return null;
@@ -371,15 +385,15 @@ async function fetchSportEvents(
 
     events = dedupeEvents(events);
 
-    events = events.filter((e) => {
+   events = events.filter((e) => {
       const odds = e.bestOdds ?? 0;
-      const rank = e.bookmakerRank ?? 0;
+
+      // Ha nincs h2h szorzó, próbáljuk meg a rawBookmakers alapján megítélni
+      const hasAnyOdds = odds > 0 || (e.rawBookmakers && e.rawBookmakers.length > 0);
 
       return (
-        odds >= config.minOdds &&
-        odds <= config.maxOdds &&
-        rank >= config.minBookmakerRank &&
-        e.bookmakerCount >= 1 &&
+        hasAnyOdds &&
+        (odds === 0 || (odds >= config.minOdds && odds <= config.maxOdds)) &&
         isWithinTimeWindow(e.commenceTime, config.maxHoursAhead)
       );
     });

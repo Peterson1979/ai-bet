@@ -1,10 +1,10 @@
 import { Redis } from "@upstash/redis";
-import { getDailyEvents, getBestOddsForMarket } from "@/app/lib/odds";
+
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { rankMatches } from "@/app/lib/ranking";
 import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
 import { calculateRiskTier } from "@/app/lib/sportsConfig";
-
+import { getDailyEvents, getBestOddsForMarket, getConsensusForMarket } from "@/app/lib/odds";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -126,8 +126,17 @@ export async function GET(request: Request) {
           : event.impliedProbability ?? 0;
 
         // Value diff: konszenzus vs. legjobb szorzó (B opció)
-        const valueDiff = event.consensusImpliedProb != null && impliedProbability > 0
-          ? Number((event.consensusImpliedProb - impliedProbability).toFixed(2))
+        const marketConsensus = event.rawBookmakers
+          ? getConsensusForMarket(
+              event.rawBookmakers,
+              ai.market ?? "",
+              event.homeTeam,
+              event.awayTeam
+            )
+          : event.consensusImpliedProb ?? null;
+
+        const valueDiff = marketConsensus != null && impliedProbability > 0
+          ? Number((marketConsensus - impliedProbability).toFixed(2))
           : null;
 
         topPicks.push({
