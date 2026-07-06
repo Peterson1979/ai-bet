@@ -54,7 +54,7 @@ const WATCHED_SPORTS = [
 
 // Sport-specifikus markets lekérés — egy hívásban több piac
 const SPORT_MARKETS: Record<string, string> = {
-  Football: "h2h,totals,double_chance",
+  Football: "h2h,totals",
   NBA:      "h2h,totals",
   NFL:      "h2h,totals",
   Hockey:   "h2h,totals",
