@@ -49,6 +49,7 @@ const hu: Partial<Translation> = {
   sending: "Küldés...",
   send: "Üzenet küldése",
   contactError: "Nem sikerült elküldeni az üzenetet",
+  consensusProb: "Piaci konszenzus",
   sports: {
     topPicks: "Top tippek",
     football: "Foci",

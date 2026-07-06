@@ -49,6 +49,7 @@ const en: Translation = {
   sending: "Sending...",
   send: "Send Message",
   contactError: "Failed to send message",
+  consensusProb: "Market consensus",
   sports: {
     topPicks: "Top Picks",
     football: "Football",

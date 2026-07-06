@@ -16,6 +16,11 @@ export type PredictionCard = {
 
   bestOdds?: number;
   impliedProbability?: number;
+
+  // added for mapper + UI consistency
+  consensusImpliedProb?: number | null;
+  valueDiff?: number | null;
+
   bookmakerCount: number;
 
   bookmaker: string;

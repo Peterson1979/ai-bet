@@ -1,5 +1,5 @@
 import { Redis } from "@upstash/redis";
-import { getDailyEvents } from "@/app/lib/odds";
+import { getDailyEvents, getBestOddsForMarket } from "@/app/lib/odds";
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { rankMatches } from "@/app/lib/ranking";
 import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
@@ -92,15 +92,43 @@ export async function GET(request: Request) {
         if (seenEvents.has(eventKey)) continue;
         seenEvents.add(eventKey);
 
+        // Market-specifikus szorzó kiolvasás az AI által választott piachoz
+        const marketOdds = event.rawBookmakers
+          ? getBestOddsForMarket(
+              event.rawBookmakers,
+              ai.market ?? "",
+              event.homeTeam,
+              event.awayTeam
+            )
+          : {
+              bestOdds: event.bestOdds ?? 0,
+              bestBookmaker: event.bookmaker ?? "Unknown",
+              bookmakerRank: event.bookmakerRank ?? 0,
+            };
+
+        const finalOdds = marketOdds.bestOdds || event.bestOdds || 0;
+        const finalBookmaker = marketOdds.bestBookmaker || event.bookmaker || "Unknown";
+
         const bookmakerUrl = getBookmakerAffiliateUrl(
-          (event.bookmaker || "").toLowerCase().replace(/\s/g, ""),
+          finalBookmaker.toLowerCase().replace(/\s/g, ""),
           event.sport
         );
 
+        // Risk tier a market-specifikus szorzó alapján
         const riskTier = calculateRiskTier(
-          event.bestOdds ?? 0,
+          finalOdds,
           event.bookmakerCount ?? 0
         );
+
+        // Implied probability a market-specifikus szorzóból
+        const impliedProbability = finalOdds > 0
+          ? Number((100 / finalOdds).toFixed(2))
+          : event.impliedProbability ?? 0;
+
+        // Value diff: konszenzus vs. legjobb szorzó (B opció)
+        const valueDiff = event.consensusImpliedProb != null && impliedProbability > 0
+          ? Number((event.consensusImpliedProb - impliedProbability).toFixed(2))
+          : null;
 
         topPicks.push({
           id: eventKey,
@@ -113,10 +141,12 @@ export async function GET(request: Request) {
           prediction: ai.prediction ?? "",
           reasoning: ai.reasoning ?? "",
           riskTier,
-          bestOdds: event.bestOdds || 0,
-          impliedProbability: event.impliedProbability ?? 0,
+          bestOdds: finalOdds,
+          impliedProbability,
+          consensusImpliedProb: event.consensusImpliedProb ?? null,
+          valueDiff,
           bookmakerCount: event.bookmakerCount ?? 0,
-          bookmaker: event.bookmaker || "Unknown",
+          bookmaker: finalBookmaker,
           bookmakerUrl,
           ctaLabel: "View Odds",
           status: "scheduled",

@@ -7,7 +7,6 @@ const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 10;
 
 const WATCHED_SPORTS = [
-  // ==================== FOCI ====================
   { key: "soccer_uefa_champs_league",         label: "Football", league: "Champions League",     priority: 1 },
   { key: "soccer_epl",                        label: "Football", league: "Premier League",        priority: 1 },
   { key: "soccer_spain_la_liga",              label: "Football", league: "La Liga",               priority: 1 },
@@ -28,19 +27,11 @@ const WATCHED_SPORTS = [
   { key: "soccer_scotland_premiership",       label: "Football", league: "Scottish Premiership",  priority: 3 },
   { key: "soccer_germany_dfb_pokal",          label: "Football", league: "DFB-Pokal",             priority: 3 },
   { key: "soccer_conmebol_copa_sudamericana", label: "Football", league: "Copa Sudamericana",     priority: 3 },
-
-  // ==================== NBA ====================
   { key: "basketball_nba",                    label: "NBA",      league: "NBA",                   priority: 1 },
   { key: "basketball_euroleague",             label: "NBA",      league: "EuroLeague",            priority: 2 },
-
-  // ==================== NFL ====================
   { key: "americanfootball_nfl",              label: "NFL",      league: "NFL",                   priority: 1 },
   { key: "americanfootball_ncaaf",            label: "NFL",      league: "NCAAF",                 priority: 3 },
-
-  // ==================== HOCKEY ====================
   { key: "icehockey_nhl",                     label: "Hockey",   league: "NHL",                   priority: 1 },
-
-  // ==================== TENISZ ====================
   { key: "tennis_atp_wimbledon",              label: "Tennis",   league: "Wimbledon",             priority: 1 },
   { key: "tennis_atp_us_open",                label: "Tennis",   league: "US Open",               priority: 1 },
   { key: "tennis_atp_australian_open",        label: "Tennis",   league: "Australian Open",       priority: 1 },
@@ -56,14 +47,54 @@ const WATCHED_SPORTS = [
   { key: "tennis_wta_miami_open",             label: "Tennis",   league: "WTA Miami Open",        priority: 2 },
   { key: "tennis_wta_madrid_open",            label: "Tennis",   league: "WTA Madrid Open",       priority: 2 },
   { key: "tennis_wta_queens_club_champ",      label: "Tennis",   league: "WTA Queen's Club",      priority: 2 },
-
-  // ==================== MLB ====================
   { key: "baseball_mlb",                      label: "MLB",      league: "MLB",                   priority: 1 },
-
-  // ==================== MMA ====================
   { key: "mma_mixed_martial_arts",            label: "MMA",      league: "MMA",                   priority: 1 },
   { key: "boxing_boxing",                     label: "MMA",      league: "Boxing",                priority: 2 },
 ];
+
+// Sport-specifikus markets lekérés — egy hívásban több piac
+const SPORT_MARKETS: Record<string, string> = {
+  Football: "h2h,totals,double_chance",
+  NBA:      "h2h,totals",
+  NFL:      "h2h,totals",
+  Hockey:   "h2h,totals",
+  Tennis:   "h2h,spreads",
+  MLB:      "h2h,totals",
+  MMA:      "h2h",
+};
+
+// Melyik API market key melyik market type-hoz tartozik
+const MARKET_KEY_MAP: Record<string, string> = {
+  "home win":           "h2h",
+  "away win":           "h2h",
+  "draw no bet":        "h2h",
+  "double chance":      "double_chance",
+  "match winner":       "h2h",
+  "moneyline":          "h2h",
+  "moneyline (fight winner)": "h2h",
+  "over 1.5 goals":     "totals",
+  "under 4.5 goals":    "totals",
+  "over 4.5 goals":     "totals",
+  "under 7.5 goals":    "totals",
+  "over 18.5 games":    "totals",
+  "under 30.5 games":   "totals",
+  "player to win a set":"spreads",
+  "handicap games (+3.5)": "spreads",
+  "over 149.5 points":  "totals",
+  "under 179.5 points": "totals",
+  "over 33.5 points":   "totals",
+  "under 54.5 points":  "totals",
+  "over 7.5 runs":      "totals",
+  "under 9.5 runs":     "totals",
+  "team total over":    "totals",
+  "team total under":   "totals",
+  "team total over 1.5":"totals",
+  "run line (-1.5)":    "spreads",
+  "method of victory (ko/tko or decision)": "h2h",
+  "method of victory":  "h2h",
+  "over 2.5 rounds":    "totals",
+  "under 2.5 rounds":   "totals",
+};
 
 export type BookmakerOffer = {
   bookmaker: string;
@@ -84,8 +115,12 @@ export type OddsEvent = {
   odds?: number | null;
   bestOdds?: number | null;
   impliedProbability?: number | null;
+  consensusImpliedProb?: number | null;
+  valueDiff?: number | null;
   topOffers: BookmakerOffer[];
   bookmakerCount: number;
+  // Raw API data for market-specific odds lookup
+  rawBookmakers?: any[];
 };
 
 const BOOKMAKER_RANKINGS: Record<string, number> = {
@@ -134,18 +169,109 @@ function calculateImpliedProbability(odds?: number | null): number | null {
 }
 
 /**
- * Extracts ALL bookmaker offers for an event (home/away odds),
- * ranks them, and returns the top N by rank + odds quality.
- * This replaces the old "best odds only" approach with a real
- * market-comparison dataset.
+ * Calculates consensus implied probability from ALL bookmakers' home odds.
+ * This is the B) option: weighted average of all bookmaker implied probs,
+ * which approximates the "true" market probability.
  */
+function calculateConsensusImpliedProb(bookmakers: any[], homeTeam: string): number | null {
+  const probs: number[] = [];
+
+  for (const bookmaker of bookmakers) {
+    const h2hMarket = bookmaker.markets?.find((m: any) => m.key === "h2h");
+    if (!h2hMarket) continue;
+
+    const homeOutcome = h2hMarket.outcomes?.find((o: any) => o.name === homeTeam);
+    if (!homeOutcome?.price || homeOutcome.price <= 0) continue;
+
+    // Remove bookmaker margin by using raw implied prob
+    probs.push(100 / homeOutcome.price);
+  }
+
+  if (probs.length === 0) return null;
+
+  const avg = probs.reduce((sum, p) => sum + p, 0) / probs.length;
+  return Number(avg.toFixed(2));
+}
+
+/**
+ * Gets the best available odds for a specific market type.
+ * Uses the raw bookmakers data to find the correct market.
+ */
+export function getBestOddsForMarket(
+  rawBookmakers: any[],
+  marketType: string,
+  homeTeam: string,
+  awayTeam: string
+): { bestOdds: number | null; bestBookmaker: string; bookmakerRank: number } {
+  const apiMarketKey = MARKET_KEY_MAP[marketType?.toLowerCase()] ?? "h2h";
+  const isOver = marketType?.toLowerCase().includes("over");
+  const isUnder = marketType?.toLowerCase().includes("under");
+  const isAway = marketType?.toLowerCase().includes("away");
+  const isDouble = marketType?.toLowerCase().includes("double");
+
+  let bestOdds: number | null = null;
+  let bestBookmaker = "Unknown";
+  let bookmakerRank = 0;
+
+  for (const bookmaker of rawBookmakers) {
+    const market = bookmaker.markets?.find((m: any) => m.key === apiMarketKey);
+    if (!market) continue;
+
+    let targetOdds: number | null = null;
+
+    if (apiMarketKey === "h2h") {
+      if (isAway) {
+        const outcome = market.outcomes?.find((o: any) => o.name === awayTeam);
+        targetOdds = outcome?.price ?? null;
+      } else if (isDouble) {
+        // Double chance: home or draw (1X) — highest available
+        const outcome = market.outcomes?.find(
+          (o: any) => o.name !== awayTeam
+        );
+        targetOdds = outcome?.price ?? null;
+      } else {
+        // Home win / moneyline / match winner
+        const outcome = market.outcomes?.find((o: any) => o.name === homeTeam);
+        targetOdds = outcome?.price ?? null;
+      }
+    } else if (apiMarketKey === "totals") {
+      if (isOver) {
+        const outcome = market.outcomes?.find((o: any) =>
+          o.name?.toLowerCase() === "over"
+        );
+        targetOdds = outcome?.price ?? null;
+      } else if (isUnder) {
+        const outcome = market.outcomes?.find((o: any) =>
+          o.name?.toLowerCase() === "under"
+        );
+        targetOdds = outcome?.price ?? null;
+      }
+    } else if (apiMarketKey === "spreads" || apiMarketKey === "double_chance") {
+      // For spreads/double_chance just take the first available outcome
+      targetOdds = market.outcomes?.[0]?.price ?? null;
+    }
+
+    if (!targetOdds || targetOdds <= 0) continue;
+
+    if (bestOdds === null || targetOdds > bestOdds) {
+      bestOdds = targetOdds;
+      bestBookmaker = bookmaker.title || "Unknown";
+      bookmakerRank = BOOKMAKER_RANKINGS[bookmaker.title] ?? 3;
+    }
+  }
+
+  return { bestOdds, bestBookmaker, bookmakerRank };
+}
+
 function extractAllOffers(event: any): BookmakerOffer[] {
   const offers: BookmakerOffer[] = [];
 
   for (const bookmaker of event.bookmakers || []) {
-    const outcomes = bookmaker.markets?.[0]?.outcomes || [];
-    const homeOutcome = outcomes.find((o: any) => o.name === event.home_team);
-    const awayOutcome = outcomes.find((o: any) => o.name === event.away_team);
+    const h2hMarket = bookmaker.markets?.find((m: any) => m.key === "h2h");
+    if (!h2hMarket) continue;
+
+    const homeOutcome = h2hMarket.outcomes?.find((o: any) => o.name === event.home_team);
+    const awayOutcome = h2hMarket.outcomes?.find((o: any) => o.name === event.away_team);
 
     if (!homeOutcome?.price && !awayOutcome?.price) continue;
 
@@ -179,13 +305,14 @@ async function fetchSportEvents(
   if (cached) return cached;
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
+  const markets = SPORT_MARKETS[sportLabel] ?? "h2h";
 
   try {
     const url =
       `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/` +
       `?apiKey=${API_KEY}` +
       `&regions=eu` +
-      `&markets=h2h` +
+      `&markets=${markets}` +
       `&oddsFormat=decimal`;
 
     const response = await fetch(url, { cache: "no-store" });
@@ -200,7 +327,6 @@ async function fetchSportEvents(
     let events: OddsEvent[] = data.map((event: any) => {
       const allOffers = extractAllOffers(event);
 
-      // Sort by best home odds first, then rank, take top 3 for display
       const topOffers = [...allOffers]
         .sort((a, b) => (b.homeOdds ?? 0) - (a.homeOdds ?? 0))
         .slice(0, 3);
@@ -208,6 +334,19 @@ async function fetchSportEvents(
       const bestOffer = topOffers[0];
       const bestOdds = bestOffer?.homeOdds ?? null;
       const impliedProbability = calculateImpliedProbability(bestOdds);
+
+      // B) opció: konszenzus implied prob az összes bookmaker átlagából
+      const consensusImpliedProb = calculateConsensusImpliedProb(
+        event.bookmakers || [],
+        event.home_team
+      );
+
+      // Value diff: konszenzus vs. legjobb szorzó implied prob különbsége
+      // Pozitív = a legjobb szorzó "értékesebb" mint a piaci konszenzus
+      const valueDiff =
+        consensusImpliedProb !== null && impliedProbability !== null
+          ? Number((consensusImpliedProb - impliedProbability).toFixed(2))
+          : null;
 
       return {
         id: event.id,
@@ -221,8 +360,11 @@ async function fetchSportEvents(
         odds: bestOdds,
         bestOdds,
         impliedProbability,
+        consensusImpliedProb,
+        valueDiff,
         topOffers,
         bookmakerCount: allOffers.length,
+        rawBookmakers: event.bookmakers,
       };
     });
 
@@ -241,7 +383,6 @@ async function fetchSportEvents(
       );
     });
 
-    // Rank by market depth (more bookmakers = more liquid/relevant market) then by odds
     events.sort((a, b) => {
       if (b.bookmakerCount !== a.bookmakerCount) {
         return b.bookmakerCount - a.bookmakerCount;

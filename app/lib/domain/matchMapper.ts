@@ -24,6 +24,8 @@ export function toMatchCardData(
 
     bestOdds: p.bestOdds ?? 0,
     impliedProbability: p.impliedProbability ?? 0,
+    consensusImpliedProb: p.consensusImpliedProb ?? null,
+    valueDiff: p.valueDiff ?? null,
     bookmakerCount: p.bookmakerCount ?? 0,
 
     bookmaker: p.bookmaker,

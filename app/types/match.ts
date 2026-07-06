@@ -41,6 +41,8 @@ export type MatchCardData = {
 
   bestOdds?: number | null;
   impliedProbability?: number | null;
+  consensusImpliedProb?: number | null;
+  valueDiff?: number | null;
   bookmakerCount: number;
 
   bookmaker: string;
