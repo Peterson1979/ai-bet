@@ -411,7 +411,14 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
       `https://api.the-odds-api.com/v4/sports/?apiKey=${API_KEY}&all=false`,
       { cache: "no-store" }
     );
+// FORCE FOOTBALL FALLBACK (fix missing API soccer keys)
+const footballKeys = WATCHED_SPORTS
+  .filter(s => s.label === "Football")
+  .map(s => s.key);
 
+for (const key of footballKeys) {
+  activeKeys.add(key);
+}
     const activeSports: { key: string; active: boolean; has_outrights: boolean }[] =
       activeSportsRes.ok ? await activeSportsRes.json() : [];
 
