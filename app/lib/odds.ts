@@ -412,31 +412,27 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
   { cache: "no-store" }
 );
 
-const activeSports: { key: string; active: boolean; has_outrights: boolean }[] =
-  activeSportsRes.ok ? await activeSportsRes.json() : [];
+// 1. egyszer deklaráljuk
+let activeSports: { key: string; active: boolean; has_outrights: boolean }[] = [];
 
-const activeKeys = new Set(
+if (activeSportsRes.ok) {
+  activeSports = await activeSportsRes.json();
+}
+
+// 2. active keys csak egyszer
+const activeKeys = new Set<string>(
   activeSports
     .filter(s => s.active && !s.has_outrights)
     .map(s => s.key)
 );
 
-// fallback AFTER declaration
-const footballKeys = WATCHED_SPORTS
-  .filter(s => s.label === "Football")
-  .map(s => s.key);
-
-for (const key of footballKeys) {
-  activeKeys.add(key);
+// 3. SAFE fallback FOOTBALL-ra (nem duplikálunk semmit)
+for (const s of WATCHED_SPORTS) {
+  if (s.label === "Football") {
+    activeKeys.add(s.key);
+  }
 }
-    const activeSports: { key: string; active: boolean; has_outrights: boolean }[] =
-      activeSportsRes.ok ? await activeSportsRes.json() : [];
-
-    const activeKeys = new Set(
-      activeSports
-        .filter(s => s.active && !s.has_outrights)
-        .map(s => s.key)
-    );
+    
 
     const sportsToFetch = WATCHED_SPORTS
       .filter(s => activeKeys.has(s.key))
