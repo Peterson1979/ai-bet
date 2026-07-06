@@ -1,3 +1,4 @@
+// VERCEL_TEST_123
 import { SPORT_CONFIG, DEFAULT_CONFIG } from "./sportsConfig";
 
 const API_KEY = process.env.ODDS_API_KEY;
