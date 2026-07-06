@@ -122,6 +122,7 @@ export type OddsEvent = {
   // Raw API data for market-specific odds lookup
   rawBookmakers?: any[];
 };
+
 export function getConsensusForMarket(
   rawBookmakers: any[],
   marketType: string,
@@ -132,6 +133,7 @@ export function getConsensusForMarket(
   const targetTeam = isAway ? awayTeam : homeTeam;
   return calculateConsensusImpliedProb(rawBookmakers, targetTeam);
 }
+
 const BOOKMAKER_RANKINGS: Record<string, number> = {
   Pinnacle: 10,
   bet365: 9,
@@ -301,8 +303,6 @@ function extractAllOffers(event: any): BookmakerOffer[] {
   return offers;
 }
 
-// ... [az előző kód változatlan marad a isWithinTimeWindow-ig] ...
-
 function isWithinTimeWindow(commenceTime: string, maxHoursAhead: number): boolean {
   const eventTime = new Date(commenceTime).getTime();
   const now = Date.now();
@@ -310,9 +310,6 @@ function isWithinTimeWindow(commenceTime: string, maxHoursAhead: number): boolea
   return eventTime >= now && eventTime <= now + maxMs;
 }
 
-// ============================================================
-// 👇 EZ A RÉSZ HIÁNYZOTT A KÓDBÓL! 👇
-// ============================================================
 async function fetchSportEvents(
   sportKey: string,
   sportLabel: string,
@@ -336,13 +333,39 @@ async function fetchSportEvents(
       return [];
     }
 
-    // 👇 INNEN FOLYTATÓDIK AZ EREDETI KÓDOD 👇
     const data = await response.json();
 
-    console.log("[Football]", sportKey, "API returned", data.length, "events");
+    console.log(
+      `[${sportKey}] returned ${data.length} events`
+    );
+
+    if (sportKey === "soccer_fifa_world_cup") {
+      console.log(
+        JSON.stringify(
+          data.map((e: any) => ({
+            home: e.home_team,
+            away: e.away_team,
+            start: e.commence_time,
+          })),
+          null,
+          2
+        )
+      );
+    }
 
     let events: OddsEvent[] = data.map((event: any) => {
       const allOffers = extractAllOffers(event);
+if (sportKey === "soccer_fifa_world_cup") {
+  console.log(
+    "WORLD CUP EVENT:",
+    JSON.stringify({
+      home: event.home_team,
+      away: event.away_team,
+      markets: event.bookmakers?.[0]?.markets?.map((m:any)=>m.key),
+      bookmakers: event.bookmakers?.length
+    }, null, 2)
+  );
+}
 
       const topOffers = [...allOffers]
         .sort((a, b) => (b.homeOdds ?? 0) - (a.homeOdds ?? 0))
@@ -382,7 +405,9 @@ async function fetchSportEvents(
       };
     });
 
-    console.log("[Football]", sportKey, "before filter:", events.length);
+    console.log(
+      `[${sportKey}] before filter = ${events.length}`
+    );
 
     events = dedupeEvents(events);
 
@@ -399,7 +424,9 @@ async function fetchSportEvents(
       );
     });
 
-    console.log("[Football]", sportKey, "after filter:", events.length);
+    console.log(
+      `[${sportKey}] after filter = ${events.length}`
+    );
 
     events = dedupeEvents(events);
 
@@ -431,9 +458,6 @@ async function fetchSportEvents(
     return [];
   }
 }
-// ============================================================
-// 👆 EDIG HIÁNYZOTT 👆
-// ============================================================
 
 export async function getDailyEvents(): Promise<{ sport: string; events: OddsEvent[] }[]> {
   if (!API_KEY || IS_BUILD) {
