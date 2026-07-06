@@ -77,7 +77,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     rating: 9.2,
     bonus: "Multiple Bet Bonus",
     baseUrl:
-      "https://r1wfmvd.life/betting?p=3q5b",
+      https://r1wdhtx.life/betting?p=3q5b
     trackingParams: "?affid=YOUR_ID",
     sports: [
       "Football",
