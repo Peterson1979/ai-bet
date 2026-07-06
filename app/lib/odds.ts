@@ -421,14 +421,13 @@ const activeKeys = new Set(
     .map(s => s.key)
 );
 
-// FORCE FOOTBALL FALLBACK (fix missing API soccer keys)
+// fallback AFTER declaration
 const footballKeys = WATCHED_SPORTS
   .filter(s => s.label === "Football")
   .map(s => s.key);
 
 for (const key of footballKeys) {
   activeKeys.add(key);
-}
 }
     const activeSports: { key: string; active: boolean; has_outrights: boolean }[] =
       activeSportsRes.ok ? await activeSportsRes.json() : [];
