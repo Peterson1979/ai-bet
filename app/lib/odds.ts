@@ -301,6 +301,8 @@ function extractAllOffers(event: any): BookmakerOffer[] {
   return offers;
 }
 
+// ... [az előző kód változatlan marad a isWithinTimeWindow-ig] ...
+
 function isWithinTimeWindow(commenceTime: string, maxHoursAhead: number): boolean {
   const eventTime = new Date(commenceTime).getTime();
   const now = Date.now();
@@ -308,36 +310,36 @@ function isWithinTimeWindow(commenceTime: string, maxHoursAhead: number): boolea
   return eventTime >= now && eventTime <= now + maxMs;
 }
 
+// ============================================================
+// 👇 EZ A RÉSZ HIÁNYZOTT A KÓDBÓL! 👇
+// ============================================================
 async function fetchSportEvents(
   sportKey: string,
   sportLabel: string,
   leagueLabel: string
 ): Promise<OddsEvent[]> {
-  if (!API_KEY || IS_BUILD) return [];
-
-  const cacheKey = `odds_${sportKey}`;
-  const cached = getCache(cacheKey);
+  const cached = getCache(sportKey);
   if (cached) return cached;
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
-  const markets = SPORT_MARKETS[sportLabel] ?? "h2h";
+  const cacheKey = sportKey;
 
   try {
-    const url =
-      `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/` +
-      `?apiKey=${API_KEY}` +
-      `&regions=eu` +
-      `&markets=${markets}` +
-      `&oddsFormat=decimal`;
-
-    const response = await fetch(url, { cache: "no-store" });
+    const markets = SPORT_MARKETS[sportLabel] ?? "h2h";
+    const response = await fetch(
+      `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/?apiKey=${API_KEY}&regions=eu&markets=${markets}&oddsFormat=decimal`,
+      { cache: "no-store" }
+    );
 
     if (!response.ok) {
-      console.error(`[odds] ${sportKey} fetch failed: ${response.status}`);
+      console.error(`[odds] API error for ${sportKey}:`, response.status);
       return [];
     }
 
+    // 👇 INNEN FOLYTATÓDIK AZ EREDETI KÓDOD 👇
     const data = await response.json();
+
+    console.log("[Football]", sportKey, "API returned", data.length, "events");
 
     let events: OddsEvent[] = data.map((event: any) => {
       const allOffers = extractAllOffers(event);
@@ -350,14 +352,11 @@ async function fetchSportEvents(
       const bestOdds = bestOffer?.homeOdds ?? null;
       const impliedProbability = calculateImpliedProbability(bestOdds);
 
-      // B) opció: konszenzus implied prob az összes bookmaker átlagából
       const consensusImpliedProb = calculateConsensusImpliedProb(
         event.bookmakers || [],
         event.home_team
       );
 
-      // Value diff: konszenzus vs. legjobb szorzó implied prob különbsége
-      // Pozitív = a legjobb szorzó "értékesebb" mint a piaci konszenzus
       const valueDiff =
         consensusImpliedProb !== null && impliedProbability !== null
           ? Number((consensusImpliedProb - impliedProbability).toFixed(2))
@@ -383,13 +382,31 @@ async function fetchSportEvents(
       };
     });
 
+    console.log("[Football]", sportKey, "before filter:", events.length);
+
     events = dedupeEvents(events);
 
-   events = events.filter((e) => {
+    events = events.filter((e) => {
       const odds = e.bestOdds ?? 0;
+      const rank = e.bookmakerRank ?? 0;
 
-      // Ha nincs h2h szorzó, próbáljuk meg a rawBookmakers alapján megítélni
-      const hasAnyOdds = odds > 0 || (e.rawBookmakers && e.rawBookmakers.length > 0);
+      return (
+        odds >= config.minOdds &&
+        odds <= config.maxOdds &&
+        rank >= config.minBookmakerRank &&
+        e.bookmakerCount >= 1 &&
+        isWithinTimeWindow(e.commenceTime, config.maxHoursAhead)
+      );
+    });
+
+    console.log("[Football]", sportKey, "after filter:", events.length);
+
+    events = dedupeEvents(events);
+
+    events = events.filter((e) => {
+      const odds = e.bestOdds ?? 0;
+      const hasAnyOdds =
+        odds > 0 || (e.rawBookmakers && e.rawBookmakers.length > 0);
 
       return (
         hasAnyOdds &&
@@ -414,6 +431,9 @@ async function fetchSportEvents(
     return [];
   }
 }
+// ============================================================
+// 👆 EDIG HIÁNYZOTT 👆
+// ============================================================
 
 export async function getDailyEvents(): Promise<{ sport: string; events: OddsEvent[] }[]> {
   if (!API_KEY || IS_BUILD) {
@@ -423,31 +443,26 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
 
   try {
     const activeSportsRes = await fetch(
-  `https://api.the-odds-api.com/v4/sports/?apiKey=${API_KEY}&all=false`,
-  { cache: "no-store" }
-);
+      `https://api.the-odds-api.com/v4/sports/?apiKey=${API_KEY}&all=false`,
+      { cache: "no-store" }
+    );
 
-// 1. egyszer deklaráljuk
-let activeSports: { key: string; active: boolean; has_outrights: boolean }[] = [];
+    let activeSports: { key: string; active: boolean; has_outrights: boolean }[] = [];
+    if (activeSportsRes.ok) {
+      activeSports = await activeSportsRes.json();
+    }
 
-if (activeSportsRes.ok) {
-  activeSports = await activeSportsRes.json();
-}
+    const activeKeys = new Set<string>(
+      activeSports
+        .filter(s => s.active && !s.has_outrights)
+        .map(s => s.key)
+    );
 
-// 2. active keys csak egyszer
-const activeKeys = new Set<string>(
-  activeSports
-    .filter(s => s.active && !s.has_outrights)
-    .map(s => s.key)
-);
-
-// 3. SAFE fallback FOOTBALL-ra (nem duplikálunk semmit)
-for (const s of WATCHED_SPORTS) {
-  if (s.label === "Football") {
-    activeKeys.add(s.key);
-  }
-}
-    
+    for (const s of WATCHED_SPORTS) {
+      if (s.label === "Football") {
+        activeKeys.add(s.key);
+      }
+    }
 
     const sportsToFetch = WATCHED_SPORTS
       .filter(s => activeKeys.has(s.key))
@@ -493,7 +508,6 @@ for (const s of WATCHED_SPORTS) {
     }
 
     return results;
-
   } catch (error) {
     console.error("[odds] getDailyEvents error:", error);
     const uniqueLabels = [...new Set(WATCHED_SPORTS.map(s => s.label))];
