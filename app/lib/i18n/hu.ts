@@ -24,7 +24,7 @@ const hu: Partial<Translation> = {
   riskHigh: "Magas kockázat",
   valueSignalValue: "⚡ Értékes szorzó",
   valueSignalBelow: "⚠ Piaci átlag alatt",
-  valueSignalFair: "≈ Piaci ár",
+  valueSignalFair: "✅ Piaccal összhangban",
   aiAnalysisLabel: "AI Elemzés (EN)",
   odds: "Szorzó",
   confidence: "Megbízhatóság",
@@ -41,6 +41,9 @@ const hu: Partial<Translation> = {
   viewOdds: "Szorzók megtekintése",
   seoTitle: "MatchSignal – AI Fogadási Tippek",
   seoDescription: "AI által generált fogadási tippek és value bet-ek több sportágra.",
+  sportPageTitle: "{SPORT} előrejelzések és AI fogadási elemzés",
+sportPageDescription: "AI-alapú {SPORT} előrejelzések, fogadási elemzés és értékes tippek.",
+
   contactTitle: "Kapcsolat",
   contactSuccess: "Üzenet sikeresen elküldve.",
   contactName: "Neved",
@@ -52,6 +55,15 @@ const hu: Partial<Translation> = {
   consensusProb: "Piaci konszenzus",
   consensusProbHint: "összes fogadóiroda átlaga",
   viewAllPredictions: "Összes előrejelzés megtekintése",
+  faqPredictionQuestion: "Hogyan generálódnak a {SPORT} előrejelzések?",
+
+faqPredictionAnswer:
+"A MatchSignal mesterséges intelligencia által vezérelt elemzéseket, fogadóirodai oddsadatokat és piaci információkat használ a fogadási információk generálásához.",
+
+faqFreeQuestion: "Ezek a {SPORT} fogadási előrejelzések ingyenesek?",
+
+faqFreeAnswer:
+"Igen, a MatchSignal ingyenes, mesterséges intelligenciával működő fogadási előrejelzéseket és mérkőzéselemzést biztosít.",
   sports: {
     topPicks: "Top tippek",
     football: "Foci",
@@ -127,7 +139,7 @@ const hu: Partial<Translation> = {
 impliedProbFeatureTitle: "Piaci valószínűség és konszenzus",
     impliedProbFeatureDesc: "Minden kártyán két valószínűségi adat jelenik meg: az ajánlott fogadásra vonatkozó legjobb elérhető szorzóból számított valószínűség, valamint a piaci konszenzus — az összes szorzót kínáló fogadóiroda átlagos implied valószínűsége.",
    consensusProbFeatureTitle: "Value jelzés",
-    consensusProbFeatureDesc: "Minden ajánlást összehasonlítunk a piaci konszenzus valószínűséggel. ✅ Piaci ár azt jelenti, hogy az ajánlás a piac egészével összhangban van — megbízható, jól alátámasztott tipp. ⚡ Értékes szorzó azt jelenti, hogy a legjobb elérhető szorzó jobb a piaci átlagnál — potenciális értékes lehetőség. ⚠ Piaci átlag alatt azt jelenti, hogy a szorzó rosszabb a piaci átlagnál — óvatosan.",
+    consensusProbFeatureDesc: "Minden ajánlást összehasonlítunk a piaci konszenzus valószínűséggel. ✅ Piaccal összhangban azt jelenti, hogy az ajánlás megfelel a piaci átlagnak — megbízható, jól alátámasztott tipp. ⚡ Értékes ajánlás azt jelenti, hogy a piaci átlagnál jobb lehetőség. ⚠ Piaci átlag alatt azt jelenti, hogy az átlagnál gyengébb — óvatosan.",
     aiBettingInsights: "A MatchSignal-ról",
     aiBettingInsightsDesc: "Ez a platform kizárólag tájékoztató jelleggel nyújt AI által generált tartalmat. Kérjük, játssz felelősségteljesen.",
     navAbout: "Rólunk",

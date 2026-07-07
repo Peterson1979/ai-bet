@@ -92,5 +92,8 @@ STRICT RULES:
 - No markdown, no code fences, no extra text
 - Use ONLY the market types listed above for this sport
 - The reasoning must START with team/match context, not with odds
-- Do NOT state a numeric confidence or edge value`;
+- Do NOT mention any specific odds values (e.g. "at 3.75 odds") — no numbers from the market data
+- Do NOT state a numeric confidence or edge value
+- Reference the risk tier only as Low/Medium/High, not as a number
+`;
 }

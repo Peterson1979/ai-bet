@@ -12,14 +12,12 @@ type SportBlock = {
   topPicks: PredictionCard[];
 };
 
-
 type SportSectionProps = {
   sportBlock: SportBlock;
   lang: Lang;
   limit: number;
   showViewAll?: boolean;
 };
-
 
 const sportKeyMap: Record<string, keyof typeof translations.en.sports> = {
   football: "football",
@@ -32,7 +30,6 @@ const sportKeyMap: Record<string, keyof typeof translations.en.sports> = {
   mma: "mma",
 };
 
-
 export default function SportSection({
   sportBlock,
   lang,
@@ -41,7 +38,6 @@ export default function SportSection({
 }: SportSectionProps) {
 
   const t = translations[lang] ?? translations.en;
-
 
   const activePicks = sportBlock.topPicks
     .filter((p) => new Date(p.startTime) > new Date())
@@ -60,13 +56,17 @@ export default function SportSection({
       className="mb-16 scroll-mt-28"
     >
 
-      <div className="mb-6 flex items-center gap-4">
+      <div className="mb-6">
 
-        <h2 className="text-3xl font-black tracking-tight">
-          {sportName}
-        </h2>
+        <div className="flex items-center gap-4">
 
-        <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+  <h1 className="text-3xl font-black tracking-tight">
+    {t.sportPageTitle?.replace("{SPORT}", sportName)}
+  </h1>
+
+  <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+
+</div>
 
       </div>
 

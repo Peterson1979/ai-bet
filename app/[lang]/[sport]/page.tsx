@@ -23,24 +23,31 @@ export async function generateMetadata({
 
   const { lang, sport } = await params;
 
+  const t = translations[lang] ?? translations.en;
+
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
     "https://matchsignal.pro";
 
 
-  const sportNames: Record<string, string> = {
-    football: "Football",
-    nba: "NBA",
-    nfl: "NFL",
-    hockey: "Hockey",
-    tennis: "Tennis",
-    mlb: "MLB",
-    mma: "MMA",
+  const sportKeyMap: Record<string, keyof typeof t.sports> = {
+    football: "football",
+    soccer: "football",
+    nba: "nba",
+    nfl: "nfl",
+    hockey: "hockey",
+    tennis: "tennis",
+    mlb: "mlb",
+    mma: "mma",
   };
 
 
+  const sportKey =
+    sportKeyMap[sport.toLowerCase()] ?? "football";
+
+
   const sportName =
-    sportNames[sport.toLowerCase()] ?? sport;
+    t.sports[sportKey];
 
 
   const languages: Record<string, string> = {};
@@ -68,10 +75,10 @@ export async function generateMetadata({
 
   return {
     title:
-      `${sportName} Predictions & AI Betting Analysis | MatchSignal`,
+      `${t.sportPageTitle.replace("{SPORT}", sportName)} | MatchSignal`,
 
     description:
-      `${sportName} AI betting predictions, match analysis, odds comparison and value betting insights.`,
+      t.sportPageDescription.replace("{SPORT}", sportName),
 
     alternates: {
       canonical:
@@ -81,6 +88,8 @@ export async function generateMetadata({
     },
   };
 }
+
+
 type SportBlock = {
   sport: string;
   hasMatches: boolean;
@@ -94,8 +103,6 @@ type PredictionsData = {
   generatedAt: string;
   sports: SportBlock[];
 };
-
-
 export default async function SportPage({
   params,
 }: {
@@ -107,10 +114,13 @@ export default async function SportPage({
 
   const { lang, sport } = await params;
 
-  const predictions: PredictionsData | null = await getPredictions();
+  const predictions: PredictionsData | null =
+    await getPredictions();
 
   const t = translations[lang] ?? translations.en;
-
+console.log("CURRENT LANG:", lang);
+console.log("TITLE TEMPLATE:", t.sportPageTitle);
+console.log("DESCRIPTION TEMPLATE:", t.sportPageDescription);
 
   const sportBlock = predictions?.sports.find(
     (item) =>
@@ -118,14 +128,72 @@ export default async function SportPage({
   );
 
 
+  const sportKeyMap: Record<string, keyof typeof t.sports> = {
+    football: "football",
+    soccer: "football",
+    nba: "nba",
+    nfl: "nfl",
+    hockey: "hockey",
+    tennis: "tennis",
+    mlb: "mlb",
+    mma: "mma",
+  };
+
+
+  const sportKey =
+    sportKeyMap[sport.toLowerCase()] ?? "football";
+
+
+  const sportName =
+    t.sports[sportKey];
+
+
+  const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name":
+        t.faqPredictionQuestion.replace("{SPORT}", sportName),
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text":
+          t.faqPredictionAnswer,
+      },
+    },
+    {
+      "@type": "Question",
+      "name":
+        t.faqFreeQuestion.replace("{SPORT}", sportName),
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text":
+          t.faqFreeAnswer,
+      },
+    },
+  ],
+};
+
+
   return (
     <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12]">
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqJsonLd),
+        }}
+      />
+
+
       <Header />
+
 
       <div className="pt-[90px] relative z-10">
 
         <div className="mx-auto max-w-[1500px] px-4 pb-10 md:px-6">
+
 
           <AffiliateSlider />
 
@@ -151,6 +219,7 @@ export default async function SportPage({
           )}
 
 
+
           <aside className="mt-16">
 
             <div className="rounded-[28px] border-2 border-cyan-300/50 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220] p-5">
@@ -170,6 +239,7 @@ export default async function SportPage({
             </div>
 
           </aside>
+
 
 
           <div className="mt-16">

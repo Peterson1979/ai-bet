@@ -24,7 +24,7 @@ const en: Translation = {
   riskHigh: "High Risk",
   valueSignalValue: "⚡ Value odds",
   valueSignalBelow: "⚠ Below market",
-  valueSignalFair: "≈ Fair price",
+  valueSignalFair: "✅ Market aligned",
   aiAnalysisLabel: "AI Analysis (EN)",
   odds: "Odds",
   confidence: "Confidence",
@@ -41,6 +41,9 @@ const en: Translation = {
   viewOdds: "View Odds",
  seoTitle: "MatchSignal – Free AI Betting Tips",
   seoDescription: "Free AI-generated betting tips for Football, NBA, Tennis, MLB, NHL and more. Daily picks with odds comparison and market analysis.",
+  sportPageTitle: "{SPORT} Predictions & AI Betting Analysis",
+sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and value picks.",
+
    contactTitle: "Contact",
   contactSuccess: "Message sent successfully.",
   contactName: "Your name",
@@ -52,6 +55,13 @@ const en: Translation = {
   consensusProb: "Market consensus",
   consensusProbHint: "avg. all bookmakers",
   viewAllPredictions: "View all predictions",
+    faqPredictionQuestion: "How are {SPORT} predictions generated?",
+  faqPredictionAnswer:
+    "MatchSignal uses AI analysis, bookmaker odds data and market information to generate betting insights.",
+
+  faqFreeQuestion: "Are these {SPORT} betting predictions free?",
+  faqFreeAnswer:
+    "Yes, MatchSignal provides free AI-powered betting predictions and match analysis.",
   sports: {
     topPicks: "Top Picks",
     football: "Football",
@@ -127,7 +137,7 @@ const en: Translation = {
     impliedProbFeatureTitle: "Market Probability & Consensus",
     impliedProbFeatureDesc: "Each match card shows two probability figures: the implied probability from the best available odds for the recommended bet, and the market consensus — the average implied probability across all bookmakers offering odds on that match.",
     consensusProbFeatureTitle: "Value Signal",
-    consensusProbFeatureDesc: "Each pick is compared against the market consensus probability. ✅ Fair Price means the pick is priced in line with the overall market — a reliable, well-supported selection. ⚡ Value odds means the best available odds are better than the market average implies — a potential value opportunity. ⚠ Below market means the odds are worse than the market average — proceed with caution.",
+    consensusProbFeatureDesc: "Each pick is compared against the market consensus probability. ✅ Market aligned means the pick is priced in line with the overall market — a reliable, well-supported selection. ⚡ Value odds means the pick offers better value than the market average implies. ⚠ Below market means the pick is priced worse than the market average — proceed with caution.",
     aiBettingInsights: "About MatchSignal",
     aiBettingInsightsDesc: "This platform provides AI-generated content for informational purposes only. Please gamble responsibly.",
     navAbout: "About",

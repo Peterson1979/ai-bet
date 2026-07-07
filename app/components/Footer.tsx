@@ -9,13 +9,12 @@ export default function Footer() {
   const lang = (params?.lang as Lang) || "en";
   const t = translations[lang] ?? translations.en;
 
-  const features = [
+ const features = [
     { key: "matchPreviewFeature" },
-    { key: "oddsComparisonFeature" },
     { key: "marketDepthFeature" },
     { key: "impliedProbFeature" },
     { key: "consensusProbFeature" },
-  ];
+  ]; 
 
   const getText = (key: string) => (t.footer as any)[key];
 

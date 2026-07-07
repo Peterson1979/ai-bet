@@ -2,7 +2,18 @@ export type Translation = {
   heroTitle: string;
   heroSubtitle: string;
   heroDesc: string;
+    faqPredictionQuestion: string;
+  faqPredictionAnswer: string;
+  faqFreeQuestion: string;
+  faqFreeAnswer: string;
+  
   heroImageAlt: string;
+  sportPageTitle: string;
+sportPageDescription: string;
+
+
+
+
   topPicks: string;
   premiumOffers: string;
   premiumOffersDesc: string;
