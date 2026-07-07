@@ -51,6 +51,7 @@ const en: Translation = {
   contactError: "Failed to send message",
   consensusProb: "Market consensus",
   consensusProbHint: "avg. all bookmakers",
+  viewAllPredictions: "View all predictions",
   sports: {
     topPicks: "Top Picks",
     football: "Football",

@@ -49,6 +49,7 @@ export type Translation = {
   contactError: string;
   consensusProb: string;
   consensusProbHint: string;
+  viewAllPredictions: string;
   sports: {
     topPicks: string;
     football: string;

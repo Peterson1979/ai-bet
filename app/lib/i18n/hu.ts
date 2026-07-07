@@ -51,6 +51,7 @@ const hu: Partial<Translation> = {
   contactError: "Nem sikerült elküldeni az üzenetet",
   consensusProb: "Piaci konszenzus",
   consensusProbHint: "összes fogadóiroda átlaga",
+  viewAllPredictions: "Összes előrejelzés megtekintése",
   sports: {
     topPicks: "Top tippek",
     football: "Foci",

@@ -10,8 +10,8 @@ import type { PredictionCard } from "@/app/types/prediction";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 import type { Metadata } from "next";
 import AffiliateSlider from "../components/AffiliateSlider";
-
-
+import { HOMEPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
+import SportSection from "@/app/components/SportSection";
 
 const SUPPORTED_LANGS = ["en", "hu", "es", "de", "fr", "pt", "it", "hi", "ar", "zh", "ja"];
 
@@ -139,62 +139,15 @@ export default async function HomePage({
                 </div>
               </section>
 
-              {predictions?.sports?.map((sportBlock) => {
-                const activePicks = sportBlock.topPicks.filter(
-                  (p) => new Date(p.startTime) > new Date()
-                );
-
-                return (
-                  <section
-                    key={sportBlock.sport}
-                    id={sportBlock.sport.toLowerCase()}
-                    className="mb-16 scroll-mt-28"
-                  >
-                    <div className="mb-6 flex items-center gap-4">
-                      <h2 className="text-3xl font-black tracking-tight">
-                        {
-                          t.sports[
-                            sportKeyMap[
-                              sportBlock.sport.toLowerCase()
-                            ] ?? "football"
-                          ]
-                        }
-                      </h2>
-
-                      <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
-                    </div>
-
-                    {!sportBlock.hasMatches || activePicks.length === 0 ? (
-                      <div className="rounded-[24px] border-2 border-cyan-300/20 bg-[#0B1220] p-6">
-                        <p className="text-slate-300">
-                          {sportBlock.message ?? t.noMatches}
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
-                        {activePicks.map((p) => {
-                          const uiData = toMatchCardData(
-                            p,
-                            sportBlock.sport as SportType
-                          );
-
-                          return (
-                            <div
-                              key={p.id}
-                              className="transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]"
-                            >
-                              <MatchCard
-                                data={uiData}
-                                lang={lang}
-                              />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </section>
-                );
-              })}
+              {predictions?.sports?.map((sportBlock) => (
+  <SportSection
+    key={sportBlock.sport}
+    sportBlock={sportBlock}
+    lang={lang}
+    limit={HOMEPAGE_MATCH_LIMIT}
+    showViewAll
+  />
+))}
             </div>
 
             <aside className="h-fit xl:sticky xl:top-5">
