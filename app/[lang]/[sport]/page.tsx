@@ -23,24 +23,61 @@ export async function generateMetadata({
 
   const { lang, sport } = await params;
 
-  const t = translations[lang] ?? translations.en;
-
-  const sportName =
-    sport.charAt(0).toUpperCase() + sport.slice(1);
-
-
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
     "https://matchsignal.pro";
 
 
+  const sportNames: Record<string, string> = {
+    football: "Football",
+    nba: "NBA",
+    nfl: "NFL",
+    hockey: "Hockey",
+    tennis: "Tennis",
+    mlb: "MLB",
+    mma: "MMA",
+  };
+
+
+  const sportName =
+    sportNames[sport.toLowerCase()] ?? sport;
+
+
+  const languages: Record<string, string> = {};
+
+  const supportedLangs = [
+    "en",
+    "hu",
+    "es",
+    "de",
+    "fr",
+    "pt",
+    "it",
+    "hi",
+    "ar",
+    "zh",
+    "ja",
+  ];
+
+
+  supportedLangs.forEach((l) => {
+    languages[l] =
+      `${baseUrl}/${l}/${sport}`;
+  });
+
+
   return {
-    title: `${sportName} Predictions & AI Betting Analysis`,
+    title:
+      `${sportName} Predictions & AI Betting Analysis | MatchSignal`,
+
     description:
-      `${sportName} betting predictions, AI-powered match analysis, odds comparison and value betting insights.`,
+      `${sportName} AI betting predictions, match analysis, odds comparison and value betting insights.`,
 
     alternates: {
-      canonical: `${baseUrl}/${lang}/${sport}`,
+      canonical:
+        `${baseUrl}/${lang}/${sport}`,
+
+      languages,
     },
   };
 }

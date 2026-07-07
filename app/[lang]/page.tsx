@@ -115,7 +115,7 @@ export default async function HomePage({
             {sportLinks.map((s) => (
               <a
                 key={s.id}
-                href={`#${s.id}`}
+                href={`/${lang}/${s.id}`}
                 className="group relative rounded-full border-2 border-cyan-300/40 bg-[#0A1220]/80 px-6 py-2 text-sm font-extrabold text-white backdrop-blur-md transition-all duration-200 hover:-translate-y-2 hover:scale-[1.06] hover:border-cyan-200 hover:shadow-[0_0_35px_rgba(34,211,238,0.55)] hover:text-cyan-100"
               >
                 {s.label}
