@@ -126,7 +126,7 @@ const en: Translation = {
     impliedProbFeatureTitle: "Market Probability & Consensus",
     impliedProbFeatureDesc: "Each match card shows two probability figures: the implied probability from the best available odds for the recommended bet, and the market consensus — the average implied probability across all bookmakers offering odds on that match.",
     consensusProbFeatureTitle: "Value Signal",
-    consensusProbFeatureDesc: "When the best available odds imply a significantly lower probability than the market consensus, this is flagged as a potential value opportunity (⚡ Value odds). When it is higher, it is flagged as below market (⚠ Below market).",
+    consensusProbFeatureDesc: "Each pick is compared against the market consensus probability. ✅ Fair Price means the pick is priced in line with the overall market — a reliable, well-supported selection. ⚡ Value odds means the best available odds are better than the market average implies — a potential value opportunity. ⚠ Below market means the odds are worse than the market average — proceed with caution.",
     aiBettingInsights: "About MatchSignal",
     aiBettingInsightsDesc: "This platform provides AI-generated content for informational purposes only. Please gamble responsibly.",
     navAbout: "About",

@@ -52,25 +52,29 @@ export function buildPredictionPrompt(events: OddsEvent[]): string {
   const count = events.length;
   const sportRules = SPORT_RULES[sport] ?? `- Moneyline\n- Over/Under`;
 
-  return `You are a sports betting analyst writing concise, professional match notes.
+  return `You are a professional sports analyst with deep knowledge of ${sport} teams, competitions, playing styles and historical context.
+
 Analyze the following ${count} ${sport} events and return exactly ${count} picks (one per event, same order).
 
 ${sportRules}
 
-For each event, you are given a pre-calculated RISK TIER based on real market data (odds value and number of bookmakers offering it). This tier is NOT something you calculate — treat it as a given fact and write your reasoning consistent with it.
+IMPORTANT: Your reasoning MUST primarily focus on the match context — who these teams are, what this competition means, what makes this matchup interesting or predictable. The market data (odds, risk tier) is secondary context that supports your pick, not the main subject.
 
 EVENTS:
 ${events
   .map((e, i) => {
     const riskTier = calculateRiskTier(e.bestOdds ?? 0, e.bookmakerCount ?? 0);
+    const impliedProb = e.impliedProbability
+      ? `${e.impliedProbability.toFixed(1)}%`
+      : "N/A";
     return `
 EVENT ${i + 1}:
 MATCH: ${e.homeTeam} vs ${e.awayTeam}
-LEAGUE: ${e.league}
-START: ${e.commenceTime}
-BEST ODDS (home side): ${e.bestOdds ?? "N/A"}
-MARKET DEPTH: ${e.bookmakerCount ?? 0} bookmakers offering odds
-PRE-CALCULATED RISK TIER: ${riskTier}`;
+LEAGUE/COMPETITION: ${e.league}
+KICK-OFF: ${e.commenceTime}
+HOME WIN ODDS: ${e.bestOdds ?? "N/A"} (implied: ${impliedProb})
+BOOKMAKERS OFFERING ODDS: ${e.bookmakerCount ?? 0}
+RISK TIER: ${riskTier}`;
   })
   .join("\n---")}
 
@@ -79,7 +83,7 @@ Return ONLY a valid JSON array with EXACTLY ${count} objects (one per event, sam
   {
     "market": "<one market type from the allowed list above>",
     "prediction": "<specific pick, e.g. 'Home Win', 'Over 1.5 Goals'>",
-    "reasoning": "<exactly 1-2 sentences, max 35 words: explain the pick referencing the odds value, market depth, or risk tier. Do NOT invent statistics, form, or injury data not present in the input.>"
+    "reasoning": "<3-4 sentences, max 70 words. LEAD with match context: who are these teams, what is the competition stage, what makes this matchup notable. Then briefly mention one market data point (odds or risk tier) to justify the pick. Do NOT only talk about odds. Do NOT cite specific unverifiable stats like exact win streaks.>"
   }
 ]
 
@@ -87,7 +91,6 @@ STRICT RULES:
 - Return EXACTLY ${count} objects
 - No markdown, no code fences, no extra text
 - Use ONLY the market types listed above for this sport
-- The reasoning must reference the given odds, market depth, or risk tier — do NOT invent any other data
-- Prefer conservative, lower-risk reasoning where the risk tier is Low or Medium
+- The reasoning must START with team/match context, not with odds
 - Do NOT state a numeric confidence or edge value`;
 }

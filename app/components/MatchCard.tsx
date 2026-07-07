@@ -174,14 +174,14 @@ export default function MatchCard({ data, lang = "en" }: Props) {
     const diff = data.valueDiff ?? null;
     if (diff === null) return null;
 
-    if (diff >= 3) {
+    if (diff >= 2) {
       return { label: t.valueSignalValue ?? "⚡ Value odds", color: "text-emerald-300" };
     }
-    if (diff <= -3) {
+    if (diff <= -2) {
       return { label: t.valueSignalBelow ?? "⚠ Below market", color: "text-red-300" };
     }
 
-    return { label: t.valueSignalFair ?? "≈ Fair price", color: "text-slate-400" };
+    return { label: t.valueSignalFair ?? "✅ Fair price", color: "text-slate-400" };
   };
 
   const valueSignal = getValueSignal();
@@ -261,47 +261,59 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         </p>
       </div>
 
-      {/* ODDS + IMPLIED + CONSENSUS + VALUE */}
-      <div className="rounded-xl border-2 border-cyan-300/40 bg-[#0B1220] p-3 mb-4 shadow-inner">
-        <div className="flex items-center justify-between">
-          <div className="flex flex-col">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-              {t.odds} · {translatedPrediction}
+      {/* MARKET DATA + VALUE SIGNAL */}
+      <div className="rounded-xl border-2 border-cyan-300/40 bg-[#0B1220] p-4 mb-4 shadow-inner">
+        <div className="flex flex-col gap-2">
+
+          {/* IMPLIED PROB */}
+          {implied > 0 && (
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                {t.impliedProb ?? "Market prob."}
+              </span>
+              <span className="text-sm font-black text-slate-200">
+                {implied.toFixed(1)}%
+              </span>
+            </div>
+          )}
+
+          {/* CONSENSUS */}
+          {consensus !== null && (
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                {t.consensusProb ?? "Market consensus"}
+                <span className="text-slate-500 ml-1 normal-case font-normal text-[10px]">
+                  ({t.consensusProbHint ?? "avg. all bookmakers"})
+                </span>
+              </span>
+              <span className="text-sm font-black text-slate-200">
+                {consensus.toFixed(1)}%
+              </span>
+            </div>
+          )}
+
+          {/* BOOKMAKER COUNT */}
+          {bookmakerCount > 0 && (
+            <span className="text-[10px] text-slate-500">
+              {t.basedOnBookmakers
+                ? t.basedOnBookmakers.replace("{count}", String(bookmakerCount))
+                : `Based on ${bookmakerCount} bookmakers`}
             </span>
+          )}
 
-            {bookmakerCount > 0 && (
-              <span className="text-[10px] text-slate-500 mt-1">
-                {t.basedOnBookmakers
-                  ? t.basedOnBookmakers.replace("{count}", String(bookmakerCount))
-                  : `Based on ${bookmakerCount} bookmakers`}
-              </span>
-            )}
+          {/* VALUE SIGNAL — large, prominent */}
+          {valueSignal && (
+            <div className={`mt-1 rounded-lg px-3 py-2 text-center font-black text-base border ${
+              valueSignal.color === "text-emerald-300"
+                ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-300"
+                : valueSignal.color === "text-red-300"
+                ? "border-red-400/40 bg-red-500/10 text-red-300"
+                : "border-cyan-300/20 bg-cyan-500/5 text-slate-300"
+            }`}>
+              {valueSignal.label}
+            </div>
+          )}
 
-            {implied > 0 && (
-              <span className="text-[10px] text-slate-400 mt-1">
-                {t.impliedProb ?? "Market prob."}: {implied.toFixed(1)}%
-              </span>
-            )}
-
-            {consensus != null && (
-  <span className="text-[10px] text-slate-400 mt-1">
-    {t.consensusProb ?? "Market consensus"}: {consensus.toFixed(1)}%
-    <span className="text-slate-500 ml-1 text-[9px]">
-      ({t.consensusProbHint ?? "avg. all bookmakers"})
-    </span>
-  </span>
-)}
-
-{valueSignal && (
-  <span className={`text-[10px] mt-1 block ${valueSignal.color}`}>
-    {valueSignal.label}
-  </span>
-)}
-          </div>
-
-          <span className="text-xl font-black text-emerald-300">
-            {bestOdds > 0 ? bestOdds : "—"}
-          </span>
         </div>
       </div>
 
