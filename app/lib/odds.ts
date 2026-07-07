@@ -52,7 +52,6 @@ const WATCHED_SPORTS = [
   { key: "boxing_boxing",                     label: "MMA",      league: "Boxing",                priority: 2 },
 ];
 
-// Sport-specifikus markets lekérés — egy hívásban több piac
 const SPORT_MARKETS: Record<string, string> = {
   Football: "h2h,totals",
   NBA:      "h2h,totals",
@@ -63,37 +62,36 @@ const SPORT_MARKETS: Record<string, string> = {
   MMA:      "h2h",
 };
 
-// Melyik API market key melyik market type-hoz tartozik
 const MARKET_KEY_MAP: Record<string, string> = {
-  "home win":           "h2h",
-  "away win":           "h2h",
-  "draw no bet":        "h2h",
-  "double chance":      "double_chance",
-  "match winner":       "h2h",
-  "moneyline":          "h2h",
-  "moneyline (fight winner)": "h2h",
-  "over 1.5 goals":     "totals",
-  "under 4.5 goals":    "totals",
-  "over 4.5 goals":     "totals",
-  "under 7.5 goals":    "totals",
-  "over 18.5 games":    "totals",
-  "under 30.5 games":   "totals",
-  "player to win a set":"spreads",
-  "handicap games (+3.5)": "spreads",
-  "over 149.5 points":  "totals",
-  "under 179.5 points": "totals",
-  "over 33.5 points":   "totals",
-  "under 54.5 points":  "totals",
-  "over 7.5 runs":      "totals",
-  "under 9.5 runs":     "totals",
-  "team total over":    "totals",
-  "team total under":   "totals",
-  "team total over 1.5":"totals",
-  "run line (-1.5)":    "spreads",
+  "home win":                           "h2h",
+  "away win":                           "h2h",
+  "draw no bet":                        "h2h",
+  "double chance":                      "double_chance",
+  "match winner":                       "h2h",
+  "moneyline":                          "h2h",
+  "moneyline (fight winner)":           "h2h",
+  "over 1.5 goals":                     "totals",
+  "under 4.5 goals":                    "totals",
+  "over 4.5 goals":                     "totals",
+  "under 7.5 goals":                    "totals",
+  "over 18.5 games":                    "totals",
+  "under 30.5 games":                   "totals",
+  "player to win a set":                "spreads",
+  "handicap games (+3.5)":              "spreads",
+  "over 149.5 points":                  "totals",
+  "under 179.5 points":                 "totals",
+  "over 33.5 points":                   "totals",
+  "under 54.5 points":                  "totals",
+  "over 7.5 runs":                      "totals",
+  "under 9.5 runs":                     "totals",
+  "team total over":                    "totals",
+  "team total under":                   "totals",
+  "team total over 1.5":                "totals",
+  "run line (-1.5)":                    "spreads",
   "method of victory (ko/tko or decision)": "h2h",
-  "method of victory":  "h2h",
-  "over 2.5 rounds":    "totals",
-  "under 2.5 rounds":   "totals",
+  "method of victory":                  "h2h",
+  "over 2.5 rounds":                    "totals",
+  "under 2.5 rounds":                   "totals",
 };
 
 export type BookmakerOffer = {
@@ -119,20 +117,8 @@ export type OddsEvent = {
   valueDiff?: number | null;
   topOffers: BookmakerOffer[];
   bookmakerCount: number;
-  // Raw API data for market-specific odds lookup
   rawBookmakers?: any[];
 };
-
-export function getConsensusForMarket(
-  rawBookmakers: any[],
-  marketType: string,
-  homeTeam: string,
-  awayTeam: string
-): number | null {
-  const isAway = marketType?.toLowerCase().includes("away");
-  const targetTeam = isAway ? awayTeam : homeTeam;
-  return calculateConsensusImpliedProb(rawBookmakers, targetTeam);
-}
 
 const BOOKMAKER_RANKINGS: Record<string, number> = {
   Pinnacle: 10,
@@ -179,41 +165,36 @@ function calculateImpliedProbability(odds?: number | null): number | null {
   return Number((100 / odds).toFixed(2));
 }
 
-/**
- * Calculates consensus implied probability from ALL bookmakers' home odds.
- * This is the B) option: weighted average of all bookmaker implied probs,
- * which approximates the "true" market probability.
- */
 function calculateConsensusImpliedProb(
   bookmakers: any[],
-  homeTeam: string,
-  awayTeam?: string,
-  marketType?: string
+  targetTeam: string
 ): number | null {
   const probs: number[] = [];
-  const isAway = marketType?.toLowerCase().includes("away");
-  const targetTeam = isAway ? awayTeam : homeTeam;
 
   for (const bookmaker of bookmakers) {
     const h2hMarket = bookmaker.markets?.find((m: any) => m.key === "h2h");
     if (!h2hMarket) continue;
-
     const outcome = h2hMarket.outcomes?.find((o: any) => o.name === targetTeam);
     if (!outcome?.price || outcome.price <= 0) continue;
-
     probs.push(100 / outcome.price);
   }
 
   if (probs.length === 0) return null;
-
   const avg = probs.reduce((sum, p) => sum + p, 0) / probs.length;
   return Number(avg.toFixed(2));
 }
 
-/**
- * Gets the best available odds for a specific market type.
- * Uses the raw bookmakers data to find the correct market.
- */
+export function getConsensusForMarket(
+  rawBookmakers: any[],
+  marketType: string,
+  homeTeam: string,
+  awayTeam: string
+): number | null {
+  const isAway = marketType?.toLowerCase().includes("away");
+  const targetTeam = isAway ? awayTeam : homeTeam;
+  return calculateConsensusImpliedProb(rawBookmakers, targetTeam);
+}
+
 export function getBestOddsForMarket(
   rawBookmakers: any[],
   marketType: string,
@@ -241,30 +222,21 @@ export function getBestOddsForMarket(
         const outcome = market.outcomes?.find((o: any) => o.name === awayTeam);
         targetOdds = outcome?.price ?? null;
       } else if (isDouble) {
-        // Double chance: home or draw (1X) — highest available
-        const outcome = market.outcomes?.find(
-          (o: any) => o.name !== awayTeam
-        );
+        const outcome = market.outcomes?.find((o: any) => o.name !== awayTeam);
         targetOdds = outcome?.price ?? null;
       } else {
-        // Home win / moneyline / match winner
         const outcome = market.outcomes?.find((o: any) => o.name === homeTeam);
         targetOdds = outcome?.price ?? null;
       }
     } else if (apiMarketKey === "totals") {
       if (isOver) {
-        const outcome = market.outcomes?.find((o: any) =>
-          o.name?.toLowerCase() === "over"
-        );
+        const outcome = market.outcomes?.find((o: any) => o.name?.toLowerCase() === "over");
         targetOdds = outcome?.price ?? null;
       } else if (isUnder) {
-        const outcome = market.outcomes?.find((o: any) =>
-          o.name?.toLowerCase() === "under"
-        );
+        const outcome = market.outcomes?.find((o: any) => o.name?.toLowerCase() === "under");
         targetOdds = outcome?.price ?? null;
       }
     } else if (apiMarketKey === "spreads" || apiMarketKey === "double_chance") {
-      // For spreads/double_chance just take the first available outcome
       targetOdds = market.outcomes?.[0]?.price ?? null;
     }
 
@@ -315,57 +287,33 @@ async function fetchSportEvents(
   sportLabel: string,
   leagueLabel: string
 ): Promise<OddsEvent[]> {
+  if (!API_KEY || IS_BUILD) return [];
+
   const cached = getCache(sportKey);
   if (cached) return cached;
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
-  const cacheKey = sportKey;
+  const markets = SPORT_MARKETS[sportLabel] ?? "h2h";
 
   try {
-    const markets = SPORT_MARKETS[sportLabel] ?? "h2h";
-    const response = await fetch(
-      `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/?apiKey=${API_KEY}&regions=eu&markets=${markets}&oddsFormat=decimal`,
-      { cache: "no-store" }
-    );
+    const url =
+      `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/` +
+      `?apiKey=${API_KEY}` +
+      `&regions=eu` +
+      `&markets=${markets}` +
+      `&oddsFormat=decimal`;
+
+    const response = await fetch(url, { cache: "no-store" });
 
     if (!response.ok) {
-      console.error(`[odds] API error for ${sportKey}:`, response.status);
+      console.error(`[odds] ${sportKey} fetch failed: ${response.status}`);
       return [];
     }
 
     const data = await response.json();
 
-    console.log(
-      `[${sportKey}] returned ${data.length} events`
-    );
-
-    if (sportKey === "soccer_fifa_world_cup") {
-      console.log(
-        JSON.stringify(
-          data.map((e: any) => ({
-            home: e.home_team,
-            away: e.away_team,
-            start: e.commence_time,
-          })),
-          null,
-          2
-        )
-      );
-    }
-
     let events: OddsEvent[] = data.map((event: any) => {
       const allOffers = extractAllOffers(event);
-if (sportKey === "soccer_fifa_world_cup") {
-  console.log(
-    "WORLD CUP EVENT:",
-    JSON.stringify({
-      home: event.home_team,
-      away: event.away_team,
-      markets: event.bookmakers?.[0]?.markets?.map((m:any)=>m.key),
-      bookmakers: event.bookmakers?.length
-    }, null, 2)
-  );
-}
 
       const topOffers = [...allOffers]
         .sort((a, b) => (b.homeOdds ?? 0) - (a.homeOdds ?? 0))
@@ -405,35 +353,11 @@ if (sportKey === "soccer_fifa_world_cup") {
       };
     });
 
-    console.log(
-      `[${sportKey}] before filter = ${events.length}`
-    );
-
     events = dedupeEvents(events);
 
     events = events.filter((e) => {
       const odds = e.bestOdds ?? 0;
-      const rank = e.bookmakerRank ?? 0;
-
-      return (
-        odds >= config.minOdds &&
-        odds <= config.maxOdds &&
-        rank >= config.minBookmakerRank &&
-        e.bookmakerCount >= 1 &&
-        isWithinTimeWindow(e.commenceTime, config.maxHoursAhead)
-      );
-    });
-
-    console.log(
-      `[${sportKey}] after filter = ${events.length}`
-    );
-
-    events = dedupeEvents(events);
-
-    events = events.filter((e) => {
-      const odds = e.bestOdds ?? 0;
-      const hasAnyOdds =
-        odds > 0 || (e.rawBookmakers && e.rawBookmakers.length > 0);
+      const hasAnyOdds = odds > 0 || (e.rawBookmakers && e.rawBookmakers.length > 0);
 
       return (
         hasAnyOdds &&
@@ -451,7 +375,7 @@ if (sportKey === "soccer_fifa_world_cup") {
 
     events = events.slice(0, config.maxEvents);
 
-    setCache(cacheKey, events);
+    setCache(sportKey, events);
     return events;
   } catch (error) {
     console.error(`[odds] fetchSportEvents error (${sportKey}):`, error);
@@ -482,6 +406,7 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
         .map(s => s.key)
     );
 
+    // Football safe fallback
     for (const s of WATCHED_SPORTS) {
       if (s.label === "Football") {
         activeKeys.add(s.key);
