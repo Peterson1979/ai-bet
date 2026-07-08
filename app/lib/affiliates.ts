@@ -30,7 +30,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Hockey",
       "Tennis",
       "Baseball",
-      "MMA",
+      "MMA/BOXING",
     ],
   },
 
@@ -48,7 +48,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Hockey",
       "Tennis",
       "Baseball",
-      "MMA",
+      "MMA/BOXING",
     ],
   },
 
@@ -67,7 +67,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Hockey",
       "Tennis",
       "Baseball",
-      "MMA",
+      "MMA/BOXING",
     ],
   },
 
@@ -86,7 +86,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Hockey",
       "Tennis",
       "Baseball",
-      "MMA",
+      "MMA/BOXING",
     ],
   },
 
@@ -105,7 +105,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Hockey",
       "Tennis",
       "Baseball",
-      "MMA",
+      "MMA/BOXING",
     ],
   },
 
@@ -124,7 +124,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Hockey",
       "Tennis",
       "Baseball",
-      "MMA",
+      "MMA/BOXING",
     ],
   },
 
@@ -143,7 +143,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Hockey",
       "Tennis",
       "Baseball",
-      "MMA",
+      "MMA/BOXING",
     ],
   },
 ];

@@ -70,7 +70,7 @@ sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and valu
     hockey: "Hockey",
     tennis: "Tennis",
     mlb: "MLB",
-    mma: "MMA",
+    mma: "MMA/BOXING",
   },
   system: {
     navHome: "Home",

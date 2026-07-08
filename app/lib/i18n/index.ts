@@ -45,7 +45,7 @@ const de: DeepPartial<Translation> = {
   seoDescription: "KI-generierte Wettvorhersagen und Value Bets für mehrere Sportarten.",
   sportPageTitle: "{SPORT} Vorhersagen & KI-Wettanalyse",
 sportPageDescription: "KI-basierte {SPORT}-Vorhersagen, Wettanalyse und Value-Tipps.",
-  sports: { topPicks: "Top Tipps", football: "Fußball", nba: "NBA", nfl: "NFL", hockey: "Eishockey", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
+  sports: { topPicks: "Top Tipps", football: "Fußball", nba: "NBA", nfl: "NFL", hockey: "Eishockey", tennis: "Tennis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Startseite", navTopPicks: "Top Tipps", navBetting: "Wetten", navNews: "Neuigkeiten", navTools: "Tools", navGlossary: "Glossar" },
   footer: {
     betIntelligence: "Wie MatchSignal funktioniert",
@@ -98,7 +98,7 @@ const fr: DeepPartial<Translation> = {
   seoDescription: "Prédictions de paris et value bets générés par IA pour plusieurs sports.",
   sportPageTitle: "Prédictions {SPORT} & analyse de paris avec IA",
 sportPageDescription: "Prédictions {SPORT} basées sur l'IA, analyse des paris et sélections à valeur ajoutée.",
-  sports: { topPicks: "Meilleurs choix", football: "Football", nba: "NBA", nfl: "NFL", hockey: "Hockey sur glace", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
+  sports: { topPicks: "Meilleurs choix", football: "Football", nba: "NBA", nfl: "NFL", hockey: "Hockey sur glace", tennis: "Tennis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Accueil", navTopPicks: "Meilleurs choix", navBetting: "Paris", navNews: "Actualités", navTools: "Outils", navGlossary: "Glossaire" },
   footer: {
     betIntelligence: "Comment fonctionne MatchSignal",
@@ -151,7 +151,7 @@ const es: DeepPartial<Translation> = {
   seoDescription: "Predicciones de apuestas y value bets generados por IA para múltiples deportes.",
   sportPageTitle: "Predicciones de {SPORT} y análisis de apuestas con IA",
 sportPageDescription: "Predicciones de {SPORT} con IA, análisis de apuestas y selecciones de valor.",
-  sports: { topPicks: "Mejores picks", football: "Fútbol", nba: "NBA", nfl: "NFL", hockey: "Hockey sobre hielo", tennis: "Tenis", mlb: "Béisbol", mma: "MMA" },
+  sports: { topPicks: "Mejores picks", football: "Fútbol", nba: "NBA", nfl: "NFL", hockey: "Hockey sobre hielo", tennis: "Tenis", mlb: "Béisbol", mma: "MMA/BOXING" },
   system: { navHome: "Inicio", navTopPicks: "Mejores picks", navBetting: "Apuestas", navNews: "Noticias", navTools: "Herramientas", navGlossary: "Glosario" },
   footer: {
     betIntelligence: "Cómo funciona MatchSignal",
@@ -204,7 +204,7 @@ const it: DeepPartial<Translation> = {
   seoDescription: "Previsioni scommesse e value bet generate dall'IA per più sport.",
   sportPageTitle: "Pronostici {SPORT} e analisi delle scommesse con IA",
 sportPageDescription: "Pronostici {SPORT} basati sull'IA, analisi delle scommesse e consigli di valore.",
-  sports: { topPicks: "Le migliori scelte", football: "Calcio", nba: "NBA", nfl: "NFL", hockey: "Hockey su ghiaccio", tennis: "Tennis", mlb: "Baseball", mma: "MMA" },
+  sports: { topPicks: "Le migliori scelte", football: "Calcio", nba: "NBA", nfl: "NFL", hockey: "Hockey su ghiaccio", tennis: "Tennis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Home", navTopPicks: "Le migliori scelte", navBetting: "Scommesse", navNews: "Notizie", navTools: "Strumenti", navGlossary: "Glossario" },
   footer: {
     betIntelligence: "Come funziona MatchSignal",
@@ -257,7 +257,7 @@ recommendedSitesDesc: "Casas de apostas selecionadas com os melhores bónus, odd
   seoDescription: "Previsões de apostas e value bets gerados por IA para vários desportos.",
   sportPageTitle: "Previsões de {SPORT} e análise de apostas com IA",
 sportPageDescription: "Previsões de {SPORT} com IA, análise de apostas e escolhas de valor.",
-  sports: { topPicks: "Melhores escolhas", football: "Futebol", nba: "NBA", nfl: "NFL", hockey: "Hóquei no gelo", tennis: "Ténis", mlb: "Baseball", mma: "MMA" },
+  sports: { topPicks: "Melhores escolhas", football: "Futebol", nba: "NBA", nfl: "NFL", hockey: "Hóquei no gelo", tennis: "Ténis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Início", navTopPicks: "Melhores escolhas", navBetting: "Apostas", navNews: "Notícias", navTools: "Ferramentas", navGlossary: "Glossário" },
   footer: {
     betIntelligence: "Como funciona o MatchSignal",
@@ -310,7 +310,7 @@ const ar: DeepPartial<Translation> = {
   seoDescription: "تنبؤات رهان مولدة بالذكاء الاصطناعي لرياضات متعددة.",
   sportPageTitle: "توقعات {SPORT} وتحليل المراهنات بالذكاء الاصطناعي",
 sportPageDescription: "توقعات {SPORT} المدعومة بالذكاء الاصطناعي، وتحليل المراهنات واختيارات القيمة.",
-  sports: { topPicks: "أفضل الاختيارات", football: "كرة القدم", nba: "NBA", nfl: "NFL", hockey: "هوكي الجليد", tennis: "التنس", mlb: "البيسبول", mma: "MMA" },
+  sports: { topPicks: "أفضل الاختيارات", football: "كرة القدم", nba: "NBA", nfl: "NFL", hockey: "هوكي الجليد", tennis: "التنس", mlb: "البيسبول", mma: "MMA/BOXING" },
   system: { navHome: "الرئيسية", navTopPicks: "أفضل الاختيارات", navBetting: "الرهان", navNews: "الأخبار", navTools: "الأدوات", navGlossary: "المسرد" },
   footer: {
     betIntelligence: "كيف يعمل MatchSignal",
@@ -416,7 +416,7 @@ heroSubtitle: "無料AIベッティングヒント – サッカー、NBA、テ�
   seoDescription: "AIが生成した複数スポーツのベッティング予想とバリューベット。",
   sportPageTitle: "{SPORT}予測とAIベッティング分析",
 sportPageDescription: "AIを活用した{SPORT}予測、ベッティング分析、バリュー予想。",
-  sports: { topPicks: "注目のピック", football: "サッカー", nba: "NBA", nfl: "NFL", hockey: "アイスホッケー", tennis: "テニス", mlb: "野球", mma: "MMA" },
+  sports: { topPicks: "注目のピック", football: "サッカー", nba: "NBA", nfl: "NFL", hockey: "アイスホッケー", tennis: "テニス", mlb: "野球", mma: "MMA/BOXING" },
   system: { navHome: "ホーム", navTopPicks: "注目のピック", navBetting: "ベッティング", navNews: "ニュース", navTools: "ツール", navGlossary: "用語集" },
   footer: {
     betIntelligence: "MatchSignalの仕組み",
@@ -469,7 +469,7 @@ recommendedSitesDesc: "सर्वोत्तम बोनस, ऑड्स �
   seoDescription: "कई खेलों के लिए AI-जनित सट्टेबाजी भविष्यवाणियां।",
   sportPageTitle: "{SPORT} भविष्यवाणियां और AI बेटिंग विश्लेषण",
 sportPageDescription: "AI-आधारित {SPORT} भविष्यवाणियां, बेटिंग विश्लेषण और वैल्यू टिप्स।",
-  sports: { topPicks: "शीर्ष चुनाव", football: "फुटबॉल", nba: "NBA", nfl: "NFL", hockey: "आइस हॉकी", tennis: "टेनिस", mlb: "बेसबॉल", mma: "MMA" },
+  sports: { topPicks: "शीर्ष चुनाव", football: "फुटबॉल", nba: "NBA", nfl: "NFL", hockey: "आइस हॉकी", tennis: "टेनिस", mlb: "बेसबॉल", mma: "MMA/BOXING" },
   system: { navHome: "होम", navTopPicks: "शीर्ष चुनाव", navBetting: "सट्टेबाजी", navNews: "समाचार", navTools: "उपकरण", navGlossary: "शब्दकोश" },
   footer: {
     betIntelligence: "MatchSignal कैसे काम करता है",

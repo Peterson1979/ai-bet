@@ -6,7 +6,7 @@ const sports = [
   { name: "Hockey",   emoji: "🏒" },
   { name: "Tennis",   emoji: "🎾" },
   { name: "MLB",      emoji: "⚾" },
-  { name: "MMA",      emoji: "🥊" },
+  { name: "MMA/Boxing",      emoji: "🥊" },
 ];
 
 export default function SportNav() {
@@ -67,3 +67,4 @@ export default function SportNav() {
     </div>
   );
 }
+

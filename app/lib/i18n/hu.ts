@@ -72,7 +72,7 @@ faqFreeAnswer:
     hockey: "Jégkorong",
     tennis: "Tenisz",
     mlb: "Baseball",
-    mma: "MMA",
+    mma: "MMA/BOX",
   },
   system: {
     navHome: "Főoldal",

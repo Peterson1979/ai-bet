@@ -19,14 +19,14 @@ export default function Footer() {
   const getText = (key: string) => (t.footer as any)[key];
 
   const navLinks = [
-    { href: "/about", label: t.footer.navAbout },
-    { href: "/contact", label: t.footer.navContact },
-    { href: "/legal/privacy-policy", label: t.footer.navPrivacy },
-    { href: "/legal/terms-of-use", label: t.footer.navTerms },
-    { href: "/legal/affiliate-disclosure", label: t.footer.navAffiliate },
-    { href: "/legal/responsible-gambling", label: t.footer.navResponsible },
-    { href: "/legal/cookie-policy", label: t.footer.navCookie },
-  ];
+  { href: `/${lang}/about`, label: t.footer.navAbout },
+  { href: `/${lang}/contact`, label: t.footer.navContact },
+  { href: `/${lang}/legal/privacy-policy`, label: t.footer.navPrivacy },
+  { href: `/${lang}/legal/terms-of-use`, label: t.footer.navTerms },
+  { href: `/${lang}/legal/affiliate-disclosure`, label: t.footer.navAffiliate },
+  { href: `/${lang}/legal/responsible-gambling`, label: t.footer.navResponsible },
+  { href: `/${lang}/legal/cookie-policy`, label: t.footer.navCookie },
+];
 
   return (
     <footer className="mt-20 border-t border-[#1E293B] bg-[#060B14]">
