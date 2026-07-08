@@ -53,15 +53,7 @@ const WATCHED_SPORTS = [
   { key: "boxing_boxing",                     label: "MMA",      league: "Boxing",                priority: 2 },
 ];
 
-const SPORT_MARKETS: Record<string, string> = {
-  Football: "h2h,totals",
-  NBA:      "h2h,totals",
-  NFL:      "h2h,totals",
-  Hockey:   "h2h,totals",
-  Tennis:   "h2h,spreads",
-  MLB:      "h2h,totals",
-  MMA:      "h2h",
-};
+
 
 const MARKET_KEY_MAP: Record<string, string> = {
   "home win":                           "h2h",
@@ -294,7 +286,7 @@ async function fetchSportEvents(
   if (cached) return cached;
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
-  const markets = SPORT_MARKETS[sportLabel] ?? "h2h";
+  const markets = "h2h";
 
   try {
     const url =
