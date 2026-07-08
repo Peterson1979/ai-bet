@@ -2,6 +2,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { translations, Lang } from "@/app/lib/i18n";
 import type { Metadata } from "next";
+import BettingSidebar from "@/app/components/BettingSidebar";
 
 export async function generateMetadata({
   params,
@@ -40,7 +41,7 @@ export default async function BettingGlossaryPage({
       </div>
 
       <div className="pt-[100px] pb-20 relative z-10">
-        <div className="mx-auto max-w-[860px] px-4 md:px-6">
+        <div className="mx-auto max-w-[1500px] px-4 md:px-6 grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-8">
 
           {/* PAGE HEADER */}
           <div className="mb-12 text-center">
@@ -81,6 +82,7 @@ export default async function BettingGlossaryPage({
           </div>
 
         </div>
+		<BettingSidebar lang={lang} />
       </div>
 
       <div className="mx-auto max-w-[1500px] px-4 md:px-6">

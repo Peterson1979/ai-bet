@@ -10,11 +10,11 @@ export default function SimpleFooter() {
   const t = translations[lang] ?? translations.en;
 
   const links = [
-    { href: "/legal/privacy-policy", label: t.footer.navPrivacy },
-    { href: "/legal/terms", label: t.footer.navTerms },
-    { href: "/legal/affiliate-disclosure", label: t.footer.navAffiliate },
-    { href: "/legal/responsible-gambling", label: t.footer.navResponsible },
-    { href: "/legal/cookie-policy", label: t.footer.navCookie },
+    { href: `/${lang}/legal/privacy-policy`, label: t.footer.navPrivacy },
+    { href: `/${lang}/legal/terms-of-use`, label: t.footer.navTerms },
+    { href: `/${lang}/legal/affiliate-disclosure`, label: t.footer.navAffiliate },
+    { href: `/${lang}/legal/responsible-gambling`, label: t.footer.navResponsible },
+    { href: `/${lang}/legal/cookie-policy`, label: t.footer.navCookie },
   ];
 
   return (

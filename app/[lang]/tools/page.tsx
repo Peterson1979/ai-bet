@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import { translations, Lang } from "@/app/lib/i18n";
-
+import BettingSidebar from "@/app/components/BettingSidebar";
 // ========================
 // ODDS CONVERTER
 // ========================
@@ -251,19 +251,28 @@ export default function BettingToolsPage() {
       <Header />
 
       <div className="pt-[70px] max-w-[1500px] mx-auto px-4 pb-16">
+
         <h1 className="text-4xl font-black mb-10">
           {t.tools.title}
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <OddsConverter t={t} />
-          <BetCalculator t={t} />
-          <BankrollManager t={t} />
-          <ValueBetFinder t={t} />
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-8">
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <OddsConverter t={t} />
+            <BetCalculator t={t} />
+            <BankrollManager t={t} />
+            <ValueBetFinder t={t} />
+          </div>
+
+          <BettingSidebar lang={lang} />
+
         </div>
+
       </div>
 
       <Footer />
+
     </main>
   );
 }
