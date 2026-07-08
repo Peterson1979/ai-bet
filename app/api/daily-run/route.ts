@@ -55,7 +55,7 @@ export async function GET(request: Request) {
     const seenEvents = new Set<string>();
 
     for (const sportBlock of sportsData) {
-      const events = sportBlock.events?.slice(0, 3) ?? [];
+      const events = sportBlock.events?.slice(0, 12) ?? [];
 
       if (events.length === 0) {
         result.sports.push({
