@@ -30,14 +30,65 @@ const sports = [
 export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticPages = [
-    { path: "", changeFrequency: "daily" as const, priority: 1 },
-    { path: "/betting", changeFrequency: "monthly" as const, priority: 0.8 },
-    { path: "/news", changeFrequency: "hourly" as const, priority: 0.9 },
-    { path: "/tools", changeFrequency: "monthly" as const, priority: 0.7 },
+    { 
+      path: "", 
+      changeFrequency: "daily" as const, 
+      priority: 1 
+    },
+    { 
+      path: "/betting", 
+      changeFrequency: "monthly" as const, 
+      priority: 0.8 
+    },
+    { 
+      path: "/news", 
+      changeFrequency: "hourly" as const, 
+      priority: 0.9 
+    },
+    { 
+      path: "/tools", 
+      changeFrequency: "monthly" as const, 
+      priority: 0.7 
+    },
     {
       path: "/betting-glossary",
       changeFrequency: "monthly" as const,
       priority: 0.7,
+    },
+    {
+      path: "/about",
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
+    {
+      path: "/contact",
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
+    {
+      path: "/legal/privacy-policy",
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+    {
+      path: "/legal/terms-of-use",
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+    {
+      path: "/legal/affiliate-disclosure",
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+    {
+      path: "/legal/responsible-gambling",
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+    {
+      path: "/legal/cookie-policy",
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
     },
   ];
 
