@@ -7,7 +7,8 @@ const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 10;
 
 const WATCHED_SPORTS = [
-  { key: "soccer_uefa_champs_league",         label: "Football", league: "Champions League",     priority: 1 },
+  { key: "soccer_uefa_champs_league",               label: "Football", league: "Champions League",              priority: 1 },
+  { key: "soccer_uefa_champs_league_qualification", label: "Football", league: "Champions League Qualification", priority: 1 },
   { key: "soccer_epl",                        label: "Football", league: "Premier League",        priority: 1 },
   { key: "soccer_spain_la_liga",              label: "Football", league: "La Liga",               priority: 1 },
   { key: "soccer_germany_bundesliga",         label: "Football", league: "Bundesliga",            priority: 1 },
@@ -406,12 +407,7 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
         .map(s => s.key)
     );
 
-    // Football safe fallback
-    for (const s of WATCHED_SPORTS) {
-      if (s.label === "Football") {
-        activeKeys.add(s.key);
-      }
-    }
+    
 
     const sportsToFetch = WATCHED_SPORTS
       .filter(s => activeKeys.has(s.key))
