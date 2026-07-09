@@ -1,53 +1,104 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { getSliderSites } from "@/app/lib/affiliates";
 
-const banners = [
-  {
-  href: "https://record.betonlineaffiliates.ag/_6DV8-IUj_sYeEUhaOBLMuPriQBoxlSRK/1/",
-  img: "https://media.commissionkings.ag/uploads/BOL_AQC_banner_468x601.gif",
-},
-  {
-    href: "https://record.sportsbettingaffiliates.ag/_6DV8-IUj_sbgvJkXWt21LsKHjvjtg3Pf/1/",
-    img: "https://media.commissionkings.ag/uploads/SB_AQC_banner_468x60__1220261.gif",
-  },
-];
+type Props = {
+  className?: string;
+};
 
-export default function AffiliateSlider() {
-  const [index, setIndex] = useState(0);
+export default function AffiliateSlider({ className = "" }: Props) {
+  const sites = getSliderSites();
+  const trackRef = useRef<HTMLDivElement>(null);
 
+  // Desktop auto-scroll (paused on hover), native swipe on touch devices
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((i) => (i + 1) % banners.length);
-    }, 8000);
+    const track = trackRef.current;
+    if (!track) return;
 
-    return () => clearInterval(timer);
+    const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+    if (!isFinePointer) return;
+
+    let frame: number;
+    let paused = false;
+    const speed = 0.4; // px per animation frame
+
+    const step = () => {
+      if (!paused && track) {
+        track.scrollLeft += speed;
+        if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 1) {
+          track.scrollLeft = 0;
+        }
+      }
+      frame = requestAnimationFrame(step);
+    };
+
+    const pause = () => (paused = true);
+    const resume = () => (paused = false);
+
+    track.addEventListener("mouseenter", pause);
+    track.addEventListener("mouseleave", resume);
+    frame = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      track.removeEventListener("mouseenter", pause);
+      track.removeEventListener("mouseleave", resume);
+    };
   }, []);
 
-  const banner = banners[index];
+  if (!sites.length) return null;
+
+  // Duplicated once so the auto-scroll loop feels continuous on desktop
+  const looped = [...sites, ...sites];
 
   return (
-    <section className="relative z-30 mt-10 mb-10 flex justify-center">
-      <a
-        href={banner.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block"
+    <section className={`w-full py-6 ${className}`}>
+      <div
+        ref={trackRef}
+        className="
+          flex gap-4 overflow-x-auto
+          snap-x snap-mandatory
+          scroll-smooth
+          px-4
+          [-ms-overflow-style:none] [scrollbar-width:none]
+          [&::-webkit-scrollbar]:hidden
+        "
       >
-        <img
-          key={banner.img}
-          src={banner.img}
-          alt="Affiliate betting offer"
-          className="
-            h-auto
-            w-[320px]
-            sm:w-[468px]
-            max-w-full
-            rounded-xl
-            shadow-lg
-          "
-        />
-      </a>
+	  
+        {looped.map((site, i) => (
+          <a
+            key={`${site.id}-${i}`}
+            href={site.url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="
+              snap-start shrink-0
+              flex flex-col items-center justify-center gap-3
+              w-[150px] h-[110px]
+              rounded-2xl border-2 border-cyan-300/30
+              bg-gradient-to-b from-[#0B1220] to-[#070D18]
+              px-4 py-3
+              transition-all duration-200
+              hover:border-cyan-200 hover:-translate-y-1
+              hover:shadow-[0_0_0_1px_rgba(34,211,238,0.4),0_12px_30px_rgba(56,189,248,0.25)]
+            "
+          >
+            {site.logoUrl ? (
+              <img
+                src={site.logoUrl}
+                alt={site.name}
+                className="max-h-[36px] max-w-[110px] object-contain"
+              />
+            ) : (
+              <span className="text-sm font-black text-white">{site.name}</span>
+            )}
+            <span className="text-[11px] font-bold text-cyan-300 uppercase tracking-wide">
+              Get Bonus →
+            </span>
+          </a>
+        ))}
+      </div>
     </section>
   );
 }

@@ -1,8 +1,8 @@
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
-import TopBettingSites from "@/app/components/TopBettingSites";
 import SportSection from "@/app/components/SportSection";
 import AffiliateSlider from "@/app/components/AffiliateSlider";
+import TopRatedSportsbooksList from "@/app/components/TopRatedSportsbooksList";
 
 import { getPredictions } from "@/app/lib/getPredictions";
 import { translations, Lang } from "@/app/lib/i18n";
@@ -103,6 +103,7 @@ type PredictionsData = {
   generatedAt: string;
   sports: SportBlock[];
 };
+
 export default async function SportPage({
   params,
 }: {
@@ -175,6 +176,24 @@ console.log("DESCRIPTION TEMPLATE:", t.sportPageDescription);
   ],
 };
 
+  // A 12 kártyát 6+6-ra vágjuk, hogy a kompakt "Top Betting Sites" sáv
+  // pontosan a két csoport közé kerülhessen.
+  const HALF = Math.ceil(SPORTPAGE_MATCH_LIMIT / 2); // 6
+
+  const now = new Date();
+  const futurePicks = sportBlock
+    ? sportBlock.topPicks
+        .filter((p) => new Date(p.startTime) > now)
+        .slice(0, SPORTPAGE_MATCH_LIMIT)
+    : [];
+
+  const firstHalfBlock: SportBlock | undefined = sportBlock
+    ? { ...sportBlock, topPicks: futurePicks.slice(0, HALF) }
+    : undefined;
+
+  const secondHalfBlock: SportBlock | undefined = sportBlock
+    ? { ...sportBlock, topPicks: futurePicks.slice(HALF) }
+    : undefined;
 
   return (
     <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12]">
@@ -198,48 +217,39 @@ console.log("DESCRIPTION TEMPLATE:", t.sportPageDescription);
           <AffiliateSlider />
 
 
-          {sportBlock ? (
+          {sportBlock && futurePicks.length > 0 ? (
+            <>
+              <SportSection
+                sportBlock={firstHalfBlock!}
+                lang={lang}
+                limit={HALF}
+              />
 
-            <SportSection
-              sportBlock={sportBlock}
-              lang={lang}
-              limit={SPORTPAGE_MATCH_LIMIT}
-            />
+              <TopRatedSportsbooksList
+                lang={lang}
+                variant="inline"
+                title={t.recommendedSites}
+              />
 
+              {secondHalfBlock!.topPicks.length > 0 && (
+                <SportSection
+                  sportBlock={secondHalfBlock!}
+                  lang={lang}
+                  limit={HALF}
+                />
+              )}
+            </>
           ) : (
 
             <div className="rounded-[24px] border-2 border-cyan-300/20 bg-[#0B1220] p-6">
 
               <p className="text-slate-300">
-                {t.noMatches}
+                {sportBlock?.message ?? t.noMatches}
               </p>
 
             </div>
 
           )}
-
-
-
-          <aside className="mt-16">
-
-            <div className="rounded-[28px] border-2 border-cyan-300/50 bg-gradient-to-b from-[#0A1220] via-[#0E1626] to-[#0A1220] p-5">
-
-              <h2 className="text-2xl font-black text-white">
-                {t.recommendedSites}
-              </h2>
-
-
-              <p className="mt-1 text-sm text-slate-300 mb-5">
-                {t.recommendedSitesDesc ?? ""}
-              </p>
-
-
-              <TopBettingSites />
-
-            </div>
-
-          </aside>
-
 
 
           <div className="mt-16">

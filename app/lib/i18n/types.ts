@@ -36,6 +36,7 @@ sportPageDescription: string;
   showExplanation: string;
   hideExplanation: string;
   viewOdds: string;
+  compareAllOffers: string;
   seoTitle: string;
   seoDescription: string;
   matchSignal: string;
@@ -80,9 +81,10 @@ sportPageDescription: string;
     navGlossary: string;
   };
   common: {
-    rating: string;
-    visitSite: string;
-  };
+  rating: string;
+  visitSite: string;
+  compareAllOffers: string;
+};
   bettingPage: {
     title: string;
     description: string;

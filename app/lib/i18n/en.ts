@@ -39,6 +39,7 @@ const en: Translation = {
   showExplanation: "Show explanation ▼",
   hideExplanation: "Hide explanation ▲",
   viewOdds: "View Odds",
+  compareAllOffers: "Compare all offers →",
  seoTitle: "MatchSignal – Free AI Betting Tips",
   seoDescription: "Free AI-generated betting tips for Football, NBA, Tennis, MLB, NHL and more. Daily picks with odds comparison and market analysis.",
   sportPageTitle: "{SPORT} Predictions & AI Betting Analysis",
@@ -83,6 +84,7 @@ sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and valu
   common: {
     rating: "Rating",
     visitSite: "Visit Site",
+    compareAllOffers: "Compare all offers →",
   },
   bettingPage: {
     title: "Best Betting Sites",

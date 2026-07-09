@@ -41,6 +41,7 @@ const de: DeepPartial<Translation> = {
   aiAnalysisLabel: "KI-Analyse (EN)",
   odds: "Quote",
   viewOdds: "Quoten ansehen",
+  compareAllOffers: "Alle Angebote vergleichen →",
   seoTitle: "KI Wettvorhersagen",
   seoDescription: "KI-generierte Wettvorhersagen und Value Bets für mehrere Sportarten.",
   sportPageTitle: "{SPORT} Vorhersagen & KI-Wettanalyse",
@@ -63,6 +64,7 @@ sportPageDescription: "KI-basierte {SPORT}-Vorhersagen, Wettanalyse und Value-Ti
     navAbout: "Über uns", navContact: "Kontakt", navPrivacy: "Datenschutz", navTerms: "Nutzungsbedingungen",
     navAffiliate: "Affiliate-Offenlegung", navResponsible: "Verantwortungsvolles Spielen", navCookie: "Cookie-Richtlinie",
     platformName: "MatchSignal", builtWithAi: "Mit KI erstellt",
+	
   },
 };
 
@@ -94,6 +96,7 @@ const fr: DeepPartial<Translation> = {
   aiAnalysisLabel: "Analyse IA (EN)",
   odds: "Cotes",
   viewOdds: "Voir les cotes",
+  compareAllOffers: "Comparer toutes les offres →",
   seoTitle: "Prédictions de paris IA",
   seoDescription: "Prédictions de paris et value bets générés par IA pour plusieurs sports.",
   sportPageTitle: "Prédictions {SPORT} & analyse de paris avec IA",
@@ -116,6 +119,7 @@ sportPageDescription: "Prédictions {SPORT} basées sur l'IA, analyse des paris 
     navAbout: "À propos", navContact: "Contact", navPrivacy: "Politique de confidentialité", navTerms: "Conditions d'utilisation",
     navAffiliate: "Divulgation d'affiliation", navResponsible: "Jeu responsable", navCookie: "Politique de cookies",
     platformName: "MatchSignal", builtWithAi: "Construit avec l'IA",
+	
   },
 };
 
@@ -147,6 +151,7 @@ const es: DeepPartial<Translation> = {
   aiAnalysisLabel: "Análisis IA (EN)",
   odds: "Cuotas",
   viewOdds: "Ver cuotas",
+  compareAllOffers: "Comparar todas las ofertas",
   seoTitle: "Predicciones de apuestas IA",
   seoDescription: "Predicciones de apuestas y value bets generados por IA para múltiples deportes.",
   sportPageTitle: "Predicciones de {SPORT} y análisis de apuestas con IA",
@@ -168,8 +173,9 @@ sportPageDescription: "Predicciones de {SPORT} con IA, análisis de apuestas y s
     aiBettingInsightsDesc: "Esta plataforma proporciona contenido generado por IA solo con fines informativos. Juega responsablemente.",
     navAbout: "Acerca de", navContact: "Contacto", navPrivacy: "Política de privacidad", navTerms: "Términos de uso",
     navAffiliate: "Divulgación de afiliados", navResponsible: "Juego responsable", navCookie: "Política de cookies",
-    platformName: "MatchSignal", builtWithAi: "Construido con IA",
-  },
+    platformName: "MatchSignal", 
+	builtWithAi: "Construido con IA",
+},
 };
 
 const it: DeepPartial<Translation> = {
@@ -200,6 +206,7 @@ const it: DeepPartial<Translation> = {
   aiAnalysisLabel: "Analisi IA (EN)",
   odds: "Quote",
   viewOdds: "Vedi quote",
+  compareAllOffers: "Confronta tutte le offerte →",
   seoTitle: "Previsioni scommesse IA",
   seoDescription: "Previsioni scommesse e value bet generate dall'IA per più sport.",
   sportPageTitle: "Pronostici {SPORT} e analisi delle scommesse con IA",
@@ -221,8 +228,9 @@ sportPageDescription: "Pronostici {SPORT} basati sull'IA, analisi delle scommess
     aiBettingInsightsDesc: "Questa piattaforma fornisce contenuti generati dall'IA solo a scopo informativo. Gioca responsabilmente.",
     navAbout: "Chi siamo", navContact: "Contatto", navPrivacy: "Informativa sulla privacy", navTerms: "Termini di utilizzo",
     navAffiliate: "Divulgazione affiliati", navResponsible: "Gioco responsabile", navCookie: "Politica sui cookie",
-    platformName: "MatchSignal", builtWithAi: "Costruito con IA",
-  },
+    platformName: "MatchSignal", 
+	builtWithAi: "Costruito con IA",
+	},
 };
 
 const pt: DeepPartial<Translation> = {
@@ -253,6 +261,7 @@ recommendedSitesDesc: "Casas de apostas selecionadas com os melhores bónus, odd
   aiAnalysisLabel: "Análise IA (EN)",
   odds: "Odds",
   viewOdds: "Ver odds",
+  compareAllOffers: "Comparar todas as ofertas →",
   seoTitle: "Previsões de apostas IA",
   seoDescription: "Previsões de apostas e value bets gerados por IA para vários desportos.",
   sportPageTitle: "Previsões de {SPORT} e análise de apostas com IA",
@@ -274,7 +283,9 @@ sportPageDescription: "Previsões de {SPORT} com IA, análise de apostas e escol
     aiBettingInsightsDesc: "Esta plataforma fornece conteúdo gerado por IA apenas para fins informativos. Jogue responsavelmente.",
     navAbout: "Sobre nós", navContact: "Contacto", navPrivacy: "Política de privacidade", navTerms: "Termos de utilização",
     navAffiliate: "Divulgação de afiliados", navResponsible: "Jogo responsável", navCookie: "Política de cookies",
-    platformName: "MatchSignal", builtWithAi: "Construído com IA",
+    platformName: "MatchSignal", 
+	builtWithAi: "Construído com IA",
+	
   },
 };
 
@@ -306,6 +317,8 @@ const ar: DeepPartial<Translation> = {
   aiAnalysisLabel: "تحليل الذكاء الاصطناعي (EN)",
   odds: "الأوفاق",
   viewOdds: "عرض الأوفاق",
+  	compareAllOffers: "قارن جميع العروض ←",
+
   seoTitle: "تنبؤات الرهان بالذكاء الاصطناعي",
   seoDescription: "تنبؤات رهان مولدة بالذكاء الاصطناعي لرياضات متعددة.",
   sportPageTitle: "توقعات {SPORT} وتحليل المراهنات بالذكاء الاصطناعي",
@@ -327,7 +340,8 @@ sportPageDescription: "توقعات {SPORT} المدعومة بالذكاء ال
     aiBettingInsightsDesc: "توفر هذه المنصة محتوى مُولّداً بالذكاء الاصطناعي لأغراض إعلامية فقط. العب بمسؤولية.",
     navAbout: "حول", navContact: "اتصل بنا", navPrivacy: "سياسة الخصوصية", navTerms: "شروط الاستخدام",
     navAffiliate: "الإفصاح عن الشركاء", navResponsible: "المقامرة المسؤولة", navCookie: "سياسة الكوكيز",
-    platformName: "MatchSignal", builtWithAi: "مبني بالذكاء الاصطناعي",
+    platformName: "MatchSignal", 
+	builtWithAi: "مبني بالذكاء الاصطناعي",
   },
 };
 
@@ -359,6 +373,7 @@ recommendedSitesDesc: "精心挑选的体育博彩网站，提供最佳奖金、
   aiAnalysisLabel: "AI分析 (EN)",
   odds: "赔率",
   viewOdds: "查看赔率",
+  compareAllOffers: "比较所有优惠 →",
   seoTitle: "AI投注预测",
   seoDescription: "AI生成的多项运动投注预测和价值投注。",
   sportPageTitle: "{SPORT}预测与AI投注分析",
@@ -380,7 +395,9 @@ sportPageDescription: "基于AI的{SPORT}预测、投注分析和高价值推荐
     aiBettingInsightsDesc: "本平台仅出于信息目的提供AI生成的内容。请负责任地参与。",
     navAbout: "关于我们", navContact: "联系我们", navPrivacy: "隐私政策", navTerms: "使用条款",
     navAffiliate: "联盟披露", navResponsible: "负责任赌博", navCookie: "Cookie政策",
-    platformName: "MatchSignal", builtWithAi: "由AI构建",
+    platformName: "MatchSignal", 
+	builtWithAi: "由AI构建",
+	
   },
 };
 
@@ -412,6 +429,7 @@ heroSubtitle: "無料AIベッティングヒント – サッカー、NBA、テ�
   aiAnalysisLabel: "AI分析 (EN)",
   odds: "オッズ",
   viewOdds: "オッズを見る",
+  compareAllOffers: "すべてのオファーを比較 →",
   seoTitle: "AIベッティング予想",
   seoDescription: "AIが生成した複数スポーツのベッティング予想とバリューベット。",
   sportPageTitle: "{SPORT}予測とAIベッティング分析",
@@ -433,7 +451,9 @@ sportPageDescription: "AIを活用した{SPORT}予測、ベッティング分析
     aiBettingInsightsDesc: "このプラットフォームはAI生成コンテンツを情報提供のみを目的として提供しています。責任を持ってご利用ください。",
     navAbout: "会社概要", navContact: "お問い合わせ", navPrivacy: "プライバシーポリシー", navTerms: "利用規約",
     navAffiliate: "アフィリエイト開示", navResponsible: "責任あるギャンブル", navCookie: "Cookieポリシー",
-    platformName: "MatchSignal", builtWithAi: "AIで構築",
+    platformName: "MatchSignal", 
+	builtWithAi: "AIで構築",
+	
   },
 };
 
@@ -465,6 +485,7 @@ recommendedSitesDesc: "सर्वोत्तम बोनस, ऑड्स �
   aiAnalysisLabel: "AI विश्लेषण (EN)",
   odds: "ऑड्स",
   viewOdds: "ऑड्स देखें",
+  compareAllOffers: "सभी ऑफ़रों की तुलना करें →",
   seoTitle: "AI सट्टेबाजी भविष्यवाणियां",
   seoDescription: "कई खेलों के लिए AI-जनित सट्टेबाजी भविष्यवाणियां।",
   sportPageTitle: "{SPORT} भविष्यवाणियां और AI बेटिंग विश्लेषण",
@@ -486,7 +507,9 @@ sportPageDescription: "AI-आधारित {SPORT} भविष्यवाण
     aiBettingInsightsDesc: "यह प्लेटफ़ॉर्म केवल सूचनात्मक उद्देश्यों के लिए AI-जनित सामग्री प्रदान करता है। जिम्मेदारी से उपयोग करें।",
     navAbout: "हमारे बारे में", navContact: "संपर्क", navPrivacy: "गोपनीयता नीति", navTerms: "उपयोग की शर्तें",
     navAffiliate: "एफिलिएट प्रकटीकरण", navResponsible: "जिम्मेदार जुआ", navCookie: "कुकी नीति",
-    platformName: "MatchSignal", builtWithAi: "AI के साथ बनाया गया",
+    platformName: "MatchSignal",
+	builtWithAi: "AI के साथ बनाया गया",
+	
   },
 };
 

@@ -39,6 +39,7 @@ const hu: Partial<Translation> = {
   showExplanation: "Magyarázat ▼",
   hideExplanation: "Magyarázat ▲",
   viewOdds: "Szorzók megtekintése",
+  compareAllOffers: "Összes ajánlat összehasonlítása →",
   seoTitle: "MatchSignal – AI Fogadási Tippek",
   seoDescription: "AI által generált fogadási tippek és value bet-ek több sportágra.",
   sportPageTitle: "{SPORT} előrejelzések és AI fogadási elemzés",
@@ -85,6 +86,7 @@ faqFreeAnswer:
   common: {
     rating: "Értékelés",
     visitSite: "Látogass el",
+	compareAllOffers: "Összes ajánlat összehasonlítása →",
   },
   bettingPage: {
     title: "Legjobb fogadóirodák",

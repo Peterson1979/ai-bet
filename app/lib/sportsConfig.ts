@@ -77,3 +77,46 @@ export function calculateRiskTier(odds: number, bookmakerCount: number): RiskTie
   if (odds <= 3.0 && bookmakerCount >= 3) return "Medium";
   return "High";
 }
+
+export const DEFAULT_SPORT_ORDER: string[] = [
+  "football",
+  "nba",
+  "nfl",
+  "hockey",
+  "tennis",
+  "mlb",
+  "mma",
+];
+
+type MinimalSportBlock = {
+  sport: string;
+  hasMatches: boolean;
+  topPicks: { startTime: string }[];
+};
+
+/**
+ * A homepage "Top Picks" sportág-blokkjait rendezi:
+ * - előre kerülnek azok a sportágak, amikben van jövőbeli (még el nem
+ *   kezdődött) esemény, a DEFAULT_SPORT_ORDER sorrendje szerint
+ * - utánuk a többi, szintén DEFAULT_SPORT_ORDER szerint
+ * - ismeretlen sportág a végére kerül, a saját relatív csoportján belül
+ */
+export function sortSportBlocks<T extends MinimalSportBlock>(blocks: T[]): T[] {
+  const now = new Date();
+
+  const hasFutureMatch = (block: T) =>
+    block.hasMatches &&
+    block.topPicks.some((p) => new Date(p.startTime) > now);
+
+  const rank = (sport: string) => {
+    const idx = DEFAULT_SPORT_ORDER.indexOf(sport.toLowerCase());
+    return idx === -1 ? DEFAULT_SPORT_ORDER.length : idx;
+  };
+
+  return [...blocks].sort((a, b) => {
+    const aHas = hasFutureMatch(a) ? 0 : 1;
+    const bHas = hasFutureMatch(b) ? 0 : 1;
+    if (aHas !== bHas) return aHas - bHas;
+    return rank(a.sport) - rank(b.sport);
+  });
+}

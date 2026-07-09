@@ -3,15 +3,16 @@
 import { useState } from "react";
 import { MatchCardData } from "../types/match";
 import { translations, Lang } from "@/app/lib/i18n";
+import {
+  getSiteByBookmakerName,
+  getBadgeLabel,
+  getBookmakerAffiliateUrl,
+} from "@/app/lib/affiliates";
 
 type Props = {
   data: MatchCardData;
   lang?: Lang;
 };
-
-/* =========================
-   BET TYPE → GLOSSARY KEY
-========================= */
 
 const BET_TYPE_TO_KEY: Record<string, string> = {
   "home win": "homeWin",
@@ -44,10 +45,6 @@ const BET_TYPE_TO_KEY: Record<string, string> = {
   "over 2.5 rounds": "over25Rounds",
   "under 2.5 rounds": "under25Rounds",
 };
-
-/* =========================
-   MARKET TOOLTIP
-========================= */
 
 function MarketTooltip({ market, t, lang }: { market: string; t: any; lang: string }) {
   const [visible, setVisible] = useState(false);
@@ -90,7 +87,8 @@ function MarketTooltip({ market, t, lang }: { market: string; t: any; lang: stri
             {entry.definition}
           </p>
 
-          <a
+          
+		  <a
             href={`/${lang}/betting-glossary`}
             className="mt-2 inline-block text-[11px] text-cyan-400 hover:text-cyan-200 font-bold"
           >
@@ -101,10 +99,6 @@ function MarketTooltip({ market, t, lang }: { market: string; t: any; lang: stri
     </div>
   );
 }
-
-/* =========================
-   LOCAL TIME
-========================= */
 
 function LocalTime({ utcTime }: { utcTime: string }) {
   const local = new Date(utcTime).toLocaleString(undefined, {
@@ -122,10 +116,6 @@ function LocalTime({ utcTime }: { utcTime: string }) {
   );
 }
 
-/* =========================
-   COMPONENT
-========================= */
-
 export default function MatchCard({ data, lang = "en" }: Props) {
   const t = translations[lang] ?? translations.en;
 
@@ -134,7 +124,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
   const implied = data.impliedProbability ?? 0;
   const consensus = data.consensusImpliedProb ?? null;
 
-  // Risk tier
   const tier = data.riskTier ?? "High";
   const riskLabel =
     tier === "Low"
@@ -152,7 +141,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         ? "text-yellow-300 border-yellow-400/40 bg-yellow-500/10"
         : "text-red-300 border-red-400/40 bg-red-500/10";
 
-  // Prediction
   const predKey = BET_TYPE_TO_KEY[data.prediction?.toLowerCase() ?? ""];
   const glossaryMarkets =
     (t.glossary?.markets as Record<string, { term: string; definition: string }>) ?? {};
@@ -162,14 +150,12 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       ? glossaryMarkets[predKey].term
       : data.prediction;
 
-  // Market
   const marketKey = BET_TYPE_TO_KEY[data.market?.toLowerCase() ?? ""];
   const translatedMarket =
     marketKey && glossaryMarkets[marketKey]
       ? glossaryMarkets[marketKey].term
       : data.market;
 
-  // Value signal (UPDATED: uses valueDiff)
   const getValueSignal = (): { label: string; color: string } | null => {
     const diff = data.valueDiff ?? null;
     if (diff === null) return null;
@@ -186,23 +172,18 @@ export default function MatchCard({ data, lang = "en" }: Props) {
 
   const valueSignal = getValueSignal();
 
+  const bookmakerSite = getSiteByBookmakerName(data.bookmaker ?? "");
+  const ctaBadge = bookmakerSite ? getBadgeLabel(bookmakerSite) : null;
+  const primaryCtaUrl =
+    getBookmakerAffiliateUrl(data.bookmaker ?? "", data.league ?? "") ||
+    data.bookmakerUrl ||
+    "#";
+  const bettingPageHref = `/${lang}/betting`;
+
   return (
     <article
-      className="
-        relative overflow-visible
-        rounded-[26px]
-        border-4 border-cyan-300/80
-        bg-gradient-to-b from-[#070D18] via-[#0B1220] to-[#050A12]
-        p-5
-        shadow-[0_0_0_1px_rgba(34,211,238,0.25),0_18px_0_rgba(0,0,0,0.6),0_45px_120px_rgba(56,189,248,0.35)]
-        transition-all duration-300
-        hover:-translate-y-2
-        hover:scale-[1.03]
-        hover:border-cyan-200
-        hover:shadow-[0_0_0_2px_rgba(34,211,238,0.6),0_25px_0_rgba(0,0,0,0.7),0_70px_160px_rgba(56,189,248,0.5)]
-      "
+      className="relative overflow-visible rounded-[26px] border-4 border-cyan-300/80 bg-gradient-to-b from-[#070D18] via-[#0B1220] to-[#050A12] p-5 shadow-[0_0_0_1px_rgba(34,211,238,0.25),0_18px_0_rgba(0,0,0,0.6),0_45px_120px_rgba(56,189,248,0.35)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.03] hover:border-cyan-200 hover:shadow-[0_0_0_2px_rgba(34,211,238,0.6),0_25px_0_rgba(0,0,0,0.7),0_70px_160px_rgba(56,189,248,0.5)]"
     >
-      {/* HEADER */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex flex-col gap-1">
           <span className="text-[11px] font-black uppercase tracking-[0.25em] text-cyan-300">
@@ -221,12 +202,10 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         </div>
       </div>
 
-      {/* TEAMS */}
       <h3 className="text-lg font-black text-white leading-tight mb-4">
         {data.homeTeam} vs {data.awayTeam}
       </h3>
 
-      {/* RISK + PREDICTION */}
       <div className="flex items-center gap-3 mb-4 flex-wrap">
         <span className={`text-sm font-black px-3 py-1 rounded-full border w-fit ${riskColor}`}>
           {riskEmoji} {riskLabel}
@@ -237,7 +216,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         </span>
       </div>
 
-      {/* MARKET + TOOLTIP */}
       <div className="mb-4">
         <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold">
           {t.matchMarket ?? "Market"}
@@ -251,7 +229,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         </div>
       </div>
 
-      {/* ANALYSIS */}
       <div className="rounded-xl border-2 border-cyan-300/20 bg-[#0B1220] p-3 mb-4">
         <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold mb-1">
           {t.aiAnalysisLabel ?? "AI Analysis (EN)"}
@@ -261,11 +238,8 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         </p>
       </div>
 
-      {/* MARKET DATA + VALUE SIGNAL */}
       <div className="rounded-xl border-2 border-cyan-300/40 bg-[#0B1220] p-4 mb-4 shadow-inner">
         <div className="flex flex-col gap-2">
-
-          {/* IMPLIED PROB */}
           {implied > 0 && (
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -277,7 +251,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             </div>
           )}
 
-          {/* CONSENSUS */}
           {consensus !== null && (
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -292,7 +265,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             </div>
           )}
 
-          {/* BOOKMAKER COUNT */}
           {bookmakerCount > 0 && (
             <span className="text-[10px] text-slate-500">
               {t.basedOnBookmakers
@@ -301,7 +273,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             </span>
           )}
 
-          {/* VALUE SIGNAL — large, prominent */}
           {valueSignal && (
             <div className={`mt-1 rounded-lg px-3 py-2 text-center font-black text-base border ${
               valueSignal.color === "text-emerald-300"
@@ -313,26 +284,38 @@ export default function MatchCard({ data, lang = "en" }: Props) {
               {valueSignal.label}
             </div>
           )}
-
         </div>
       </div>
 
-      {/* CTA */}
-      <a
-        href={data.bookmakerUrl || "#"}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="
-          mt-2 flex justify-center
-          rounded-xl border-2 border-cyan-300/40
-          bg-cyan-500/10
-          py-2 text-sm font-bold text-cyan-200
-          hover:bg-cyan-400/20
-          transition
-        "
-      >
-        {t.viewOdds}
-      </a>
+      <div className="mt-2 flex flex-col gap-2">
+        <a
+          href={primaryCtaUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          className="flex items-center justify-center gap-2 flex-wrap rounded-xl border-2 border-cyan-300/40 bg-cyan-500/10 py-2.5 px-3 text-sm font-bold text-cyan-200 hover:bg-cyan-400/20 transition"
+        >
+          {bookmakerSite?.logoUrl && (
+            <img
+              src={bookmakerSite.logoUrl}
+              alt={bookmakerSite.name}
+              className="h-5 max-w-[70px] object-contain"
+            />
+          )}
+          <span>{bookmakerSite?.name ?? data.bookmaker ?? t.viewOdds}</span>
+          {ctaBadge && (
+            <span className="text-[10px] font-black uppercase tracking-wide text-emerald-300 border border-emerald-400/40 bg-emerald-500/10 rounded-full px-2 py-0.5">
+              {ctaBadge}
+            </span>
+          )}
+        </a>
+
+        <a
+          href={bettingPageHref}
+          className="text-center text-[11px] text-slate-400 hover:text-cyan-300 transition underline underline-offset-4"
+        >
+          {t.common.compareAllOffers}
+        </a>
+      </div>
     </article>
   );
 }

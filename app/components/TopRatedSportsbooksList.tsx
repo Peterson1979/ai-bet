@@ -1,0 +1,72 @@
+import { getTopRatedList } from "@/app/lib/affiliates";
+
+type Props = {
+  lang?: string;
+  bettingPageHref?: string;
+  variant?: "footer" | "inline";
+  title?: string;
+};
+
+export default function TopRatedSportsbooksList({
+  lang = "en",
+  bettingPageHref,
+  variant = "footer",
+  title = "🏆 Top Rated Sportsbooks",
+}: Props) {
+  const sites = getTopRatedList(3);
+  const href = bettingPageHref ?? `/${lang}/betting`;
+
+  if (!sites.length) return null;
+
+  const isInline = variant === "inline";
+
+  return (
+    <section className={`w-full ${isInline ? "py-4" : "py-8"} px-4`}>
+      {!isInline && (
+        <h3 className="text-center text-base font-black text-white mb-4">
+          {title}
+        </h3>
+      )}
+
+      <div
+        className={`flex ${isInline ? "flex-row overflow-x-auto gap-3" : "flex-col gap-2"} max-w-2xl mx-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+      >
+        {sites.map((site, i) => (
+          <a
+            key={site.id}
+            href={site.url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className={`flex items-center gap-3 rounded-xl border-2 border-cyan-300/30 bg-[#0B1220] px-3 py-2 hover:border-cyan-200 transition ${isInline ? "shrink-0 min-w-[220px] snap-start" : ""}`}
+          >
+            <span className="text-cyan-300 font-black text-xs w-4">{i + 1}</span>
+
+            {site.logoUrl ? (
+              <img
+                src={site.logoUrl}
+                alt={site.name}
+                className="max-h-[22px] max-w-[70px] object-contain"
+              />
+            ) : (
+              <span className="text-sm font-bold text-white">{site.name}</span>
+            )}
+
+            <span className="text-[11px] text-slate-400 ml-auto whitespace-nowrap">
+              {site.rating.toFixed(1)}★
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <div className="flex justify-center mt-4">
+
+<a
+          href={href}
+          className="text-sm font-bold text-cyan-300 hover:text-cyan-100 underline underline-offset-4"
+        >
+          Compare All →
+        </a>
+      </div>
+    </section>
+  );
+}
