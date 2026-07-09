@@ -24,7 +24,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     bonus: "Up to 250 USD in Free Bets",
     baseUrl:
       "https://record.betonlineaffiliates.ag/_6DV8-IUj_sbYJMJFEJBL7mNd7ZgqdRLk/1/",
-    logoUrl: "/logos/affiliates/betonline.svg",
+    logoUrl: "/logos/affiliates/betonline.png",
     sports: [
       "Football",
       "NBA",
@@ -43,7 +43,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     bonus: "50% Welcome Bonus",
     baseUrl:
       "https://record.sportsbettingaffiliates.ag/_6DV8-IUj_sah_7RUBh20pWNd7ZgqdRLk/1/",
-    logoUrl: "/logos/affiliates/sportsbetting.svg",
+    logoUrl: "/logos/affiliates/sportsbetting.png",
     sports: [
       "Football",
       "NBA",
@@ -63,7 +63,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1484&redirectURL=https://22link.world/",
     trackingParams: "?mid=YOUR_ID",
-    logoUrl: "/logos/affiliates/22bet.svg",
+    logoUrl: "/logos/affiliates/22bet.png",
     sports: [
       "Football",
       "NBA",
@@ -82,7 +82,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     bonus: "Multiple Bet Bonus",
     baseUrl: "https://r1wdhtx.life/betting?p=3q5b",
     trackingParams: "?affid=YOUR_ID",
-    logoUrl: "/logos/affiliates/1win.svg",
+    logoUrl: "/logos/affiliates/1win.png",
     sports: [
       "Football",
       "NBA",
@@ -102,7 +102,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1650&redirectURL=https://blmedia.world/",
     trackingParams: "?affid=YOUR_ID",
-    logoUrl: "/logos/affiliates/betlabel.svg",
+    logoUrl: "/logos/affiliates/betlabel.png",
     sports: [
       "Football",
       "NBA",
@@ -122,7 +122,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     bonus: "Exclusive Offer",
     baseUrl:
       "https://track.flexlinkspro.com/g.ashx?foid=1.53600.1000000017&trid=1549943.243014&foc=16&fot=9999&fos=6",
-    logoUrl: "/logos/affiliates/oddsjam.svg",
+    logoUrl: "/logos/affiliates/oddsjam.png",
     sports: [
       "Football",
       "NBA",
@@ -142,7 +142,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     bonus: "Exclusive Offer",
     baseUrl:
       "https://track.flexlinkspro.com/g.ashx?foid=24.244100.6669976&trid=1549943.244100&foc=16&fot=9999&fos=6",
-    logoUrl: "/logos/affiliates/betql.svg",
+    logoUrl: "/logos/affiliates/betql.png",
     sports: [
       "Football",
       "NBA",
