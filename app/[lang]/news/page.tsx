@@ -102,7 +102,7 @@ export default async function SportNewsPage({
                   <span className="text-cyan-300 font-black text-xs w-4 shrink-0">{i + 1}</span>
 
                   {site.logoUrl ? (
-                    <span className="flex items-center justify-center bg-white rounded-md px-2 py-1 shrink-0">
+                    <span className="flex items-center justify-center bg-[#1a2744] rounded-md px-2 py-1 shrink-0 border border-cyan-300/20">
                       <img
                         src={site.logoUrl}
                         alt={site.name}
