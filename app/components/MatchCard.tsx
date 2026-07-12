@@ -87,8 +87,7 @@ function MarketTooltip({ market, t, lang }: { market: string; t: any; lang: stri
             {entry.definition}
           </p>
 
-          
-		  <a
+          <a
             href={`/${lang}/betting-glossary`}
             className="mt-2 inline-block text-[11px] text-cyan-400 hover:text-cyan-200 font-bold"
           >
@@ -161,13 +160,13 @@ export default function MatchCard({ data, lang = "en" }: Props) {
     if (diff === null) return null;
 
     if (diff >= 2) {
-      return { label: t.valueSignalValue ?? "⚡ Value odds", color: "text-emerald-300" };
+      return { label: t.valueSignalValue ?? "⚡ Value odds", color: "value" };
     }
     if (diff <= -2) {
-      return { label: t.valueSignalBelow ?? "⚠ Below market", color: "text-red-300" };
+      return { label: t.valueSignalBelow ?? "⚠ Below market", color: "below" };
     }
 
-    return { label: t.valueSignalFair ?? "✅ Fair price", color: "text-slate-400" };
+    return { label: t.valueSignalFair ?? "✅ Fair price", color: "fair" };
   };
 
   const valueSignal = getValueSignal();
@@ -273,15 +272,20 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             </span>
           )}
 
+          {/* VALUE SIGNAL — small pill, visually distinct from the CTA button below */}
           {valueSignal && (
-            <div className={`mt-1 rounded-lg px-3 py-2 text-center font-black text-base border ${
-              valueSignal.color === "text-emerald-300"
-                ? "border-emerald-400/40 bg-emerald-500/10 text-emerald-300"
-                : valueSignal.color === "text-red-300"
-                ? "border-red-400/40 bg-red-500/10 text-red-300"
-                : "border-cyan-300/20 bg-cyan-500/5 text-slate-300"
-            }`}>
-              {valueSignal.label}
+            <div className="mt-1 flex justify-center">
+              <span
+                className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold ${
+                  valueSignal.color === "value"
+                    ? "bg-emerald-400/15 text-emerald-300"
+                    : valueSignal.color === "below"
+                    ? "bg-red-400/15 text-red-300"
+                    : "bg-slate-500/15 text-slate-300"
+                }`}
+              >
+                {valueSignal.label}
+              </span>
             </div>
           )}
         </div>
@@ -295,13 +299,15 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           className="flex items-center justify-center gap-2 flex-wrap rounded-xl border-2 border-cyan-300/40 bg-cyan-500/10 py-2.5 px-3 text-sm font-bold text-cyan-200 hover:bg-cyan-400/20 transition"
         >
           {bookmakerSite?.logoUrl && (
-            <img
-              src={bookmakerSite.logoUrl}
-              alt={bookmakerSite.name}
-              className="h-5 max-w-[70px] object-contain"
-            />
+            <span className="flex items-center justify-center bg-white rounded-md px-2 py-1">
+              <img
+                src={bookmakerSite.logoUrl}
+                alt={bookmakerSite.name}
+                className="h-4 max-w-[60px] object-contain"
+              />
+            </span>
           )}
-          <span>{bookmakerSite?.name ?? t.viewOdds}</span>
+          <span>{bookmakerSite?.name ?? data.bookmaker ?? t.viewOdds}</span>
           {ctaBadge && (
             <span className="text-[10px] font-black uppercase tracking-wide text-emerald-300 border border-emerald-400/40 bg-emerald-500/10 rounded-full px-2 py-0.5">
               {ctaBadge}
@@ -311,9 +317,9 @@ export default function MatchCard({ data, lang = "en" }: Props) {
 
         <a
           href={bettingPageHref}
-          className="text-center text-[11px] text-slate-400 hover:text-cyan-300 transition underline underline-offset-4"
+          className="text-center text-sm font-bold text-cyan-300 hover:text-cyan-100 transition underline underline-offset-4"
         >
-          {t.common.compareAllOffers}
+          {t.compareAllOffers ?? "Compare all offers →"}
         </a>
       </div>
     </article>

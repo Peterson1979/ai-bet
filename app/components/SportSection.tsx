@@ -17,6 +17,7 @@ type SportSectionProps = {
   lang: Lang;
   limit: number;
   showViewAll?: boolean;
+  idSuffix?: string;
 };
 
 const sportKeyMap: Record<string, keyof typeof translations.en.sports> = {
@@ -35,102 +36,76 @@ export default function SportSection({
   lang,
   limit,
   showViewAll = false,
+  idSuffix = "",
 }: SportSectionProps) {
-
   const t = translations[lang] ?? translations.en;
-
   const activePicks = sportBlock.topPicks
     .filter((p) => new Date(p.startTime) > new Date())
     .slice(0, limit);
 
-
   const sportName =
-    t.sports[
-      sportKeyMap[sportBlock.sport.toLowerCase()] ?? "football"
-    ];
+    t.sports[sportKeyMap[sportBlock.sport.toLowerCase()] ?? "football"];
 
+  // Compact, centered layout for small card counts (e.g. homepage's 2-per-sport
+  // blocks) so there's no lopsided empty space on wide desktop screens.
+  const isCompact = limit <= 2;
+
+  const gridClass = isCompact
+    ? "grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto"
+    : "grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3";
+
+  const noEventsLabel = (
+    t.noEventsTodaySport ?? "No {SPORT} events available today."
+  ).replace("{SPORT}", sportName);
+
+  const viewAllLabel = (
+    t.viewAllPredictionsSport ?? "View all {SPORT} predictions →"
+  ).replace("{SPORT}", sportName);
 
   return (
     <section
-      id={sportBlock.sport.toLowerCase()}
+      id={`${sportBlock.sport.toLowerCase()}${idSuffix}`}
       className="mb-16 scroll-mt-28"
     >
-
       <div className="mb-6">
-
         <div className="flex items-center gap-4">
-
-  <h1 className="text-3xl font-black tracking-tight">
-    {t.sportPageTitle?.replace("{SPORT}", sportName)}
-  </h1>
-
-  <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
-
-</div>
-
+          <h1 className="text-3xl font-black tracking-tight">
+            {t.sportPageTitle?.replace("{SPORT}", sportName)}
+          </h1>
+          <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+        </div>
       </div>
 
-
       {!sportBlock.hasMatches || activePicks.length === 0 ? (
-
         <div className="rounded-[24px] border-2 border-cyan-300/20 bg-[#0B1220] p-6">
-
-          <p className="text-slate-300">
-            {sportBlock.message ?? t.noMatches}
-          </p>
-
+          <p className="text-slate-300">{noEventsLabel}</p>
         </div>
-
       ) : (
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3">
-
+        <div className={gridClass}>
           {activePicks.map((p) => {
-
-            const uiData = toMatchCardData(
-              p,
-              sportBlock.sport as SportType
-            );
-
-
+            const uiData = toMatchCardData(p, sportBlock.sport as SportType);
             return (
-
               <div
                 key={p.id}
                 className="transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]"
               >
-
-                <MatchCard
-                  data={uiData}
-                  lang={lang}
-                />
-
+                <MatchCard data={uiData} lang={lang} />
               </div>
-
             );
-
           })}
-
         </div>
-
       )}
 
-
       {showViewAll && (
-
         <div className="mt-8 flex justify-center">
-
           <a
             href={`/${lang}/${getSportSlug(sportBlock.sport)}`}
             className="rounded-full border-2 border-cyan-300/40 bg-[#0A1220]/80 px-8 py-3 text-sm font-black text-white transition-all hover:-translate-y-1 hover:border-cyan-200 hover:bg-cyan-400/10 hover:shadow-[0_0_35px_rgba(34,211,238,0.45)]"
           >
-            {t.viewAllPredictions ?? "View all predictions"} →
+            {viewAllLabel}
           </a>
-
         </div>
-
       )}
-
     </section>
   );
 }

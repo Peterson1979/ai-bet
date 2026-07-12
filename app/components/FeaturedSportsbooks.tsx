@@ -42,11 +42,13 @@ export default function FeaturedSportsbooks({
             )}
 
             {site.logoUrl ? (
-              <img
-                src={site.logoUrl}
-                alt={site.name}
-                className="max-h-[48px] max-w-[160px] object-contain mt-2"
-              />
+              <span className="flex items-center justify-center bg-white rounded-xl px-4 py-3 mt-2 w-full max-w-[180px]">
+                <img
+                  src={site.logoUrl}
+                  alt={site.name}
+                  className="max-h-[40px] max-w-[150px] object-contain"
+                />
+              </span>
             ) : (
               <span className="text-lg font-black text-white mt-2">{site.name}</span>
             )}
@@ -65,8 +67,7 @@ export default function FeaturedSportsbooks({
       </div>
 
       <div className="flex justify-center mt-6">
-        
-		<a
+        <a
           href={href}
           className="text-sm font-bold text-cyan-300 hover:text-cyan-100 underline underline-offset-4"
         >

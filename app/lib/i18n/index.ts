@@ -24,8 +24,10 @@ const de: DeepPartial<Translation> = {
   recommendedSites: "Empfohlene Wettanbieter",
  recommendedSitesDesc: "Handverlesene Wettanbieter mit den besten Boni, Quoten und Zuverlässigkeit.",
   noMatches: "Keine Spiele verfügbar",
+  noEventsTodaySport: "Heute keine {SPORT}-Events verfügbar.",
   tbd: "Noch nicht bekannt",
   viewAllPredictions: "Alle Vorhersagen anzeigen",
+  viewAllPredictionsSport: "Alle {SPORT}-Vorhersagen anzeigen →",
   noExplanation: "Keine Erklärung verfügbar",
   aiTips: "KI TIPPS",
   matchPreview: "Spielvorschau",
@@ -48,6 +50,18 @@ const de: DeepPartial<Translation> = {
 sportPageDescription: "KI-basierte {SPORT}-Vorhersagen, Wettanalyse und Value-Tipps.",
   sports: { topPicks: "Top Tipps", football: "Fußball", nba: "NBA", nfl: "NFL", hockey: "Eishockey", tennis: "Tennis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Startseite", navTopPicks: "Top Tipps", navBetting: "Wetten", navNews: "Neuigkeiten", navTools: "Tools", navGlossary: "Glossar" },
+  featuredSportsbooks: {
+    title: "Redaktionelle Auswahl",
+    subtitle: "Unsere bestbewerteten, vertrauenswürdigen Wettanbieter",
+    seeAll: "Alle vertrauenswürdigen Wettanbieter ansehen →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 Bestbewertete Wettanbieter",
+    compareAll: "Alle vergleichen →",
+  },
+  stickyCta: {
+    text: "🏆 Beste Wettboni — Wettanbieter vergleichen →",
+  },
   footer: {
     betIntelligence: "Wie MatchSignal funktioniert",
     betIntelligenceDesc: "MatchSignal kombiniert Echtzeit-Quoten von mehreren Buchmachern mit KI-generiertem Spielkontext, damit du Angebote vergleichen und jede Begegnung auf einen Blick verstehen kannst.",
@@ -79,8 +93,10 @@ const fr: DeepPartial<Translation> = {
   recommendedSites: "Bookmakers recommandés",
   recommendedSitesDesc: "Bookmakers sélectionnés avec les meilleurs bonus, cotes et fiabilité.",
   noMatches: "Aucun match disponible",
+  noEventsTodaySport: "Aucun événement {SPORT} disponible aujourd'hui.",
   tbd: "À déterminer",
   viewAllPredictions: "Voir toutes les prédictions",
+  viewAllPredictionsSport: "Voir toutes les prédictions {SPORT} →",
   noExplanation: "Aucune explication disponible",
   aiTips: "CONSEILS IA",
   matchPreview: "Aperçu du match",
@@ -103,6 +119,18 @@ const fr: DeepPartial<Translation> = {
 sportPageDescription: "Prédictions {SPORT} basées sur l'IA, analyse des paris et sélections à valeur ajoutée.",
   sports: { topPicks: "Meilleurs choix", football: "Football", nba: "NBA", nfl: "NFL", hockey: "Hockey sur glace", tennis: "Tennis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Accueil", navTopPicks: "Meilleurs choix", navBetting: "Paris", navNews: "Actualités", navTools: "Outils", navGlossary: "Glossaire" },
+  featuredSportsbooks: {
+    title: "Sélection de la rédaction",
+    subtitle: "Nos bookmakers les mieux notés et fiables",
+    seeAll: "Voir tous les bookmakers fiables →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 Bookmakers les mieux notés",
+    compareAll: "Tout comparer →",
+  },
+  stickyCta: {
+    text: "🏆 Meilleurs bonus de paris — Comparer les bookmakers →",
+  },
   footer: {
     betIntelligence: "Comment fonctionne MatchSignal",
     betIntelligenceDesc: "MatchSignal combine des cotes en temps réel provenant de plusieurs bookmakers avec un contexte de match généré par IA.",
@@ -134,8 +162,10 @@ const es: DeepPartial<Translation> = {
   recommendedSites: "Casas de apuestas recomendadas",
   recommendedSitesDesc: "Casas de apuestas seleccionadas con los mejores bonos, cuotas y fiabilidad.",
   noMatches: "No hay partidos disponibles",
+  noEventsTodaySport: "No hay eventos de {SPORT} disponibles hoy.",
   tbd: "Por determinar",
   viewAllPredictions: "Ver todas las predicciones",
+  viewAllPredictionsSport: "Ver todas las predicciones de {SPORT} →",
   noExplanation: "No hay explicación disponible",
   aiTips: "CONSEJOS IA",
   matchPreview: "Vista previa del partido",
@@ -158,6 +188,18 @@ const es: DeepPartial<Translation> = {
 sportPageDescription: "Predicciones de {SPORT} con IA, análisis de apuestas y selecciones de valor.",
   sports: { topPicks: "Mejores picks", football: "Fútbol", nba: "NBA", nfl: "NFL", hockey: "Hockey sobre hielo", tennis: "Tenis", mlb: "Béisbol", mma: "MMA/BOXING" },
   system: { navHome: "Inicio", navTopPicks: "Mejores picks", navBetting: "Apuestas", navNews: "Noticias", navTools: "Herramientas", navGlossary: "Glosario" },
+  featuredSportsbooks: {
+    title: "Selección del editor",
+    subtitle: "Nuestras casas de apuestas mejor valoradas y de confianza",
+    seeAll: "Ver todas las casas de apuestas de confianza →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 Casas de apuestas mejor valoradas",
+    compareAll: "Comparar todas →",
+  },
+  stickyCta: {
+    text: "🏆 Mejores bonos de apuestas — Comparar casas de apuestas →",
+  },
   footer: {
     betIntelligence: "Cómo funciona MatchSignal",
     betIntelligenceDesc: "MatchSignal combina cuotas en tiempo real de múltiples casas de apuestas con contexto de partido generado por IA.",
@@ -173,7 +215,7 @@ sportPageDescription: "Predicciones de {SPORT} con IA, análisis de apuestas y s
     aiBettingInsightsDesc: "Esta plataforma proporciona contenido generado por IA solo con fines informativos. Juega responsablemente.",
     navAbout: "Acerca de", navContact: "Contacto", navPrivacy: "Política de privacidad", navTerms: "Términos de uso",
     navAffiliate: "Divulgación de afiliados", navResponsible: "Juego responsable", navCookie: "Política de cookies",
-    platformName: "MatchSignal", 
+    platformName: "MatchSignal",
 	builtWithAi: "Construido con IA",
 },
 };
@@ -189,8 +231,10 @@ const it: DeepPartial<Translation> = {
   recommendedSites: "Bookmaker consigliati",
   recommendedSitesDesc: "Bookmaker selezionati con i migliori bonus, quote e affidabilità.",
   noMatches: "Nessuna partita disponibile",
+  noEventsTodaySport: "Nessun evento di {SPORT} disponibile oggi.",
   tbd: "Da definire",
   viewAllPredictions: "Vedi tutte le previsioni",
+  viewAllPredictionsSport: "Vedi tutte le previsioni di {SPORT} →",
   noExplanation: "Nessuna spiegazione disponibile",
   aiTips: "CONSIGLI IA",
   matchPreview: "Anteprima partita",
@@ -213,6 +257,18 @@ const it: DeepPartial<Translation> = {
 sportPageDescription: "Pronostici {SPORT} basati sull'IA, analisi delle scommesse e consigli di valore.",
   sports: { topPicks: "Le migliori scelte", football: "Calcio", nba: "NBA", nfl: "NFL", hockey: "Hockey su ghiaccio", tennis: "Tennis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Home", navTopPicks: "Le migliori scelte", navBetting: "Scommesse", navNews: "Notizie", navTools: "Strumenti", navGlossary: "Glossario" },
+  featuredSportsbooks: {
+    title: "Scelta della redazione",
+    subtitle: "I nostri bookmaker più affidabili e meglio valutati",
+    seeAll: "Vedi tutti i bookmaker affidabili →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 Bookmaker più votati",
+    compareAll: "Confronta tutti →",
+  },
+  stickyCta: {
+    text: "🏆 Migliori bonus scommesse — Confronta i bookmaker →",
+  },
   footer: {
     betIntelligence: "Come funziona MatchSignal",
     betIntelligenceDesc: "MatchSignal combina quote in tempo reale da più bookmaker con contesto della partita generato dall'IA.",
@@ -228,7 +284,7 @@ sportPageDescription: "Pronostici {SPORT} basati sull'IA, analisi delle scommess
     aiBettingInsightsDesc: "Questa piattaforma fornisce contenuti generati dall'IA solo a scopo informativo. Gioca responsabilmente.",
     navAbout: "Chi siamo", navContact: "Contatto", navPrivacy: "Informativa sulla privacy", navTerms: "Termini di utilizzo",
     navAffiliate: "Divulgazione affiliati", navResponsible: "Gioco responsabile", navCookie: "Politica sui cookie",
-    platformName: "MatchSignal", 
+    platformName: "MatchSignal",
 	builtWithAi: "Costruito con IA",
 	},
 };
@@ -244,8 +300,10 @@ const pt: DeepPartial<Translation> = {
   recommendedSites: "Casas de apostas recomendadas",
 recommendedSitesDesc: "Casas de apostas selecionadas com os melhores bónus, odds e fiabilidade.",
   noMatches: "Sem jogos disponíveis",
+  noEventsTodaySport: "Nenhum evento de {SPORT} disponível hoje.",
   tbd: "A definir",
   viewAllPredictions: "Ver todas as previsões",
+  viewAllPredictionsSport: "Ver todas as previsões de {SPORT} →",
   noExplanation: "Sem explicação disponível",
   aiTips: "DICAS IA",
   matchPreview: "Pré-visualização do jogo",
@@ -268,6 +326,18 @@ recommendedSitesDesc: "Casas de apostas selecionadas com os melhores bónus, odd
 sportPageDescription: "Previsões de {SPORT} com IA, análise de apostas e escolhas de valor.",
   sports: { topPicks: "Melhores escolhas", football: "Futebol", nba: "NBA", nfl: "NFL", hockey: "Hóquei no gelo", tennis: "Ténis", mlb: "Baseball", mma: "MMA/BOXING" },
   system: { navHome: "Início", navTopPicks: "Melhores escolhas", navBetting: "Apostas", navNews: "Notícias", navTools: "Ferramentas", navGlossary: "Glossário" },
+  featuredSportsbooks: {
+    title: "Escolhas do editor",
+    subtitle: "As nossas casas de apostas mais bem avaliadas e fiáveis",
+    seeAll: "Ver todas as casas de apostas fiáveis →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 Casas de apostas mais bem avaliadas",
+    compareAll: "Comparar todas →",
+  },
+  stickyCta: {
+    text: "🏆 Melhores bónus de apostas — Comparar casas de apostas →",
+  },
   footer: {
     betIntelligence: "Como funciona o MatchSignal",
     betIntelligenceDesc: "O MatchSignal combina odds em tempo real de várias casas de apostas com contexto de jogo gerado por IA.",
@@ -283,7 +353,7 @@ sportPageDescription: "Previsões de {SPORT} com IA, análise de apostas e escol
     aiBettingInsightsDesc: "Esta plataforma fornece conteúdo gerado por IA apenas para fins informativos. Jogue responsavelmente.",
     navAbout: "Sobre nós", navContact: "Contacto", navPrivacy: "Política de privacidade", navTerms: "Termos de utilização",
     navAffiliate: "Divulgação de afiliados", navResponsible: "Jogo responsável", navCookie: "Política de cookies",
-    platformName: "MatchSignal", 
+    platformName: "MatchSignal",
 	builtWithAi: "Construído com IA",
 	
   },
@@ -300,8 +370,10 @@ const ar: DeepPartial<Translation> = {
   recommendedSites: "مواقع الرهان الموصى بها",
   recommendedSitesDesc: "مواقع رهان مختارة بعناية تقدم أفضل المكافآت والأسعار والموثوقية.",
   noMatches: "لا توجد مباريات متاحة",
+  noEventsTodaySport: "لا توجد أحداث {SPORT} متاحة اليوم.",
   tbd: "لم يحدد بعد",
   viewAllPredictions: "عرض جميع التوقعات",
+  viewAllPredictionsSport: "عرض جميع توقعات {SPORT} ←",
   noExplanation: "لا يوجد شرح متاح",
   aiTips: "نصائح الذكاء الاصطناعي",
   matchPreview: "معاينة المباراة",
@@ -325,6 +397,18 @@ const ar: DeepPartial<Translation> = {
 sportPageDescription: "توقعات {SPORT} المدعومة بالذكاء الاصطناعي، وتحليل المراهنات واختيارات القيمة.",
   sports: { topPicks: "أفضل الاختيارات", football: "كرة القدم", nba: "NBA", nfl: "NFL", hockey: "هوكي الجليد", tennis: "التنس", mlb: "البيسبول", mma: "MMA/BOXING" },
   system: { navHome: "الرئيسية", navTopPicks: "أفضل الاختيارات", navBetting: "الرهان", navNews: "الأخبار", navTools: "الأدوات", navGlossary: "المسرد" },
+  featuredSportsbooks: {
+    title: "اختيارات المحررين",
+    subtitle: "مواقع الرهان الأعلى تقييماً والموثوقة لدينا",
+    seeAll: "عرض جميع مواقع الرهان الموثوقة ←",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 مواقع الرهان الأعلى تقييماً",
+    compareAll: "قارن الكل ←",
+  },
+  stickyCta: {
+    text: "🏆 أفضل مكافآت الرهان — قارن مواقع الرهان ←",
+  },
   footer: {
     betIntelligence: "كيف يعمل MatchSignal",
     betIntelligenceDesc: "يجمع MatchSignal بين أسعار الرهان الفورية من عدة مواقع رهان مع سياق المباراة المُولّد بالذكاء الاصطناعي.",
@@ -340,7 +424,7 @@ sportPageDescription: "توقعات {SPORT} المدعومة بالذكاء ال
     aiBettingInsightsDesc: "توفر هذه المنصة محتوى مُولّداً بالذكاء الاصطناعي لأغراض إعلامية فقط. العب بمسؤولية.",
     navAbout: "حول", navContact: "اتصل بنا", navPrivacy: "سياسة الخصوصية", navTerms: "شروط الاستخدام",
     navAffiliate: "الإفصاح عن الشركاء", navResponsible: "المقامرة المسؤولة", navCookie: "سياسة الكوكيز",
-    platformName: "MatchSignal", 
+    platformName: "MatchSignal",
 	builtWithAi: "مبني بالذكاء الاصطناعي",
   },
 };
@@ -356,8 +440,10 @@ const zh: DeepPartial<Translation> = {
   recommendedSites: "推荐博彩网站",
 recommendedSitesDesc: "精心挑选的体育博彩网站，提供最佳奖金、赔率和可靠性。",
   noMatches: "暂无比赛",
+  noEventsTodaySport: "今天没有{SPORT}赛事。",
   tbd: "待定",
   viewAllPredictions: "查看所有预测",
+  viewAllPredictionsSport: "查看所有{SPORT}预测 →",
   noExplanation: "暂无说明",
   aiTips: "AI建议",
   matchPreview: "赛事预览",
@@ -380,6 +466,18 @@ recommendedSitesDesc: "精心挑选的体育博彩网站，提供最佳奖金、
 sportPageDescription: "基于AI的{SPORT}预测、投注分析和高价值推荐。",
   sports: { topPicks: "精选推荐", football: "足球", nba: "NBA", nfl: "NFL", hockey: "冰球", tennis: "网球", mlb: "棒球", mma: "综合格斗" },
   system: { navHome: "首页", navTopPicks: "精选推荐", navBetting: "投注", navNews: "新闻", navTools: "工具", navGlossary: "术语表" },
+  featuredSportsbooks: {
+    title: "编辑精选",
+    subtitle: "我们评分最高、值得信赖的博彩网站",
+    seeAll: "查看所有可信博彩网站 →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 评分最高的博彩网站",
+    compareAll: "比较所有 →",
+  },
+  stickyCta: {
+    text: "🏆 最佳投注奖金 — 比较博彩网站 →",
+  },
   footer: {
     betIntelligence: "MatchSignal 如何运作",
     betIntelligenceDesc: "MatchSignal 结合来自多家博彩公司的实时赔率与AI生成的比赛背景信息。",
@@ -395,7 +493,7 @@ sportPageDescription: "基于AI的{SPORT}预测、投注分析和高价值推荐
     aiBettingInsightsDesc: "本平台仅出于信息目的提供AI生成的内容。请负责任地参与。",
     navAbout: "关于我们", navContact: "联系我们", navPrivacy: "隐私政策", navTerms: "使用条款",
     navAffiliate: "联盟披露", navResponsible: "负责任赌博", navCookie: "Cookie政策",
-    platformName: "MatchSignal", 
+    platformName: "MatchSignal",
 	builtWithAi: "由AI构建",
 	
   },
@@ -412,8 +510,10 @@ heroSubtitle: "無料AIベッティングヒント – サッカー、NBA、テ�
   recommendedSites: "おすすめのスポーツブック",
   recommendedSitesDesc: "最高のボーナス、オッズ、信頼性を持つ厳選されたスポーツブック。",
   noMatches: "試合がありません",
+  noEventsTodaySport: "本日は{SPORT}のイベントがありません。",
   tbd: "未定",
   viewAllPredictions: "すべての予測を見る",
+  viewAllPredictionsSport: "すべての{SPORT}予測を見る →",
   noExplanation: "説明がありません",
   aiTips: "AI予想",
   matchPreview: "試合プレビュー",
@@ -436,6 +536,18 @@ heroSubtitle: "無料AIベッティングヒント – サッカー、NBA、テ�
 sportPageDescription: "AIを活用した{SPORT}予測、ベッティング分析、バリュー予想。",
   sports: { topPicks: "注目のピック", football: "サッカー", nba: "NBA", nfl: "NFL", hockey: "アイスホッケー", tennis: "テニス", mlb: "野球", mma: "MMA/BOXING" },
   system: { navHome: "ホーム", navTopPicks: "注目のピック", navBetting: "ベッティング", navNews: "ニュース", navTools: "ツール", navGlossary: "用語集" },
+  featuredSportsbooks: {
+    title: "編集部のおすすめ",
+    subtitle: "当サイト評価No.1の信頼できるスポーツブック",
+    seeAll: "信頼できるスポーツブックをすべて見る →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 評価の高いスポーツブック",
+    compareAll: "すべて比較 →",
+  },
+  stickyCta: {
+    text: "🏆 最高のベッティングボーナス — スポーツブックを比較 →",
+  },
   footer: {
     betIntelligence: "MatchSignalの仕組み",
     betIntelligenceDesc: "MatchSignalは複数のブックメーカーからのリアルタイムオッズとAI生成の試合コンテキストを組み合わせます。",
@@ -451,7 +563,7 @@ sportPageDescription: "AIを活用した{SPORT}予測、ベッティング分析
     aiBettingInsightsDesc: "このプラットフォームはAI生成コンテンツを情報提供のみを目的として提供しています。責任を持ってご利用ください。",
     navAbout: "会社概要", navContact: "お問い合わせ", navPrivacy: "プライバシーポリシー", navTerms: "利用規約",
     navAffiliate: "アフィリエイト開示", navResponsible: "責任あるギャンブル", navCookie: "Cookieポリシー",
-    platformName: "MatchSignal", 
+    platformName: "MatchSignal",
 	builtWithAi: "AIで構築",
 	
   },
@@ -468,8 +580,10 @@ const hi: DeepPartial<Translation> = {
   recommendedSites: "अनुशंसित स्पोर्ट्सबुक",
 recommendedSitesDesc: "सर्वोत्तम बोनस, ऑड्स और विश्वसनीयता के साथ चुने हुए स्पोर्ट्सबुक।",
   noMatches: "कोई मैच उपलब्ध नहीं",
+  noEventsTodaySport: "आज कोई {SPORT} इवेंट उपलब्ध नहीं है।",
   tbd: "निर्धारित नहीं",
   viewAllPredictions: "सभी पूर्वानुमान देखें",
+  viewAllPredictionsSport: "सभी {SPORT} भविष्यवाणियां देखें →",
   noExplanation: "कोई स्पष्टीकरण उपलब्ध नहीं",
   aiTips: "AI टिप्स",
   matchPreview: "मैच पूर्वावलोकन",
@@ -492,6 +606,18 @@ recommendedSitesDesc: "सर्वोत्तम बोनस, ऑड्स �
 sportPageDescription: "AI-आधारित {SPORT} भविष्यवाणियां, बेटिंग विश्लेषण और वैल्यू टिप्स।",
   sports: { topPicks: "शीर्ष चुनाव", football: "फुटबॉल", nba: "NBA", nfl: "NFL", hockey: "आइस हॉकी", tennis: "टेनिस", mlb: "बेसबॉल", mma: "MMA/BOXING" },
   system: { navHome: "होम", navTopPicks: "शीर्ष चुनाव", navBetting: "सट्टेबाजी", navNews: "समाचार", navTools: "उपकरण", navGlossary: "शब्दकोश" },
+  featuredSportsbooks: {
+    title: "संपादक की पसंद",
+    subtitle: "हमारी सर्वोच्च रेटिंग वाली, विश्वसनीय स्पोर्ट्सबुक",
+    seeAll: "सभी विश्वसनीय स्पोर्ट्सबुक देखें →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 सर्वोच्च रेटेड स्पोर्ट्सबुक",
+    compareAll: "सभी की तुलना करें →",
+  },
+  stickyCta: {
+    text: "🏆 सर्वश्रेष्ठ बेटिंग बोनस — स्पोर्ट्सबुक की तुलना करें →",
+  },
   footer: {
     betIntelligence: "MatchSignal कैसे काम करता है",
     betIntelligenceDesc: "MatchSignal कई बुकमेकरों से रीयल-टाइम ऑड्स को AI-जनित मैच संदर्भ के साथ जोड़ता है।",

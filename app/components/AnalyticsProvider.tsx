@@ -1,40 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
-import { getConsent } from "@/app/lib/consent";
+import { translations, Lang } from "@/app/lib/i18n";
 
-declare global {
-  interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
-  }
-}
+type Props = {
+  lang?: Lang;
+  bettingPageHref?: string;
+};
 
-export default function AnalyticsProvider() {
-  useEffect(() => {
-    const consent = getConsent() ?? {
-      analytics: false,
-      ads: false,
-    };
+export default function StickyBottomCTA({ lang = "en", bettingPageHref }: Props) {
+  const href = bettingPageHref ?? `/${lang}/betting`;
+  const t = translations[lang] ?? translations.en;
 
-    window.dataLayer = window.dataLayer || [];
-
-    window.gtag =
-      window.gtag ||
-      function (...args: any[]) {
-        window.dataLayer.push(args);
-      };
-
-    window.gtag("consent", "default", {
-      analytics_storage: consent.analytics ? "granted" : "denied",
-      ad_storage: consent.ads ? "granted" : "denied",
-      ad_user_data: consent.ads ? "granted" : "denied",
-      ad_personalization: consent.ads ? "granted" : "denied",
-    });
-
-    window.gtag("js", new Date());
-    window.gtag("config", "G-XXXXXXXXXX");
-  }, []);
-
-  return null;
+  return (
+    <div
+      className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t-2 border-cyan-300/40 bg-gradient-to-t from-[#050A12] via-[#0B1220] to-[#0B1220]/95 backdrop-blur px-4 py-3 shadow-[0_-8px_30px_rgba(0,0,0,0.6)]"
+      style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
+    >
+      <a
+        href={href}
+        className="flex items-center justify-center gap-2 rounded-xl border-2 border-cyan-300/60 bg-cyan-500/15 py-3 text-sm font-black text-cyan-200 uppercase tracking-wide active:scale-[0.98] transition"
+      >
+        {t.stickyCta.text}
+      </a>
+    </div>
+  );
 }

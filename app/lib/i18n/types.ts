@@ -20,6 +20,7 @@ sportPageDescription: string;
   recommendedSites: string;
   recommendedSitesDesc: string;
   noMatches: string;
+  noEventsTodaySport: string;
   tbd: string;
   noExplanation: string;
   aiTips: string;
@@ -62,6 +63,7 @@ sportPageDescription: string;
   consensusProb: string;
   consensusProbHint: string;
   viewAllPredictions: string;
+  viewAllPredictionsSport: string;
   sports: {
     topPicks: string;
     football: string;
@@ -85,6 +87,18 @@ sportPageDescription: string;
   visitSite: string;
   compareAllOffers: string;
 };
+  featuredSportsbooks: {
+    title: string;
+    subtitle: string;
+    seeAll: string;
+  };
+  topRatedSportsbooks: {
+    title: string;
+    compareAll: string;
+  };
+  stickyCta: {
+    text: string;
+  };
   bettingPage: {
     title: string;
     description: string;

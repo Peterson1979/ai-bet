@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import TopRatedSportsbooksList from "@/app/components/TopRatedSportsbooksList";
 import { translations, Lang } from "@/app/lib/i18n";
-import BettingSidebar from "@/app/components/BettingSidebar";
+
 // ========================
 // ODDS CONVERTER
 // ========================
@@ -34,12 +35,8 @@ function OddsConverter({ t }: { t: any }) {
 
   return (
     <div className="rounded-[24px] border-2 border-cyan-400/30 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
-      <h2 className="text-xl font-black text-white mb-2">
-        {t.tools.oddsConverter}
-      </h2>
-      <p className="text-sm text-slate-400 mb-6">
-        {t.tools.oddsConverterDesc}
-      </p>
+      <h2 className="text-xl font-black text-white mb-2">{t.tools.oddsConverter}</h2>
+      <p className="text-sm text-slate-400 mb-6">{t.tools.oddsConverterDesc}</p>
 
       <input
         type="number"
@@ -56,14 +53,9 @@ function OddsConverter({ t }: { t: any }) {
             { label: t.tools.american, value: toAmerican(d) },
             { label: t.tools.implied, value: toImplied(d) },
           ].map((item) => (
-            <div
-              key={item.label}
-              className="rounded-xl border border-cyan-400/20 bg-[#060B14] p-4 text-center"
-            >
+            <div key={item.label} className="rounded-xl border border-cyan-400/20 bg-[#060B14] p-4 text-center">
               <div className="text-[10px] text-slate-400">{item.label}</div>
-              <div className="text-xl font-black text-cyan-300 mt-2">
-                {item.value}
-              </div>
+              <div className="text-xl font-black text-cyan-300 mt-2">{item.value}</div>
             </div>
           ))}
         </div>
@@ -88,12 +80,8 @@ function BetCalculator({ t }: { t: any }) {
 
   return (
     <div className="rounded-[24px] border-2 border-cyan-400/30 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
-      <h2 className="text-xl font-black text-white mb-2">
-        {t.tools.betCalculator}
-      </h2>
-      <p className="text-sm text-slate-400 mb-6">
-        {t.tools.betCalculatorDesc}
-      </p>
+      <h2 className="text-xl font-black text-white mb-2">{t.tools.betCalculator}</h2>
+      <p className="text-sm text-slate-400 mb-6">{t.tools.betCalculatorDesc}</p>
 
       <div className="grid grid-cols-2 gap-4">
         <input
@@ -114,15 +102,11 @@ function BetCalculator({ t }: { t: any }) {
         <div className="mt-5 grid grid-cols-2 gap-3">
           <div className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-center">
             <div className="text-xs text-slate-400">{t.tools.profit}</div>
-            <div className="text-2xl font-black text-emerald-300">
-              ${profit}
-            </div>
+            <div className="text-2xl font-black text-emerald-300">${profit}</div>
           </div>
           <div className="rounded-xl border border-cyan-400/30 bg-cyan-500/10 p-4 text-center">
             <div className="text-xs text-slate-400">{t.tools.return}</div>
-            <div className="text-2xl font-black text-cyan-300">
-              ${total}
-            </div>
+            <div className="text-2xl font-black text-cyan-300">${total}</div>
           </div>
         </div>
       )}
@@ -143,21 +127,13 @@ function BankrollManager({ t }: { t: any }) {
   const p = parseFloat(prob) / 100;
 
   const valid = !isNaN(b) && !isNaN(o) && !isNaN(p) && b > 0 && o > 1;
-
-  const kelly = valid
-    ? Math.max(0, (p * (o - 1) - (1 - p)) / (o - 1))
-    : null;
-
+  const kelly = valid ? Math.max(0, (p * (o - 1) - (1 - p)) / (o - 1)) : null;
   const stake = kelly !== null ? (kelly * b).toFixed(2) : null;
 
   return (
     <div className="rounded-[24px] border-2 border-cyan-400/30 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
-      <h2 className="text-xl font-black text-white mb-2">
-        {t.tools.bankroll}
-      </h2>
-      <p className="text-sm text-slate-400 mb-6">
-        {t.tools.kelly}
-      </p>
+      <h2 className="text-xl font-black text-white mb-2">{t.tools.bankroll}</h2>
+      <p className="text-sm text-slate-400 mb-6">{t.tools.kelly}</p>
 
       <div className="grid grid-cols-3 gap-3">
         <input
@@ -182,12 +158,8 @@ function BankrollManager({ t }: { t: any }) {
 
       {valid && kelly !== null && (
         <div className="mt-5 rounded-xl border border-cyan-400/30 bg-cyan-500/10 p-4 text-center">
-          <div className="text-sm text-slate-400">
-            {t.tools.recommendedStake}
-          </div>
-          <div className="text-3xl font-black text-cyan-300">
-            ${stake}
-          </div>
+          <div className="text-sm text-slate-400">{t.tools.recommendedStake}</div>
+          <div className="text-3xl font-black text-cyan-300">${stake}</div>
         </div>
       )}
     </div>
@@ -205,14 +177,11 @@ function ValueBetFinder({ t }: { t: any }) {
   const b = parseFloat(bookOdds);
 
   const valid = !isNaN(f) && !isNaN(b) && f > 1 && b > 1;
-
   const edge = valid ? (100 / f - 100 / b) : null;
 
   return (
     <div className="rounded-[24px] border-2 border-cyan-400/30 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6">
-      <h2 className="text-xl font-black text-white mb-2">
-        {t.tools.valueFinder}
-      </h2>
+      <h2 className="text-xl font-black text-white mb-2">{t.tools.valueFinder}</h2>
 
       <div className="grid grid-cols-2 gap-4">
         <input
@@ -251,13 +220,10 @@ export default function BettingToolsPage() {
       <Header />
 
       <div className="pt-[70px] max-w-[1500px] mx-auto px-4 pb-16">
+        <h1 className="text-4xl font-black mb-2 pt-12">{t.tools.title}</h1>
+        <p className="text-slate-300 mb-10">{t.sportNews.subtitle}</p>
 
-        <h1 className="text-4xl font-black mb-10">
-          {t.tools.title}
-        </h1>
-
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-8">
-
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <OddsConverter t={t} />
             <BetCalculator t={t} />
@@ -265,14 +231,13 @@ export default function BettingToolsPage() {
             <ValueBetFinder t={t} />
           </div>
 
-          <BettingSidebar lang={lang} />
-
+          <aside className="h-fit xl:sticky xl:top-24">
+            <TopRatedSportsbooksList lang={lang} variant="footer" />
+          </aside>
         </div>
-
       </div>
 
       <Footer />
-
     </main>
   );
 }

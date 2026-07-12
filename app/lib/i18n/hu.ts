@@ -11,6 +11,7 @@ const hu: Partial<Translation> = {
   recommendedSites: "Ajánlott fogadóirodák",
   recommendedSitesDesc: "A legjobb bónuszokat, szorzókat és megbízhatóságot kínáló, gondosan válogatott fogadóirodák.",
   noMatches: "Nincs elérhető mérkőzés",
+  noEventsTodaySport: "Ma nincs elérhető {SPORT} esemény.",
   tbd: "Időpont nincs megadva",
   noExplanation: "Nincs elérhető magyarázat",
   aiTips: "MATCH SIGNAL",
@@ -56,6 +57,7 @@ sportPageDescription: "AI-alapú {SPORT} előrejelzések, fogadási elemzés és
   consensusProb: "Piaci konszenzus",
   consensusProbHint: "összes fogadóiroda átlaga",
   viewAllPredictions: "Összes előrejelzés megtekintése",
+  viewAllPredictionsSport: "Összes {SPORT} előrejelzés megtekintése →",
   faqPredictionQuestion: "Hogyan generálódnak a {SPORT} előrejelzések?",
 
 faqPredictionAnswer:
@@ -87,6 +89,18 @@ faqFreeAnswer:
     rating: "Értékelés",
     visitSite: "Látogass el",
 	compareAllOffers: "Összes ajánlat összehasonlítása →",
+  },
+  featuredSportsbooks: {
+    title: "Szerkesztői válogatás",
+    subtitle: "Legjobbra értékelt, megbízható fogadóirodáink",
+    seeAll: "Összes megbízható fogadóiroda megtekintése →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 Legjobbra értékelt fogadóirodák",
+    compareAll: "Összes összehasonlítása →",
+  },
+  stickyCta: {
+    text: "🏆 Legjobb fogadási bónuszok — Fogadóirodák összehasonlítása →",
   },
   bettingPage: {
     title: "Legjobb fogadóirodák",

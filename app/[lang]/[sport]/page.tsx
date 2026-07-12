@@ -228,7 +228,7 @@ console.log("DESCRIPTION TEMPLATE:", t.sportPageDescription);
               <TopRatedSportsbooksList
                 lang={lang}
                 variant="inline"
-                title={t.recommendedSites}
+                
               />
 
               {secondHalfBlock!.topPicks.length > 0 && (

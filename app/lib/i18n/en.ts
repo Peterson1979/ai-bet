@@ -11,6 +11,7 @@ const en: Translation = {
   recommendedSites: "Recommended sportsbooks & offers",
   recommendedSitesDesc: "Handpicked sportsbooks with the best bonuses, odds and reliability.",
   noMatches: "No matches available",
+  noEventsTodaySport: "No {SPORT} events available today.",
   tbd: "TBD",
   noExplanation: "No explanation available",
   aiTips: "MATCH SIGNAL",
@@ -56,6 +57,7 @@ sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and valu
   consensusProb: "Market consensus",
   consensusProbHint: "avg. all bookmakers",
   viewAllPredictions: "View all predictions",
+  viewAllPredictionsSport: "View all {SPORT} predictions →",
     faqPredictionQuestion: "How are {SPORT} predictions generated?",
   faqPredictionAnswer:
     "MatchSignal uses AI analysis, bookmaker odds data and market information to generate betting insights.",
@@ -85,6 +87,18 @@ sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and valu
     rating: "Rating",
     visitSite: "Visit Site",
     compareAllOffers: "Compare all offers →",
+  },
+  featuredSportsbooks: {
+    title: "Editor's Picks",
+    subtitle: "Our top-rated, trusted sportsbooks",
+    seeAll: "See all trusted sportsbooks →",
+  },
+  topRatedSportsbooks: {
+    title: "🏆 Top Rated Sportsbooks",
+    compareAll: "Compare All →",
+  },
+  stickyCta: {
+    text: "🏆 Best Betting Bonuses — Compare Sportsbooks →",
   },
   bettingPage: {
     title: "Best Betting Sites",
