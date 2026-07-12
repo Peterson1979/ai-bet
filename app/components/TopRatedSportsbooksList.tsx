@@ -1,20 +1,20 @@
 import { getTopRatedList } from "@/app/lib/affiliates";
-import { translations, Lang } from "@/app/lib/i18n";
 
 type Props = {
-  lang?: Lang;
+  lang?: string;
   bettingPageHref?: string;
   variant?: "footer" | "inline";
+  title?: string;
 };
 
 export default function TopRatedSportsbooksList({
   lang = "en",
   bettingPageHref,
   variant = "footer",
+  title = "🏆 Top Rated Sportsbooks",
 }: Props) {
   const sites = getTopRatedList(3);
   const href = bettingPageHref ?? `/${lang}/betting`;
-  const t = translations[lang] ?? translations.en;
 
   if (!sites.length) return null;
 
@@ -24,7 +24,7 @@ export default function TopRatedSportsbooksList({
     <section className={`w-full ${isInline ? "py-4" : "py-8"} px-4`}>
       {!isInline && (
         <h3 className="text-center text-base font-black text-white mb-4">
-          {t.topRatedSportsbooks.title}
+          {title}
         </h3>
       )}
 
@@ -42,7 +42,7 @@ export default function TopRatedSportsbooksList({
             <span className="text-cyan-300 font-black text-xs w-4">{i + 1}</span>
 
             {site.logoUrl ? (
-              <span className="flex items-center justify-center bg-white rounded-md px-2 py-1">
+              <span className="flex items-center justify-center bg-[#1a2744] rounded-md px-2 py-1 border border-cyan-300/20">
                 <img
                   src={site.logoUrl}
                   alt={site.name}
@@ -65,7 +65,7 @@ export default function TopRatedSportsbooksList({
           href={href}
           className="text-sm font-bold text-cyan-300 hover:text-cyan-100 underline underline-offset-4"
         >
-          {t.topRatedSportsbooks.compareAll}
+          Compare All →
         </a>
       </div>
     </section>

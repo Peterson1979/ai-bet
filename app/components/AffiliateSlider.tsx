@@ -67,7 +67,7 @@ export default function AffiliateSlider({ className = "" }: Props) {
             className="snap-start shrink-0 flex flex-col items-center justify-center gap-3 w-[150px] h-[110px] rounded-2xl border-2 border-cyan-300/30 bg-gradient-to-b from-[#0B1220] to-[#070D18] px-4 py-3 transition-all duration-200 hover:border-cyan-200 hover:-translate-y-1 hover:shadow-[0_0_0_1px_rgba(34,211,238,0.4),0_12px_30px_rgba(56,189,248,0.25)]"
           >
             {site.logoUrl ? (
-              <span className="flex items-center justify-center bg-white rounded-lg px-3 py-2 w-full">
+              <span className="flex items-center justify-center bg-[#1a2744] rounded-lg px-3 py-2 w-full border border-cyan-300/20">
                 <img
                   src={site.logoUrl}
                   alt={site.name}
