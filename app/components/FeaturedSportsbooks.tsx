@@ -1,20 +1,15 @@
 import { getFeaturedSites } from "@/app/lib/affiliates";
+import { translations, Lang } from "@/app/lib/i18n";
 
 type Props = {
-  lang?: string;
+  lang?: Lang;
   bettingPageHref?: string;
-  title?: string;
-  subtitle?: string;
 };
 
-export default function FeaturedSportsbooks({
-  lang = "en",
-  bettingPageHref,
-  title = "Editor's Picks",
-  subtitle = "Our top-rated, trusted sportsbooks",
-}: Props) {
+export default function FeaturedSportsbooks({ lang = "en", bettingPageHref }: Props) {
   const sites = getFeaturedSites(3);
   const href = bettingPageHref ?? `/${lang}/betting`;
+  const t = translations[lang] ?? translations.en;
 
   if (!sites.length) return null;
 
@@ -22,8 +17,8 @@ export default function FeaturedSportsbooks({
     <section className="w-full py-8 px-4">
       <div className="text-center mb-6">
         <span className="text-cyan-300 text-lg tracking-widest">★★★★★</span>
-        <h2 className="text-xl font-black text-white mt-1">{title}</h2>
-        <p className="text-sm text-slate-400">{subtitle}</p>
+        <h2 className="text-xl font-black text-white mt-1">{t.featuredSportsbooks.title}</h2>
+        <p className="text-sm text-slate-400">{t.featuredSportsbooks.subtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-5xl mx-auto">
@@ -42,7 +37,7 @@ export default function FeaturedSportsbooks({
             )}
 
             {site.logoUrl ? (
-              <span className="flex items-center justify-center bg-white rounded-xl px-4 py-3 mt-2 w-full max-w-[180px]">
+              <span className="flex items-center justify-center bg-[#1a2744] rounded-xl px-4 py-3 mt-2 w-full max-w-[180px] border border-cyan-300/20">
                 <img
                   src={site.logoUrl}
                   alt={site.name}
@@ -60,7 +55,7 @@ export default function FeaturedSportsbooks({
             <span className="text-sm text-slate-200">{site.bonus}</span>
 
             <span className="mt-2 w-full rounded-xl border-2 border-cyan-300/40 bg-cyan-500/10 py-2 text-sm font-bold text-cyan-200">
-              Claim Bonus →
+              {t.bettingPage.claimBonus} →
             </span>
           </a>
         ))}
@@ -71,7 +66,7 @@ export default function FeaturedSportsbooks({
           href={href}
           className="text-sm font-bold text-cyan-300 hover:text-cyan-100 underline underline-offset-4"
         >
-          See all trusted sportsbooks →
+          {t.featuredSportsbooks.seeAll}
         </a>
       </div>
     </section>

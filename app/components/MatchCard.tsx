@@ -307,7 +307,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
               />
             </span>
           )}
-          <span>{bookmakerSite?.name ?? data.bookmaker ?? t.viewOdds}</span>
+          <span>{t.viewOdds}</span>
           {ctaBadge && (
             <span className="text-[10px] font-black uppercase tracking-wide text-emerald-300 border border-emerald-400/40 bg-emerald-500/10 rounded-full px-2 py-0.5">
               {ctaBadge}
