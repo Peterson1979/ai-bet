@@ -11,7 +11,6 @@ const hu: Partial<Translation> = {
   recommendedSites: "Ajánlott fogadóirodák",
   recommendedSitesDesc: "A legjobb bónuszokat, szorzókat és megbízhatóságot kínáló, gondosan válogatott fogadóirodák.",
   noMatches: "Nincs elérhető mérkőzés",
-  noEventsTodaySport: "Ma nincs elérhető {SPORT} esemény.",
   tbd: "Időpont nincs megadva",
   noExplanation: "Nincs elérhető magyarázat",
   aiTips: "MATCH SIGNAL",
@@ -58,6 +57,7 @@ sportPageDescription: "AI-alapú {SPORT} előrejelzések, fogadási elemzés és
   consensusProbHint: "összes fogadóiroda átlaga",
   viewAllPredictions: "Összes előrejelzés megtekintése",
   viewAllPredictionsSport: "Összes {SPORT} előrejelzés megtekintése →",
+noEventsTodaySport: "Nincsenek elérhető {SPORT} események ma.",
   faqPredictionQuestion: "Hogyan generálódnak a {SPORT} előrejelzések?",
 
 faqPredictionAnswer:
@@ -91,17 +91,17 @@ faqFreeAnswer:
 	compareAllOffers: "Összes ajánlat összehasonlítása →",
   },
   featuredSportsbooks: {
-    title: "Szerkesztői válogatás",
-    subtitle: "Legjobbra értékelt, megbízható fogadóirodáink",
-    seeAll: "Összes megbízható fogadóiroda megtekintése →",
-  },
-  topRatedSportsbooks: {
-    title: "🏆 Legjobbra értékelt fogadóirodák",
-    compareAll: "Összes összehasonlítása →",
-  },
-  stickyCta: {
-    text: "🏆 Legjobb fogadási bónuszok — Fogadóirodák összehasonlítása →",
-  },
+title: "A szerkesztő válogatása",
+subtitle: "Legjobbra értékelt, megbízható sportfogadóirodaink",
+seeAll: "Összes megbízható sportfogadóiroda megtekintése →",
+},
+topRatedSportsbooks: {
+title: "🏆 Legjobbra értékelt sportfogadóirodák",
+compareAll: "Összes összehasonlítása →",
+},
+stickyCta: {
+text: "🏆 Legjobb fogadási bónuszok — Sportfogadóirodák összehasonlítása →",
+},
   bettingPage: {
     title: "Legjobb fogadóirodák",
     description: "Ajánlott fogadóirodák a legjobb bónuszokkal és szorzókkal.",
@@ -156,6 +156,8 @@ impliedProbFeatureTitle: "Piaci valószínűség és konszenzus",
     impliedProbFeatureDesc: "Minden kártyán két valószínűségi adat jelenik meg: az ajánlott fogadásra vonatkozó legjobb elérhető szorzóból számított valószínűség, valamint a piaci konszenzus — az összes szorzót kínáló fogadóiroda átlagos implied valószínűsége.",
    consensusProbFeatureTitle: "Value jelzés",
     consensusProbFeatureDesc: "Minden ajánlást összehasonlítunk a piaci konszenzus valószínűséggel. ✅ Piaccal összhangban azt jelenti, hogy az ajánlás megfelel a piaci átlagnak — megbízható, jól alátámasztott tipp. ⚡ Értékes ajánlás azt jelenti, hogy a piaci átlagnál jobb lehetőség. ⚠ Piaci átlag alatt azt jelenti, hogy az átlagnál gyengébb — óvatosan.",
+	riskTierFeatureTitle: "Kockázati szint",
+riskTierFeatureDesc: "Minden mérkőzéskártyán megjelenik egy kockázati besorolás: 🟢 Alacsony kockázat azt jelenti, hogy alacsony szorzójú, sok fogadóiroda által aktívan árazott eseményről van szó. 🟡 Közepes kockázat közepes szorzónál és elfogadható piaci mélységnél jelenik meg. 🔴 Magas kockázat magas szorzójú vagy kevés fogadóiroda által lefedett eseményt jelez — fokozott óvatossággal kezelendő.",
     aiBettingInsights: "A MatchSignal-ról",
     aiBettingInsightsDesc: "Ez a platform kizárólag tájékoztató jelleggel nyújt AI által generált tartalmat. Kérjük, játssz felelősségteljesen.",
     navAbout: "Rólunk",

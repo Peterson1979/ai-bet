@@ -11,7 +11,6 @@ const en: Translation = {
   recommendedSites: "Recommended sportsbooks & offers",
   recommendedSitesDesc: "Handpicked sportsbooks with the best bonuses, odds and reliability.",
   noMatches: "No matches available",
-  noEventsTodaySport: "No {SPORT} events available today.",
   tbd: "TBD",
   noExplanation: "No explanation available",
   aiTips: "MATCH SIGNAL",
@@ -58,6 +57,7 @@ sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and valu
   consensusProbHint: "avg. all bookmakers",
   viewAllPredictions: "View all predictions",
   viewAllPredictionsSport: "View all {SPORT} predictions →",
+noEventsTodaySport: "No {SPORT} events available today.",
     faqPredictionQuestion: "How are {SPORT} predictions generated?",
   faqPredictionAnswer:
     "MatchSignal uses AI analysis, bookmaker odds data and market information to generate betting insights.",
@@ -89,17 +89,17 @@ sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and valu
     compareAllOffers: "Compare all offers →",
   },
   featuredSportsbooks: {
-    title: "Editor's Picks",
-    subtitle: "Our top-rated, trusted sportsbooks",
-    seeAll: "See all trusted sportsbooks →",
-  },
-  topRatedSportsbooks: {
-    title: "🏆 Top Rated Sportsbooks",
-    compareAll: "Compare All →",
-  },
-  stickyCta: {
-    text: "🏆 Best Betting Bonuses — Compare Sportsbooks →",
-  },
+  title: "Editor's Picks",
+  subtitle: "Our top-rated, trusted sportsbooks",
+  seeAll: "See all trusted sportsbooks →",
+},
+topRatedSportsbooks: {
+  title: "🏆 Top Rated Sportsbooks",
+  compareAll: "Compare All →",
+},
+stickyCta: {
+  text: "🏆 Best Betting Bonuses — Compare Sportsbooks →",
+},
   bettingPage: {
     title: "Best Betting Sites",
     description: "Top recommended sportsbooks with the best bonuses and odds.",
@@ -154,6 +154,8 @@ sportPageDescription: "AI-powered {SPORT} predictions, betting analysis and valu
     impliedProbFeatureDesc: "Each match card shows two probability figures: the implied probability from the best available odds for the recommended bet, and the market consensus — the average implied probability across all bookmakers offering odds on that match.",
     consensusProbFeatureTitle: "Value Signal",
     consensusProbFeatureDesc: "Each pick is compared against the market consensus probability. ✅ Market aligned means the pick is priced in line with the overall market — a reliable, well-supported selection. ⚡ Value odds means the pick offers better value than the market average implies. ⚠ Below market means the pick is priced worse than the market average — proceed with caution.",
+	riskTierFeatureTitle: "Risk Tier",
+riskTierFeatureDesc: "Every match card displays a risk rating: 🟢 Low Risk means a low-odds event actively priced by many bookmakers. 🟡 Medium Risk appears at moderate odds with acceptable market depth. 🔴 High Risk flags high-odds or thinly covered events — proceed with extra caution.",
     aiBettingInsights: "About MatchSignal",
     aiBettingInsightsDesc: "This platform provides AI-generated content for informational purposes only. Please gamble responsibly.",
     navAbout: "About",

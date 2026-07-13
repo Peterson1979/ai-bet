@@ -10,11 +10,12 @@ export default function Footer() {
   const t = translations[lang] ?? translations.en;
 
   const features = [
-    { key: "matchPreviewFeature" },
-    { key: "marketDepthFeature" },
-    { key: "impliedProbFeature" },
-    { key: "consensusProbFeature" },
-  ];
+  { key: "matchPreviewFeature" },
+  { key: "marketDepthFeature" },
+  { key: "impliedProbFeature" },
+  { key: "consensusProbFeature" },
+  { key: "riskTierFeature" },
+];
 
   const getText = (key: string) => (t.footer as any)[key];
 

@@ -20,7 +20,6 @@ sportPageDescription: string;
   recommendedSites: string;
   recommendedSitesDesc: string;
   noMatches: string;
-  noEventsTodaySport: string;
   tbd: string;
   noExplanation: string;
   aiTips: string;
@@ -64,6 +63,7 @@ sportPageDescription: string;
   consensusProbHint: string;
   viewAllPredictions: string;
   viewAllPredictionsSport: string;
+noEventsTodaySport: string;
   sports: {
     topPicks: string;
     football: string;
@@ -87,18 +87,18 @@ sportPageDescription: string;
   visitSite: string;
   compareAllOffers: string;
 };
-  featuredSportsbooks: {
-    title: string;
-    subtitle: string;
-    seeAll: string;
-  };
-  topRatedSportsbooks: {
-    title: string;
-    compareAll: string;
-  };
-  stickyCta: {
-    text: string;
-  };
+featuredSportsbooks: {
+  title: string;
+  subtitle: string;
+  seeAll: string;
+};
+topRatedSportsbooks: {
+  title: string;
+  compareAll: string;
+};
+stickyCta: {
+  text: string;
+};
   bettingPage: {
     title: string;
     description: string;
@@ -153,6 +153,8 @@ sportPageDescription: string;
     impliedProbFeatureDesc: string;
     consensusProbFeatureTitle: string;
     consensusProbFeatureDesc: string;
+	riskTierFeatureTitle: string;
+riskTierFeatureDesc: string;
     aiBettingInsights: string;
     aiBettingInsightsDesc: string;
     navAbout: string;
