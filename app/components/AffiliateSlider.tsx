@@ -2,27 +2,26 @@
 
 import { useEffect, useRef } from "react";
 import { getSliderSites } from "@/app/lib/affiliates";
+import { translations, Lang } from "@/app/lib/i18n";
 
 type Props = {
   className?: string;
+  lang?: Lang;
 };
 
-export default function AffiliateSlider({ className = "" }: Props) {
+export default function AffiliateSlider({ className = "", lang = "en" }: Props) {
   const sites = getSliderSites();
+  const t = translations[lang] ?? translations.en;
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Desktop auto-scroll (paused on hover), native swipe on touch devices
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-
     const isFinePointer = window.matchMedia("(pointer: fine)").matches;
     if (!isFinePointer) return;
-
     let frame: number;
     let paused = false;
-    const speed = 0.4; // px per animation frame
-
+    const speed = 0.4;
     const step = () => {
       if (!paused && track) {
         track.scrollLeft += speed;
@@ -32,14 +31,11 @@ export default function AffiliateSlider({ className = "" }: Props) {
       }
       frame = requestAnimationFrame(step);
     };
-
     const pause = () => (paused = true);
     const resume = () => (paused = false);
-
     track.addEventListener("mouseenter", pause);
     track.addEventListener("mouseleave", resume);
     frame = requestAnimationFrame(step);
-
     return () => {
       cancelAnimationFrame(frame);
       track.removeEventListener("mouseenter", pause);
@@ -49,7 +45,6 @@ export default function AffiliateSlider({ className = "" }: Props) {
 
   if (!sites.length) return null;
 
-  // Duplicated once so the auto-scroll loop feels continuous on desktop
   const looped = [...sites, ...sites];
 
   return (
@@ -78,13 +73,12 @@ export default function AffiliateSlider({ className = "" }: Props) {
               <span className="text-sm font-black text-white">{site.name}</span>
             )}
             <span className="text-[11px] font-bold text-cyan-300 uppercase tracking-wide">
-              Get Bonus →
+              {t.bettingPage.claimBonus} →
             </span>
           </a>
         ))}
       </div>
 
-      {/* Edge fade + swipe hint (mobile only) */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-[#060B14] to-transparent md:hidden" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-12 flex items-center justify-end pr-1 bg-gradient-to-l from-[#060B14] to-transparent md:hidden">
         <span className="text-cyan-300 text-lg animate-pulse">›</span>
