@@ -90,7 +90,7 @@ export default async function SportNewsPage({
 
             {/* Sidebar: Top Betting Sites kompakt, logókkal */}
             <aside className="h-fit xl:sticky xl:top-24 space-y-3">
-              <h2 className="text-xl font-black text-white mb-4">{(t as any).topRatedSportsbooks?.title ?? "🏆 Top Rated Sportsbooks"}</h2>
+              <h2 className="text-xl font-black text-white mb-4">{t.topRatedSportsbooks.title}</h2>
               {sites.map((site, i) => (
                 <a
                   key={site.id}
@@ -102,7 +102,7 @@ export default async function SportNewsPage({
                   <span className="text-cyan-300 font-black text-xs w-4 shrink-0">{i + 1}</span>
 
                   {site.logoUrl ? (
-                    <span className="flex items-center justify-center bg-[#1a2744] rounded-md px-2 py-1 shrink-0 border border-cyan-300/20">
+                    <span className="flex items-center justify-center bg-white rounded-md px-2 py-1 shrink-0">
                       <img
                         src={site.logoUrl}
                         alt={site.name}
@@ -129,7 +129,7 @@ export default async function SportNewsPage({
                   href={`/${lang}/betting`}
                   className="text-sm font-bold text-cyan-300 hover:text-cyan-100 underline underline-offset-4"
                 >
-                  {(t as any).topRatedSportsbooks?.compareAll ?? "Compare All →"}
+                  {t.topRatedSportsbooks.compareAll}
                 </a>
               </div>
             </aside>

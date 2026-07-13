@@ -36,8 +36,13 @@ export default async function BettingPage({
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3" id="top-betting-sites">
             {sites.map((site, index) => (
-              <a key={site.id} href={site.url} target="_blank" rel="noopener noreferrer sponsored"
-                className="group relative block overflow-hidden rounded-[24px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] via-[#0F172A] to-[#070B14] p-6 shadow-[0_0_35px_rgba(56,189,248,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/60 hover:shadow-[0_0_60px_rgba(56,189,248,0.18)]">
+              <a
+                key={site.id}
+                href={site.url}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="group relative block overflow-hidden rounded-[24px] border border-cyan-400/20 bg-gradient-to-b from-[#0B1220] via-[#0F172A] to-[#070B14] p-6 shadow-[0_0_35px_rgba(56,189,248,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-cyan-300/60 hover:shadow-[0_0_60px_rgba(56,189,248,0.18)]"
+              >
                 <div className="mb-4 flex items-center justify-between">
                   <span className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-200">
                     {t.bettingPage.recommended} #{index + 1}
@@ -46,18 +51,27 @@ export default async function BettingPage({
                     {site.rating}
                   </span>
                 </div>
-				{site.logoUrl && (
-  <div className="mb-4 flex items-center justify-center bg-[#1a2744] rounded-xl px-4 py-3 w-full max-w-[200px] border border-cyan-300/20">
-    <img
-      src={site.logoUrl}
-      alt={site.name}
-      className="max-h-[36px] max-w-[160px] object-contain"
-    />
-  </div>
-)}
-                <h3 className="text-2xl font-black text-white">{site.name}</h3>
+
+                {/* Logo */}
+                {site.logoUrl ? (
+                  <div className="mb-4 flex items-center justify-center bg-white rounded-xl px-4 py-3 w-full max-w-[200px]">
+                    <img
+                      src={site.logoUrl}
+                      alt={site.name}
+                      className="max-h-[36px] max-w-[160px] object-contain"
+                    />
+                  </div>
+                ) : (
+                  <h3 className="text-2xl font-black text-white mb-2">{site.name}</h3>
+                )}
+
+                {site.logoUrl && (
+                  <h3 className="text-xl font-black text-white">{site.name}</h3>
+                )}
+
                 <p className="mt-2 text-lg font-semibold text-cyan-300">{site.bonus}</p>
                 <p className="mt-3 text-sm text-slate-300">{t.bettingPage.siteDescription}</p>
+
                 <div className="mt-6 flex items-center justify-between rounded-2xl border border-cyan-400/15 bg-[#060B14] p-4">
                   <div className="text-sm text-slate-300">{t.bettingPage.claimBonus}</div>
                   <div className="rounded-full border border-cyan-400/30 bg-cyan-500/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-cyan-300 transition-all group-hover:bg-cyan-400/20 group-hover:border-cyan-300/60">
