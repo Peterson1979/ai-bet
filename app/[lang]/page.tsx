@@ -120,7 +120,7 @@ export default async function HomePage({
           </div>
 
           {/* AFFILIATE SLIDER — 3 mp alatt fogadóirodához juttat */}
-          <AffiliateSlider />
+         
 <AffiliateSlider lang={lang} />
           {/* FEATURED SPORTSBOOKS — Editor's Picks (Top 3) */}
           <FeaturedSportsbooks lang={lang} />
