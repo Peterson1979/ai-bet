@@ -5,7 +5,7 @@ import { redis } from "../../lib/redis";
 import { selectPick } from "../../lib/social/select-pick";
 import { generateCaption } from "../../lib/social/caption";
 import { renderCard } from "../../lib/social/render-card";
-import { savePublicImage } from "../../lib/social/upload-image";
+import { uploadImageToBlob } from "../../lib/social/upload-image";
 import { publishInstagram } from "../../lib/social/publish-instagram";
 import { publishFacebook } from "../../lib/social/publish-facebook";
 import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
@@ -39,11 +39,11 @@ export async function GET(req: Request) {
 
   const tmpDir = path.join(process.cwd(), "tmp");
   await fs.mkdir(tmpDir, { recursive: true });
-  const fileName = `${pick.id}.png`;
+  const fileName = `${pick.id}.jpg`;
   const localPath = path.join(tmpDir, fileName);
 
   await renderCard(pick, localPath);
-  const imageUrl = await savePublicImage(localPath, fileName);
+const imageUrl = await uploadImageToBlob(localPath, fileName);
 
   const ig = await publishInstagram(imageUrl, caption);
   const fb = await publishFacebook(imageUrl, caption);

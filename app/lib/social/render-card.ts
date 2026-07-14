@@ -75,7 +75,7 @@ export async function renderCard(pick: Candidate, outputPath: string) {
   </html>`;
 
   await page.setContent(html, { waitUntil: "networkidle" });
-  await page.screenshot({ path: outputPath, type: "png" });
+ await page.screenshot({ path: outputPath, type: "jpeg", quality: 92 });
   await browser.close();
 
   await fs.access(path.resolve(outputPath));

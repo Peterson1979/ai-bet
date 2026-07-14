@@ -1,13 +1,14 @@
 import fs from "fs/promises";
-import path from "path";
-import { env } from "../env";
+import { put } from "@vercel/blob";
 
-export async function savePublicImage(localPath: string, fileName: string) {
-  const publicDir = path.join(process.cwd(), "public", "generated");
-  await fs.mkdir(publicDir, { recursive: true });
+export async function uploadImageToBlob(localPath: string, fileName: string) {
+  const file = await fs.readFile(localPath);
 
-  const dest = path.join(publicDir, fileName);
-  await fs.copyFile(localPath, dest);
+  const blob = await put(`social/${fileName}`, file, {
+    access: "public",
+    contentType: "image/jpeg",
+    addRandomSuffix: true,
+  });
 
-  return `${env.PUBLIC_BASE_URL}/generated/${fileName}`;
+  return blob.url;
 }
