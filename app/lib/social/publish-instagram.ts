@@ -19,7 +19,9 @@ export async function publishInstagram(imageUrl: string, caption: string) {
   const createJson = await createRes.json();
 
   if (!createRes.ok) {
-    throw new Error(`Instagram media creation failed: ${JSON.stringify(createJson)}`);
+    throw new Error(
+      `Instagram media creation failed: ${JSON.stringify(createJson, null, 2)}`
+    );
   }
 
   const creationId = createJson.id;
@@ -41,7 +43,9 @@ export async function publishInstagram(imageUrl: string, caption: string) {
   const publishJson = await publishRes.json();
 
   if (!publishRes.ok) {
-    throw new Error(`Instagram publish failed: ${JSON.stringify(publishJson)}`);
+    throw new Error(
+      `Instagram publish failed: ${JSON.stringify(publishJson, null, 2)}`
+    );
   }
 
   return publishJson;
