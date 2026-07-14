@@ -50,7 +50,10 @@ export async function GET(req: Request) {
 
   const caption = await generateCaption(pick);
 
-  const cardUrl = new URL("/api/social-card", req.url);
+  const requestUrl = new URL(req.url);
+  const origin = requestUrl.origin;
+
+  const cardUrl = new URL("/api/social-card", origin);
   cardUrl.searchParams.set("league", pick.league);
   cardUrl.searchParams.set("homeTeam", pick.homeTeam);
   cardUrl.searchParams.set("awayTeam", pick.awayTeam);

@@ -1,33 +1,34 @@
-import puppeteer from "puppeteer";
-
 export async function renderCardToJpeg(url: string) {
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  const apiUrl = new URL("https://api.microlink.io/");
+
+  apiUrl.searchParams.set("url", url);
+  apiUrl.searchParams.set("screenshot", "true");
+  apiUrl.searchParams.set("meta", "false");
+  apiUrl.searchParams.set("embed", "screenshot.url");
+
+  const res = await fetch(apiUrl.toString(), {
+    method: "GET",
   });
 
-  try {
-    const page = await browser.newPage();
-
-    await page.setViewport({
-      width: 1200,
-      height: 1200,
-      deviceScaleFactor: 2,
-    });
-
-    await page.goto(url, {
-      waitUntil: "networkidle0",
-      timeout: 60_000,
-    });
-
-    const jpegBuffer = await page.screenshot({
-      type: "jpeg",
-      quality: 90,
-      fullPage: false,
-    });
-
-    return jpegBuffer;
-  } finally {
-    await browser.close();
+  if (!res.ok) {
+    throw new Error(`screenshot api failed: ${res.status}`);
   }
+
+  const json = await res.json();
+  const screenshotUrl = json?.data?.screenshot?.url;
+
+  if (!screenshotUrl) {
+    throw new Error("screenshot api returned no screenshot url");
+  }
+
+  const imageRes = await fetch(screenshotUrl, {
+    method: "GET",
+  });
+
+  if (!imageRes.ok) {
+    throw new Error(`screenshot image fetch failed: ${imageRes.status}`);
+  }
+
+  const imageBuffer = await imageRes.arrayBuffer();
+  return imageBuffer;
 }

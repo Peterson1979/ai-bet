@@ -7,7 +7,10 @@ export async function uploadBufferToBlob(
   fileName: string,
   contentType = "image/jpeg"
 ) {
-  const body = data instanceof Uint8Array ? Buffer.from(data) : Buffer.from(data);
+  const body =
+    data instanceof Uint8Array
+      ? Buffer.from(data)
+      : Buffer.from(new Uint8Array(data));
 
   const blob = await put(`social/${fileName}`, body, {
     access: "public",
