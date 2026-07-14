@@ -7,6 +7,7 @@ import { publishFacebook } from "../../lib/social/publish-facebook";
 import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
 import type { PredictionFile } from "../../lib/social/types";
 import { uploadBufferToBlob } from "../../lib/social/upload-image";
+import { renderCardToJpeg } from "../../lib/social/render-card-to-jpeg";
 
 export async function GET(req: Request) {
   const auth = req.headers.get("authorization");
@@ -67,19 +68,14 @@ export async function GET(req: Request) {
     })
   );
 
-  const imageRes = await fetch(cardUrl.toString(), { method: "GET" });
-
-  if (!imageRes.ok) {
-    throw new Error(`social-card failed: ${imageRes.status}`);
-  }
-
-  const imageBuffer = await imageRes.arrayBuffer();
+  const jpegBuffer = await renderCardToJpeg(cardUrl.toString());
 
   const imageUrl = await uploadBufferToBlob(
-    imageBuffer,
-    `${pick.id}.jpg`
+    jpegBuffer,
+    `${pick.id}.jpg`,
+    "image/jpeg"
   );
-//ok
+
   const ig = await publishInstagram(imageUrl, caption);
   const fb = await publishFacebook(imageUrl, caption);
 
