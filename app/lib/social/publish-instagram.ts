@@ -1,6 +1,12 @@
 import { env } from "../env";
 
 export async function publishInstagram(imageUrl: string, caption: string) {
+  console.log("Instagram publish start", {
+    imageUrl,
+    captionLength: caption.length,
+    instagramBusinessId: env.INSTAGRAM_BUSINESS_ID,
+  });
+
   const createBody = new URLSearchParams({
     image_url: imageUrl,
     caption,
@@ -18,12 +24,23 @@ export async function publishInstagram(imageUrl: string, caption: string) {
 
   const createJson = await createRes.json();
 
+  console.log("Instagram media create response", {
+    status: createRes.status,
+    ok: createRes.ok,
+    json: createJson,
+  });
+
   if (!createRes.ok) {
     console.error("Instagram media create error JSON:", createJson);
     throw new Error("Instagram media creation failed");
   }
 
   const creationId = createJson.id;
+
+  if (!creationId) {
+    console.error("Instagram media create missing id:", createJson);
+    throw new Error("Instagram media creation returned no creation id");
+  }
 
   const publishBody = new URLSearchParams({
     creation_id: creationId,
@@ -38,8 +55,14 @@ export async function publishInstagram(imageUrl: string, caption: string) {
       body: publishBody,
     }
   );
-//ok
+
   const publishJson = await publishRes.json();
+
+  console.log("Instagram media publish response", {
+    status: publishRes.status,
+    ok: publishRes.ok,
+    json: publishJson,
+  });
 
   if (!publishRes.ok) {
     console.error("Instagram media publish error JSON:", publishJson);
