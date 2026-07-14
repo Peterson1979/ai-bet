@@ -11,7 +11,7 @@ import { uploadBufferToBlob } from "../../lib/social/upload-image";
 export async function GET(req: Request) {
   const auth = req.headers.get("authorization");
 
- if (auth !== `Bearer ${env.CRON_SECRET}`) {
+  if (auth !== `Bearer ${env.CRON_SECRET}`) {
     return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 
@@ -77,8 +77,7 @@ export async function GET(req: Request) {
 
   const imageUrl = await uploadBufferToBlob(
     imageBuffer,
-    `${pick.id}.png`,
-    "image/png"
+    `${pick.id}.jpg`
   );
 
   const ig = await publishInstagram(imageUrl, caption);
