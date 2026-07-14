@@ -79,16 +79,31 @@ export async function GET(req: Request) {
     "image/jpeg"
   );
 
-  const ig = await publishInstagram(imageUrl, caption);
-  const fb = await publishFacebook(imageUrl, caption);
+ const ig = await publishInstagram(imageUrl, caption);
 
-  await savePostedResult(pick, { imageUrl, caption, ig, fb });
+let fb: unknown = null;
+let facebookError: string | null = null;
 
-  return Response.json({
-    ok: true,
-    pickId: pick.id,
-    imageUrl,
-    instagram: ig,
-    facebook: fb,
-  });
+try {
+  fb = await publishFacebook(imageUrl, caption);
+} catch (error) {
+  facebookError =
+    error instanceof Error ? error.message : "unknown facebook publish error";
+}
+
+await savePostedResult(pick, {
+  imageUrl,
+  caption,
+  ig,
+  fb,
+});
+
+return Response.json({
+  ok: true,
+  pickId: pick.id,
+  imageUrl,
+  instagram: ig,
+  facebook: fb,
+  facebookError,
+});
 }
