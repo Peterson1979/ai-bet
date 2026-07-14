@@ -1,4 +1,5 @@
 import { put } from "@vercel/blob";
+import { env } from "../env";
 
 export async function uploadBufferToBlob(
   data: ArrayBuffer,
@@ -9,6 +10,7 @@ export async function uploadBufferToBlob(
     access: "public",
     addRandomSuffix: true,
     contentType,
+    token: env.BLOB_READ_WRITE_TOKEN,
   });
 
   return blob.url;
