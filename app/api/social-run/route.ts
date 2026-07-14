@@ -79,7 +79,7 @@ export async function GET(req: Request) {
     imageBuffer,
     `${pick.id}.jpg`
   );
-
+//ok
   const ig = await publishInstagram(imageUrl, caption);
   const fb = await publishFacebook(imageUrl, caption);
 
