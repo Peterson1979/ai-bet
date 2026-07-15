@@ -3,7 +3,7 @@ import { env } from "../env";
 export async function publishFacebook(imageUrl: string, message: string) {
   const params = new URLSearchParams();
   params.append("url", imageUrl);
-  params.append("caption", message);
+  params.append("message", message);
   params.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
 
   const res = await fetch(

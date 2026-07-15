@@ -9,107 +9,116 @@ import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-resu
 import type { PredictionFile } from "../../lib/social/types";
 import { uploadBufferToBlob } from "../../lib/social/upload-image";
 import { renderCardToJpeg } from "../../lib/social/render-card-to-jpeg";
-
 export async function GET(req: Request) {
-  const auth = req.headers.get("authorization");
+  try {
+    const auth = req.headers.get("authorization");
 
-  if (auth !== `Bearer ${env.CRON_SECRET}`) {
-    return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
-  }
+    if (auth !== `Bearer ${env.CRON_SECRET}`) {
+      return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
+    }
 
-  const force = new URL(req.url).searchParams.get("force") === "1";
+    const force = new URL(req.url).searchParams.get("force") === "1";
 
-  const now = new Date();
-  const dateKey = now.toISOString().slice(0, 10);
-  const redisKey = `predictions:${dateKey}`;
+    const now = new Date();
+    const dateKey = now.toISOString().slice(0, 10);
+    const redisKey = `predictions:${dateKey}`;
 
-  const predictions = await redis.get<PredictionFile>(redisKey);
+    const predictions = await redis.get<PredictionFile>(redisKey);
 
-  if (!predictions) {
+    if (!predictions) {
+      return Response.json(
+        { ok: false, error: `missing redis key ${redisKey}` },
+        { status: 404 }
+      );
+    }
+
+    const pick = selectPick(predictions, now);
+
+    if (!pick) {
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: "no eligible pick",
+      });
+    }
+
+    if (!force && (await isAlreadyPosted(pick.id))) {
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: "already posted",
+        pickId: pick.id,
+      });
+    }
+
+    const instagramCaption = await generateCaption(pick);
+    const facebookCaption = await generateFacebookCaption(pick);
+
+    const origin = env.NEXT_PUBLIC_SITE_URL;
+
+    const cardUrl = new URL("/api/social-card", origin);
+    cardUrl.searchParams.set("league", pick.league);
+    cardUrl.searchParams.set("homeTeam", pick.homeTeam);
+    cardUrl.searchParams.set("awayTeam", pick.awayTeam);
+    cardUrl.searchParams.set("prediction", pick.prediction);
+    cardUrl.searchParams.set("market", pick.market);
+    cardUrl.searchParams.set("odds", pick.bestOdds.toFixed(2));
+    cardUrl.searchParams.set("valueDiff", pick.valueDiff.toFixed(2));
+    cardUrl.searchParams.set("riskTier", pick.riskTier);
+    cardUrl.searchParams.set("bookmakerCount", String(pick.bookmakerCount ?? 0));
+    cardUrl.searchParams.set(
+      "startTime",
+      new Date(pick.startTime).toLocaleString("en-GB", {
+        dateStyle: "medium",
+        timeStyle: "short",
+        timeZone: "UTC",
+      })
+    );
+
+    const jpegBuffer = await renderCardToJpeg(cardUrl.toString());
+
+    const imageUrl = await uploadBufferToBlob(
+      jpegBuffer,
+      `${pick.id}.jpg`,
+      "image/jpeg"
+    );
+
+    const ig = await publishInstagram(imageUrl, instagramCaption);
+
+    let fb: unknown = null;
+    let facebookError: string | null = null;
+
+    try {
+      fb = await publishFacebook(imageUrl, facebookCaption);
+    } catch (error) {
+      facebookError =
+        error instanceof Error ? error.message : "unknown facebook publish error";
+    }
+
+    await savePostedResult(pick, {
+      imageUrl,
+      caption: instagramCaption,
+      ig,
+      fb,
+    });
+
+    return Response.json({
+      ok: true,
+      pickId: pick.id,
+      imageUrl,
+      instagram: ig,
+      facebook: fb,
+      instagramCaption,
+      facebookCaption,
+      facebookError,
+    });
+  } catch (error) {
     return Response.json(
-      { ok: false, error: `missing redis key ${redisKey}` },
-      { status: 404 }
+      {
+        ok: false,
+        error: error instanceof Error ? error.message : "unknown route error",
+      },
+      { status: 500 }
     );
   }
-
-  const pick = selectPick(predictions, now);
-
-  if (!pick) {
-    return Response.json({
-      ok: true,
-      skipped: true,
-      reason: "no eligible pick",
-    });
-  }
-
-  if (!force && await isAlreadyPosted(pick.id)) {
-    return Response.json({
-      ok: true,
-      skipped: true,
-      reason: "already posted",
-      pickId: pick.id,
-    });
-  }
-
-  const instagramCaption = await generateCaption(pick);
-  const facebookCaption = await generateFacebookCaption(pick);
-
-  const origin = env.NEXT_PUBLIC_SITE_URL;
-
-  const cardUrl = new URL("/api/social-card", origin);
-  cardUrl.searchParams.set("league", pick.league);
-  cardUrl.searchParams.set("homeTeam", pick.homeTeam);
-  cardUrl.searchParams.set("awayTeam", pick.awayTeam);
-  cardUrl.searchParams.set("prediction", pick.prediction);
-  cardUrl.searchParams.set("market", pick.market);
-  cardUrl.searchParams.set("odds", pick.bestOdds.toFixed(2));
-  cardUrl.searchParams.set("valueDiff", pick.valueDiff.toFixed(2));
-  cardUrl.searchParams.set("riskTier", pick.riskTier);
-  cardUrl.searchParams.set("bookmakerCount", String(pick.bookmakerCount ?? 0));
-  cardUrl.searchParams.set(
-    "startTime",
-    new Date(pick.startTime).toLocaleString("en-GB", {
-      dateStyle: "medium",
-      timeStyle: "short",
-      timeZone: "UTC",
-    })
-  );
-
-  const jpegBuffer = await renderCardToJpeg(cardUrl.toString());
-
-  const imageUrl = await uploadBufferToBlob(
-    jpegBuffer,
-    `${pick.id}.jpg`,
-    "image/jpeg"
-  );
-
-  const ig = await publishInstagram(imageUrl, instagramCaption);
-
-  let fb: unknown = null;
-  let facebookError: string | null = null;
-
-try {
-  fb = await publishFacebook(imageUrl, facebookCaption);
-} catch (error) {
-    facebookError =
-      error instanceof Error ? error.message : "unknown facebook publish error";
-  }
-
-  await savePostedResult(pick, {
-    imageUrl,
-    caption: instagramCaption,
-    ig,
-    fb,
-  });
-
-  return Response.json({
-    ok: true,
-    pickId: pick.id,
-    imageUrl,
-    instagram: ig,
-    facebook: fb,
-    instagramCaption,
-    facebookCaption,
-    facebookError,
-  });
 }
