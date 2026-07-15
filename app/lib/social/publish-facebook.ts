@@ -9,11 +9,10 @@ export async function publishFacebook(imageUrl: string, message: string) {
     messageLength: message.length,
   });
 
-  const uploadBody = new URLSearchParams({
-    url: imageUrl,
-    published: "false",
-    access_token: env.FACEBOOK_ACCESS_TOKEN,
-  });
+  const uploadBody =
+    `url=${encodeURIComponent(imageUrl)}` +
+    `&published=false` +
+    `&access_token=${encodeURIComponent(env.FACEBOOK_ACCESS_TOKEN)}`;
 
   const uploadRes = await fetch(
     `${GRAPH_BASE}/${env.FACEBOOK_PAGE_ID}/photos`,
@@ -22,7 +21,7 @@ export async function publishFacebook(imageUrl: string, message: string) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: uploadBody.toString(),
+      body: uploadBody,
     }
   );
 
@@ -47,11 +46,12 @@ export async function publishFacebook(imageUrl: string, message: string) {
   }
 
   const photoId = uploadJson.id;
+  const attachedMediaJson = JSON.stringify({ media_fbid: photoId });
 
-  const feedBody = new URLSearchParams();
-  feedBody.append("message", message);
-  feedBody.append("attached_media[0]", JSON.stringify({ media_fbid: photoId }));
-  feedBody.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
+  const feedBody =
+    `message=${encodeURIComponent(message)}` +
+    `&attached_media[0]=${encodeURIComponent(attachedMediaJson)}` +
+    `&access_token=${encodeURIComponent(env.FACEBOOK_ACCESS_TOKEN)}`;
 
   const feedRes = await fetch(
     `${GRAPH_BASE}/${env.FACEBOOK_PAGE_ID}/feed`,
@@ -60,7 +60,7 @@ export async function publishFacebook(imageUrl: string, message: string) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: feedBody.toString(),
+      body: feedBody,
     }
   );
 
