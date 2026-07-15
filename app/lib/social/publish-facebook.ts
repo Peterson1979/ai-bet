@@ -4,7 +4,6 @@ export async function publishFacebook(imageUrl: string, message: string) {
   const body = new URLSearchParams({
     url: imageUrl,
     message,
-    published: "true",
     access_token: env.FACEBOOK_ACCESS_TOKEN,
   });
 
@@ -12,10 +11,7 @@ export async function publishFacebook(imageUrl: string, message: string) {
     `https://graph.facebook.com/v25.0/${env.FACEBOOK_PAGE_ID}/photos`,
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-      },
-      body: body.toString(),
+      body,
     }
   );
 
