@@ -50,8 +50,7 @@ export async function GET(req: Request) {
 
   const caption = await generateCaption(pick);
 
-  const requestUrl = new URL(req.url);
-  const origin = requestUrl.origin;
+const origin = env.NEXT_PUBLIC_SITE_URL;
 
   const cardUrl = new URL("/api/social-card", origin);
   cardUrl.searchParams.set("league", pick.league);
