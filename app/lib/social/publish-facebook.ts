@@ -3,7 +3,8 @@ import { env } from "../env";
 export async function publishFacebook(imageUrl: string, message: string) {
   const body = new URLSearchParams({
     url: imageUrl,
-    caption: message,
+    message,
+    published: "true",
     access_token: env.FACEBOOK_ACCESS_TOKEN,
   });
 
@@ -12,9 +13,9 @@ export async function publishFacebook(imageUrl: string, message: string) {
     {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
       },
-      body,
+      body: body.toString(),
     }
   );
 
