@@ -42,72 +42,54 @@ export async function GET(req: Request) {
           justifyContent: "space-between",
           position: "relative",
           overflow: "hidden",
-          background: "linear-gradient(180deg, #07101d 0%, #0b1324 55%, #08111f 100%)",
+          background: "linear-gradient(180deg, #050b16 0%, #0a1323 45%, #08111f 100%)",
           color: "#ffffff",
-          fontFamily: "sans-serif",
-          padding: "54px",
+          fontFamily: "Arial, sans-serif",
+          padding: "44px",
         }}
       >
-        {/* háttér glow */}
+        {/* felső fénycsík */}
         <div
           style={{
             position: "absolute",
-            top: "-120px",
-            left: "-80px",
-            width: "420px",
-            height: "420px",
-            borderRadius: "999px",
-            background: "rgba(34, 211, 238, 0.16)",
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-140px",
-            right: "-100px",
-            width: "420px",
-            height: "420px",
-            borderRadius: "999px",
-            background: "rgba(59, 130, 246, 0.14)",
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: "260px",
-            left: "60px",
-            right: "60px",
-            height: "1px",
-            background: "rgba(56, 189, 248, 0.22)",
-            display: "flex",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: "720px",
-            left: "60px",
-            right: "60px",
-            height: "1px",
-            background: "rgba(56, 189, 248, 0.18)",
+            top: "0",
+            left: "70px",
+            right: "70px",
+            height: "2px",
+            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(56,189,248,0.9) 50%, rgba(0,0,0,0) 100%)",
             display: "flex",
           }}
         />
 
-        {/* content */}
+        {/* külső fényes keret */}
+        <div
+          style={{
+            position: "absolute",
+            inset: "20px",
+            borderRadius: "34px",
+            border: "1px solid rgba(56,189,248,0.22)",
+            display: "flex",
+          }}
+        />
+
+        {/* belső panel */}
         <div
           style={{
             position: "relative",
             zIndex: 2,
+            width: "100%",
+            height: "100%",
             display: "flex",
             flexDirection: "column",
-            height: "100%",
             justifyContent: "space-between",
+            borderRadius: "28px",
+            border: "1px solid rgba(56,189,248,0.18)",
+            background: "linear-gradient(180deg, rgba(8,16,30,0.94) 0%, rgba(7,14,26,0.96) 100%)",
+            padding: "38px",
+            boxShadow: "0 0 0 1px rgba(125,211,252,0.06)",
           }}
         >
-          {/* Header */}
+          {/* HEADER */}
           <div
             style={{
               display: "flex",
@@ -118,74 +100,100 @@ export async function GET(req: Request) {
           >
             <div
               style={{
-                fontSize: 72,
-                fontWeight: 900,
-                color: "#f8fafc",
-                letterSpacing: 1,
+                width: "100%",
+                borderRadius: "26px",
+                border: "1px solid rgba(56,189,248,0.28)",
+                background: "linear-gradient(180deg, rgba(10,19,35,0.98) 0%, rgba(7,13,24,0.98) 100%)",
+                padding: "22px 28px",
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center",
-                lineHeight: 1,
+                boxShadow: "0 14px 30px rgba(0,0,0,0.28)",
               }}
             >
-              MATCH
-              <span style={{ color: "#38bdf8", marginLeft: "8px", display: "flex" }}>
-                SIGNAL
-              </span>
-            </div>
+              <div
+                style={{
+                  fontSize: 74,
+                  fontWeight: 900,
+                  letterSpacing: 1,
+                  color: "#f8fafc",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  lineHeight: 1,
+                }}
+              >
+                MATCH
+                <span
+                  style={{
+                    color: "#38bdf8",
+                    marginLeft: "8px",
+                    display: "flex",
+                  }}
+                >
+                  SIGNAL
+                </span>
+              </div>
 
-            <div
-              style={{
-                marginTop: "22px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "12px 24px",
-                borderRadius: "999px",
-                border: "1px solid rgba(56,189,248,0.45)",
-                background: "rgba(12, 22, 40, 0.9)",
-                color: "#93c5fd",
-                fontSize: 26,
-                fontWeight: 700,
-              }}
-            >
-              {league}
+              <div
+                style={{
+                  marginTop: "18px",
+                  borderRadius: "999px",
+                  padding: "10px 22px",
+                  border: "1px solid rgba(56,189,248,0.35)",
+                  background: "linear-gradient(180deg, rgba(15,27,48,1) 0%, rgba(11,21,39,1) 100%)",
+                  color: "#93c5fd",
+                  fontSize: 24,
+                  fontWeight: 800,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {league}
+              </div>
             </div>
           </div>
 
-          {/* Match row */}
+          {/* MATCH PANEL */}
           <div
             style={{
+              marginTop: "22px",
+              width: "100%",
+              borderRadius: "28px",
+              border: "1px solid rgba(56,189,248,0.22)",
+              background: "linear-gradient(180deg, rgba(9,18,34,0.98) 0%, rgba(7,14,26,0.98) 100%)",
+              padding: "24px",
               display: "flex",
               flexDirection: "column",
-              gap: "18px",
-              marginTop: "16px",
+              boxShadow: "0 16px 34px rgba(0,0,0,0.25)",
             }}
           >
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
+                alignItems: "stretch",
                 justifyContent: "space-between",
-                gap: "24px",
+                gap: "16px",
               }}
             >
               <div
                 style={{
-                  width: "420px",
-                  minHeight: "112px",
+                  width: "392px",
+                  minHeight: "118px",
+                  borderRadius: "24px",
+                  border: "1px solid rgba(56,189,248,0.22)",
+                  background: "linear-gradient(180deg, #11213d 0%, #0b1629 100%)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   textAlign: "center",
-                  borderRadius: "24px",
-                  border: "1px solid rgba(56,189,248,0.28)",
-                  background: "rgba(9, 18, 34, 0.92)",
-                  color: "#ffffff",
-                  fontSize: 56,
+                  padding: "18px",
+                  fontSize: 54,
                   fontWeight: 900,
                   lineHeight: 1.05,
-                  padding: "20px",
+                  color: "#ffffff",
+                  boxShadow: "0 10px 18px rgba(0,0,0,0.22)",
                 }}
               >
                 {homeTeam}
@@ -193,17 +201,18 @@ export async function GET(req: Request) {
 
               <div
                 style={{
-                  width: "120px",
-                  height: "120px",
-                  borderRadius: "999px",
-                  border: "2px solid rgba(56,189,248,0.45)",
-                  background: "linear-gradient(180deg, #0d1b31 0%, #0b1528 100%)",
-                  color: "#38bdf8",
-                  fontSize: 42,
-                  fontWeight: 900,
+                  width: "128px",
+                  minHeight: "118px",
+                  borderRadius: "28px",
+                  border: "1px solid rgba(56,189,248,0.34)",
+                  background: "linear-gradient(180deg, #153056 0%, #0b1a30 100%)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
+                  fontSize: 42,
+                  fontWeight: 900,
+                  color: "#7dd3fc",
+                  boxShadow: "0 0 0 1px rgba(56,189,248,0.1)",
                 }}
               >
                 VS
@@ -211,20 +220,21 @@ export async function GET(req: Request) {
 
               <div
                 style={{
-                  width: "420px",
-                  minHeight: "112px",
+                  width: "392px",
+                  minHeight: "118px",
+                  borderRadius: "24px",
+                  border: "1px solid rgba(56,189,248,0.22)",
+                  background: "linear-gradient(180deg, #11213d 0%, #0b1629 100%)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   textAlign: "center",
-                  borderRadius: "24px",
-                  border: "1px solid rgba(56,189,248,0.28)",
-                  background: "rgba(9, 18, 34, 0.92)",
-                  color: "#ffffff",
-                  fontSize: 56,
+                  padding: "18px",
+                  fontSize: 54,
                   fontWeight: 900,
                   lineHeight: 1.05,
-                  padding: "20px",
+                  color: "#ffffff",
+                  boxShadow: "0 10px 18px rgba(0,0,0,0.22)",
                 }}
               >
                 {awayTeam}
@@ -233,58 +243,68 @@ export async function GET(req: Request) {
 
             <div
               style={{
+                marginTop: "18px",
                 display: "flex",
                 justifyContent: "center",
-                fontSize: 24,
-                color: "#cbd5e1",
-                fontWeight: 600,
+                alignItems: "center",
                 textAlign: "center",
+                fontSize: 24,
+                fontWeight: 700,
+                color: "#dbeafe",
               }}
             >
               {startTime}
             </div>
           </div>
 
-          {/* Stat cards */}
+          {/* STATS */}
           <div
             style={{
+              marginTop: "22px",
               display: "flex",
               justifyContent: "space-between",
-              gap: "18px",
-              marginTop: "12px",
+              gap: "16px",
             }}
           >
             <div
               style={{
-                width: "312px",
+                width: "298px",
                 borderRadius: "26px",
-                border: "2px solid rgba(56,189,248,0.36)",
-                background: "linear-gradient(180deg, rgba(13,24,43,0.98) 0%, rgba(9,17,31,0.98) 100%)",
-                padding: "24px",
+                border: "1px solid rgba(56,189,248,0.24)",
+                background: "linear-gradient(180deg, #12213b 0%, #0c172a 100%)",
+                padding: "22px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 textAlign: "center",
+                boxShadow: "0 14px 28px rgba(0,0,0,0.24)",
               }}
             >
               <div
                 style={{
-                  fontSize: 18,
-                  color: "#38bdf8",
-                  fontWeight: 800,
-                  letterSpacing: 1,
+                  width: "100%",
+                  borderRadius: "16px",
+                  background: "linear-gradient(180deg, rgba(56,189,248,0.18) 0%, rgba(56,189,248,0.08) 100%)",
+                  border: "1px solid rgba(56,189,248,0.16)",
+                  padding: "10px",
                   display: "flex",
+                  justifyContent: "center",
+                  fontSize: 18,
+                  fontWeight: 800,
+                  color: "#7dd3fc",
+                  letterSpacing: 1,
                 }}
               >
                 PICK
               </div>
+
               <div
                 style={{
-                  marginTop: "16px",
-                  fontSize: 28,
-                  color: "#facc15",
+                  marginTop: "20px",
+                  fontSize: 30,
                   fontWeight: 900,
                   lineHeight: 1.12,
+                  color: "#fcd34d",
                   display: "flex",
                 }}
               >
@@ -294,35 +314,43 @@ export async function GET(req: Request) {
 
             <div
               style={{
-                width: "312px",
+                width: "298px",
                 borderRadius: "26px",
-                border: "2px solid rgba(250,204,21,0.32)",
-                background: "linear-gradient(180deg, rgba(13,24,43,0.98) 0%, rgba(9,17,31,0.98) 100%)",
-                padding: "24px",
+                border: "1px solid rgba(245,158,11,0.24)",
+                background: "linear-gradient(180deg, #1a2135 0%, #111827 100%)",
+                padding: "22px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 textAlign: "center",
+                boxShadow: "0 14px 28px rgba(0,0,0,0.24)",
               }}
             >
               <div
                 style={{
-                  fontSize: 18,
-                  color: "#f8d34f",
-                  fontWeight: 800,
-                  letterSpacing: 1,
+                  width: "100%",
+                  borderRadius: "16px",
+                  background: "linear-gradient(180deg, rgba(250,204,21,0.18) 0%, rgba(250,204,21,0.08) 100%)",
+                  border: "1px solid rgba(250,204,21,0.16)",
+                  padding: "10px",
                   display: "flex",
+                  justifyContent: "center",
+                  fontSize: 18,
+                  fontWeight: 800,
+                  color: "#fde68a",
+                  letterSpacing: 1,
                 }}
               >
                 VALUE SIGNAL
               </div>
+
               <div
                 style={{
                   marginTop: "16px",
-                  fontSize: 46,
-                  color: "#facc15",
+                  fontSize: 48,
                   fontWeight: 900,
                   lineHeight: 1,
+                  color: "#facc15",
                   display: "flex",
                 }}
               >
@@ -332,35 +360,43 @@ export async function GET(req: Request) {
 
             <div
               style={{
-                width: "312px",
+                width: "298px",
                 borderRadius: "26px",
-                border: "2px solid rgba(251,191,36,0.34)",
-                background: "linear-gradient(180deg, rgba(13,24,43,0.98) 0%, rgba(9,17,31,0.98) 100%)",
-                padding: "24px",
+                border: "1px solid rgba(234,179,8,0.22)",
+                background: "linear-gradient(180deg, #1a2135 0%, #111827 100%)",
+                padding: "22px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 textAlign: "center",
+                boxShadow: "0 14px 28px rgba(0,0,0,0.24)",
               }}
             >
               <div
                 style={{
-                  fontSize: 18,
-                  color: "#fde68a",
-                  fontWeight: 800,
-                  letterSpacing: 1,
+                  width: "100%",
+                  borderRadius: "16px",
+                  background: "linear-gradient(180deg, rgba(250,204,21,0.16) 0%, rgba(250,204,21,0.07) 100%)",
+                  border: "1px solid rgba(250,204,21,0.14)",
+                  padding: "10px",
                   display: "flex",
+                  justifyContent: "center",
+                  fontSize: 18,
+                  fontWeight: 800,
+                  color: "#fde68a",
+                  letterSpacing: 1,
                 }}
               >
                 RISK TIER
               </div>
+
               <div
                 style={{
                   marginTop: "16px",
                   fontSize: 40,
-                  color: "#facc15",
                   fontWeight: 900,
                   lineHeight: 1,
+                  color: "#facc15",
                   display: "flex",
                 }}
               >
@@ -369,29 +405,29 @@ export async function GET(req: Request) {
             </div>
           </div>
 
-          {/* Footer */}
+          {/* FOOTER */}
           <div
             style={{
+              marginTop: "22px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              textAlign: "center",
-              gap: "18px",
-              marginTop: "10px",
+              gap: "16px",
             }}
           >
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                padding: "10px 20px",
                 borderRadius: "999px",
-                background: "rgba(15, 23, 42, 0.95)",
-                border: "1px solid rgba(56,189,248,0.28)",
+                border: "1px solid rgba(56,189,248,0.22)",
+                background: "linear-gradient(180deg, rgba(12,22,40,0.98) 0%, rgba(10,18,34,0.98) 100%)",
+                padding: "12px 24px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
                 fontSize: 22,
+                fontWeight: 800,
                 color: "#dbeafe",
-                fontWeight: 700,
+                textAlign: "center",
               }}
             >
               BASED ON {bookmakerCount} BOOKMAKERS
@@ -401,14 +437,17 @@ export async function GET(req: Request) {
               style={{
                 width: "100%",
                 borderRadius: "999px",
-                padding: "20px 28px",
-                background: "linear-gradient(90deg, #facc15 0%, #fde047 100%)",
-                color: "#0b1220",
-                fontSize: 34,
-                fontWeight: 900,
+                border: "1px solid rgba(250,204,21,0.34)",
+                background: "linear-gradient(180deg, #fde047 0%, #facc15 100%)",
+                padding: "22px 30px",
                 display: "flex",
                 justifyContent: "center",
+                alignItems: "center",
                 textAlign: "center",
+                color: "#111827",
+                fontSize: 34,
+                fontWeight: 900,
+                boxShadow: "0 10px 18px rgba(0,0,0,0.18)",
               }}
             >
               GET MORE AI PICKS
@@ -416,12 +455,13 @@ export async function GET(req: Request) {
 
             <div
               style={{
-                fontSize: 28,
-                color: "#c7d2fe",
-                fontWeight: 700,
+                marginTop: "4px",
+                fontSize: 30,
+                fontWeight: 800,
+                color: "#dbeafe",
+                textAlign: "center",
                 display: "flex",
                 justifyContent: "center",
-                textAlign: "center",
                 lineHeight: 1.2,
               }}
             >
