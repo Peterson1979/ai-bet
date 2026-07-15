@@ -16,6 +16,54 @@ function formatRiskTier(riskTier: string) {
   return riskTier ? riskTier.toUpperCase() : "MEDIUM";
 }
 
+function getLeagueIcon(league: string) {
+  const l = league.toLowerCase();
+
+  if (
+    l.includes("nba") ||
+    l.includes("basketball") ||
+    l.includes("euroleague")
+  ) return "🏀";
+
+  if (
+    l.includes("tennis") ||
+    l.includes("atp") ||
+    l.includes("wta") ||
+    l.includes("us open") ||
+    l.includes("wimbledon")
+  ) return "🎾";
+
+  if (
+    l.includes("mlb") ||
+    l.includes("baseball")
+  ) return "⚾";
+
+  if (
+    l.includes("nhl") ||
+    l.includes("hockey")
+  ) return "🏒";
+
+  if (
+    l.includes("ufc") ||
+    l.includes("mma") ||
+    l.includes("boxing") ||
+    l.includes("fight")
+  ) return "🥊";
+
+  if (
+    l.includes("soccer") ||
+    l.includes("football") ||
+    l.includes("fifa") ||
+    l.includes("premier league") ||
+    l.includes("champions league") ||
+    l.includes("la liga") ||
+    l.includes("serie a") ||
+    l.includes("bundesliga")
+  ) return "⚽";
+
+  return "🏆";
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
@@ -30,6 +78,7 @@ export async function GET(req: Request) {
 
   const valueLabel = formatValueDiff(valueDiff);
   const riskLabel = formatRiskTier(riskTier);
+  const leagueIcon = getLeagueIcon(league);
 
   return new ImageResponse(
     (
@@ -42,37 +91,37 @@ export async function GET(req: Request) {
           justifyContent: "space-between",
           position: "relative",
           overflow: "hidden",
-          background: "linear-gradient(180deg, #050b16 0%, #0a1323 45%, #08111f 100%)",
+          background: "linear-gradient(180deg, #040913 0%, #0a1424 45%, #08111f 100%)",
           color: "#ffffff",
           fontFamily: "Arial, sans-serif",
-          padding: "44px",
+          padding: "38px",
         }}
       >
-        {/* felső fénycsík */}
+        {/* outer frame */}
         <div
           style={{
             position: "absolute",
-            top: "0",
-            left: "70px",
-            right: "70px",
-            height: "2px",
-            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(56,189,248,0.9) 50%, rgba(0,0,0,0) 100%)",
-            display: "flex",
-          }}
-        />
-
-        {/* külső fényes keret */}
-        <div
-          style={{
-            position: "absolute",
-            inset: "20px",
+            inset: "16px",
             borderRadius: "34px",
-            border: "1px solid rgba(56,189,248,0.22)",
+            border: "1px solid rgba(56,189,248,0.18)",
+            boxShadow: "0 0 0 1px rgba(125,211,252,0.04)",
             display: "flex",
           }}
         />
 
-        {/* belső panel */}
+        {/* top glow line */}
+        <div
+          style={{
+            position: "absolute",
+            top: "18px",
+            left: "120px",
+            right: "120px",
+            height: "2px",
+            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(56,189,248,0.85) 50%, rgba(0,0,0,0) 100%)",
+            display: "flex",
+          }}
+        />
+
         <div
           style={{
             position: "relative",
@@ -83,40 +132,39 @@ export async function GET(req: Request) {
             flexDirection: "column",
             justifyContent: "space-between",
             borderRadius: "28px",
-            border: "1px solid rgba(56,189,248,0.18)",
-            background: "linear-gradient(180deg, rgba(8,16,30,0.94) 0%, rgba(7,14,26,0.96) 100%)",
-            padding: "38px",
-            boxShadow: "0 0 0 1px rgba(125,211,252,0.06)",
+            border: "1px solid rgba(56,189,248,0.14)",
+            background: "linear-gradient(180deg, rgba(7,14,27,0.98) 0%, rgba(8,16,31,0.98) 100%)",
+            padding: "34px",
           }}
         >
-          {/* HEADER */}
+          {/* header */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
+              gap: "18px",
             }}
           >
             <div
               style={{
                 width: "100%",
-                borderRadius: "26px",
-                border: "1px solid rgba(56,189,248,0.28)",
-                background: "linear-gradient(180deg, rgba(10,19,35,0.98) 0%, rgba(7,13,24,0.98) 100%)",
-                padding: "22px 28px",
+                borderRadius: "28px",
+                border: "1px solid rgba(56,189,248,0.24)",
+                background: "linear-gradient(180deg, rgba(10,19,35,1) 0%, rgba(7,13,24,1) 100%)",
+                padding: "24px 28px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                boxShadow: "0 14px 30px rgba(0,0,0,0.28)",
+                textAlign: "center",
+                boxShadow: "0 18px 35px rgba(0,0,0,0.30)",
               }}
             >
               <div
                 style={{
-                  fontSize: 74,
+                  fontSize: 76,
                   fontWeight: 900,
-                  letterSpacing: 1,
                   color: "#f8fafc",
+                  letterSpacing: 1,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -126,8 +174,8 @@ export async function GET(req: Request) {
                 MATCH
                 <span
                   style={{
-                    color: "#38bdf8",
                     marginLeft: "8px",
+                    color: "#38bdf8",
                     display: "flex",
                   }}
                 >
@@ -139,140 +187,150 @@ export async function GET(req: Request) {
                 style={{
                   marginTop: "18px",
                   borderRadius: "999px",
-                  padding: "10px 22px",
-                  border: "1px solid rgba(56,189,248,0.35)",
-                  background: "linear-gradient(180deg, rgba(15,27,48,1) 0%, rgba(11,21,39,1) 100%)",
-                  color: "#93c5fd",
+                  padding: "12px 24px",
+                  border: "1px solid rgba(56,189,248,0.32)",
+                  background: "linear-gradient(180deg, #13233e 0%, #0d182c 100%)",
+                  color: "#dbeafe",
                   fontSize: 24,
                   fontWeight: 800,
                   display: "flex",
-                  justifyContent: "center",
                   alignItems: "center",
+                  justifyContent: "center",
+                  gap: "12px",
+                  boxShadow: "0 8px 18px rgba(0,0,0,0.22)",
                 }}
               >
-                {league}
+                <span style={{ display: "flex", fontSize: 24 }}>{leagueIcon}</span>
+                <span style={{ display: "flex" }}>{league}</span>
               </div>
             </div>
           </div>
 
-          {/* MATCH PANEL */}
+          {/* matchup */}
           <div
             style={{
-              marginTop: "22px",
-              width: "100%",
-              borderRadius: "28px",
-              border: "1px solid rgba(56,189,248,0.22)",
-              background: "linear-gradient(180deg, rgba(9,18,34,0.98) 0%, rgba(7,14,26,0.98) 100%)",
-              padding: "24px",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 16px 34px rgba(0,0,0,0.25)",
+              gap: "18px",
+              marginTop: "8px",
             }}
           >
             <div
               style={{
+                width: "100%",
+                borderRadius: "28px",
+                border: "1px solid rgba(56,189,248,0.22)",
+                background: "linear-gradient(180deg, rgba(9,18,34,0.98) 0%, rgba(7,14,26,0.98) 100%)",
+                padding: "22px",
                 display: "flex",
-                alignItems: "stretch",
-                justifyContent: "space-between",
-                gap: "16px",
+                flexDirection: "column",
+                boxShadow: "0 18px 34px rgba(0,0,0,0.26)",
               }}
             >
               <div
                 style={{
-                  width: "392px",
-                  minHeight: "118px",
-                  borderRadius: "24px",
-                  border: "1px solid rgba(56,189,248,0.22)",
-                  background: "linear-gradient(180deg, #11213d 0%, #0b1629 100%)",
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  padding: "18px",
-                  fontSize: 54,
-                  fontWeight: 900,
-                  lineHeight: 1.05,
-                  color: "#ffffff",
-                  boxShadow: "0 10px 18px rgba(0,0,0,0.22)",
+                  alignItems: "stretch",
+                  justifyContent: "space-between",
+                  gap: "14px",
                 }}
               >
-                {homeTeam}
+                <div
+                  style={{
+                    width: "390px",
+                    minHeight: "118px",
+                    borderRadius: "24px",
+                    border: "1px solid rgba(56,189,248,0.20)",
+                    background: "linear-gradient(180deg, #142746 0%, #0c172b 100%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    color: "#ffffff",
+                    fontSize: 52,
+                    fontWeight: 900,
+                    lineHeight: 1.05,
+                    padding: "18px",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
+                  }}
+                >
+                  {homeTeam}
+                </div>
+
+                <div
+                  style={{
+                    width: "132px",
+                    minHeight: "118px",
+                    borderRadius: "30px",
+                    border: "1px solid rgba(56,189,248,0.28)",
+                    background: "linear-gradient(180deg, #183662 0%, #10213d 60%, #0b1629 100%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#7dd3fc",
+                    fontSize: 42,
+                    fontWeight: 900,
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
+                  }}
+                >
+                  VS
+                </div>
+
+                <div
+                  style={{
+                    width: "390px",
+                    minHeight: "118px",
+                    borderRadius: "24px",
+                    border: "1px solid rgba(56,189,248,0.20)",
+                    background: "linear-gradient(180deg, #142746 0%, #0c172b 100%)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    color: "#ffffff",
+                    fontSize: 52,
+                    fontWeight: 900,
+                    lineHeight: 1.05,
+                    padding: "18px",
+                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
+                  }}
+                >
+                  {awayTeam}
+                </div>
               </div>
 
               <div
                 style={{
-                  width: "128px",
-                  minHeight: "118px",
-                  borderRadius: "28px",
-                  border: "1px solid rgba(56,189,248,0.34)",
-                  background: "linear-gradient(180deg, #153056 0%, #0b1a30 100%)",
+                  marginTop: "18px",
                   display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 42,
-                  fontWeight: 900,
-                  color: "#7dd3fc",
-                  boxShadow: "0 0 0 1px rgba(56,189,248,0.1)",
-                }}
-              >
-                VS
-              </div>
-
-              <div
-                style={{
-                  width: "392px",
-                  minHeight: "118px",
-                  borderRadius: "24px",
-                  border: "1px solid rgba(56,189,248,0.22)",
-                  background: "linear-gradient(180deg, #11213d 0%, #0b1629 100%)",
-                  display: "flex",
-                  alignItems: "center",
                   justifyContent: "center",
                   textAlign: "center",
-                  padding: "18px",
-                  fontSize: 54,
-                  fontWeight: 900,
-                  lineHeight: 1.05,
-                  color: "#ffffff",
-                  boxShadow: "0 10px 18px rgba(0,0,0,0.22)",
+                  fontSize: 24,
+                  color: "#dbeafe",
+                  fontWeight: 700,
                 }}
               >
-                {awayTeam}
+                {startTime}
               </div>
-            </div>
-
-            <div
-              style={{
-                marginTop: "18px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-                fontSize: 24,
-                fontWeight: 700,
-                color: "#dbeafe",
-              }}
-            >
-              {startTime}
             </div>
           </div>
 
-          {/* STATS */}
+          {/* stats */}
           <div
             style={{
-              marginTop: "22px",
               display: "flex",
               justifyContent: "space-between",
               gap: "16px",
+              marginTop: "2px",
             }}
           >
             <div
               style={{
                 width: "298px",
-                borderRadius: "26px",
+                borderRadius: "28px",
                 border: "1px solid rgba(56,189,248,0.24)",
-                background: "linear-gradient(180deg, #12213b 0%, #0c172a 100%)",
-                padding: "22px",
+                background: "linear-gradient(180deg, rgba(20,33,58,0.98) 0%, rgba(12,23,42,0.98) 100%)",
+                padding: "20px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -284,14 +342,14 @@ export async function GET(req: Request) {
                 style={{
                   width: "100%",
                   borderRadius: "16px",
-                  background: "linear-gradient(180deg, rgba(56,189,248,0.18) 0%, rgba(56,189,248,0.08) 100%)",
-                  border: "1px solid rgba(56,189,248,0.16)",
+                  border: "1px solid rgba(56,189,248,0.20)",
+                  background: "linear-gradient(180deg, rgba(56,189,248,0.16) 0%, rgba(56,189,248,0.06) 100%)",
                   padding: "10px",
                   display: "flex",
                   justifyContent: "center",
+                  color: "#7dd3fc",
                   fontSize: 18,
                   fontWeight: 800,
-                  color: "#7dd3fc",
                   letterSpacing: 1,
                 }}
               >
@@ -300,7 +358,7 @@ export async function GET(req: Request) {
 
               <div
                 style={{
-                  marginTop: "20px",
+                  marginTop: "18px",
                   fontSize: 30,
                   fontWeight: 900,
                   lineHeight: 1.12,
@@ -315,10 +373,10 @@ export async function GET(req: Request) {
             <div
               style={{
                 width: "298px",
-                borderRadius: "26px",
-                border: "1px solid rgba(245,158,11,0.24)",
-                background: "linear-gradient(180deg, #1a2135 0%, #111827 100%)",
-                padding: "22px",
+                borderRadius: "28px",
+                border: "1px solid rgba(250,204,21,0.22)",
+                background: "linear-gradient(180deg, rgba(27,33,50,0.98) 0%, rgba(15,22,38,0.98) 100%)",
+                padding: "20px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -330,14 +388,14 @@ export async function GET(req: Request) {
                 style={{
                   width: "100%",
                   borderRadius: "16px",
-                  background: "linear-gradient(180deg, rgba(250,204,21,0.18) 0%, rgba(250,204,21,0.08) 100%)",
-                  border: "1px solid rgba(250,204,21,0.16)",
+                  border: "1px solid rgba(250,204,21,0.20)",
+                  background: "linear-gradient(180deg, rgba(250,204,21,0.16) 0%, rgba(250,204,21,0.06) 100%)",
                   padding: "10px",
                   display: "flex",
                   justifyContent: "center",
+                  color: "#fde68a",
                   fontSize: 18,
                   fontWeight: 800,
-                  color: "#fde68a",
                   letterSpacing: 1,
                 }}
               >
@@ -349,9 +407,9 @@ export async function GET(req: Request) {
                   marginTop: "16px",
                   fontSize: 48,
                   fontWeight: 900,
-                  lineHeight: 1,
                   color: "#facc15",
                   display: "flex",
+                  lineHeight: 1,
                 }}
               >
                 {valueLabel}
@@ -361,10 +419,10 @@ export async function GET(req: Request) {
             <div
               style={{
                 width: "298px",
-                borderRadius: "26px",
-                border: "1px solid rgba(234,179,8,0.22)",
-                background: "linear-gradient(180deg, #1a2135 0%, #111827 100%)",
-                padding: "22px",
+                borderRadius: "28px",
+                border: "1px solid rgba(250,204,21,0.22)",
+                background: "linear-gradient(180deg, rgba(27,33,50,0.98) 0%, rgba(15,22,38,0.98) 100%)",
+                padding: "20px",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -376,14 +434,14 @@ export async function GET(req: Request) {
                 style={{
                   width: "100%",
                   borderRadius: "16px",
-                  background: "linear-gradient(180deg, rgba(250,204,21,0.16) 0%, rgba(250,204,21,0.07) 100%)",
-                  border: "1px solid rgba(250,204,21,0.14)",
+                  border: "1px solid rgba(250,204,21,0.20)",
+                  background: "linear-gradient(180deg, rgba(250,204,21,0.16) 0%, rgba(250,204,21,0.06) 100%)",
                   padding: "10px",
                   display: "flex",
                   justifyContent: "center",
+                  color: "#fde68a",
                   fontSize: 18,
                   fontWeight: 800,
-                  color: "#fde68a",
                   letterSpacing: 1,
                 }}
               >
@@ -395,9 +453,9 @@ export async function GET(req: Request) {
                   marginTop: "16px",
                   fontSize: 40,
                   fontWeight: 900,
-                  lineHeight: 1,
                   color: "#facc15",
                   display: "flex",
+                  lineHeight: 1,
                 }}
               >
                 {riskLabel}
@@ -405,29 +463,29 @@ export async function GET(req: Request) {
             </div>
           </div>
 
-          {/* FOOTER */}
+          {/* footer */}
           <div
             style={{
-              marginTop: "22px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               gap: "16px",
+              marginTop: "8px",
             }}
           >
             <div
               style={{
                 borderRadius: "999px",
                 border: "1px solid rgba(56,189,248,0.22)",
-                background: "linear-gradient(180deg, rgba(12,22,40,0.98) 0%, rgba(10,18,34,0.98) 100%)",
-                padding: "12px 24px",
+                background: "linear-gradient(180deg, rgba(12,22,40,1) 0%, rgba(10,18,34,1) 100%)",
+                padding: "12px 22px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                textAlign: "center",
+                color: "#dbeafe",
                 fontSize: 22,
                 fontWeight: 800,
-                color: "#dbeafe",
-                textAlign: "center",
               }}
             >
               BASED ON {bookmakerCount} BOOKMAKERS
@@ -437,31 +495,42 @@ export async function GET(req: Request) {
               style={{
                 width: "100%",
                 borderRadius: "999px",
-                border: "1px solid rgba(250,204,21,0.34)",
-                background: "linear-gradient(180deg, #fde047 0%, #facc15 100%)",
-                padding: "22px 30px",
+                border: "1px solid rgba(253,224,71,0.34)",
+                background: "linear-gradient(180deg, #fef08a 0%, #facc15 52%, #eab308 100%)",
+                padding: "10px",
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-                color: "#111827",
-                fontSize: 34,
-                fontWeight: 900,
-                boxShadow: "0 10px 18px rgba(0,0,0,0.18)",
+                boxShadow: "0 14px 26px rgba(0,0,0,0.22)",
               }}
             >
-              GET MORE AI PICKS
+              <div
+                style={{
+                  width: "100%",
+                  borderRadius: "999px",
+                  background: "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 28%, rgba(255,255,255,0) 100%)",
+                  padding: "18px 26px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "14px",
+                  color: "#111827",
+                  fontSize: 34,
+                  fontWeight: 900,
+                  textAlign: "center",
+                }}
+              >
+                <span style={{ display: "flex" }}>GET MORE AI PICKS</span>
+                <span style={{ display: "flex", fontSize: 30 }}>→</span>
+              </div>
             </div>
 
             <div
               style={{
-                marginTop: "4px",
                 fontSize: 30,
                 fontWeight: 800,
                 color: "#dbeafe",
-                textAlign: "center",
                 display: "flex",
                 justifyContent: "center",
+                textAlign: "center",
                 lineHeight: 1.2,
               }}
             >
@@ -474,6 +543,7 @@ export async function GET(req: Request) {
     {
       width: 1080,
       height: 1080,
+      emoji: "twemoji",
     }
   );
 }
