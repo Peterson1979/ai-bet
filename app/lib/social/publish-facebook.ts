@@ -8,7 +8,7 @@ export async function publishFacebook(imageUrl: string, message: string) {
     imageUrl,
     messageLength: message.length,
   });
-
+console.log("FACEBOOK_PUBLISH_VERSION", "page-token-ok-v1");
   const uploadBody =
     `url=${encodeURIComponent(imageUrl)}` +
     `&published=false` +
@@ -39,7 +39,7 @@ export async function publishFacebook(imageUrl: string, message: string) {
     ok: uploadRes.ok,
     json: uploadJson,
   });
-
+//ok
   if (!uploadRes.ok || !uploadJson?.id) {
     console.error("Facebook photo upload error JSON:", uploadJson);
     throw new Error(`Facebook photo upload failed: ${JSON.stringify(uploadJson)}`);
