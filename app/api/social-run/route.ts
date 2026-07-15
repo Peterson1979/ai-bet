@@ -17,6 +17,8 @@ export async function GET(req: Request) {
     return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 
+  const force = new URL(req.url).searchParams.get("force") === "1";
+
   const now = new Date();
   const dateKey = now.toISOString().slice(0, 10);
   const redisKey = `predictions:${dateKey}`;
@@ -40,7 +42,7 @@ export async function GET(req: Request) {
     });
   }
 
-  if (await isAlreadyPosted(pick.id)) {
+  if (!force && await isAlreadyPosted(pick.id)) {
     return Response.json({
       ok: true,
       skipped: true,
