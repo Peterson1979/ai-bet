@@ -89,7 +89,7 @@ export async function GET(req: Request) {
   let facebookError: string | null = null;
 
   try {
-    fb = await publishFacebook(imageUrl, facebookCaption);
+   fb = await publishFacebook(Buffer.from(jpegBuffer), facebookCaption);
   } catch (error) {
     facebookError =
       error instanceof Error ? error.message : "unknown facebook publish error";
