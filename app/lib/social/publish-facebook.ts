@@ -1,34 +1,68 @@
 import { env } from "../env";
 
-export async function publishFacebook(imageUrl: string, message: string) {
-  const params = new URLSearchParams();
-  params.append("url", imageUrl);
-  params.append("message", message);
-  params.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
+const GRAPH_BASE = "https://graph.facebook.com/v25.0";
 
-  const res = await fetch(
-    `https://graph.facebook.com/v25.0/${env.FACEBOOK_PAGE_ID}/photos`,
+export async function publishFacebook(imageUrl: string, message: string) {
+  const uploadParams = new URLSearchParams();
+  uploadParams.append("url", imageUrl);
+  uploadParams.append("published", "false");
+  uploadParams.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
+
+  const uploadRes = await fetch(
+    `${GRAPH_BASE}/${env.FACEBOOK_PAGE_ID}/photos`,
     {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: params.toString(),
+      body: uploadParams.toString(),
     }
   );
 
-  const text = await res.text();
-  let json: unknown;
+  const uploadText = await uploadRes.text();
+  let uploadJson: any;
 
   try {
-    json = JSON.parse(text);
+    uploadJson = JSON.parse(uploadText);
   } catch {
-    json = { raw: text };
+    uploadJson = { raw: uploadText };
   }
 
-  if (!res.ok) {
-    throw new Error(`Facebook publish failed: ${JSON.stringify(json)}`);
+  if (!uploadRes.ok || !uploadJson.id) {
+    throw new Error(`Facebook photo upload failed: ${JSON.stringify(uploadJson)}`);
   }
 
-  return json;
+  const feedParams = new URLSearchParams();
+  feedParams.append("message", message);
+  feedParams.append("attached_media[0]", JSON.stringify({ media_fbid: uploadJson.id }));
+  feedParams.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
+
+  const feedRes = await fetch(
+    `${GRAPH_BASE}/${env.FACEBOOK_PAGE_ID}/feed`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: feedParams.toString(),
+    }
+  );
+
+  const feedText = await feedRes.text();
+  let feedJson: unknown;
+
+  try {
+    feedJson = JSON.parse(feedText);
+  } catch {
+    feedJson = { raw: feedText };
+  }
+
+  if (!feedRes.ok) {
+    throw new Error(`Facebook feed publish failed: ${JSON.stringify(feedJson)}`);
+  }
+
+  return {
+    photo: uploadJson,
+    post: feedJson,
+  };
 }
