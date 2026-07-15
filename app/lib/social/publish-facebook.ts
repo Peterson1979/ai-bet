@@ -1,6 +1,6 @@
 import { env } from "../env";
 
-export async function publishFacebook(imageBuffer: Buffer, message: string) {
+export async function publishFacebook(imageBuffer: Buffer, _message: string) {
   const form = new FormData();
 
   const arrayBuffer = imageBuffer.buffer.slice(
@@ -13,7 +13,6 @@ export async function publishFacebook(imageBuffer: Buffer, message: string) {
   });
 
   form.append("source", file);
-  form.append("caption", message);
   form.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
 
   const res = await fetch(
