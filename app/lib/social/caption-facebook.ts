@@ -48,10 +48,12 @@ function formatValue(valueDiff: number | null | undefined) {
   if (typeof valueDiff !== "number") return null;
   return `${valueDiff >= 0 ? "+" : ""}${valueDiff.toFixed(2)}%`;
 }
-export async function generateCaption(pick: TopPick) {
+
+export async function generateFacebookCaption(pick: TopPick) {
   const emoji = getSportEmoji(pick.league ?? "");
   const sportTag = getSportHashtag(pick.league ?? "");
   const value = formatValue(pick.valueDiff);
+  const url = "https://www.matchsignal.pro";
 
   return [
     `${pick.homeTeam} vs ${pick.awayTeam} ${emoji}`,
@@ -60,7 +62,8 @@ export async function generateCaption(pick: TopPick) {
     `Risk Tier: ${pick.riskTier}`,
     ...(value ? [`Value Signal: ${value}`] : []),
     "",
-    `Want more high-value AI picks, match insights, and daily betting opportunities? Visit MatchSignal now — the link is in our bio.`,
+    `Get more free AI betting tips at MatchSignal:`,
+    url,
     "",
     `#MatchSignal ${sportTag} #BettingTips #SportsPredictions`,
   ].join("\n");

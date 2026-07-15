@@ -2,6 +2,7 @@ import { env } from "../../lib/env";
 import { redis } from "../../lib/redis";
 import { selectPick } from "../../lib/social/select-pick";
 import { generateCaption } from "../../lib/social/caption";
+import { generateFacebookCaption } from "../../lib/social/caption-facebook";
 import { publishInstagram } from "../../lib/social/publish-instagram";
 import { publishFacebook } from "../../lib/social/publish-facebook";
 import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
@@ -48,9 +49,10 @@ export async function GET(req: Request) {
     });
   }
 
-  const caption = await generateCaption(pick);
+  const instagramCaption = await generateCaption(pick);
+  const facebookCaption = await generateFacebookCaption(pick);
 
-const origin = env.NEXT_PUBLIC_SITE_URL;
+  const origin = env.NEXT_PUBLIC_SITE_URL;
 
   const cardUrl = new URL("/api/social-card", origin);
   cardUrl.searchParams.set("league", pick.league);
@@ -61,6 +63,7 @@ const origin = env.NEXT_PUBLIC_SITE_URL;
   cardUrl.searchParams.set("odds", pick.bestOdds.toFixed(2));
   cardUrl.searchParams.set("valueDiff", pick.valueDiff.toFixed(2));
   cardUrl.searchParams.set("riskTier", pick.riskTier);
+  cardUrl.searchParams.set("bookmakerCount", String(pick.bookmakerCount ?? 0));
   cardUrl.searchParams.set(
     "startTime",
     new Date(pick.startTime).toLocaleString("en-GB", {
@@ -78,31 +81,33 @@ const origin = env.NEXT_PUBLIC_SITE_URL;
     "image/jpeg"
   );
 
- const ig = await publishInstagram(imageUrl, caption);
+  const ig = await publishInstagram(imageUrl, instagramCaption);
 
-let fb: unknown = null;
-let facebookError: string | null = null;
+  let fb: unknown = null;
+  let facebookError: string | null = null;
 
-try {
-  fb = await publishFacebook(imageUrl, caption);
-} catch (error) {
-  facebookError =
-    error instanceof Error ? error.message : "unknown facebook publish error";
-}
+  try {
+    fb = await publishFacebook(imageUrl, facebookCaption);
+  } catch (error) {
+    facebookError =
+      error instanceof Error ? error.message : "unknown facebook publish error";
+  }
 
-await savePostedResult(pick, {
-  imageUrl,
-  caption,
-  ig,
-  fb,
-});
+  await savePostedResult(pick, {
+    imageUrl,
+    caption: instagramCaption,
+    ig,
+    fb,
+  });
 
-return Response.json({
-  ok: true,
-  pickId: pick.id,
-  imageUrl,
-  instagram: ig,
-  facebook: fb,
-  facebookError,
-});
+  return Response.json({
+    ok: true,
+    pickId: pick.id,
+    imageUrl,
+    instagram: ig,
+    facebook: fb,
+    instagramCaption,
+    facebookCaption,
+    facebookError,
+  });
 }
