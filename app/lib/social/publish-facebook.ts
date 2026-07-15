@@ -1,6 +1,6 @@
 import { env } from "../env";
 
-export async function publishFacebook(imageBuffer: Buffer, _message: string) {
+export async function publishFacebook(imageBuffer: Buffer, message: string) {
   const form = new FormData();
 
   const arrayBuffer = imageBuffer.buffer.slice(
@@ -13,6 +13,11 @@ export async function publishFacebook(imageBuffer: Buffer, _message: string) {
   });
 
   form.append("source", file);
+
+  if (message?.trim()) {
+    form.append("caption", message.trim());
+  }
+
   form.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
 
   const res = await fetch(
@@ -23,7 +28,14 @@ export async function publishFacebook(imageBuffer: Buffer, _message: string) {
     }
   );
 
-  const json = await res.json();
+  const text = await res.text();
+  let json: unknown;
+
+  try {
+    json = JSON.parse(text);
+  } catch {
+    json = { raw: text };
+  }
 
   if (!res.ok) {
     throw new Error(`Facebook publish failed: ${JSON.stringify(json)}`);
