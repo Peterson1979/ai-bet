@@ -3,10 +3,16 @@ import { env } from "../env";
 export async function publishFacebook(imageBuffer: Buffer, message: string) {
   const form = new FormData();
 
-  const bytes = new Uint8Array(imageBuffer);
-  const blob = new Blob([bytes], { type: "image/jpeg" });
+  const arrayBuffer = imageBuffer.buffer.slice(
+    imageBuffer.byteOffset,
+    imageBuffer.byteOffset + imageBuffer.byteLength
+  ) as ArrayBuffer;
 
-  form.append("source", blob, "social-card.jpg");
+  const file = new File([arrayBuffer], "social-card.jpg", {
+    type: "image/jpeg",
+  });
+
+  form.append("source", file);
   form.append("caption", message);
   form.append("access_token", env.FACEBOOK_ACCESS_TOKEN);
 
