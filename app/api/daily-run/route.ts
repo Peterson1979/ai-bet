@@ -4,14 +4,11 @@ import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { rankMatches } from "@/app/lib/ranking";
 import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
 import { calculateRiskTier } from "@/app/lib/sportsConfig";
-import {
-  getDailyEvents,
-  getBestOddsForMarket,
-  getConsensusForMarket,
-} from "@/app/lib/odds";
+import { getDailyEvents, getBestOddsForMarket, getConsensusForMarket } from "@/app/lib/odds";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 300;
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
@@ -19,7 +16,6 @@ const redis = new Redis({
 });
 
 const CACHE_TTL = 60 * 60 * 25;
-const SOCIAL_DELAY_MS = 5 * 60 * 1000;
 
 type SportResult = {
   sport: string;
@@ -31,65 +27,6 @@ type SportResult = {
 async function generateAI(prompt: string) {
   const { generatePrediction } = await import("@/app/lib/groq");
   return generatePrediction(prompt);
-}
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-async function triggerSocialRun(request: Request) {
-  const cronSecret = process.env.CRON_SECRET;
-
-  if (!cronSecret) {
-    console.warn("[daily-run] CRON_SECRET missing, social-run skipped.");
-    return { ok: false, skipped: true, reason: "missing_cron_secret" };
-  }
-
-  const currentUrl = new URL(request.url);
-  const origin = currentUrl.origin;
-
-  const socialUrl = `${origin}/api/social-run?force=1`;
-
-  console.log("[daily-run] Waiting before social-run trigger...", {
-    delayMs: SOCIAL_DELAY_MS,
-    socialUrl,
-  });
-
-  await delay(SOCIAL_DELAY_MS);
-
-  const socialRes = await fetch(socialUrl, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${cronSecret}`,
-    },
-    cache: "no-store",
-  });
-
-  const socialText = await socialRes.text();
-  let socialJson: unknown;
-
-  try {
-    socialJson = JSON.parse(socialText);
-  } catch {
-    socialJson = { raw: socialText };
-  }
-
-  console.log("[daily-run] social-run response", {
-    status: socialRes.status,
-    ok: socialRes.ok,
-    body: socialJson,
-  });
-
-  if (!socialRes.ok) {
-    throw new Error(
-      `social-run failed: ${JSON.stringify({
-        status: socialRes.status,
-        body: socialJson,
-      })}`
-    );
-  }
-
-  return { ok: true, skipped: false, response: socialJson };
 }
 
 export async function GET(request: Request) {
@@ -236,28 +173,12 @@ export async function GET(request: Request) {
 
     await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
 
-    let socialRunResult:
-      | { ok: boolean; skipped?: boolean; reason?: string; response?: unknown }
-      | null = null;
-
-    try {
-      socialRunResult = await triggerSocialRun(request);
-    } catch (socialError) {
-      console.error("[daily-run] social-run trigger error:", socialError);
-      socialRunResult = {
-        ok: false,
-        skipped: false,
-        reason: "social_run_failed",
-      };
-    }
-
     return Response.json({
       success: true,
       cached: false,
       data: result,
       message: "Picks generated successfully.",
       generatedSports: result.sports.length,
-      socialRun: socialRunResult,
     });
   } catch (error) {
     console.error("[daily-run] Error:", error);
