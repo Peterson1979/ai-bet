@@ -6,6 +6,11 @@ const IS_BUILD = process.env.NODE_ENV === "production" && !process.env.VERCEL_EN
 const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 10;
 
+// A the-odds-api egy kredit-hívást számol el minden ténylegesen kimenő
+// /odds/ kérésért (1 piac x 1 régió = 1 kredit). Ez a napi felső korlát
+// az összes sport-ág összesített kreditfelhasználására.
+const DAILY_CREDIT_LIMIT = 15;
+
 const WATCHED_SPORTS = [
   { key: "soccer_fifa_world_cup",                    label: "Football", league: "FIFA World Cup",              priority: 1 },
   { key: "soccer_uefa_champs_league_qualification",  label: "Football", league: "Champions League Qualification", priority: 2 },
@@ -269,15 +274,74 @@ function isWithinTimeWindow(commenceTime: string, maxHoursAhead: number): boolea
   return eventTime >= now && eventTime <= now + maxMs;
 }
 
+// Egyszerű rangsoroló: több fogadóiroda ad rá árat = megbízhatóbb; egyenlőség
+// esetén a jobb (magasabb) odds nyer. Ugyanez a logika, mint eddig a végső
+// szűrésnél volt, csak most liga-csoportokon belül és kívül is ezt használjuk.
+function rankEvents(a: OddsEvent, b: OddsEvent): number {
+  if (b.bookmakerCount !== a.bookmakerCount) {
+    return b.bookmakerCount - a.bookmakerCount;
+  }
+  return (b.bestOdds ?? 0) - (a.bestOdds ?? 0);
+}
+
+/**
+ * Liganénkénti garantált hely: minden ligából (pl. "Europa League",
+ * "Brazil Série A", "MMA") bekerül legalább 1 esemény, mielőtt a maradék
+ * helyeket a legjobb (legtöbb bookmaker / legjobb odds) meccsek töltenék fel
+ * ligától függetlenül. Így egy forgalmasabb liga sosem tudja teljesen
+ * kiszorítani egy kevésbé forgalmas liga egyetlen mérkőzését sem, feltéve
+ * hogy van hozzá tényleges, a szűrőkön átment mérkőzés.
+ *
+ * Ha több liga aktív egyszerre, mint ahány hely elfér (maxEvents), akkor a
+ * garantált helyek közül is a legjobbak maradnak versenyben -- ilyenkor nem
+ * garantálható MINDEN liga megjelenése, de ez a jelenlegi maxEvents=12
+ * mellett a gyakorlatban ritkán fordul elő.
+ */
+function selectWithLeagueGuarantee(events: OddsEvent[], maxEvents: number): OddsEvent[] {
+  if (events.length === 0) return events;
+
+  const byLeague = new Map<string, OddsEvent[]>();
+  for (const e of events) {
+    const key = e.league || "Unknown";
+    if (!byLeague.has(key)) byLeague.set(key, []);
+    byLeague.get(key)!.push(e);
+  }
+
+  const guaranteed: OddsEvent[] = [];
+  const leftover: OddsEvent[] = [];
+
+  for (const group of byLeague.values()) {
+    group.sort(rankEvents);
+    guaranteed.push(group[0]);
+    leftover.push(...group.slice(1));
+  }
+
+  guaranteed.sort(rankEvents);
+  leftover.sort(rankEvents);
+
+  if (guaranteed.length >= maxEvents) {
+    return guaranteed.slice(0, maxEvents);
+  }
+
+  const remainingSlots = maxEvents - guaranteed.length;
+  return [...guaranteed, ...leftover.slice(0, remainingSlots)];
+}
+
 async function fetchSportEvents(
   sportKey: string,
   sportLabel: string,
-  leagueLabel: string
+  leagueLabel: string,
+  creditState: { used: number }
 ): Promise<OddsEvent[]> {
   if (!API_KEY || IS_BUILD) return [];
 
   const cached = getCache(sportKey);
   if (cached) return cached;
+
+  if (creditState.used >= DAILY_CREDIT_LIMIT) {
+    console.warn(`[odds] Napi kredit-keret (${DAILY_CREDIT_LIMIT}) elérve, kihagyva: ${sportKey}`);
+    return [];
+  }
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
   const markets = "h2h";
@@ -290,6 +354,7 @@ async function fetchSportEvents(
       `&markets=${markets}` +
       `&oddsFormat=decimal`;
 
+    creditState.used += 1;
     const response = await fetch(url, { cache: "no-store" });
 
     if (!response.ok) {
@@ -342,25 +407,36 @@ async function fetchSportEvents(
 
     events = dedupeEvents(events);
 
-    events = events.filter((e) => {
+    // Alap-szűrő: van-e egyáltalán valós odds-adat, és időben belefér-e.
+    const baseFiltered = events.filter((e) => {
       const odds = e.bestOdds ?? 0;
       const hasAnyOdds = odds > 0 || (e.rawBookmakers && e.rawBookmakers.length > 0);
+      return hasAnyOdds && isWithinTimeWindow(e.commenceTime, config.maxHoursAhead);
+    });
 
-      return (
-        hasAnyOdds &&
-        (odds === 0 || (odds >= config.minOdds && odds <= config.maxOdds)) &&
-        isWithinTimeWindow(e.commenceTime, config.maxHoursAhead)
+    // Odds-tartomány szűrő (minOdds/maxOdds) -- ez szűri ki a túl egyoldalú
+    // meccseket (pl. nagyon domináns esélyes vs. esélytelen kihívó).
+    let rangeFiltered = baseFiltered.filter((e) => {
+      const odds = e.bestOdds ?? 0;
+      return odds === 0 || (odds >= config.minOdds && odds <= config.maxOdds);
+    });
+
+    // Fallback: ha az odds-tartomány szűrő MINDENT kizárt, de ténylegesen
+    // léteztek (időben releváns, valós odds-szal rendelkező) mérkőzések,
+    // ne maradjon üresen a nap -- engedjük be a legjobb 1-2 elérhető meccset
+    // a tartománytól függetlenül. Ez tipikusan olyan sportoknál fordul elő,
+    // ahol nincs liga-szintű megkülönböztetés (pl. MMA), és egy adott napon
+    // csak nagyon egyoldalú meccsek vannak.
+    if (rangeFiltered.length === 0 && baseFiltered.length > 0) {
+      rangeFiltered = [...baseFiltered].sort(rankEvents).slice(0, 2);
+      console.warn(
+        `[odds] ${sportKey}: az odds-tartomány szűrő 0 találatot adott, fallback aktiválva (${rangeFiltered.length} esemény).`
       );
-    });
+    }
 
-    events.sort((a, b) => {
-      if (b.bookmakerCount !== a.bookmakerCount) {
-        return b.bookmakerCount - a.bookmakerCount;
-      }
-      return (b.bestOdds ?? 0) - (a.bestOdds ?? 0);
-    });
+    events = rangeFiltered;
 
-    events = events.slice(0, config.maxEvents);
+    events.sort(rankEvents);
 
     setCache(sportKey, events);
     return events;
@@ -393,41 +469,33 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
         .map(s => s.key)
     );
 
-    
-
+    // Globálisan (nem sport-áganként) rangsoroljuk a priority mező szerint,
+    // hogy a napi 15 kredites keret mindig a legfontosabb ligákra menjen el
+    // elsőként, sport-ágtól függetlenül.
     const sportsToFetch = WATCHED_SPORTS
       .filter(s => activeKeys.has(s.key))
       .sort((a, b) => a.priority - b.priority);
 
-    const sportGroups = new Map<string, typeof sportsToFetch>();
+    const creditState = { used: 0 };
+    const eventsByLabel = new Map<string, OddsEvent[]>();
+
     for (const sport of sportsToFetch) {
-      if (!sportGroups.has(sport.label)) {
-        sportGroups.set(sport.label, []);
+      const events = await fetchSportEvents(sport.key, sport.label, sport.league, creditState);
+      if (!eventsByLabel.has(sport.label)) {
+        eventsByLabel.set(sport.label, []);
       }
-      sportGroups.get(sport.label)!.push(sport);
+      eventsByLabel.get(sport.label)!.push(...events);
     }
+
+    console.log(`[odds] Napi kreditfelhasználás: ${creditState.used} / ${DAILY_CREDIT_LIMIT}`);
 
     const results: { sport: string; events: OddsEvent[] }[] = [];
 
-    for (const [label, leagues] of sportGroups) {
+    for (const [label, rawEvents] of eventsByLabel) {
       const config = SPORT_CONFIG[label] ?? DEFAULT_CONFIG;
-      let allEvents: OddsEvent[] = [];
-
-      for (const league of leagues) {
-        const events = await fetchSportEvents(league.key, label, league.league);
-        allEvents = [...allEvents, ...events];
-      }
-
-      allEvents = dedupeEvents(allEvents);
-      allEvents.sort((a, b) => {
-        if (b.bookmakerCount !== a.bookmakerCount) {
-          return b.bookmakerCount - a.bookmakerCount;
-        }
-        return (b.bestOdds ?? 0) - (a.bestOdds ?? 0);
-      });
-      allEvents = allEvents.slice(0, config.maxEvents);
-
-      results.push({ sport: label, events: allEvents });
+      const deduped = dedupeEvents(rawEvents);
+      const selected = selectWithLeagueGuarantee(deduped, config.maxEvents);
+      results.push({ sport: label, events: selected });
     }
 
     const resultLabels = new Set(results.map(r => r.sport));
