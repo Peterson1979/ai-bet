@@ -151,6 +151,7 @@ export function buildInstagramCarouselCaption(slides: CarouselSlide[]) {
 
   const lines = [
     "Today’s AI-powered sports picks 🎯",
+    "Want more high-value AI picks, match insights, and daily betting opportunities? Visit MatchSignal now — the link is in our bio.",
     "",
     ...sportSlides.slice(0, 5).map(
       (slide) =>
