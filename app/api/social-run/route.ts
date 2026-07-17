@@ -1,19 +1,21 @@
 import { env } from "../../lib/env";
 import { redis } from "../../lib/redis";
 import { selectPick } from "../../lib/social/select-pick";
-import { generateFacebookCaption } from "../../lib/social/caption-facebook";
 import { publishInstagramCarousel } from "../../lib/social/publish-instagram";
-import { publishFacebook } from "../../lib/social/publish-facebook";
 import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
 import type { Candidate, PredictionFile, TopPick } from "../../lib/social/types";
 import { uploadBufferToBlob } from "../../lib/social/upload-image";
 import { renderCardToJpeg } from "../../lib/social/render-card-to-jpeg";
 import { buildInstagramCarouselCaption } from "../../lib/social/build-instagram-carousel";
 
+export const maxDuration = 300;
+export const dynamic = "force-dynamic";
+
 const MIN_BOOKMAKERS = 3;
 const MIN_START_BUFFER_MINUTES = 90;
 const MAX_CAROUSEL_PICKS = 5;
 const DEFAULT_LEAGUE_PRIORITY = 60;
+const LOCK_TTL_SECONDS = 15 * 60;
 
 const LEAGUE_PRIORITY: Record<string, number> = {
   "FIFA World Cup": 100,
@@ -79,11 +81,14 @@ function getRiskTierScore(riskTier: TopPick["riskTier"]): number {
   }
 }
 
-function getPriorityKey(pick: TopPick & { sport: string }) {
+function getPriorityKey(pick: TopPick & { sport: string }): string {
   return `${pick.sport}::${pick.league}`;
 }
 
-function isEligibleForCarouselPick(pick: TopPick & { sport: string }, now: Date): boolean {
+function isEligibleForCarouselPick(
+  pick: TopPick & { sport: string },
+  now: Date
+): boolean {
   if (pick.status !== "scheduled") return false;
   if (!pick.prediction || !pick.market || !pick.bookmakerUrl) return false;
   if (pick.bookmakerCount < MIN_BOOKMAKERS) return false;
@@ -201,7 +206,42 @@ function formatValueDiff(valueDiff: number): string {
   return valueDiff.toFixed(2);
 }
 
+function buildCardUrl(
+  origin: string,
+  slidePick: Pick<
+    TopPick,
+    | "league"
+    | "homeTeam"
+    | "awayTeam"
+    | "prediction"
+    | "market"
+    | "valueDiff"
+    | "riskTier"
+    | "bookmakerCount"
+    | "startTime"
+  >
+): string {
+  const cardUrl = new URL("/api/social-card", origin);
+
+  cardUrl.searchParams.set("template", "v2");
+  cardUrl.searchParams.set("league", slidePick.league);
+  cardUrl.searchParams.set("homeTeam", slidePick.homeTeam);
+  cardUrl.searchParams.set("awayTeam", slidePick.awayTeam);
+  cardUrl.searchParams.set("prediction", slidePick.prediction);
+  cardUrl.searchParams.set("market", slidePick.market);
+  cardUrl.searchParams.set("valueDiff", formatValueDiff(slidePick.valueDiff));
+  cardUrl.searchParams.set("riskTier", slidePick.riskTier);
+  cardUrl.searchParams.set("bookmakerCount", String(slidePick.bookmakerCount));
+  cardUrl.searchParams.set("startTime", formatStartTimeUtc(slidePick.startTime));
+
+  return cardUrl.toString();
+}
+
 export async function GET(req: Request) {
+  const now = new Date();
+  const dateKey = now.toISOString().slice(0, 10);
+  const lockKey = `social-run-lock:${dateKey}`;
+
   try {
     const auth = req.headers.get("authorization");
 
@@ -211,10 +251,19 @@ export async function GET(req: Request) {
 
     const force = new URL(req.url).searchParams.get("force") === "1";
 
-    const now = new Date();
-    const dateKey = now.toISOString().slice(0, 10);
-    const redisKey = `predictions:${dateKey}`;
+    if (!force) {
+      const acquired = await redis.set(lockKey, "1", { nx: true, ex: LOCK_TTL_SECONDS });
 
+      if (!acquired) {
+        return Response.json({
+          ok: true,
+          skipped: true,
+          reason: "publish already in progress",
+        });
+      }
+    }
+
+    const redisKey = `predictions:${dateKey}`;
     const predictions = await redis.get<PredictionFile>(redisKey);
 
     if (!predictions) {
@@ -270,26 +319,13 @@ export async function GET(req: Request) {
       }))
     );
 
-    const facebookCaption = await generateFacebookCaption(pick);
     const origin = env.NEXT_PUBLIC_SITE_URL;
-
     const uploadedCarouselImageUrls: string[] = [];
 
     for (let i = 0; i < topPicks.length; i++) {
       const slidePick = topPicks[i];
-
-      const cardUrl = new URL("/api/social-card", origin);
-      cardUrl.searchParams.set("league", slidePick.league);
-      cardUrl.searchParams.set("homeTeam", slidePick.homeTeam);
-      cardUrl.searchParams.set("awayTeam", slidePick.awayTeam);
-      cardUrl.searchParams.set("prediction", slidePick.prediction);
-      cardUrl.searchParams.set("market", slidePick.market);
-      cardUrl.searchParams.set("valueDiff", formatValueDiff(slidePick.valueDiff));
-      cardUrl.searchParams.set("riskTier", slidePick.riskTier);
-      cardUrl.searchParams.set("bookmakerCount", String(slidePick.bookmakerCount));
-      cardUrl.searchParams.set("startTime", formatStartTimeUtc(slidePick.startTime));
-
-      const jpegBuffer = await renderCardToJpeg(cardUrl.toString());
+      const cardUrl = buildCardUrl(origin, slidePick);
+      const jpegBuffer = await renderCardToJpeg(cardUrl);
 
       const imageUrl = await uploadBufferToBlob(
         jpegBuffer,
@@ -300,45 +336,27 @@ export async function GET(req: Request) {
       uploadedCarouselImageUrls.push(imageUrl);
     }
 
+    if (!force && (await isAlreadyPosted(pick.id))) {
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: "already posted after render",
+        pickId: pick.id,
+        instagramSlidesCount: uploadedCarouselImageUrls.length,
+        instagramSlideImageUrls: uploadedCarouselImageUrls,
+      });
+    }
+
     const ig = await publishInstagramCarousel(
       uploadedCarouselImageUrls,
       instagramCaption
     );
 
-    const facebookCardUrl = new URL("/api/social-card", origin);
-    facebookCardUrl.searchParams.set("league", pick.league);
-    facebookCardUrl.searchParams.set("homeTeam", pick.homeTeam);
-    facebookCardUrl.searchParams.set("awayTeam", pick.awayTeam);
-    facebookCardUrl.searchParams.set("prediction", pick.prediction);
-    facebookCardUrl.searchParams.set("market", pick.market);
-    facebookCardUrl.searchParams.set("valueDiff", formatValueDiff(pick.valueDiff));
-    facebookCardUrl.searchParams.set("riskTier", pick.riskTier);
-    facebookCardUrl.searchParams.set("bookmakerCount", String(pick.bookmakerCount));
-    facebookCardUrl.searchParams.set("startTime", formatStartTimeUtc(pick.startTime));
-
-    const fbJpegBuffer = await renderCardToJpeg(facebookCardUrl.toString());
-
-    const facebookImageUrl = await uploadBufferToBlob(
-      fbJpegBuffer,
-      `${pick.id}.jpg`,
-      "image/jpeg"
-    );
-
-    let fb: unknown = null;
-    let facebookError: string | null = null;
-
-    try {
-      fb = await publishFacebook(facebookImageUrl, facebookCaption);
-    } catch (error) {
-      facebookError =
-        error instanceof Error ? error.message : "unknown facebook publish error";
-    }
-
     await savePostedResult(pick, {
       imageUrl: uploadedCarouselImageUrls[0] ?? null,
       caption: instagramCaption,
       ig,
-      fb,
+      fb: null,
     });
 
     return Response.json({
@@ -347,10 +365,10 @@ export async function GET(req: Request) {
       instagramSlidesCount: uploadedCarouselImageUrls.length,
       instagramSlideImageUrls: uploadedCarouselImageUrls,
       instagram: ig,
-      facebook: fb,
+      facebook: null,
       instagramCaption,
-      facebookCaption,
-      facebookError,
+      facebookCaption: null,
+      facebookError: null,
     });
   } catch (error) {
     return Response.json(
@@ -360,5 +378,7 @@ export async function GET(req: Request) {
       },
       { status: 500 }
     );
+  } finally {
+    await redis.del(lockKey);
   }
 }

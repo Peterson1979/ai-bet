@@ -1,55 +1,65 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
+export const dynamic = "force-dynamic";
 
-function qp(v: string | null, fallback = "") {
+function qp(v: string | null, fallback = ""): string {
   return v ?? fallback;
 }
 
-function formatValueDiff(valueDiff: string) {
+function formatValueDiff(valueDiff: string): string {
   const n = Number(valueDiff);
   if (Number.isNaN(n)) return valueDiff;
   return n >= 0 ? `+${n.toFixed(2)}%` : `${n.toFixed(2)}%`;
 }
 
-function formatRiskTier(riskTier: string) {
+function formatRiskTier(riskTier: string): string {
   return riskTier ? riskTier.toUpperCase() : "MEDIUM";
 }
 
-function getLeagueIcon(league: string) {
+function fitTeamName(name: string): { text: string; fontSize: number; lineHeight: number } {
+  const clean = name.trim();
+
+  if (clean.length <= 12) return { text: clean, fontSize: 52, lineHeight: 1.05 };
+  if (clean.length <= 18) return { text: clean, fontSize: 46, lineHeight: 1.06 };
+  if (clean.length <= 24) return { text: clean, fontSize: 40, lineHeight: 1.08 };
+  return { text: clean, fontSize: 34, lineHeight: 1.1 };
+}
+
+function fitLeagueName(name: string): { text: string; fontSize: number } {
+  const clean = name.trim();
+
+  if (clean.length <= 18) return { text: clean, fontSize: 42 };
+  if (clean.length <= 28) return { text: clean, fontSize: 36 };
+  if (clean.length <= 38) return { text: clean, fontSize: 30 };
+  return { text: clean, fontSize: 26 };
+}
+
+function fitPrediction(prediction: string): { text: string; fontSize: number; lineHeight: number } {
+  const clean = prediction.trim();
+
+  if (clean.length <= 14) return { text: clean, fontSize: 30, lineHeight: 1.12 };
+  if (clean.length <= 22) return { text: clean, fontSize: 26, lineHeight: 1.12 };
+  if (clean.length <= 34) return { text: clean, fontSize: 22, lineHeight: 1.14 };
+  return { text: clean, fontSize: 19, lineHeight: 1.15 };
+}
+
+function fitFooterLine(text: string): { text: string; fontSize: number; lineHeight: number } {
+  const clean = text.trim();
+
+  if (clean.length <= 38) return { text: clean, fontSize: 40, lineHeight: 1.15 };
+  if (clean.length <= 52) return { text: clean, fontSize: 34, lineHeight: 1.16 };
+  return { text: clean, fontSize: 30, lineHeight: 1.18 };
+}
+
+function getLeagueIcon(league: string): string {
   const l = league.toLowerCase();
 
-  if (
-    l.includes("nba") ||
-    l.includes("basketball") ||
-    l.includes("euroleague")
-  ) return "🏀";
-
-  if (
-    l.includes("tennis") ||
-    l.includes("atp") ||
-    l.includes("wta") ||
-    l.includes("us open") ||
-    l.includes("wimbledon")
-  ) return "🎾";
-
-  if (
-    l.includes("mlb") ||
-    l.includes("baseball")
-  ) return "⚾";
-
-  if (
-    l.includes("nhl") ||
-    l.includes("hockey")
-  ) return "🏒";
-
-  if (
-    l.includes("ufc") ||
-    l.includes("mma") ||
-    l.includes("boxing") ||
-    l.includes("fight")
-  ) return "🥊";
-
+  if (l.includes("nba") || l.includes("basketball") || l.includes("euroleague")) return "🏀";
+  if (l.includes("tennis") || l.includes("atp") || l.includes("wta") || l.includes("us open") || l.includes("wimbledon")) return "🎾";
+  if (l.includes("mlb") || l.includes("baseball")) return "⚾";
+  if (l.includes("nhl") || l.includes("hockey")) return "🏒";
+  if (l.includes("ufc") || l.includes("mma") || l.includes("boxing") || l.includes("fight")) return "🥊";
   if (
     l.includes("soccer") ||
     l.includes("football") ||
@@ -59,7 +69,9 @@ function getLeagueIcon(league: string) {
     l.includes("la liga") ||
     l.includes("serie a") ||
     l.includes("bundesliga")
-  ) return "⚽";
+  ) {
+    return "⚽";
+  }
 
   return "🏆";
 }
@@ -79,6 +91,12 @@ export async function GET(req: Request) {
   const valueLabel = formatValueDiff(valueDiff);
   const riskLabel = formatRiskTier(riskTier);
   const leagueIcon = getLeagueIcon(league);
+
+  const leagueFit = fitLeagueName(league);
+  const homeFit = fitTeamName(homeTeam);
+  const awayFit = fitTeamName(awayTeam);
+  const predictionFit = fitPrediction(prediction);
+  const footerFit = fitFooterLine("Free AI Betting Tips – Football, NBA, Tennis & More");
 
   return new ImageResponse(
     (
@@ -115,7 +133,8 @@ export async function GET(req: Request) {
             left: "120px",
             right: "120px",
             height: "2px",
-            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(56,189,248,0.85) 50%, rgba(0,0,0,0) 100%)",
+            background:
+              "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(56,189,248,0.85) 50%, rgba(0,0,0,0) 100%)",
             display: "flex",
           }}
         />
@@ -133,7 +152,6 @@ export async function GET(req: Request) {
             padding: "34px",
           }}
         >
-          {/* header */}
           <div
             style={{
               display: "flex",
@@ -187,22 +205,23 @@ export async function GET(req: Request) {
                   border: "1px solid rgba(56,189,248,0.32)",
                   background: "linear-gradient(180deg, #13233e 0%, #0d182c 100%)",
                   color: "#dbeafe",
-                  fontSize: 42,
+                  fontSize: leagueFit.fontSize,
                   fontWeight: 900,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   gap: "16px",
                   boxShadow: "0 8px 18px rgba(0,0,0,0.22)",
+                  maxWidth: "100%",
+                  textAlign: "center",
                 }}
               >
                 <span style={{ display: "flex", fontSize: 46 }}>{leagueIcon}</span>
-                <span style={{ display: "flex" }}>{league}</span>
+                <span style={{ display: "flex" }}>{leagueFit.text}</span>
               </div>
             </div>
           </div>
 
-          {/* matchup */}
           <div
             style={{
               display: "flex",
@@ -243,14 +262,14 @@ export async function GET(req: Request) {
                     justifyContent: "center",
                     textAlign: "center",
                     color: "#ffffff",
-                    fontSize: 52,
+                    fontSize: homeFit.fontSize,
                     fontWeight: 900,
-                    lineHeight: 1.05,
+                    lineHeight: homeFit.lineHeight,
                     padding: "18px",
                     boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
                   }}
                 >
-                  {homeTeam}
+                  {homeFit.text}
                 </div>
 
                 <div
@@ -284,14 +303,14 @@ export async function GET(req: Request) {
                     justifyContent: "center",
                     textAlign: "center",
                     color: "#ffffff",
-                    fontSize: 52,
+                    fontSize: awayFit.fontSize,
                     fontWeight: 900,
-                    lineHeight: 1.05,
+                    lineHeight: awayFit.lineHeight,
                     padding: "18px",
                     boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
                   }}
                 >
-                  {awayTeam}
+                  {awayFit.text}
                 </div>
               </div>
 
@@ -311,7 +330,6 @@ export async function GET(req: Request) {
             </div>
           </div>
 
-          {/* stats */}
           <div
             style={{
               display: "flex",
@@ -355,14 +373,16 @@ export async function GET(req: Request) {
               <div
                 style={{
                   marginTop: "18px",
-                  fontSize: 30,
+                  fontSize: predictionFit.fontSize,
                   fontWeight: 900,
-                  lineHeight: 1.12,
+                  lineHeight: predictionFit.lineHeight,
                   color: "#fcd34d",
                   display: "flex",
+                  textAlign: "center",
+                  justifyContent: "center",
                 }}
               >
-                {prediction}
+                {predictionFit.text}
               </div>
             </div>
 
@@ -459,7 +479,6 @@ export async function GET(req: Request) {
             </div>
           </div>
 
-          {/* footer */}
           <div
             style={{
               display: "flex",
@@ -502,7 +521,8 @@ export async function GET(req: Request) {
                 style={{
                   width: "100%",
                   borderRadius: "999px",
-                  background: "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 28%, rgba(255,255,255,0) 100%)",
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 28%, rgba(255,255,255,0) 100%)",
                   padding: "12px 20px",
                   display: "flex",
                   alignItems: "center",
@@ -521,16 +541,16 @@ export async function GET(req: Request) {
 
             <div
               style={{
-                fontSize: 40,
+                fontSize: footerFit.fontSize,
                 fontWeight: 900,
                 color: "#dbeafe",
                 display: "flex",
                 justifyContent: "center",
                 textAlign: "center",
-                lineHeight: 1.15,
+                lineHeight: footerFit.lineHeight,
               }}
             >
-              Free AI Betting Tips – Football, NBA, Tennis & More
+              {footerFit.text}
             </div>
           </div>
         </div>
