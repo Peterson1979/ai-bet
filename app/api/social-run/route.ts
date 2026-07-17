@@ -1,14 +1,23 @@
+import os from "node:os";
+import path from "node:path";
+import fs from "node:fs/promises";
+
 import { env } from "../../lib/env";
 import { redis } from "../../lib/redis";
 import { selectPick } from "../../lib/social/select-pick";
-import { generateCaption } from "../../lib/social/caption";
 import { generateFacebookCaption } from "../../lib/social/caption-facebook";
-import { publishInstagram } from "../../lib/social/publish-instagram";
+import { publishInstagramCarousel } from "../../lib/social/publish-instagram";
 import { publishFacebook } from "../../lib/social/publish-facebook";
 import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
 import type { PredictionFile } from "../../lib/social/types";
 import { uploadBufferToBlob } from "../../lib/social/upload-image";
+import {
+  buildInstagramCarouselCaption,
+  buildInstagramCarouselPlan,
+} from "../../lib/social/build-instagram-carousel";
+import { renderInstagramCarouselCard } from "../../lib/social/render-instagram-carousel-card";
 import { renderCardToJpeg } from "../../lib/social/render-card-to-jpeg";
+
 export async function GET(req: Request) {
   try {
     const auth = req.headers.get("authorization");
@@ -51,8 +60,43 @@ export async function GET(req: Request) {
       });
     }
 
-    const instagramCaption = await generateCaption(pick);
+    const instagramSlides = buildInstagramCarouselPlan(predictions);
+    const instagramCaption = buildInstagramCarouselCaption(instagramSlides);
     const facebookCaption = await generateFacebookCaption(pick);
+
+    const uploadedCarouselImageUrls: string[] = [];
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "ig-carousel-"));
+
+    try {
+      for (let i = 0; i < instagramSlides.length; i++) {
+        const slide = instagramSlides[i];
+        const outputPath = path.join(tmpDir, `slide-${i + 1}.jpg`);
+
+        await renderInstagramCarouselCard(
+          slide,
+          outputPath,
+          i + 1,
+          instagramSlides.length
+        );
+
+        const buffer = await fs.readFile(outputPath);
+
+        const imageUrl = await uploadBufferToBlob(
+          buffer,
+          `${pick.id}-carousel-${i + 1}.jpg`,
+          "image/jpeg"
+        );
+
+        uploadedCarouselImageUrls.push(imageUrl);
+      }
+    } finally {
+      await fs.rm(tmpDir, { recursive: true, force: true });
+    }
+
+    const ig = await publishInstagramCarousel(
+      uploadedCarouselImageUrls,
+      instagramCaption
+    );
 
     const origin = env.NEXT_PUBLIC_SITE_URL;
 
@@ -77,26 +121,24 @@ export async function GET(req: Request) {
 
     const jpegBuffer = await renderCardToJpeg(cardUrl.toString());
 
-    const imageUrl = await uploadBufferToBlob(
+    const facebookImageUrl = await uploadBufferToBlob(
       jpegBuffer,
       `${pick.id}.jpg`,
       "image/jpeg"
     );
 
-    const ig = await publishInstagram(imageUrl, instagramCaption);
-
     let fb: unknown = null;
     let facebookError: string | null = null;
 
     try {
-      fb = await publishFacebook(imageUrl, facebookCaption);
+      fb = await publishFacebook(facebookImageUrl, facebookCaption);
     } catch (error) {
       facebookError =
         error instanceof Error ? error.message : "unknown facebook publish error";
     }
 
     await savePostedResult(pick, {
-      imageUrl,
+      imageUrl: uploadedCarouselImageUrls[0] ?? null,
       caption: instagramCaption,
       ig,
       fb,
@@ -105,7 +147,8 @@ export async function GET(req: Request) {
     return Response.json({
       ok: true,
       pickId: pick.id,
-      imageUrl,
+      instagramSlidesCount: instagramSlides.length,
+      instagramSlideImageUrls: uploadedCarouselImageUrls,
       instagram: ig,
       facebook: fb,
       instagramCaption,
