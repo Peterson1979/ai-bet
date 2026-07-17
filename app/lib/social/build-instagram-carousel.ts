@@ -152,9 +152,9 @@ export function buildInstagramCarouselCaption(slides: CarouselSlide[]) {
   const lines = [
     "Today’s AI-powered sports picks 🎯",
     "",
-    ...sportSlides.slice(0, 4).map(
+    ...sportSlides.slice(0, 5).map(
       (slide) =>
-        `${slide.sport}: ${slide.homeTeam} vs ${slide.awayTeam} — ${slide.pick} @ ${slide.odds.toFixed(2)}`
+        `${slide.sport}: ${slide.homeTeam} vs ${slide.awayTeam} — ${slide.pick}`
     ),
     "",
     "Follow MatchSignal for daily betting picks, matchup edges, and AI-ranked value spots.",

@@ -97,7 +97,6 @@ export async function GET(req: Request) {
           padding: "38px",
         }}
       >
-        {/* outer frame */}
         <div
           style={{
             position: "absolute",
@@ -109,7 +108,6 @@ export async function GET(req: Request) {
           }}
         />
 
-        {/* top glow line */}
         <div
           style={{
             position: "absolute",
@@ -123,18 +121,18 @@ export async function GET(req: Request) {
         />
 
         <div
-  style={{
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    borderRadius: "28px",
-    border: "1px solid rgba(56,189,248,0.14)",
-    background: "linear-gradient(180deg, rgba(7,14,27,0.98) 0%, rgba(8,16,31,0.98) 100%)",
-    padding: "34px",
-  }}
->
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            borderRadius: "28px",
+            border: "1px solid rgba(56,189,248,0.14)",
+            background: "linear-gradient(180deg, rgba(7,14,27,0.98) 0%, rgba(8,16,31,0.98) 100%)",
+            padding: "34px",
+          }}
+        >
           {/* header */}
           <div
             style={{
@@ -185,20 +183,20 @@ export async function GET(req: Request) {
                 style={{
                   marginTop: "18px",
                   borderRadius: "999px",
-                  padding: "12px 24px",
+                  padding: "18px 30px",
                   border: "1px solid rgba(56,189,248,0.32)",
                   background: "linear-gradient(180deg, #13233e 0%, #0d182c 100%)",
                   color: "#dbeafe",
-                  fontSize: 24,
-                  fontWeight: 800,
+                  fontSize: 42,
+                  fontWeight: 900,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "12px",
+                  gap: "16px",
                   boxShadow: "0 8px 18px rgba(0,0,0,0.22)",
                 }}
               >
-                <span style={{ display: "flex", fontSize: 24 }}>{leagueIcon}</span>
+                <span style={{ display: "flex", fontSize: 46 }}>{leagueIcon}</span>
                 <span style={{ display: "flex" }}>{league}</span>
               </div>
             </div>
@@ -495,7 +493,7 @@ export async function GET(req: Request) {
                 borderRadius: "999px",
                 border: "1px solid rgba(253,224,71,0.34)",
                 background: "linear-gradient(180deg, #fef08a 0%, #facc15 52%, #eab308 100%)",
-                padding: "10px",
+                padding: "6px",
                 display: "flex",
                 boxShadow: "0 14px 26px rgba(0,0,0,0.22)",
               }}
@@ -505,31 +503,31 @@ export async function GET(req: Request) {
                   width: "100%",
                   borderRadius: "999px",
                   background: "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 28%, rgba(255,255,255,0) 100%)",
-                  padding: "18px 26px",
+                  padding: "12px 20px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "14px",
+                  gap: "10px",
                   color: "#111827",
-                  fontSize: 34,
+                  fontSize: 24,
                   fontWeight: 900,
                   textAlign: "center",
                 }}
               >
                 <span style={{ display: "flex" }}>GET MORE AI PICKS</span>
-                <span style={{ display: "flex", fontSize: 30 }}>→</span>
+                <span style={{ display: "flex", fontSize: 22 }}>→</span>
               </div>
             </div>
 
             <div
               style={{
-                fontSize: 30,
-                fontWeight: 800,
+                fontSize: 40,
+                fontWeight: 900,
                 color: "#dbeafe",
                 display: "flex",
                 justifyContent: "center",
                 textAlign: "center",
-                lineHeight: 1.2,
+                lineHeight: 1.15,
               }}
             >
               Free AI Betting Tips – Football, NBA, Tennis & More
