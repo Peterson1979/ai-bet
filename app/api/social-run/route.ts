@@ -1,7 +1,3 @@
-import os from "node:os";
-import path from "node:path";
-import fs from "node:fs/promises";
-
 import { env } from "../../lib/env";
 import { redis } from "../../lib/redis";
 import { selectPick } from "../../lib/social/select-pick";
@@ -11,12 +7,25 @@ import { publishFacebook } from "../../lib/social/publish-facebook";
 import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
 import type { PredictionFile } from "../../lib/social/types";
 import { uploadBufferToBlob } from "../../lib/social/upload-image";
-import {
-  buildInstagramCarouselCaption,
-  buildInstagramCarouselPlan,
-} from "../../lib/social/build-instagram-carousel";
-import { renderInstagramCarouselCard } from "../../lib/social/render-instagram-carousel-card";
 import { renderCardToJpeg } from "../../lib/social/render-card-to-jpeg";
+import { buildInstagramCarouselCaption } from "../../lib/social/build-instagram-carousel";
+
+function getTopPicks(predictions: PredictionFile) {
+  return predictions.sports
+    .filter((block) => block.hasMatches)
+    .flatMap((block) =>
+      (block.topPicks || []).map((pick) => ({
+        ...pick,
+        sport: block.sport,
+      }))
+    )
+    .filter((pick) => pick.status === "scheduled")
+    .filter((pick) => !!pick.prediction && !!pick.market && !!pick.bookmakerUrl)
+    .filter((pick) => (pick.bookmakerCount ?? 0) >= 3)
+    .filter((pick) => pick.valueDiff > 0)
+    .sort((a, b) => b.valueDiff - a.valueDiff)
+    .slice(0, 5);
+}
 
 export async function GET(req: Request) {
   try {
@@ -60,37 +69,68 @@ export async function GET(req: Request) {
       });
     }
 
-    const instagramSlides = buildInstagramCarouselPlan(predictions);
-    const instagramCaption = buildInstagramCarouselCaption(instagramSlides);
+    const topPicks = getTopPicks(predictions);
+
+    if (topPicks.length < 2) {
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: "not enough picks for carousel",
+        pickId: pick.id,
+      });
+    }
+
+    const instagramCaption = buildInstagramCarouselCaption(
+      topPicks.map((p) => ({
+        type: "sport-pick" as const,
+        sport: p.sport,
+        league: p.league,
+        homeTeam: p.homeTeam,
+        awayTeam: p.awayTeam,
+        market: p.market,
+        pick: p.prediction,
+        odds: p.bestOdds,
+        confidence: p.riskTier,
+        startTime: p.startTime,
+        valueDiff: p.valueDiff,
+      }))
+    );
+
     const facebookCaption = await generateFacebookCaption(pick);
+    const origin = env.NEXT_PUBLIC_SITE_URL;
 
     const uploadedCarouselImageUrls: string[] = [];
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "ig-carousel-"));
 
-    try {
-      for (let i = 0; i < instagramSlides.length; i++) {
-        const slide = instagramSlides[i];
-        const outputPath = path.join(tmpDir, `slide-${i + 1}.jpg`);
+    for (let i = 0; i < topPicks.length; i++) {
+      const slidePick = topPicks[i];
 
-        await renderInstagramCarouselCard(
-          slide,
-          outputPath,
-          i + 1,
-          instagramSlides.length
-        );
+      const cardUrl = new URL("/api/social-card", origin);
+      cardUrl.searchParams.set("league", slidePick.league);
+      cardUrl.searchParams.set("homeTeam", slidePick.homeTeam);
+      cardUrl.searchParams.set("awayTeam", slidePick.awayTeam);
+      cardUrl.searchParams.set("prediction", slidePick.prediction);
+      cardUrl.searchParams.set("market", slidePick.market);
+      cardUrl.searchParams.set("valueDiff", slidePick.valueDiff.toFixed(2));
+      cardUrl.searchParams.set("riskTier", slidePick.riskTier);
+      cardUrl.searchParams.set("bookmakerCount", String(slidePick.bookmakerCount ?? 0));
+      cardUrl.searchParams.set(
+        "startTime",
+        new Date(slidePick.startTime).toLocaleString("en-GB", {
+          dateStyle: "medium",
+          timeStyle: "short",
+          timeZone: "UTC",
+        })
+      );
 
-        const buffer = await fs.readFile(outputPath);
+      const jpegBuffer = await renderCardToJpeg(cardUrl.toString());
 
-        const imageUrl = await uploadBufferToBlob(
-          buffer,
-          `${pick.id}-carousel-${i + 1}.jpg`,
-          "image/jpeg"
-        );
+      const imageUrl = await uploadBufferToBlob(
+        jpegBuffer,
+        `${pick.id}-carousel-${i + 1}.jpg`,
+        "image/jpeg"
+      );
 
-        uploadedCarouselImageUrls.push(imageUrl);
-      }
-    } finally {
-      await fs.rm(tmpDir, { recursive: true, force: true });
+      uploadedCarouselImageUrls.push(imageUrl);
     }
 
     const ig = await publishInstagramCarousel(
@@ -98,19 +138,16 @@ export async function GET(req: Request) {
       instagramCaption
     );
 
-    const origin = env.NEXT_PUBLIC_SITE_URL;
-
-    const cardUrl = new URL("/api/social-card", origin);
-    cardUrl.searchParams.set("league", pick.league);
-    cardUrl.searchParams.set("homeTeam", pick.homeTeam);
-    cardUrl.searchParams.set("awayTeam", pick.awayTeam);
-    cardUrl.searchParams.set("prediction", pick.prediction);
-    cardUrl.searchParams.set("market", pick.market);
-    cardUrl.searchParams.set("odds", pick.bestOdds.toFixed(2));
-    cardUrl.searchParams.set("valueDiff", pick.valueDiff.toFixed(2));
-    cardUrl.searchParams.set("riskTier", pick.riskTier);
-    cardUrl.searchParams.set("bookmakerCount", String(pick.bookmakerCount ?? 0));
-    cardUrl.searchParams.set(
+    const facebookCardUrl = new URL("/api/social-card", origin);
+    facebookCardUrl.searchParams.set("league", pick.league);
+    facebookCardUrl.searchParams.set("homeTeam", pick.homeTeam);
+    facebookCardUrl.searchParams.set("awayTeam", pick.awayTeam);
+    facebookCardUrl.searchParams.set("prediction", pick.prediction);
+    facebookCardUrl.searchParams.set("market", pick.market);
+    facebookCardUrl.searchParams.set("valueDiff", pick.valueDiff.toFixed(2));
+    facebookCardUrl.searchParams.set("riskTier", pick.riskTier);
+    facebookCardUrl.searchParams.set("bookmakerCount", String(pick.bookmakerCount ?? 0));
+    facebookCardUrl.searchParams.set(
       "startTime",
       new Date(pick.startTime).toLocaleString("en-GB", {
         dateStyle: "medium",
@@ -119,10 +156,10 @@ export async function GET(req: Request) {
       })
     );
 
-    const jpegBuffer = await renderCardToJpeg(cardUrl.toString());
+    const fbJpegBuffer = await renderCardToJpeg(facebookCardUrl.toString());
 
     const facebookImageUrl = await uploadBufferToBlob(
-      jpegBuffer,
+      fbJpegBuffer,
       `${pick.id}.jpg`,
       "image/jpeg"
     );
@@ -147,7 +184,7 @@ export async function GET(req: Request) {
     return Response.json({
       ok: true,
       pickId: pick.id,
-      instagramSlidesCount: instagramSlides.length,
+      instagramSlidesCount: uploadedCarouselImageUrls.length,
       instagramSlideImageUrls: uploadedCarouselImageUrls,
       instagram: ig,
       facebook: fb,

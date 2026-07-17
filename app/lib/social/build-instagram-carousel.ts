@@ -3,15 +3,14 @@ import type { PredictionFile, RiskTier, SportBlock, TopPick } from "./types";
 export type CarouselSlide =
   | {
       type: "cover";
-      title: string;
-      subtitle: string;
-      date: string;
+      dateLabel: string;
     }
   | {
       type: "sport-pick";
       sport: string;
       league: string;
-      match: string;
+      homeTeam: string;
+      awayTeam: string;
       market: string;
       pick: string;
       odds: number;
@@ -35,8 +34,6 @@ export type CarouselSlide =
     }
   | {
       type: "cta";
-      title: string;
-      subtitle: string;
       handle: string;
     };
 
@@ -75,19 +72,15 @@ export function buildInstagramCarouselPlan(predictions: PredictionFile): Carouse
 
   slides.push({
     type: "cover",
-    title: "Today’s Best Picks",
-    subtitle:
-      sportCandidates.length > 0
-        ? `${sportCandidates.length} sports on today’s board`
-        : "AI sports picks for today",
-    date: formatBoardDate(predictions.date),
+    dateLabel: formatBoardDate(predictions.date),
   });
 
-  const sportSlides = sportCandidates.slice(0, 5).map(({ sport, pick }) => ({
+  const sportSlides = sportCandidates.slice(0, 4).map(({ sport, pick }) => ({
     type: "sport-pick" as const,
     sport,
     league: pick.league,
-    match: `${pick.homeTeam} vs ${pick.awayTeam}`,
+    homeTeam: pick.homeTeam,
+    awayTeam: pick.awayTeam,
     market: pick.market,
     pick: pick.prediction,
     odds: pick.bestOdds,
@@ -144,8 +137,6 @@ export function buildInstagramCarouselPlan(predictions: PredictionFile): Carouse
 
   slides.push({
     type: "cta",
-    title: "Follow MatchSignal",
-    subtitle: "Daily AI-powered picks across top sports",
     handle: "@matchsignal",
   });
 
@@ -162,7 +153,8 @@ export function buildInstagramCarouselCaption(slides: CarouselSlide[]) {
     "Today’s AI-powered sports picks 🎯",
     "",
     ...sportSlides.slice(0, 4).map(
-      (slide) => `${slide.sport}: ${slide.match} — ${slide.pick} @ ${slide.odds.toFixed(2)}`
+      (slide) =>
+        `${slide.sport}: ${slide.homeTeam} vs ${slide.awayTeam} — ${slide.pick} @ ${slide.odds.toFixed(2)}`
     ),
     "",
     "Follow MatchSignal for daily betting picks, matchup edges, and AI-ranked value spots.",
