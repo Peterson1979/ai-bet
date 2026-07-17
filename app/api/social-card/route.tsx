@@ -123,20 +123,18 @@ export async function GET(req: Request) {
         />
 
         <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            borderRadius: "28px",
-            border: "1px solid rgba(56,189,248,0.14)",
-            background: "linear-gradient(180deg, rgba(7,14,27,0.98) 0%, rgba(8,16,31,0.98) 100%)",
-            padding: "34px",
-          }}
-        >
+  style={{
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    borderRadius: "28px",
+    border: "1px solid rgba(56,189,248,0.14)",
+    background: "linear-gradient(180deg, rgba(7,14,27,0.98) 0%, rgba(8,16,31,0.98) 100%)",
+    padding: "34px",
+  }}
+>
           {/* header */}
           <div
             style={{
