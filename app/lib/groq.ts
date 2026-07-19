@@ -1,17 +1,16 @@
 // app/lib/groq.ts
 import { z } from "zod";
-
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
-const MODEL = "meta-llama/llama-4-scout-17b-16e-instruct";
-
+// A meta-llama/llama-4-scout-17b-16e-instruct modellt a Groq 2026.06.17-én
+// deprecate-elte és elérhetetlenné tette. Hivatalos migrációs ajánlásuk:
+// openai/gpt-oss-120b (alternatíva: qwen/qwen3.6-27b).
+const MODEL = "openai/gpt-oss-120b";
 const PickSchema = z.object({
   market: z.string(),
   prediction: z.string(),
   reasoning: z.string(),
 });
-
 export type PickResult = z.infer<typeof PickSchema>;
-
 export async function generatePrediction(
   prompt: string
 ): Promise<PickResult[] | null> {
@@ -20,7 +19,6 @@ export async function generatePrediction(
     console.warn("[groq] No GROQ_API_KEY — returning null");
     return null;
   }
-
   try {
     const response = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
       method: "POST",
@@ -32,6 +30,10 @@ export async function generatePrediction(
         model: MODEL,
         temperature: 0.3,
         max_tokens: 1024,
+        // A gpt-oss-120b egy reasoning-modell; alacsony reasoning_effort
+        // elegendő ehhez a feladathoz, és gyorsabb/olcsóbb választ ad,
+        // mivel csak a végleges JSON tömbre van szükségünk.
+        reasoning_effort: "low",
         messages: [
           {
             role: "system",
@@ -46,26 +48,21 @@ export async function generatePrediction(
         ],
       }),
     });
-
     if (!response.ok) {
       const err = await response.text();
       console.error("[groq] API error:", response.status, err);
       return null;
     }
-
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
-
     if (!content) {
       console.error("[groq] Empty content in response");
       return null;
     }
-
     const cleaned = content
       .replace(/```json/gi, "")
       .replace(/```/g, "")
       .trim();
-
     let parsed: unknown;
     try {
       parsed = JSON.parse(cleaned);
@@ -73,9 +70,7 @@ export async function generatePrediction(
       console.error("[groq] JSON parse failed. Raw:", cleaned.slice(0, 300));
       return null;
     }
-
     const arr = Array.isArray(parsed) ? parsed : [parsed];
-
     const results: PickResult[] = [];
     for (const item of arr) {
       try {
@@ -84,12 +79,10 @@ export async function generatePrediction(
         console.warn("[groq] Invalid pick item skipped:", JSON.stringify(item));
       }
     }
-
     if (results.length === 0) {
       console.error("[groq] No valid picks in response. Full content:", cleaned);
       return null;
     }
-
     return results;
   } catch (error) {
     console.error("[groq] generatePrediction failed:", error);
