@@ -3,7 +3,7 @@ import { redis } from "../../lib/redis";
 import { selectPick } from "../../lib/social/select-pick";
 import { publishInstagramCarousel } from "../../lib/social/publish-instagram";
 import { publishFacebook } from "../../lib/social/publish-facebook";
-import { generateFacebookCaption } from "../../lib/social/caption-facebook";
+import { generateFacebookCarouselCaption } from "../../lib/social/caption-facebook";
 import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
 import type { Candidate, PredictionFile, TopPick } from "../../lib/social/types";
 import { uploadBufferToBlob } from "../../lib/social/upload-image";
@@ -321,7 +321,7 @@ export async function GET(req: Request) {
       }))
     );
 
-    const facebookCaption = await generateFacebookCaption(pick);
+   const facebookCaption = await generateFacebookCarouselCaption(topPicks);
 
     const origin = env.NEXT_PUBLIC_SITE_URL;
     const uploadedCarouselImageUrls: string[] = [];
