@@ -8,10 +8,9 @@ const IS_BUILD = process.env.NODE_ENV === "production" && !process.env.VERCEL_EN
 const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 10;
 
-// A the-odds-api egy kredit-hívást számol el minden ténylegesen kimenő
-// /odds/ kérésért (1 piac x 1 régió = 1 kredit). Ez a napi felső korlát
-// az összes sport-ág összesített kreditfelhasználására.
 const DAILY_CREDIT_LIMIT = 15;
+const ODDS_MAX_RETRIES = 3;
+const ODDS_RETRY_FALLBACK_MS = 5000;
 
 const WATCHED_SPORTS = [
   { key: "soccer_fifa_world_cup", label: "Football", league: "FIFA World Cup", priority: 1 },
@@ -137,6 +136,34 @@ const BOOKMAKER_RANKINGS: Record<string, number> = {
   NordicBet: 4,
   Coolbet: 4,
 };
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function getRetryDelayMs(attempt: number): number {
+  const base = ODDS_RETRY_FALLBACK_MS * attempt;
+  const jitter = Math.floor(Math.random() * 500);
+  return base + jitter;
+}
+
+function getRetryAfterMs(response: Response): number | null {
+  const retryAfter = response.headers.get("retry-after");
+  if (!retryAfter) return null;
+
+  const seconds = Number(retryAfter);
+  if (Number.isFinite(seconds) && seconds >= 0) {
+    return Math.ceil(seconds * 1000);
+  }
+
+  const dateMs = Date.parse(retryAfter);
+  if (!Number.isNaN(dateMs)) {
+    const delay = dateMs - Date.now();
+    return delay > 0 ? delay : 0;
+  }
+
+  return null;
+}
 
 function normalizeName(value: string): string {
   return value.toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "");
@@ -491,7 +518,7 @@ export function calculateBookmakerSpreadPct(
     return null;
   }
 
-  return round1(((offeredOdds / averageOdds) - 1) * 100);
+  return round1((offeredOdds / averageOdds - 1) * 100);
 }
 
 export function buildWhySignalSummary(params: {
@@ -668,6 +695,47 @@ function selectWithLeagueGuarantee(events: OddsEvent[], maxEvents: number): Odds
   return [...guaranteed, ...leftover.slice(0, remainingSlots)];
 }
 
+async function fetchOddsWithRetry(url: string, sportKey: string): Promise<Response | null> {
+  for (let attempt = 1; attempt <= ODDS_MAX_RETRIES; attempt += 1) {
+    try {
+      const response = await fetch(url, { cache: "no-store" });
+
+      if (response.status !== 429) {
+        return response;
+      }
+
+      const retryAfterMs = getRetryAfterMs(response);
+      const delayMs = retryAfterMs ?? getRetryDelayMs(attempt);
+
+      console.warn(`[odds] ${sportKey} fetch rate-limited (429), retrying`, {
+        attempt,
+        delayMs,
+      });
+
+      if (attempt < ODDS_MAX_RETRIES) {
+        await sleep(delayMs);
+        continue;
+      }
+
+      return response;
+    } catch (error) {
+      console.error(`[odds] ${sportKey} fetch attempt failed`, {
+        attempt,
+        error: error instanceof Error ? error.message : String(error),
+      });
+
+      if (attempt < ODDS_MAX_RETRIES) {
+        await sleep(getRetryDelayMs(attempt));
+        continue;
+      }
+
+      return null;
+    }
+  }
+
+  return null;
+}
+
 async function fetchSportEvents(
   sportKey: string,
   sportLabel: string,
@@ -696,7 +764,12 @@ async function fetchSportEvents(
       `&oddsFormat=decimal`;
 
     creditState.used += 1;
-    const response = await fetch(url, { cache: "no-store" });
+    const response = await fetchOddsWithRetry(url, sportKey);
+
+    if (!response) {
+      console.error(`[odds] ${sportKey} fetch failed: no response`);
+      return [];
+    }
 
     if (!response.ok) {
       console.error(`[odds] ${sportKey} fetch failed: ${response.status}`);
@@ -855,6 +928,13 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
     const eventsByLabel = new Map<string, OddsEvent[]>();
 
     for (const sport of sportsToFetch) {
+      if (creditState.used >= DAILY_CREDIT_LIMIT) {
+        console.warn(
+          `[odds] Napi kredit-keret (${DAILY_CREDIT_LIMIT}) elérve, további sportok kihagyva.`
+        );
+        break;
+      }
+
       const events = await fetchSportEvents(sport.key, sport.label, sport.league, creditState);
 
       if (!eventsByLabel.has(sport.label)) {
