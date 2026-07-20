@@ -1,6 +1,7 @@
 import { env } from "../../lib/env";
 import { redis } from "../../lib/redis";
 import { selectPick } from "../../lib/social/select-pick";
+import { calculateSocialScore } from "../../lib/social/score";
 import { publishInstagramCarousel } from "../../lib/social/publish-instagram";
 import { publishFacebook } from "../../lib/social/publish-facebook";
 import { generateFacebookCarouselCaption } from "../../lib/social/caption-facebook";
@@ -16,71 +17,21 @@ export const dynamic = "force-dynamic";
 const MIN_BOOKMAKERS = 3;
 const MIN_START_BUFFER_MINUTES = 90;
 const MAX_CAROUSEL_PICKS = 5;
-const DEFAULT_LEAGUE_PRIORITY = 60;
 const LOCK_TTL_SECONDS = 15 * 60;
-
-const LEAGUE_PRIORITY: Record<string, number> = {
-  "FIFA World Cup": 100,
-  "UEFA Champions League": 100,
-  "Premier League": 98,
-  "La Liga": 96,
-  "Serie A": 94,
-  "Bundesliga": 94,
-  "Ligue 1": 90,
-  "UEFA Europa League": 88,
-  "UEFA Conference League": 84,
-  "Copa Libertadores": 86,
-  "MLS": 78,
-  "Liga MX": 80,
-  "Brazil Série A": 82,
-  "Brazil Serie A": 82,
-  Championship: 72,
-  "J League": 70,
-  "K League": 70,
-  NBA: 100,
-  NFL: 100,
-  MLB: 95,
-  NHL: 95,
-  ATP: 88,
-  WTA: 86,
-  "ATP 1000": 96,
-  "WTA 1000": 94,
-  "Grand Slam": 100,
-  MMA: 82,
-  Boxing: 84,
-};
 
 type CarouselPick = Candidate;
 
-function getLeaguePriority(league: string): number {
-  return LEAGUE_PRIORITY[league] ?? DEFAULT_LEAGUE_PRIORITY;
+function getPrimaryOdds(pick: TopPick): number | null {
+  if (typeof pick.partnerOffer?.odds === "number") return pick.partnerOffer.odds;
+  if (typeof pick.partnerOdds === "number") return pick.partnerOdds;
+  if (typeof pick.bestOdds === "number") return pick.bestOdds;
+  return null;
 }
 
-function getOddsScore(bestOdds: number): number {
-  if (bestOdds >= 1.7 && bestOdds <= 2.5) return 10;
-  if (bestOdds >= 1.5 && bestOdds < 1.7) return 6;
-  if (bestOdds > 2.5 && bestOdds <= 3.2) return 5;
-  return 0;
-}
-
-function getBookmakerScore(bookmakerCount: number): number {
-  if (bookmakerCount >= 12) return 8;
-  if (bookmakerCount >= 8) return 5;
-  if (bookmakerCount >= 5) return 3;
-  return 0;
-}
-
-function getRiskTierScore(riskTier: TopPick["riskTier"]): number {
-  switch (riskTier) {
-    case "Low":
-      return 10;
-    case "Medium":
-      return 6;
-    case "High":
-      return 2;
-    default:
-      return 4;
-  }
+function getPrimaryValue(pick: TopPick): number | null {
+  if (typeof pick.estimatedValuePct === "number") return pick.estimatedValuePct;
+  if (typeof pick.valueDiff === "number") return pick.valueDiff;
+  return null;
 }
 
 function getPriorityKey(pick: TopPick & { sport: string }): string {
@@ -94,7 +45,9 @@ function isEligibleForCarouselPick(
   if (pick.status !== "scheduled") return false;
   if (!pick.prediction || !pick.market || !pick.bookmakerUrl) return false;
   if (pick.bookmakerCount < MIN_BOOKMAKERS) return false;
-  if (pick.valueDiff <= 0) return false;
+
+  const primaryValue = getPrimaryValue(pick);
+  if (typeof primaryValue !== "number" || primaryValue <= 0) return false;
 
   const start = new Date(pick.startTime);
   if (Number.isNaN(start.getTime())) return false;
@@ -103,26 +56,6 @@ function isEligibleForCarouselPick(
   if (start < minStart) return false;
 
   return true;
-}
-
-function calculateSocialScore(pick: TopPick & { sport: string }): CarouselPick {
-  const leaguePriority = getLeaguePriority(pick.league);
-  const riskTierScore = getRiskTierScore(pick.riskTier);
-  const oddsScore = getOddsScore(pick.bestOdds);
-  const bookmakerScore = getBookmakerScore(pick.bookmakerCount);
-
-  const socialScore =
-    pick.valueDiff * 0.35 +
-    leaguePriority * 0.25 +
-    riskTierScore * 0.2 +
-    oddsScore * 0.1 +
-    bookmakerScore * 0.1;
-
-  return {
-    ...pick,
-    priorityKey: getPriorityKey(pick),
-    socialScore,
-  };
 }
 
 function getTeamKeys(pick: Pick<TopPick, "homeTeam" | "awayTeam">): string[] {
@@ -155,7 +88,15 @@ function getTopPicks(predictions: PredictionFile, now: Date): CarouselPick[] {
       }))
     )
     .filter((pick) => isEligibleForCarouselPick(pick, now))
-    .map((pick) => calculateSocialScore(pick))
+    .map((pick) => ({
+      ...pick,
+      priorityKey: getPriorityKey(pick),
+      socialScore: calculateSocialScore({
+        ...pick,
+        priorityKey: getPriorityKey(pick),
+        socialScore: 0,
+      }),
+    }))
     .sort((a, b) => b.socialScore - a.socialScore);
 
   const selected: CarouselPick[] = [];
@@ -204,37 +145,75 @@ function formatStartTimeUtc(startTime: string): string {
   });
 }
 
-function formatValueDiff(valueDiff: number): string {
-  return valueDiff.toFixed(2);
+function formatNumber(value: number | null | undefined, digits = 2): string {
+  if (typeof value !== "number" || Number.isNaN(value)) return "";
+  return value.toFixed(digits);
 }
 
-function buildCardUrl(
-  origin: string,
-  slidePick: Pick<
-    TopPick,
-    | "league"
-    | "homeTeam"
-    | "awayTeam"
-    | "prediction"
-    | "market"
-    | "valueDiff"
-    | "riskTier"
-    | "bookmakerCount"
-    | "startTime"
-  >
-): string {
+function buildCardUrl(origin: string, slidePick: TopPick) {
   const cardUrl = new URL("/api/social-card", origin);
 
-  cardUrl.searchParams.set("template", "v2");
+  cardUrl.searchParams.set("template", "v3");
   cardUrl.searchParams.set("league", slidePick.league);
   cardUrl.searchParams.set("homeTeam", slidePick.homeTeam);
   cardUrl.searchParams.set("awayTeam", slidePick.awayTeam);
   cardUrl.searchParams.set("prediction", slidePick.prediction);
   cardUrl.searchParams.set("market", slidePick.market);
-  cardUrl.searchParams.set("valueDiff", formatValueDiff(slidePick.valueDiff));
   cardUrl.searchParams.set("riskTier", slidePick.riskTier);
   cardUrl.searchParams.set("bookmakerCount", String(slidePick.bookmakerCount));
   cardUrl.searchParams.set("startTime", formatStartTimeUtc(slidePick.startTime));
+
+  const partnerOdds = getPrimaryOdds(slidePick);
+  const estimatedValue = getPrimaryValue(slidePick);
+
+  if (partnerOdds !== null) {
+    cardUrl.searchParams.set("partnerOdds", formatNumber(partnerOdds));
+  }
+
+  if (typeof slidePick.marketAverageOdds === "number") {
+    cardUrl.searchParams.set(
+      "marketAverageOdds",
+      formatNumber(slidePick.marketAverageOdds)
+    );
+  }
+
+  if (typeof slidePick.fairOdds === "number") {
+    cardUrl.searchParams.set("fairOdds", formatNumber(slidePick.fairOdds));
+  }
+
+  if (typeof slidePick.fairProbability === "number") {
+    cardUrl.searchParams.set(
+      "fairProbability",
+      slidePick.fairProbability.toFixed(1)
+    );
+  }
+
+  if (estimatedValue !== null) {
+    cardUrl.searchParams.set("estimatedValuePct", estimatedValue.toFixed(1));
+  }
+
+  if (typeof slidePick.consensusImpliedProb === "number") {
+    cardUrl.searchParams.set(
+      "consensusImpliedProb",
+      slidePick.consensusImpliedProb.toFixed(1)
+    );
+  }
+
+  if (typeof slidePick.bookmakerSpreadPct === "number") {
+    cardUrl.searchParams.set(
+      "bookmakerSpreadPct",
+      slidePick.bookmakerSpreadPct.toFixed(1)
+    );
+  }
+
+  const whySignal =
+    Array.isArray(slidePick.whySignal) && slidePick.whySignal.length > 0
+      ? slidePick.whySignal.slice(0, 2)
+      : [];
+
+  whySignal.forEach((item, idx) => {
+    cardUrl.searchParams.set(`why${idx + 1}`, item);
+  });
 
   return cardUrl.toString();
 }
@@ -314,14 +293,22 @@ export async function GET(req: Request) {
         awayTeam: p.awayTeam,
         market: p.market,
         pick: p.prediction,
-        odds: p.bestOdds,
-        confidence: p.riskTier,
         startTime: p.startTime,
-        valueDiff: p.valueDiff,
+        riskTier: p.riskTier,
+        bookmakerCount: p.bookmakerCount,
+        partnerOdds:
+          typeof p.partnerOffer?.odds === "number"
+            ? p.partnerOffer.odds
+            : p.partnerOdds ?? p.bestOdds ?? null,
+        marketAverageOdds: p.marketAverageOdds ?? null,
+        fairOdds: p.fairOdds ?? null,
+        fairProbability: p.fairProbability ?? null,
+        estimatedValuePct: p.estimatedValuePct ?? p.valueDiff ?? null,
+        whySignal: Array.isArray(p.whySignal) ? p.whySignal.slice(0, 2) : [],
       }))
     );
 
-   const facebookCaption = await generateFacebookCarouselCaption(topPicks);
+    const facebookCaption = await generateFacebookCarouselCaption(topPicks);
 
     const origin = env.NEXT_PUBLIC_SITE_URL;
     const uploadedCarouselImageUrls: string[] = [];

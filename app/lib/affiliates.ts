@@ -1,6 +1,13 @@
 // app/lib/affiliates.ts
 // Strukturált affiliate rendszer tracking paraméterekkel
 
+export type AffiliateSource =
+  | "sidebar"
+  | "matchcard"
+  | "banner"
+  | "slider"
+  | "featured";
+
 export type AffiliateSite = {
   id: string;
   name: string;
@@ -10,11 +17,9 @@ export type AffiliateSite = {
   trackingParams?: string;
   sports?: string[];
   logoUrl?: string;
+  aliases?: string[];
+  enabled?: boolean;
 };
-
-// ======================
-// AFFILIATE SITES CONFIG
-// ======================
 
 export const AFFILIATE_SITES: AffiliateSite[] = [
   {
@@ -25,6 +30,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://record.betonlineaffiliates.ag/_6DV8-IUj_sbYJMJFEJBL7mNd7ZgqdRLk/1/",
     logoUrl: "/logos/affiliates/betonline.png",
+    aliases: ["betonline", "bet online", "betonline.ag"],
     sports: [
       "Football",
       "NBA",
@@ -34,8 +40,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Baseball",
       "MMA/BOXING",
     ],
+    enabled: true,
   },
-
   {
     id: "sportsbetting",
     name: "SportsBetting.ag",
@@ -44,6 +50,12 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://record.sportsbettingaffiliates.ag/_6DV8-IUj_sah_7RUBh20pWNd7ZgqdRLk/1/",
     logoUrl: "/logos/affiliates/sportsbetting.png",
+    aliases: [
+      "sportsbetting",
+      "sportsbetting.ag",
+      "sports betting",
+      "sportsbettingag",
+    ],
     sports: [
       "Football",
       "NBA",
@@ -53,8 +65,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Baseball",
       "MMA/BOXING",
     ],
+    enabled: true,
   },
-
   {
     id: "22bet",
     name: "22Bet",
@@ -62,8 +74,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     bonus: "Up to 100% Bonus",
     baseUrl:
       "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1484&redirectURL=https://22link.world/",
-    trackingParams: "?mid=YOUR_ID",
     logoUrl: "/logos/affiliates/22bet.png",
+    aliases: ["22bet", "22 bet"],
     sports: [
       "Football",
       "NBA",
@@ -73,16 +85,16 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Baseball",
       "MMA/BOXING",
     ],
+    enabled: true,
   },
-
   {
     id: "1win",
     name: "1win",
     rating: 9.2,
     bonus: "Multiple Bet Bonus",
-    baseUrl: "https://r1wdhtx.life/betting?p=3q5b",
-    trackingParams: "?affid=YOUR_ID",
+    baseUrl: "https://one-vv5693.com/betting?p=840g",
     logoUrl: "/logos/affiliates/1win.png",
+    aliases: ["1win", "1 win"],
     sports: [
       "Football",
       "NBA",
@@ -92,8 +104,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Baseball",
       "MMA/BOXING",
     ],
+    enabled: true,
   },
-
   {
     id: "betlabel",
     name: "BetLabel",
@@ -101,8 +113,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     bonus: "Up to 100 EUR Bonus",
     baseUrl:
       "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1650&redirectURL=https://blmedia.world/",
-    trackingParams: "?affid=YOUR_ID",
     logoUrl: "/logos/affiliates/betlabel.png",
+    aliases: ["betlabel", "bet label"],
     sports: [
       "Football",
       "NBA",
@@ -112,9 +124,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Baseball",
       "MMA/BOXING",
     ],
+    enabled: true,
   },
-
-  // NEW
   {
     id: "flexlinks1",
     name: "Oddsjam",
@@ -123,6 +134,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://track.flexlinkspro.com/g.ashx?foid=1.53600.1000000017&trid=1549943.243014&foc=16&fot=9999&fos=6",
     logoUrl: "/logos/affiliates/oddsjam.png",
+    aliases: ["oddsjam", "odds jam"],
     sports: [
       "Football",
       "NBA",
@@ -132,9 +144,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Baseball",
       "MMA/BOXING",
     ],
+    enabled: true,
   },
-
-  // NEW
   {
     id: "flexlinks2",
     name: "BetQL",
@@ -143,6 +154,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://track.flexlinkspro.com/g.ashx?foid=24.244100.6669976&trid=1549943.244100&foc=16&fot=9999&fos=6",
     logoUrl: "/logos/affiliates/betql.png",
+    aliases: ["betql", "bet ql"],
     sports: [
       "Football",
       "NBA",
@@ -152,6 +164,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
       "Baseball",
       "MMA/BOXING",
     ],
+    enabled: true,
   },
 ];
 
@@ -159,39 +172,63 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
 // HELPERS
 // ======================
 
-export function buildAffiliateUrl(
-  site: AffiliateSite,
-  source: "sidebar" | "matchcard" | "banner" | "slider" | "featured" = "sidebar"
-): string {
-  const utmParams = new URLSearchParams({
-    utm_source: "betai",
-    utm_medium: source,
-    utm_campaign: site.id,
-  }).toString();
-
-  const base = site.baseUrl + (site.trackingParams ?? "");
-  const separator = base.includes("?") ? "&" : "?";
-
-  return `${base}${separator}${utmParams}`;
+function normalizeBookmakerName(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "")
+    .replace(/[^a-z0-9]/g, "");
 }
 
-/**
- * Sidebar "Top Betting Sites" (legacy — a sportág-oldal jelenlegi
- * oldalsávjában használatos; a kompakt sávra váltáskor is felhasználható)
- */
+function isSiteEnabled(site: AffiliateSite): boolean {
+  return site.enabled !== false;
+}
+
+function supportsSport(site: AffiliateSite, sport: string): boolean {
+  const normalizedSport = normalizeBookmakerName(sport);
+
+  return (site.sports ?? []).some((item) => {
+    const normalizedItem = normalizeBookmakerName(item);
+
+    return (
+      normalizedItem === normalizedSport ||
+      normalizedItem.includes(normalizedSport) ||
+      normalizedSport.includes(normalizedItem) ||
+      (normalizedSport === "mlb" && normalizedItem.includes("baseball")) ||
+      (normalizedSport === "mma" && normalizedItem.includes("mma")) ||
+      (normalizedSport === "mma" && normalizedItem.includes("boxing"))
+    );
+  });
+}
+
+export function buildAffiliateUrl(
+  site: AffiliateSite,
+  source: AffiliateSource = "sidebar"
+): string {
+  const url = new URL(site.baseUrl);
+  const params = new URLSearchParams(site.trackingParams ?? "");
+
+  params.set("utm_source", "betai");
+  params.set("utm_medium", source);
+  params.set("utm_campaign", site.id);
+
+  params.forEach((value, key) => {
+    url.searchParams.set(key, value);
+  });
+
+  return url.toString();
+}
+
 export function getSidebarSites() {
-  return AFFILIATE_SITES.map((site) => ({
+  return AFFILIATE_SITES.filter(isSiteEnabled).map((site) => ({
     ...site,
     url: buildAffiliateUrl(site, "sidebar"),
   }));
 }
 
-/**
- * Affiliate Slider — ÖSSZES site, rating szerint csökkenő sorrendben.
- * Ez fut végig vízszintesen a Hero alatt.
- */
 export function getSliderSites() {
   return [...AFFILIATE_SITES]
+    .filter(isSiteEnabled)
     .sort((a, b) => b.rating - a.rating)
     .map((site) => ({
       ...site,
@@ -199,11 +236,9 @@ export function getSliderSites() {
     }));
 }
 
-/**
- * Featured Sportsbooks — Top 3 (Editor's Picks), rating szerint.
- */
 export function getFeaturedSites(count: number = 3) {
   return [...AFFILIATE_SITES]
+    .filter(isSiteEnabled)
     .sort((a, b) => b.rating - a.rating)
     .slice(0, count)
     .map((site) => ({
@@ -212,42 +247,45 @@ export function getFeaturedSites(count: number = 3) {
     }));
 }
 
-/**
- * 🏆 Top Rated Sportsbooks — kompakt lista (footer felett és a
- * sportág-oldal kompakt sávjában is ezt használjuk).
- */
 export function getTopRatedList(count: number = 3) {
   return getFeaturedSites(count);
 }
 
-/**
- * MatchCard CTA URL — sport alapján választ (A/C verzió esetén,
- * amikor nincs konkrét bookmakerName megadva)
- */
+export function findAffiliateSiteByName(
+  bookmakerName: string
+): AffiliateSite | undefined {
+  const normalized = normalizeBookmakerName(bookmakerName);
+
+  return AFFILIATE_SITES.filter(isSiteEnabled).find((site) => {
+    const candidates = [site.id, site.name, ...(site.aliases ?? [])].map(
+      normalizeBookmakerName
+    );
+
+    return candidates.includes(normalized);
+  });
+}
+
 export function getMatchCardUrl(sport: string): string {
-  const bySport = AFFILIATE_SITES.find((s) => s.sports?.includes(sport));
+  const bySport = AFFILIATE_SITES.filter(isSiteEnabled).find((site) =>
+    supportsSport(site, sport)
+  );
 
   if (bySport) {
     return buildAffiliateUrl(bySport, "matchcard");
   }
 
-  return buildAffiliateUrl(AFFILIATE_SITES[0], "matchcard");
+  const fallback = AFFILIATE_SITES.filter(isSiteEnabled).sort(
+    (a, b) => b.rating - a.rating
+  )[0];
+
+  return fallback ? buildAffiliateUrl(fallback, "matchcard") : "#";
 }
 
-/**
- * Bookmaker neve alapján affiliate URL
- */
 export function getBookmakerAffiliateUrl(
   bookmakerName: string,
   sport: string
 ): string {
-  const normalized = bookmakerName.toLowerCase().replace(/\s/g, "");
-
-  const match = AFFILIATE_SITES.find(
-    (s) =>
-      s.id === normalized ||
-      s.name.toLowerCase().replace(/\s/g, "") === normalized
-  );
+  const match = findAffiliateSiteByName(bookmakerName);
 
   if (match) {
     return buildAffiliateUrl(match, "matchcard");
@@ -256,19 +294,11 @@ export function getBookmakerAffiliateUrl(
   return getMatchCardUrl(sport);
 }
 
-/**
- * Rule-based indoklás a matchcard "B" CTA verzióhoz
- * ("Best Odds", "Top Rated", stb.) — nem AI generálja, konzisztens
- * marad minden megjelenésnél ugyanahhoz a site-hoz.
- *
- * A rangsor a getSliderSites()/getFeaturedSites() ugyanazon rating
- * mezőjéből származik, tehát a slider, a featured kártyák és a
- * matchcard badge sosem mond ellent egymásnak.
- */
 export function getBadgeLabel(site: AffiliateSite): string {
-  const sortedByRating = [...AFFILIATE_SITES].sort(
-    (a, b) => b.rating - a.rating
-  );
+  const sortedByRating = [...AFFILIATE_SITES]
+    .filter(isSiteEnabled)
+    .sort((a, b) => b.rating - a.rating);
+
   const rank = sortedByRating.findIndex((s) => s.id === site.id);
 
   if (rank === 0) return "Top Rated";
@@ -278,18 +308,8 @@ export function getBadgeLabel(site: AffiliateSite): string {
   return "Trusted Partner";
 }
 
-/**
- * Adott bookmaker neve alapján visszaadja a teljes AffiliateSite
- * objektumot (logóhoz, ratinghez, badge-hez szükséges a matchcard
- * "B" verziójában).
- */
 export function getSiteByBookmakerName(
   bookmakerName: string
 ): AffiliateSite | undefined {
-  const normalized = bookmakerName.toLowerCase().replace(/\s/g, "");
-  return AFFILIATE_SITES.find(
-    (s) =>
-      s.id === normalized ||
-      s.name.toLowerCase().replace(/\s/g, "") === normalized
-  );
+  return findAffiliateSiteByName(bookmakerName);
 }

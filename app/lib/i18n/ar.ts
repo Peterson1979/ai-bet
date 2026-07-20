@@ -33,6 +33,17 @@ const ar: Partial<Translation> = {
   compareAllOffers: "مقارنة جميع العروض →",
   seoTitle: "توقعات المراهنات بالذكاء الاصطناعي",
   seoDescription: "توقعات مراهنات وفرص Value Bet مدعومة بالذكاء الاصطناعي لمختلف الرياضات.",
+    bestPartnerOdds: "أفضل أودز لدى الشريك",
+  sportsbookLabel: "شركة المراهنات",
+  marketAverage: "متوسط السوق",
+  fairProbability: "احتمالية عادلة",
+  vsMarketAverage: "مقارنة بمتوسط السوق",
+  bookmakersTracked: "شركات مراهنات يتم تتبعها",
+  whyThisSignal: "لماذا هذا الإشارة",
+  marketInfoAriaLabel: "معلومات السوق",
+  closeMarketInfoAriaLabel: "إغلاق معلومات السوق",
+  claimOfferAt: "احصل على العرض لدى {partner}",
+  estimatedValue: "القيمة التقديرية",
   sportPageTitle: "توقعات {SPORT} وتحليلات المراهنات بالذكاء الاصطناعي",
   sportPageDescription: "توقعات {SPORT} وتحليلات المراهنات وفرص القيمة باستخدام الذكاء الاصطناعي.",
 
@@ -151,50 +162,42 @@ matchSignal: "MATCH SIGNAL",
     fairOdds: "الاحتمالات العادلة الخاصة بك",
     bookOdds: "احتمالات شركة المراهنات",
   },
-    footer: {
-    betIntelligence: "كيف يعمل MatchSignal",
-    betIntelligenceDesc:
-      "يجمع MatchSignal بين أسعار المراهنات المباشرة من عدة شركات مراهنات وتحليلات المباريات التي ينشئها الذكاء الاصطناعي.",
-
-    matchPreviewFeatureTitle: "معاينة المباراة بالذكاء الاصطناعي",
-    matchPreviewFeatureDesc:
-      "ملخص قصير ومحايد لكل مباراة يتم إنشاؤه بواسطة الذكاء الاصطناعي.",
-
-    oddsComparisonFeatureTitle: "مقارنة الاحتمالات",
-    oddsComparisonFeatureDesc:
-      "نعرض أفضل الأسعار المتاحة لكل مباراة.",
-
-    marketDepthFeatureTitle: "عمق السوق",
-    marketDepthFeatureDesc:
-      "تعرض كل مباراة عدد شركات المراهنات التي تقدم حاليًا أسعارًا لها.",
-
-    impliedProbFeatureTitle: "احتمال السوق",
-    impliedProbFeatureDesc:
-      "تعرض كل مباراة الاحتمال الضمني المستخرج من أسعار شركات المراهنات.",
-
-    consensusProbFeatureTitle: "إشارة القيمة",
-    consensusProbFeatureDesc:
-      "تتم مقارنة كل اختيار مع الاحتمال التوافقي للسوق. ✅ متوافق مع السوق يعني أن الاختيار يتماشى مع متوسط السوق. ⚡ قيمة رهان تعني أن الاختيار يقدم قيمة أفضل من متوسط السوق. ⚠ أقل من متوسط السوق يعني أن الاختيار أسوأ من متوسط السوق — يُنصح بالحذر.",
-
-    riskTierFeatureTitle: "مستوى المخاطرة",
-    riskTierFeatureDesc:
-      "تعرض كل بطاقة مباراة تصنيفًا للمخاطرة: 🟢 مخاطرة منخفضة تشير إلى أسعار منخفضة مدعومة من عدد كبير من شركات المراهنات. 🟡 مخاطرة متوسطة تظهر مع أسعار متوسطة. 🔴 مخاطرة عالية تشير إلى أسعار مرتفعة أو تغطية محدودة — ينصح بمزيد من الحذر.",
-
-    aiBettingInsights: "حول MatchSignal",
-    aiBettingInsightsDesc:
-      "توفر هذه المنصة محتوى مولدًا بالذكاء الاصطناعي لأغراض معلوماتية فقط. يرجى المراهنة بمسؤولية.",
-
-    navAbout: "من نحن",
-    navContact: "اتصل بنا",
-    navPrivacy: "سياسة الخصوصية",
-    navTerms: "شروط الاستخدام",
-    navAffiliate: "إفصاح الشراكة",
-    navResponsible: "المقامرة بمسؤولية",
-    navCookie: "سياسة ملفات تعريف الارتباط",
-
-    platformName: "MatchSignal",
-    builtWithAi: "مدعوم بالذكاء الاصطناعي",
-  },
+    
+	footer: {
+  betIntelligence: "كيف يعمل MatchSignal",
+  betIntelligenceDesc:
+    "يجمع MatchSignal بين أسعار المراهنات من شركات المراهنة، وسياق السوق، وتحليلات المباريات التي ينشئها الذكاء الاصطناعي لمساعدتك على مقارنة الترشيحات، واكتشاف فروقات التسعير، وفهم كل حدث بسرعة.",
+  matchPreviewFeatureTitle: "معاينة المباراة بالذكاء الاصطناعي",
+  matchPreviewFeatureDesc:
+    "ملخص قصير ومحايد يتم إنشاؤه بالذكاء الاصطناعي لكل حدث، بهدف تقديم سياق سريع حول المواجهة والبطولة وزاوية الرهان.",
+  oddsComparisonFeatureTitle: "مقارنة الأسعار",
+  oddsComparisonFeatureDesc:
+    "نعرض أفضل الأسعار المتاحة لكل مباراة بعد جمعها ومقارنتها عبر عدة شركات مراهنة.",
+  marketDepthFeatureTitle: "عمق السوق",
+  marketDepthFeatureDesc:
+    "تعرض كل بطاقة مباراة عدد شركات المراهنة التي تسعّر الحدث حاليًا، مما يساعدك على فهم مدى اتساع تغطية السوق.",
+  impliedProbFeatureTitle: "احتمال السوق والإجماع",
+  impliedProbFeatureDesc:
+    "قد تتضمن بطاقات المباريات مؤشرات احتمالية قائمة على السوق مثل الاحتمال الضمني، والاحتمال العادل، وإجماع السوق، لمساعدتك على مقارنة الاختيار المقترح بالصورة الأوسع للتسعير.",
+  consensusProbFeatureTitle: "إشارة القيمة",
+  consensusProbFeatureDesc:
+    "يتم تقييم كل اختيار باستخدام بيانات تسعير السوق. ✅ Market aligned تعني أن السعر قريب من النظرة العامة للسوق، و⚡ Value odds تشير إلى تسعير قد يكون أفضل من متوسط السوق، بينما ⚠ Below market تعني أن السعر المتاح أقل ملاءمة من خط الأساس في السوق.",
+  riskTierFeatureTitle: "مستوى المخاطرة",
+  riskTierFeatureDesc:
+    "تتضمن كل بطاقة مباراة مستوى مخاطرة يعتمد على عوامل مثل مستوى السعر، وتغطية السوق، والسياق العام للتسعير. 🟢 Low Risk يعكس عادة أسعارًا أقصر وتغطية أوسع من شركات المراهنة، بينما 🔴 High Risk يشير غالبًا إلى أسعار أعلى أو دعم أضعف من السوق.",
+  aiBettingInsights: "حول MatchSignal",
+  aiBettingInsightsDesc:
+    "يوفر MatchSignal محتوى مراهنات تم إنشاؤه بالذكاء الاصطناعي لأغراض معلوماتية وتعليمية فقط. وهو ليس جهة تشغيل مراهنات ولا يضمن النتائج. راهن بمسؤولية ولا تخاطر إلا بالمبلغ الذي يمكنك تحمل خسارته.",
+  navAbout: "حول",
+  navContact: "اتصل بنا",
+  navPrivacy: "سياسة الخصوصية",
+  navTerms: "شروط الاستخدام",
+  navAffiliate: "إفصاح الشراكة",
+  navResponsible: "اللعب المسؤول",
+  navCookie: "سياسة ملفات تعريف الارتباط",
+  platformName: "MatchSignal",
+  builtWithAi: "تم إنشاؤه بالذكاء الاصطناعي",
+},
 
   glossary: {
     pageTitle: "شرح أسواق المراهنات",

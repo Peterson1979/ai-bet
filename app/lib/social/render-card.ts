@@ -10,6 +10,33 @@ function esc(v: string) {
     .replaceAll(">", "&gt;");
 }
 
+function isFiniteNumber(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value);
+}
+
+function getPrimaryOdds(pick: Candidate): number | null {
+  if (isFiniteNumber(pick.partnerOffer?.odds)) return pick.partnerOffer.odds;
+  if (isFiniteNumber(pick.partnerOdds)) return pick.partnerOdds;
+  if (isFiniteNumber(pick.bestOdds)) return pick.bestOdds;
+  return null;
+}
+
+function getPrimaryValue(pick: Candidate): number | null {
+  if (isFiniteNumber(pick.estimatedValuePct)) return pick.estimatedValuePct;
+  if (isFiniteNumber(pick.valueDiff)) return pick.valueDiff;
+  return null;
+}
+
+function formatOdds(value: number | null): string {
+  return isFiniteNumber(value) ? value.toFixed(2) : "—";
+}
+
+function formatPercent(value: number | null, withPlus = false): string {
+  if (!isFiniteNumber(value)) return "—";
+  const prefix = withPlus && value > 0 ? "+" : "";
+  return `${prefix}${value.toFixed(2)}%`;
+}
+
 export async function renderCard(pick: Candidate, outputPath: string) {
   const dt = new Date(pick.startTime).toLocaleString("en-GB", {
     dateStyle: "medium",
@@ -17,9 +44,10 @@ export async function renderCard(pick: Candidate, outputPath: string) {
     timeZone: "UTC",
   });
 
-  if (typeof (chromium as any).setGraphicsMode === "function") {
-    (chromium as any).setGraphicsMode(false);
-  }
+  const primaryOdds = getPrimaryOdds(pick);
+  const primaryValue = getPrimaryValue(pick);
+
+  chromium.setGraphicsMode = false;
 
   const executablePath = await chromium.executablePath();
 
@@ -57,11 +85,11 @@ export async function renderCard(pick: Candidate, outputPath: string) {
           </div>
           <div style="background:#111827;border:1px solid #334155;border-radius:20px;padding:24px;">
             <div style="font-size:18px;color:#94a3b8;">Odds</div>
-            <div style="font-size:34px;font-weight:800;margin-top:8px;">${pick.bestOdds.toFixed(2)}</div>
+            <div style="font-size:34px;font-weight:800;margin-top:8px;">${formatOdds(primaryOdds)}</div>
           </div>
           <div style="background:#111827;border:1px solid #334155;border-radius:20px;padding:24px;">
             <div style="font-size:18px;color:#94a3b8;">Value Signal</div>
-            <div style="font-size:34px;font-weight:800;margin-top:8px;color:#22c55e;">+${pick.valueDiff.toFixed(2)}%</div>
+            <div style="font-size:34px;font-weight:800;margin-top:8px;color:#22c55e;">${formatPercent(primaryValue, true)}</div>
           </div>
           <div style="background:#111827;border:1px solid #334155;border-radius:20px;padding:24px;">
             <div style="font-size:18px;color:#94a3b8;">Risk Tier</div>

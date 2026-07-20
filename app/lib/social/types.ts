@@ -11,15 +11,35 @@ export type TopPick = {
   prediction: string;
   reasoning: string;
   riskTier: RiskTier;
-  bestOdds: number;
-  impliedProbability: number;
-  consensusImpliedProb: number;
-  valueDiff: number;
+
+  bestOdds?: number | null;
+  impliedProbability?: number | null;
+  consensusImpliedProb?: number | null;
+  valueDiff?: number | null;
+
   bookmakerCount: number;
   bookmaker: string;
   bookmakerUrl: string;
   ctaLabel: string;
   status: string;
+
+  partnerBookmaker?: string | null;
+  partnerOdds?: number | null;
+  partnerRating?: number | null;
+  marketAverageOdds?: number | null;
+  fairOdds?: number | null;
+  fairProbability?: number | null;
+  estimatedValuePct?: number | null;
+  bookmakerSpreadPct?: number | null;
+  whySignal?: string[];
+  partnerOffer?: {
+    bookmakerName?: string | null;
+    logoUrl?: string | null;
+    rating?: number | null;
+    odds?: number | null;
+    trackingUrl?: string | null;
+    badgeLabel?: string | null;
+  } | null;
 };
 
 export type SportBlock = {

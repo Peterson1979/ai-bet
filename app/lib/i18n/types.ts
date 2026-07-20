@@ -1,18 +1,16 @@
+// app/i18n/types.ts  (a jelenlegi verziód már jó alapnak)
 export type Translation = {
   heroTitle: string;
   heroSubtitle: string;
   heroDesc: string;
-    faqPredictionQuestion: string;
+  faqPredictionQuestion: string;
   faqPredictionAnswer: string;
   faqFreeQuestion: string;
   faqFreeAnswer: string;
-  
+
   heroImageAlt: string;
   sportPageTitle: string;
-sportPageDescription: string;
-
-
-
+  sportPageDescription: string;
 
   topPicks: string;
   premiumOffers: string;
@@ -43,7 +41,7 @@ sportPageDescription: string;
   matchPreview: string;
   matchMarket: string;
   basedOnBookmakers: string;
- impliedProb: string;
+  impliedProb: string;
   riskLow: string;
   riskMedium: string;
   riskHigh: string;
@@ -63,7 +61,19 @@ sportPageDescription: string;
   consensusProbHint: string;
   viewAllPredictions: string;
   viewAllPredictionsSport: string;
-noEventsTodaySport: string;
+  noEventsTodaySport: string;
+  bestPartnerOdds: string;
+sportsbookLabel: string;
+marketAverage: string;
+fairProbability: string;
+vsMarketAverage: string;
+bookmakersTracked: string;
+whyThisSignal: string;
+marketInfoAriaLabel: string;
+closeMarketInfoAriaLabel: string;
+claimOfferAt: string;
+estimatedValue: string;
+
   sports: {
     topPicks: string;
     football: string;
@@ -74,6 +84,7 @@ noEventsTodaySport: string;
     mlb: string;
     mma: string;
   };
+
   system: {
     navHome: string;
     navTopPicks: string;
@@ -82,23 +93,28 @@ noEventsTodaySport: string;
     navTools: string;
     navGlossary: string;
   };
+
   common: {
-  rating: string;
-  visitSite: string;
-  compareAllOffers: string;
-};
-featuredSportsbooks: {
-  title: string;
-  subtitle: string;
-  seeAll: string;
-};
-topRatedSportsbooks: {
-  title: string;
-  compareAll: string;
-};
-stickyCta: {
-  text: string;
-};
+    rating: string;
+    visitSite: string;
+    compareAllOffers: string;
+  };
+
+  featuredSportsbooks: {
+    title: string;
+    subtitle: string;
+    seeAll: string;
+  };
+
+  topRatedSportsbooks: {
+    title: string;
+    compareAll: string;
+  };
+
+  stickyCta: {
+    text: string;
+  };
+
   bettingPage: {
     title: string;
     description: string;
@@ -112,6 +128,7 @@ stickyCta: {
     affiliateTitle: string;
     affiliateText: string;
   };
+
   sportNews: {
     title: string;
     description: string;
@@ -119,6 +136,7 @@ stickyCta: {
     subtitle: string;
     sidebarTitle: string;
   };
+
   tools: {
     title: string;
     oddsConverter: string;
@@ -140,6 +158,7 @@ stickyCta: {
     fairOdds: string;
     bookOdds: string;
   };
+
   footer: {
     betIntelligence: string;
     betIntelligenceDesc: string;
@@ -153,8 +172,8 @@ stickyCta: {
     impliedProbFeatureDesc: string;
     consensusProbFeatureTitle: string;
     consensusProbFeatureDesc: string;
-	riskTierFeatureTitle: string;
-riskTierFeatureDesc: string;
+    riskTierFeatureTitle: string;
+    riskTierFeatureDesc: string;
     aiBettingInsights: string;
     aiBettingInsightsDesc: string;
     navAbout: string;
@@ -166,8 +185,8 @@ riskTierFeatureDesc: string;
     navCookie: string;
     platformName: string;
     builtWithAi: string;
-  
   };
+
   glossary: {
     pageTitle: string;
     pageSubtitle: string;

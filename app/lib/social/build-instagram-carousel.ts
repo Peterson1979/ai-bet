@@ -13,18 +13,24 @@ export type CarouselSlide =
       awayTeam: string;
       market: string;
       pick: string;
-      odds: number;
-      confidence: RiskTier;
       startTime: string;
-      valueDiff: number;
+      riskTier: RiskTier;
+      bookmakerCount: number;
+      partnerOdds?: number | null;
+      marketAverageOdds?: number | null;
+      fairOdds?: number | null;
+      fairProbability?: number | null;
+      estimatedValuePct?: number | null;
+      whySignal?: string[];
     }
   | {
       type: "best-overall";
       title: string;
       match: string;
       pick: string;
-      odds: number;
-      confidence: RiskTier;
+      market: string;
+      estimatedValuePct?: number | null;
+      riskTier: RiskTier;
       reason: string;
     }
   | {
@@ -42,16 +48,27 @@ type SportCandidate = {
   pick: TopPick;
 };
 
+function getPrimaryValue(pick: TopPick) {
+  if (typeof pick.estimatedValuePct === "number") return pick.estimatedValuePct;
+  if (typeof pick.valueDiff === "number") return pick.valueDiff;
+  return Number.NEGATIVE_INFINITY;
+}
+
 function getTopPickPerSport(sports: SportBlock[]): SportCandidate[] {
   return sports
-    .filter((block) => block.hasMatches && Array.isArray(block.topPicks) && block.topPicks.length > 0)
+    .filter(
+      (block) =>
+        block.hasMatches &&
+        Array.isArray(block.topPicks) &&
+        block.topPicks.length > 0
+    )
     .map((block) => ({
       sport: block.sport,
       pick: [...block.topPicks]
         .filter((pick) => pick.status === "scheduled")
         .filter((pick) => !!pick.prediction && !!pick.market)
         .filter((pick) => (pick.bookmakerCount ?? 0) >= 3)
-        .sort((a, b) => (b.valueDiff ?? 0) - (a.valueDiff ?? 0))[0],
+        .sort((a, b) => getPrimaryValue(b) - getPrimaryValue(a))[0],
     }))
     .filter((item) => !!item.pick);
 }
@@ -65,7 +82,19 @@ function formatBoardDate(date: string) {
   });
 }
 
-export function buildInstagramCarouselPlan(predictions: PredictionFile): CarouselSlide[] {
+function formatPercent(value?: number | null) {
+  if (typeof value !== "number" || Number.isNaN(value)) return null;
+  return `${value > 0 ? "+" : ""}${value.toFixed(1)}%`;
+}
+
+function formatOdds(value?: number | null) {
+  if (typeof value !== "number" || Number.isNaN(value)) return null;
+  return value.toFixed(2);
+}
+
+export function buildInstagramCarouselPlan(
+  predictions: PredictionFile
+): CarouselSlide[] {
   const sportCandidates = getTopPickPerSport(predictions.sports);
 
   const slides: CarouselSlide[] = [];
@@ -83,10 +112,19 @@ export function buildInstagramCarouselPlan(predictions: PredictionFile): Carouse
     awayTeam: pick.awayTeam,
     market: pick.market,
     pick: pick.prediction,
-    odds: pick.bestOdds,
-    confidence: pick.riskTier,
     startTime: pick.startTime,
-    valueDiff: pick.valueDiff,
+    riskTier: pick.riskTier,
+    bookmakerCount: pick.bookmakerCount,
+    partnerOdds:
+      typeof pick.partnerOffer?.odds === "number"
+        ? pick.partnerOffer.odds
+        : pick.partnerOdds ?? pick.bestOdds ?? null,
+    marketAverageOdds: pick.marketAverageOdds ?? null,
+    fairOdds: pick.fairOdds ?? null,
+    fairProbability: pick.fairProbability ?? null,
+    estimatedValuePct:
+      pick.estimatedValuePct ?? pick.valueDiff ?? null,
+    whySignal: Array.isArray(pick.whySignal) ? pick.whySignal.slice(0, 2) : [],
   }));
 
   slides.push(...sportSlides);
@@ -95,19 +133,23 @@ export function buildInstagramCarouselPlan(predictions: PredictionFile): Carouse
     .flatMap((block) => block.topPicks || [])
     .filter((pick) => pick.status === "scheduled")
     .filter((pick) => !!pick.prediction && !!pick.market)
-    .sort((a, b) => (b.valueDiff ?? 0) - (a.valueDiff ?? 0));
+    .sort((a, b) => getPrimaryValue(b) - getPrimaryValue(a));
 
   const best = allPicks[0];
 
   if (slides.length < 5 && best) {
     slides.push({
       type: "best-overall",
-      title: "Best Value Pick",
+      title: "Best Value Signal",
       match: `${best.homeTeam} vs ${best.awayTeam}`,
       pick: best.prediction,
-      odds: best.bestOdds,
-      confidence: best.riskTier,
-      reason: (best.reasoning || "").slice(0, 150),
+      market: best.market,
+      estimatedValuePct: best.estimatedValuePct ?? best.valueDiff ?? null,
+      riskTier: best.riskTier,
+      reason:
+        Array.isArray(best.whySignal) && best.whySignal.length > 0
+          ? best.whySignal[0]
+          : (best.reasoning || "").slice(0, 150),
     });
   }
 
@@ -118,7 +160,11 @@ export function buildInstagramCarouselPlan(predictions: PredictionFile): Carouse
       bullets: [
         `${sportCandidates.length} sports covered`,
         `${allPicks.length} active picks generated`,
-        best ? `Top value signal: +${best.valueDiff.toFixed(2)}%` : "Fresh AI picks available today",
+        best
+          ? `Top estimated value: ${formatPercent(
+              best.estimatedValuePct ?? best.valueDiff ?? null
+            ) ?? "available"}`
+          : "Fresh AI picks available today",
       ],
     });
   }
@@ -129,8 +175,8 @@ export function buildInstagramCarouselPlan(predictions: PredictionFile): Carouse
       title: "Daily Edge",
       bullets: [
         "AI-ranked betting opportunities",
-        "Built from today’s available board",
-        "Updated from current prediction set",
+        "Built from today’s active board",
+        "Market context included on every pick",
       ],
     });
   }
@@ -150,17 +196,28 @@ export function buildInstagramCarouselCaption(slides: CarouselSlide[]) {
   );
 
   const lines = [
-    "Today’s AI-powered sports picks 🎯",
-    "Want more high-value AI picks, match insights, and daily betting opportunities? Visit MatchSignal now — the link is in our bio.",
+    "Today’s AI picks, ranked with market context 🎯",
+    "Swipe through today’s board for the top signals, estimated value, and risk view.",
     "",
-    ...sportSlides.slice(0, 5).map(
-      (slide) =>
-        `${slide.sport}: ${slide.homeTeam} vs ${slide.awayTeam} — ${slide.pick}`
-    ),
+    ...sportSlides.slice(0, 5).map((slide) => {
+      const parts = [
+        `${slide.sport}: ${slide.homeTeam} vs ${slide.awayTeam}`,
+        `${slide.pick} (${slide.market})`,
+      ];
+
+      const valueLabel = formatPercent(slide.estimatedValuePct);
+      const oddsLabel = formatOdds(slide.partnerOdds);
+
+      if (valueLabel) parts.push(`Est. value ${valueLabel}`);
+      if (oddsLabel) parts.push(`Odds ${oddsLabel}`);
+      parts.push(`Risk ${slide.riskTier}`);
+
+      return `• ${parts.join(" — ")}`;
+    }),
     "",
-    "Follow MatchSignal for daily betting picks, matchup edges, and AI-ranked value spots.",
+    "More AI picks, match analysis, and daily betting signals at MatchSignal. Link in bio.",
     "",
-    "#MatchSignal #BettingTips #SportsPredictions #SportsBetting",
+    "#MatchSignal #BettingTips #SportsPredictions #SportsBetting #ValueBet",
   ];
 
   return lines.join("\n").slice(0, 2200);

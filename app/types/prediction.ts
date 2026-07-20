@@ -1,4 +1,3 @@
-// app/types/prediction.ts
 import type { MatchStatus, RiskTier } from "./match";
 
 export type PredictionCard = {
@@ -16,8 +15,6 @@ export type PredictionCard = {
 
   bestOdds?: number;
   impliedProbability?: number;
-
-  // added for mapper + UI consistency
   consensusImpliedProb?: number | null;
   valueDiff?: number | null;
 
@@ -27,4 +24,14 @@ export type PredictionCard = {
   bookmakerUrl: string;
   ctaLabel: string;
   status: MatchStatus;
+
+  partnerOdds?: number | null;
+  partnerBookmaker?: string | null;
+  partnerRating?: number | null;
+  marketAverageOdds?: number | null;
+  fairProbability?: number | null;
+  fairOdds?: number | null;
+  estimatedValuePct?: number | null;
+  bookmakerSpreadPct?: number | null;
+  whySignal?: string[];
 };

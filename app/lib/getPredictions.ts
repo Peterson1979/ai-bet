@@ -1,11 +1,12 @@
 import { Redis } from "@upstash/redis";
+import type { MatchStatus, RiskTier } from "@/app/types/match";
 
 const redis = new Redis({
   url: process.env.UPSTASH_REDIS_REST_URL!,
   token: process.env.UPSTASH_REDIS_REST_TOKEN!,
 });
 
-type Prediction = {
+export type PredictionCard = {
   id: string;
   league: string;
   eventId: string;
@@ -15,24 +16,36 @@ type Prediction = {
   market: string;
   prediction: string;
   reasoning: string;
-  riskTier: "Low" | "Medium" | "High";
+  riskTier: RiskTier;
   bestOdds: number;
   impliedProbability: number;
   bookmakerCount: number;
   bookmaker: string;
   bookmakerUrl: string;
   ctaLabel: string;
-  status: "scheduled" | "live" | "finished";
+  status: MatchStatus;
+
+  partnerOdds?: number | null;
+  partnerBookmaker?: string | null;
+  partnerRating?: number | null;
+  marketAverageOdds?: number | null;
+  consensusImpliedProb?: number | null;
+  valueDiff?: number | null;
+  fairProbability?: number | null;
+  fairOdds?: number | null;
+  estimatedValuePct?: number | null;
+  bookmakerSpreadPct?: number | null;
+  whySignal?: string[];
 };
 
-type PredictionsData = {
+export type PredictionsData = {
   date: string;
   generatedAt: string;
   sports: {
     sport: string;
     hasMatches: boolean;
     message?: string;
-    topPicks: Prediction[];
+    topPicks: PredictionCard[];
   }[];
 };
 
@@ -48,17 +61,19 @@ export async function getPredictions(): Promise<PredictionsData | null> {
   try {
     for (let offset = 0; offset <= MAX_FALLBACK_DAYS; offset++) {
       const dateKey = getDateKey(offset);
-      const CACHE_KEY = `predictions:${dateKey}`;
-      const data = await redis.get<PredictionsData>(CACHE_KEY);
+      const cacheKey = `predictions:${dateKey}`;
+      const data = await redis.get<PredictionsData>(cacheKey);
+
       if (data) {
         if (offset > 0) {
           console.warn(
-            `[getPredictions] Mai (${getDateKey(0)}) kulcs hiányzik, visszaesés: ${CACHE_KEY}`
+            `[getPredictions] Mai (${getDateKey(0)}) kulcs hiányzik, visszaesés: ${cacheKey}`
           );
         }
         return data;
       }
     }
+
     console.error(
       `[getPredictions] Nincs elérhető predictions adat az utóbbi ${MAX_FALLBACK_DAYS + 1} napra.`
     );

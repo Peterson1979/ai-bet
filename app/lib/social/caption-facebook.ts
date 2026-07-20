@@ -44,9 +44,27 @@ function getSportHashtag(league: string) {
   return "#Sports";
 }
 
-function formatValue(valueDiff: number | null | undefined) {
-  if (typeof valueDiff !== "number") return null;
-  return `${valueDiff >= 0 ? "+" : ""}${valueDiff.toFixed(2)}%`;
+function formatPercent(value: number | null | undefined) {
+  if (typeof value !== "number" || Number.isNaN(value)) return null;
+  return `${value > 0 ? "+" : ""}${value.toFixed(1)}%`;
+}
+
+function formatOdds(value: number | null | undefined) {
+  if (typeof value !== "number" || Number.isNaN(value)) return null;
+  return value.toFixed(2);
+}
+
+function getPrimaryValue(pick: TopPick) {
+  if (typeof pick.estimatedValuePct === "number") return pick.estimatedValuePct;
+  if (typeof pick.valueDiff === "number") return pick.valueDiff;
+  return null;
+}
+
+function getPrimaryOdds(pick: TopPick) {
+  if (typeof pick.partnerOffer?.odds === "number") return pick.partnerOffer.odds;
+  if (typeof pick.partnerOdds === "number") return pick.partnerOdds;
+  if (typeof pick.bestOdds === "number") return pick.bestOdds;
+  return null;
 }
 
 function getSportLabel(league: string) {
@@ -71,23 +89,48 @@ function getSportLabel(league: string) {
   return "Sports";
 }
 
-export async function generateFacebookCaption(pick: TopPick) {
+function buildPickSummary(pick: TopPick) {
   const emoji = getSportEmoji(pick.league ?? "");
-  const sportTag = getSportHashtag(pick.league ?? "");
-  const value = formatValue(pick.valueDiff);
+  const sport = getSportLabel(pick.league ?? "");
+  const value = formatPercent(getPrimaryValue(pick));
+  const odds = formatOdds(getPrimaryOdds(pick));
+
+  const parts = [
+    `${emoji} ${sport}: ${pick.homeTeam} vs ${pick.awayTeam}`,
+    `${pick.prediction} (${pick.market})`,
+  ];
+
+  if (value) parts.push(`Est. value ${value}`);
+  if (odds) parts.push(`Odds ${odds}`);
+  parts.push(`Risk ${pick.riskTier}`);
+  parts.push(`${pick.bookmakerCount} books`);
+
+  return `• ${parts.join(" — ")}`;
+}
+
+export async function generateFacebookCaption(pick: TopPick) {
   const url = "https://www.matchsignal.pro";
+  const value = formatPercent(getPrimaryValue(pick));
+  const odds = formatOdds(getPrimaryOdds(pick));
+  const whySignal =
+    Array.isArray(pick.whySignal) && pick.whySignal.length > 0
+      ? pick.whySignal[0]
+      : null;
 
   return [
-    `${pick.homeTeam} vs ${pick.awayTeam} ${emoji}`,
+    `${pick.homeTeam} vs ${pick.awayTeam} ${getSportEmoji(pick.league ?? "")}`,
     "",
-    `AI Pick: ${pick.prediction}`,
-    `Risk Tier: ${pick.riskTier}`,
-    ...(value ? [`Value Signal: ${value}`] : []),
+    `AI pick: ${pick.prediction} (${pick.market})`,
+    ...(odds ? [`Partner odds: ${odds}`] : []),
+    ...(value ? [`Estimated value: ${value}`] : []),
+    `Risk tier: ${pick.riskTier}`,
+    `Bookmakers tracked: ${pick.bookmakerCount}`,
+    ...(whySignal ? [`Why it stands out: ${whySignal}`] : []),
     "",
-    `Want more high-value AI picks, match insights, and daily betting opportunities? Visit MatchSignal now:`,
+    "See more AI picks and match analysis at MatchSignal:",
     url,
     "",
-    `#MatchSignal ${sportTag} #BettingTips #SportsPredictions`,
+    `#MatchSignal ${getSportHashtag(pick.league ?? "")} #BettingTips #SportsPredictions #SportsBetting`,
   ].join("\n");
 }
 
@@ -103,16 +146,14 @@ export async function generateFacebookCarouselCaption(picks: TopPick[]) {
   ).slice(0, 3);
 
   return [
-    "Today’s AI-powered sports picks 🎯",
+    "Today’s AI picks with market context 🎯",
+    "Here are today’s top signals from the current MatchSignal board:",
     "",
-    ...validPicks.map((pick) => {
-      const sport = getSportLabel(pick.league ?? "");
-      return `${sport}: ${pick.homeTeam} vs ${pick.awayTeam} — ${pick.prediction}`;
-    }),
+    ...validPicks.map((pick) => buildPickSummary(pick)),
     "",
-    "Want more high-value AI picks, match insights, and daily betting opportunities? Visit MatchSignal now:",
+    "See more AI picks, value signals, and match analysis at MatchSignal:",
     url,
     "",
-    `#MatchSignal ${hashtags.join(" ")} #BettingTips #SportsPredictions #SportsBetting`,
+    `#MatchSignal ${hashtags.join(" ")} #BettingTips #SportsPredictions #SportsBetting #ValueBet`,
   ].join("\n");
 }

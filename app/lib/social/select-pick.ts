@@ -2,6 +2,18 @@ import { DAY_PRIORITY, getPriorityKey } from "./priority";
 import { calculateSocialScore } from "./score";
 import type { Candidate, PredictionFile } from "./types";
 
+function hasPositiveSocialValue(pick: Candidate) {
+  if (typeof pick.estimatedValuePct === "number") {
+    return pick.estimatedValuePct > 0;
+  }
+
+  if (typeof pick.valueDiff === "number") {
+    return pick.valueDiff > 0;
+  }
+
+  return false;
+}
+
 export function selectPick(predictions: PredictionFile, now = new Date()) {
   const weekday = now
     .toLocaleDateString("en-US", { weekday: "long", timeZone: "UTC" })
@@ -30,7 +42,7 @@ export function selectPick(predictions: PredictionFile, now = new Date()) {
     })
     .filter((pick) => !!pick.prediction && !!pick.market && !!pick.bookmakerUrl)
     .filter((pick) => pick.bookmakerCount >= 3)
-    .filter((pick) => pick.valueDiff > 0)
+    .filter((pick) => hasPositiveSocialValue(pick))
     .map((pick) => ({
       ...pick,
       socialScore: calculateSocialScore(pick),
