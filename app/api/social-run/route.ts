@@ -105,7 +105,6 @@ function getTopPicks(predictions: PredictionFile, now: Date): CarouselPick[] {
 
   for (const pick of eligible) {
     const sportKey = pick.sport.trim().toLowerCase();
-
     if (usedSports.has(sportKey)) continue;
     if (hasTeamConflict(pick, usedTeams)) continue;
 
@@ -113,23 +112,18 @@ function getTopPicks(predictions: PredictionFile, now: Date): CarouselPick[] {
     usedSports.add(sportKey);
     markTeamsAsUsed(pick, usedTeams);
 
-    if (selected.length >= MAX_CAROUSEL_PICKS) {
-      return selected;
-    }
+    if (selected.length >= MAX_CAROUSEL_PICKS) return selected;
   }
 
   for (const pick of eligible) {
     const alreadySelected = selected.some((item) => item.id === pick.id);
-
     if (alreadySelected) continue;
     if (hasTeamConflict(pick, usedTeams)) continue;
 
     selected.push(pick);
     markTeamsAsUsed(pick, usedTeams);
 
-    if (selected.length >= MAX_CAROUSEL_PICKS) {
-      break;
-    }
+    if (selected.length >= MAX_CAROUSEL_PICKS) break;
   }
 
   return selected;
@@ -137,7 +131,6 @@ function getTopPicks(predictions: PredictionFile, now: Date): CarouselPick[] {
 
 function formatStartTimeUtc(startTime: string): string {
   const date = new Date(startTime);
-
   return date.toLocaleString("en-GB", {
     dateStyle: "medium",
     timeStyle: "short",
@@ -166,44 +159,24 @@ function buildCardUrl(origin: string, slidePick: TopPick) {
   const partnerOdds = getPrimaryOdds(slidePick);
   const estimatedValue = getPrimaryValue(slidePick);
 
-  if (partnerOdds !== null) {
-    cardUrl.searchParams.set("partnerOdds", formatNumber(partnerOdds));
-  }
-
+  if (partnerOdds !== null) cardUrl.searchParams.set("partnerOdds", formatNumber(partnerOdds));
   if (typeof slidePick.marketAverageOdds === "number") {
-    cardUrl.searchParams.set(
-      "marketAverageOdds",
-      formatNumber(slidePick.marketAverageOdds)
-    );
+    cardUrl.searchParams.set("marketAverageOdds", formatNumber(slidePick.marketAverageOdds));
   }
-
   if (typeof slidePick.fairOdds === "number") {
     cardUrl.searchParams.set("fairOdds", formatNumber(slidePick.fairOdds));
   }
-
   if (typeof slidePick.fairProbability === "number") {
-    cardUrl.searchParams.set(
-      "fairProbability",
-      slidePick.fairProbability.toFixed(1)
-    );
+    cardUrl.searchParams.set("fairProbability", slidePick.fairProbability.toFixed(1));
   }
-
   if (estimatedValue !== null) {
     cardUrl.searchParams.set("estimatedValuePct", estimatedValue.toFixed(1));
   }
-
   if (typeof slidePick.consensusImpliedProb === "number") {
-    cardUrl.searchParams.set(
-      "consensusImpliedProb",
-      slidePick.consensusImpliedProb.toFixed(1)
-    );
+    cardUrl.searchParams.set("consensusImpliedProb", slidePick.consensusImpliedProb.toFixed(1));
   }
-
   if (typeof slidePick.bookmakerSpreadPct === "number") {
-    cardUrl.searchParams.set(
-      "bookmakerSpreadPct",
-      slidePick.bookmakerSpreadPct.toFixed(1)
-    );
+    cardUrl.searchParams.set("bookmakerSpreadPct", slidePick.bookmakerSpreadPct.toFixed(1));
   }
 
   const whySignal =
@@ -223,40 +196,54 @@ export async function GET(req: Request) {
   const dateKey = now.toISOString().slice(0, 10);
   const lockKey = `social-run-lock:${dateKey}`;
 
-  try {
-    const auth = req.headers.get("authorization");
+  let lockAcquired = false;
+  let stage = "start";
 
+  try {
+    console.log("[social-run] start", { dateKey });
+
+    const auth = req.headers.get("authorization");
     if (auth !== `Bearer ${env.CRON_SECRET}`) {
+      console.warn("[social-run] unauthorized", { hasAuth: !!auth });
       return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
     }
 
     const force = new URL(req.url).searchParams.get("force") === "1";
+    console.log("[social-run] auth ok", { force });
 
     if (!force) {
+      stage = "acquiring-lock";
       const acquired = await redis.set(lockKey, "1", { nx: true, ex: LOCK_TTL_SECONDS });
 
       if (!acquired) {
+        console.log("[social-run] skipped: publish already in progress");
         return Response.json({
           ok: true,
           skipped: true,
           reason: "publish already in progress",
         });
       }
+
+      lockAcquired = true;
     }
 
+    stage = "loading-predictions";
     const redisKey = `predictions:${dateKey}`;
     const predictions = await redis.get<PredictionFile>(redisKey);
 
     if (!predictions) {
+      console.warn("[social-run] missing predictions", { redisKey });
       return Response.json(
         { ok: false, error: `missing redis key ${redisKey}` },
         { status: 404 }
       );
     }
 
+    stage = "selecting-pick";
     const pick = selectPick(predictions, now);
 
     if (!pick) {
+      console.log("[social-run] skipped: no eligible pick");
       return Response.json({
         ok: true,
         skipped: true,
@@ -265,6 +252,7 @@ export async function GET(req: Request) {
     }
 
     if (!force && (await isAlreadyPosted(pick.id))) {
+      console.log("[social-run] skipped: already posted", { pickId: pick.id });
       return Response.json({
         ok: true,
         skipped: true,
@@ -273,17 +261,24 @@ export async function GET(req: Request) {
       });
     }
 
+    stage = "selecting-carousel-picks";
     const topPicks = getTopPicks(predictions, now);
 
     if (topPicks.length < 2) {
+      console.log("[social-run] skipped: not enough picks", {
+        pickId: pick.id,
+        topPicksCount: topPicks.length,
+      });
       return Response.json({
         ok: true,
         skipped: true,
         reason: "not enough picks for carousel",
         pickId: pick.id,
+        topPicksCount: topPicks.length,
       });
     }
 
+    stage = "building-captions";
     const instagramCaption = buildInstagramCarouselCaption(
       topPicks.map((p) => ({
         type: "sport-pick" as const,
@@ -310,14 +305,21 @@ export async function GET(req: Request) {
 
     const facebookCaption = await generateFacebookCarouselCaption(topPicks);
 
+    stage = "rendering-uploading";
     const origin = env.NEXT_PUBLIC_SITE_URL;
     const uploadedCarouselImageUrls: string[] = [];
 
     for (let i = 0; i < topPicks.length; i++) {
       const slidePick = topPicks[i];
       const cardUrl = buildCardUrl(origin, slidePick);
-      const jpegBuffer = await renderCardToJpeg(cardUrl);
 
+      console.log("[social-run] rendering slide", {
+        index: i + 1,
+        total: topPicks.length,
+        pickId: slidePick.id,
+      });
+
+      const jpegBuffer = await renderCardToJpeg(cardUrl);
       const imageUrl = await uploadBufferToBlob(
         jpegBuffer,
         `${pick.id}-carousel-${i + 1}.jpg`,
@@ -328,6 +330,7 @@ export async function GET(req: Request) {
     }
 
     if (!force && (await isAlreadyPosted(pick.id))) {
+      console.log("[social-run] skipped after render: already posted", { pickId: pick.id });
       return Response.json({
         ok: true,
         skipped: true,
@@ -338,21 +341,33 @@ export async function GET(req: Request) {
       });
     }
 
-    const ig = await publishInstagramCarousel(
-      uploadedCarouselImageUrls,
-      instagramCaption
-    );
+    stage = "publishing-instagram";
+    let ig: unknown = null;
+    let instagramError: string | null = null;
 
+    try {
+      ig = await publishInstagramCarousel(uploadedCarouselImageUrls, instagramCaption);
+      console.log("[social-run] instagram publish done");
+    } catch (error) {
+      instagramError =
+        error instanceof Error ? error.message : "unknown instagram publish error";
+      console.error("[social-run] instagram publish failed", { instagramError });
+    }
+
+    stage = "publishing-facebook";
     let fb: unknown = null;
     let facebookError: string | null = null;
 
     try {
       fb = await publishFacebook(uploadedCarouselImageUrls, facebookCaption);
+      console.log("[social-run] facebook publish done");
     } catch (error) {
       facebookError =
         error instanceof Error ? error.message : "unknown facebook publish error";
+      console.error("[social-run] facebook publish failed", { facebookError });
     }
 
+    stage = "saving-result";
     await savePostedResult(pick, {
       imageUrl: uploadedCarouselImageUrls[0] ?? null,
       caption: instagramCaption,
@@ -361,7 +376,7 @@ export async function GET(req: Request) {
     });
 
     return Response.json({
-      ok: true,
+      ok: !instagramError && !facebookError,
       pickId: pick.id,
       instagramSlidesCount: uploadedCarouselImageUrls.length,
       instagramSlideImageUrls: uploadedCarouselImageUrls,
@@ -369,17 +384,28 @@ export async function GET(req: Request) {
       facebook: fb,
       instagramCaption,
       facebookCaption,
+      instagramError,
       facebookError,
+      stage: "done",
     });
   } catch (error) {
+    console.error("[social-run] fatal error", {
+      stage,
+      message: error instanceof Error ? error.message : "unknown route error",
+      stack: error instanceof Error ? error.stack : null,
+    });
+
     return Response.json(
       {
         ok: false,
+        stage,
         error: error instanceof Error ? error.message : "unknown route error",
       },
       { status: 500 }
     );
   } finally {
-    await redis.del(lockKey);
+    if (lockAcquired) {
+      await redis.del(lockKey);
+    }
   }
 }
