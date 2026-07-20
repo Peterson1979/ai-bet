@@ -11,6 +11,7 @@ const CACHE_TTL = 1000 * 60 * 10;
 const DAILY_CREDIT_LIMIT = 15;
 const ODDS_MAX_RETRIES = 3;
 const ODDS_RETRY_FALLBACK_MS = 5000;
+const INTER_REQUEST_DELAY_MS = 300;
 
 const WATCHED_SPORTS = [
   { key: "soccer_fifa_world_cup", label: "Football", league: "FIFA World Cup", priority: 1 },
@@ -518,7 +519,7 @@ export function calculateBookmakerSpreadPct(
     return null;
   }
 
-  return round1((offeredOdds / averageOdds - 1) * 100);
+  return round1(((offeredOdds / averageOdds) - 1) * 100);
 }
 
 export function buildWhySignalSummary(params: {
@@ -695,29 +696,32 @@ function selectWithLeagueGuarantee(events: OddsEvent[], maxEvents: number): Odds
   return [...guaranteed, ...leftover.slice(0, remainingSlots)];
 }
 
-async function fetchOddsWithRetry(url: string, sportKey: string): Promise<Response | null> {
+async function fetchOddsWithRetry(
+  url: string,
+  sportKey: string
+): Promise<{ response: Response | null; counted: boolean }> {
   for (let attempt = 1; attempt <= ODDS_MAX_RETRIES; attempt += 1) {
     try {
       const response = await fetch(url, { cache: "no-store" });
 
-      if (response.status !== 429) {
-        return response;
+      if (response.status === 429) {
+        const retryAfterMs = getRetryAfterMs(response);
+        const delayMs = retryAfterMs ?? getRetryDelayMs(attempt);
+
+        console.warn(`[odds] ${sportKey} fetch rate-limited (429), retrying`, {
+          attempt,
+          delayMs,
+        });
+
+        if (attempt < ODDS_MAX_RETRIES) {
+          await sleep(delayMs);
+          continue;
+        }
+
+        return { response, counted: false };
       }
 
-      const retryAfterMs = getRetryAfterMs(response);
-      const delayMs = retryAfterMs ?? getRetryDelayMs(attempt);
-
-      console.warn(`[odds] ${sportKey} fetch rate-limited (429), retrying`, {
-        attempt,
-        delayMs,
-      });
-
-      if (attempt < ODDS_MAX_RETRIES) {
-        await sleep(delayMs);
-        continue;
-      }
-
-      return response;
+      return { response, counted: true };
     } catch (error) {
       console.error(`[odds] ${sportKey} fetch attempt failed`, {
         attempt,
@@ -729,11 +733,11 @@ async function fetchOddsWithRetry(url: string, sportKey: string): Promise<Respon
         continue;
       }
 
-      return null;
+      return { response: null, counted: false };
     }
   }
 
-  return null;
+  return { response: null, counted: false };
 }
 
 async function fetchSportEvents(
@@ -763,8 +767,11 @@ async function fetchSportEvents(
       `&markets=${markets}` +
       `&oddsFormat=decimal`;
 
-    creditState.used += 1;
-    const response = await fetchOddsWithRetry(url, sportKey);
+    const { response, counted } = await fetchOddsWithRetry(url, sportKey);
+
+    if (counted) {
+      creditState.used += 1;
+    }
 
     if (!response) {
       console.error(`[odds] ${sportKey} fetch failed: no response`);
@@ -942,6 +949,8 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
       }
 
       eventsByLabel.get(sport.label)!.push(...events);
+
+      await sleep(INTER_REQUEST_DELAY_MS);
     }
 
     console.log(`[odds] Napi kreditfelhasználás: ${creditState.used} / ${DAILY_CREDIT_LIMIT}`);
