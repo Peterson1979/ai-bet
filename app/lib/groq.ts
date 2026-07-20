@@ -25,6 +25,12 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function getRetryDelayMs(attempt: number): number {
+  const base = 1500 * attempt;
+  const jitter = Math.floor(Math.random() * 400);
+  return base + jitter;
+}
+
 function extractRetryDelayMs(status: number, bodyText: string): number | null {
   if (status !== 429) return null;
 
@@ -146,7 +152,7 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
       });
 
       if (response.status === 429 && attempt < MAX_RETRIES) {
-        const delayMs = retryDelayMs ?? 2000 * attempt;
+        const delayMs = retryDelayMs ?? getRetryDelayMs(attempt);
         console.warn("[groq] Retrying after rate limit", {
           attempt,
           delayMs,
@@ -163,6 +169,17 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
 
     if (!content || typeof content !== "string") {
       console.error("[groq] Empty content in response", { attempt });
+
+      if (attempt < MAX_RETRIES) {
+        const delayMs = getRetryDelayMs(attempt);
+        console.warn("[groq] Retrying after empty content", {
+          attempt,
+          delayMs,
+        });
+        await sleep(delayMs);
+        return callGroq(prompt, attempt + 1);
+      }
+
       return null;
     }
 
@@ -173,6 +190,17 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
         attempt,
         rawPreview: content.slice(0, 1000),
       });
+
+      if (attempt < MAX_RETRIES) {
+        const delayMs = getRetryDelayMs(attempt);
+        console.warn("[groq] Retrying after failed JSON extraction", {
+          attempt,
+          delayMs,
+        });
+        await sleep(delayMs);
+        return callGroq(prompt, attempt + 1);
+      }
+
       return null;
     }
 
@@ -186,6 +214,17 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
         rawPreview: extracted.slice(0, 1200),
         rawLength: extracted.length,
       });
+
+      if (attempt < MAX_RETRIES) {
+        const delayMs = getRetryDelayMs(attempt);
+        console.warn("[groq] Retrying after JSON parse failure", {
+          attempt,
+          delayMs,
+        });
+        await sleep(delayMs);
+        return callGroq(prompt, attempt + 1);
+      }
+
       return null;
     }
 
@@ -194,6 +233,17 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
         attempt,
         rawPreview: extracted.slice(0, 1000),
       });
+
+      if (attempt < MAX_RETRIES) {
+        const delayMs = getRetryDelayMs(attempt);
+        console.warn("[groq] Retrying after non-array response", {
+          attempt,
+          delayMs,
+        });
+        await sleep(delayMs);
+        return callGroq(prompt, attempt + 1);
+      }
+
       return null;
     }
 
@@ -226,15 +276,43 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
         attempt,
         rawPreview: extracted.slice(0, 1500),
       });
+
+      if (attempt < MAX_RETRIES) {
+        const delayMs = getRetryDelayMs(attempt);
+        console.warn("[groq] Retrying after zero valid picks", {
+          attempt,
+          delayMs,
+        });
+        await sleep(delayMs);
+        return callGroq(prompt, attempt + 1);
+      }
+
       return null;
     }
 
     return results;
   } catch (error) {
+    const isAbortError =
+      error instanceof Error &&
+      (error.name === "AbortError" || error.message.toLowerCase().includes("aborted"));
+
     console.error("[groq] generatePrediction failed", {
       attempt,
       error: error instanceof Error ? error.message : String(error),
+      isAbortError,
     });
+
+    if (attempt < MAX_RETRIES) {
+      const delayMs = getRetryDelayMs(attempt);
+      console.warn("[groq] Retrying after request failure", {
+        attempt,
+        delayMs,
+        isAbortError,
+      });
+      await sleep(delayMs);
+      return callGroq(prompt, attempt + 1);
+    }
+
     return null;
   } finally {
     clearTimeout(timeout);
