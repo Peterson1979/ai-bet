@@ -54,7 +54,7 @@ export default async function BettingPage({
 
                 {/* Logo */}
                 {site.logoUrl ? (
-                <div className="mb-4 flex items-center justify-center bg-slate-200 rounded-xl border border-slate-300/50 px-4 py-3 w-full max-w-[200px]">  
+                <div className="mb-4 flex items-center justify-center bg-slate-300 rounded-xl border border-slate-300/50 px-4 py-3 w-full max-w-[200px]">  
                     <img
                       src={site.logoUrl}
                       alt={site.name}

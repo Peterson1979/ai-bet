@@ -68,12 +68,13 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     enabled: true,
   },
   {
+ 
     id: "22bet",
     name: "22Bet",
     rating: 9.5,
     bonus: "Up to 100% Bonus",
     baseUrl:
-      "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1484&redirectURL=https://22link.world/",
+      "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1484&redirectURL=https%3A%2F%2F22link.world%2F",
     logoUrl: "/logos/affiliates/22bet.png",
     aliases: ["22bet", "22 bet"],
     sports: [
@@ -112,7 +113,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     rating: 8.9,
     bonus: "Up to 100 EUR Bonus",
     baseUrl:
-      "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1650&redirectURL=https://blmedia.world/",
+      "https://che.fluxbrox.com/redirect.aspx?pid=177879&bid=1650&redirectURL=https%3A%2F%2Fblmedia.world%2F",
     logoUrl: "/logos/affiliates/betlabel.png",
     aliases: ["betlabel", "bet label"],
     sports: [
