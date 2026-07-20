@@ -1,11 +1,6 @@
-// app/lib/groq.ts
 import { z } from "zod";
 
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
-
-// A meta-llama/llama-4-scout-17b-16e-instruct modellt a Groq 2026.06.17-én
-// deprecate-elte és elérhetetlenné tette. Hivatalos migrációs ajánlásuk:
-// openai/gpt-oss-120b (alternatíva: qwen/qwen3.6-27b).
 const MODEL = "openai/gpt-oss-120b";
 
 const NullableNumber = z.union([z.number().finite(), z.null()]);
@@ -22,6 +17,27 @@ const PickSchema = z.object({
 });
 
 export type PickResult = z.infer<typeof PickSchema>;
+
+const MAX_RETRIES = 3;
+const REQUEST_TIMEOUT_MS = 45_000;
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function extractRetryDelayMs(status: number, bodyText: string): number | null {
+  if (status !== 429) return null;
+
+  const secondsMatch = bodyText.match(/Please try again in\s+([\d.]+)s/i);
+  if (secondsMatch) {
+    const seconds = Number(secondsMatch[1]);
+    if (Number.isFinite(seconds) && seconds > 0) {
+      return Math.ceil(seconds * 1000);
+    }
+  }
+
+  return null;
+}
 
 function extractJsonArray(raw: string): string | null {
   const cleaned = raw
@@ -80,9 +96,7 @@ function normalizePick(item: unknown): unknown {
   };
 }
 
-export async function generatePrediction(
-  prompt: string
-): Promise<PickResult[] | null> {
+async function callGroq(prompt: string, attempt: number): Promise<PickResult[] | null> {
   const apiKey = process.env.GROQ_API_KEY;
 
   if (!apiKey) {
@@ -90,9 +104,13 @@ export async function generatePrediction(
     return null;
   }
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
   try {
     const response = await fetch(`${GROQ_BASE_URL}/chat/completions`, {
       method: "POST",
+      signal: controller.signal,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
@@ -118,8 +136,25 @@ export async function generatePrediction(
     });
 
     if (!response.ok) {
-      const err = await response.text();
-      console.error("[groq] API error:", response.status, err);
+      const errText = await response.text();
+      const retryDelayMs = extractRetryDelayMs(response.status, errText);
+
+      console.error("[groq] API error", {
+        attempt,
+        status: response.status,
+        bodyPreview: errText.slice(0, 1200),
+      });
+
+      if (response.status === 429 && attempt < MAX_RETRIES) {
+        const delayMs = retryDelayMs ?? 2000 * attempt;
+        console.warn("[groq] Retrying after rate limit", {
+          attempt,
+          delayMs,
+        });
+        await sleep(delayMs);
+        return callGroq(prompt, attempt + 1);
+      }
+
       return null;
     }
 
@@ -127,14 +162,17 @@ export async function generatePrediction(
     const content = data.choices?.[0]?.message?.content;
 
     if (!content || typeof content !== "string") {
-      console.error("[groq] Empty content in response");
+      console.error("[groq] Empty content in response", { attempt });
       return null;
     }
 
     const extracted = extractJsonArray(content);
 
     if (!extracted) {
-      console.error("[groq] Could not extract JSON array");
+      console.error("[groq] Could not extract JSON array", {
+        attempt,
+        rawPreview: content.slice(0, 1000),
+      });
       return null;
     }
 
@@ -143,34 +181,68 @@ export async function generatePrediction(
     try {
       parsed = JSON.parse(extracted);
     } catch {
-      console.error("[groq] JSON parse failed. Raw:", extracted.slice(0, 500));
+      console.error("[groq] JSON parse failed", {
+        attempt,
+        rawPreview: extracted.slice(0, 1200),
+        rawLength: extracted.length,
+      });
       return null;
     }
 
     if (!Array.isArray(parsed)) {
-      console.error("[groq] Response is not an array");
+      console.error("[groq] Response is not an array", {
+        attempt,
+        rawPreview: extracted.slice(0, 1000),
+      });
       return null;
     }
 
     const results: PickResult[] = [];
+    let invalidCount = 0;
 
     for (const item of parsed) {
       try {
         const normalized = normalizePick(item);
         results.push(PickSchema.parse(normalized));
-      } catch {
-        console.warn("[groq] Invalid pick item skipped:", JSON.stringify(item));
+      } catch (error) {
+        invalidCount += 1;
+        console.warn("[groq] Invalid pick item skipped", {
+          attempt,
+          error: error instanceof Error ? error.message : String(error),
+          item,
+        });
       }
     }
 
+    console.log("[groq] Parsed response summary", {
+      attempt,
+      rawArrayLength: parsed.length,
+      validResults: results.length,
+      invalidResults: invalidCount,
+    });
+
     if (results.length === 0) {
-      console.error("[groq] No valid picks in response. Full content:", extracted);
+      console.error("[groq] No valid picks in response", {
+        attempt,
+        rawPreview: extracted.slice(0, 1500),
+      });
       return null;
     }
 
     return results;
   } catch (error) {
-    console.error("[groq] generatePrediction failed:", error);
+    console.error("[groq] generatePrediction failed", {
+      attempt,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return null;
+  } finally {
+    clearTimeout(timeout);
   }
+}
+
+export async function generatePrediction(
+  prompt: string
+): Promise<PickResult[] | null> {
+  return callGroq(prompt, 1);
 }
