@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useId, useState } from "react";
 import { MatchCardData } from "../types/match";
 import { translations, Lang } from "@/app/lib/i18n";
 import { getSiteByBookmakerName, getBadgeLabel } from "@/app/lib/affiliates";
@@ -240,64 +240,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       )
     : data.ctaLabel || t.viewOdds || "View odds";
 
-  const whySignal = useMemo(() => {
-    if (data.whySignal && data.whySignal.length > 0) {
-      return data.whySignal.slice(0, 3);
-    }
-
-    const fallback: string[] = [];
-
-    if (typeof data.estimatedValuePct === "number") {
-      fallback.push(
-        `${t.estimatedValue ?? "Estimated value"} ${formatPercent(
-          data.estimatedValuePct,
-          true
-        )}.`
-      );
-    }
-
-    if (
-      typeof data.marketAverageOdds === "number" &&
-      typeof partnerOdds === "number"
-    ) {
-      fallback.push(
-        `${t.bestPartnerOdds ?? "Best partner odds"} ${partnerOdds.toFixed(
-          2
-        )}, ${t.marketAverage ?? "Market average"} ${data.marketAverageOdds.toFixed(
-          2
-        )}.`
-      );
-    }
-
-    if (typeof data.bookmakerCount === "number" && data.bookmakerCount > 0) {
-      fallback.push(
-        `${t.basedOnBookmakers ?? "Based on {count} bookmakers"}`
-          .replace("{count}", String(data.bookmakerCount))
-      );
-    }
-
-    if (fallback.length < 3 && typeof data.consensusImpliedProb === "number") {
-      fallback.push(
-        `${t.consensusProb ?? "Market consensus"} ${data.consensusImpliedProb.toFixed(
-          1
-        )}%.`
-      );
-    }
-
-    return fallback.slice(0, 3);
-  }, [
-    data.whySignal,
-    data.estimatedValuePct,
-    data.marketAverageOdds,
-    data.bookmakerCount,
-    data.consensusImpliedProb,
-    partnerOdds,
-    t.estimatedValue,
-    t.bestPartnerOdds,
-    t.marketAverage,
-    t.basedOnBookmakers,
-    t.consensusProb,
-  ]);
+  
 
   const valueTone =
     typeof data.estimatedValuePct === "number"
@@ -424,29 +367,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         </div>
       </div>
 
-      <div className="rounded-xl border-2 border-cyan-300/20 bg-[#0B1220] p-4 mb-4">
-        <p className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold mb-2">
-          {t.whyThisSignal ?? "Why this signal"}
-        </p>
-
-        {whySignal.length > 0 ? (
-          <ul className="space-y-2">
-            {whySignal.map((item, idx) => (
-              <li
-                key={`${data.id}-why-${idx}`}
-                className="flex items-start gap-2"
-              >
-                <span className="mt-[3px] text-cyan-300">•</span>
-                <span className="text-sm text-slate-200 leading-6">{item}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-sm text-slate-300 leading-6">
-            {data.reasoning || t.noExplanation}
-          </p>
-        )}
-      </div>
+      
 
       <details className="rounded-xl border-2 border-cyan-300/20 bg-[#0B1220] p-4 mb-4 group">
         <summary className="cursor-pointer list-none flex items-center justify-between">
