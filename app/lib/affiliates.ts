@@ -206,12 +206,11 @@ export function buildAffiliateUrl(
   site: AffiliateSite,
   source: AffiliateSource = "sidebar"
 ): string {
-  // Ha a baseUrl redirect-alapú tracking URL, ne módosítsd a redirectURL-t
+  // Fluxbrox redirect-alapú linkeknél NE adj hozzá extra query paramétert:
+  // a fluxbrox script string-összefűzéssel csapja a végleges URL-hez,
+  // ami elrontja azt, ha a célnak már van saját ?querystringje -> 404.
   if (site.baseUrl.includes("redirectURL=")) {
-    const url = new URL(site.baseUrl);
-    url.searchParams.set("sub1", source);
-    url.searchParams.set("sub2", site.id);
-    return url.toString();
+    return site.baseUrl;
   }
 
   const url = new URL(site.baseUrl);
@@ -227,6 +226,8 @@ export function buildAffiliateUrl(
 
   return url.toString();
 }
+
+ 
 
 export function getSidebarSites() {
   return AFFILIATE_SITES.filter(isSiteEnabled).map((site) => ({
