@@ -205,6 +205,14 @@ export function buildAffiliateUrl(
   site: AffiliateSite,
   source: AffiliateSource = "sidebar"
 ): string {
+  // Ha a baseUrl redirect-alapú tracking URL, ne módosítsd a redirectURL-t
+  if (site.baseUrl.includes("redirectURL=")) {
+    const url = new URL(site.baseUrl);
+    url.searchParams.set("sub1", source);
+    url.searchParams.set("sub2", site.id);
+    return url.toString();
+  }
+
   const url = new URL(site.baseUrl);
   const params = new URLSearchParams(site.trackingParams ?? "");
 
