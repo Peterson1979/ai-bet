@@ -202,14 +202,33 @@ export async function GET(req: Request) {
   try {
     console.log("[social-run] start", { dateKey });
 
-    const auth = req.headers.get("authorization");
-    if (auth !== `Bearer ${env.CRON_SECRET}`) {
-      console.warn("[social-run] unauthorized", { hasAuth: !!auth });
-      return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
-    }
+    const bearer = req.headers.get("authorization");
+const cronHeader = req.headers.get("x-cron-secret");
 
-    const force = new URL(req.url).searchParams.get("force") === "1";
-    console.log("[social-run] auth ok", { force });
+const hasBearer = !!bearer;
+const hasCronHeader = !!cronHeader;
+
+const bearerToken = bearer?.startsWith("Bearer ")
+  ? bearer.slice("Bearer ".length)
+  : null;
+
+const isAuthorized =
+  (bearerToken && bearerToken === env.CRON_SECRET) ||
+  (cronHeader && cronHeader === env.CRON_SECRET);
+
+if (!isAuthorized) {
+  console.warn("[social-run] unauthorized", {
+    hasBearer,
+    hasCronHeader,
+  });
+
+  return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
+}
+
+const force = new URL(req.url).searchParams.get("force") === "1";
+console.log("[social-run] auth ok", { force });
+
+    
 
     if (!force) {
       stage = "acquiring-lock";

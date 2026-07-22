@@ -408,13 +408,13 @@ export async function GET(request: Request) {
     } | null = null;
 
     try {
-      const socialRes = await fetch(`${siteUrl}/api/social-run?force=1`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${process.env.CRON_SECRET}`,
-        },
-        cache: "no-store",
-      });
+const socialRes = await fetch(`${siteUrl}/api/social-run?force=1`, {
+  method: "GET",
+  headers: {
+    "x-cron-secret": process.env.CRON_SECRET ?? "",
+  },
+  cache: "no-store",
+});
 
       let socialBody: unknown = null;
 
