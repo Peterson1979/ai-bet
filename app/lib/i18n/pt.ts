@@ -1,6 +1,6 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
-const pt: Partial<Translation> = {
+const pt: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "Dicas IA gratuitas – Futebol, NBA, Ténis e mais",
   heroDesc: "Previsões geradas por IA para vários desportos.",
@@ -136,35 +136,78 @@ const pt: Partial<Translation> = {
   footer: {
   betIntelligence: "Como o MatchSignal funciona",
   betIntelligenceDesc:
-    "O MatchSignal combina odds de casas de apostas, contexto de mercado e análises de jogos geradas por IA para ajudar você a comparar palpites, identificar diferenças de preço e entender cada evento rapidamente.",
-  matchPreviewFeatureTitle: "Prévia IA da partida",
-  matchPreviewFeatureDesc:
-    "Um resumo curto, neutro e gerado por IA para cada evento, criado para oferecer contexto rápido sobre o confronto, a competição e o ângulo da aposta.",
-  oddsComparisonFeatureTitle: "Comparação de odds",
-  oddsComparisonFeatureDesc:
-    "Mostramos as melhores odds disponíveis para cada partida, coletadas e comparadas entre várias casas de apostas.",
-  marketDepthFeatureTitle: "Profundidade de mercado",
-  marketDepthFeatureDesc:
-    "Cada card de partida mostra quantas casas de apostas estão precificando o evento no momento, ajudando você a avaliar quão ampla é a cobertura do mercado.",
-  impliedProbFeatureTitle: "Probabilidade de mercado e consenso",
-  impliedProbFeatureDesc:
-    "Os cards de partida podem incluir indicadores de probabilidade baseados no mercado, como probabilidade implícita, probabilidade justa e consenso de mercado, ajudando você a comparar a seleção sugerida com uma visão mais ampla do preço de mercado.",
-  consensusProbFeatureTitle: "Sinal de valor",
-  consensusProbFeatureDesc:
-    "Cada seleção é avaliada com base em dados de precificação do mercado. ✅ Alinhado ao mercado significa que a odd está próxima da visão geral do mercado, ⚡ Value odds sinaliza um preço potencialmente melhor do que a média do mercado, e ⚠ Abaixo do mercado indica que a odd disponível é menos favorável do que a referência do mercado.",
-  riskTierFeatureTitle: "Nível de risco",
-  riskTierFeatureDesc:
-    "Cada card de partida inclui um nível de risco com base em fatores como nível das odds, cobertura do mercado e contexto geral de precificação. 🟢 Baixo risco geralmente reflete odds mais curtas e cobertura mais ampla das casas de apostas, enquanto 🔴 Alto risco costuma indicar odds mais altas ou suporte de mercado mais limitado.",
+    "O MatchSignal combina odds de casas de apostas, contexto de mercado e análise por IA para ajudar você a comparar preços mais rapidamente e entender cada palpite com mais facilidade.",
+
+  matchCardGuideTitle: "Como ler um MatchCard",
+  matchCardGuideDesc:
+    "Cada card destaca o palpite recomendado, o mercado correspondente e o contexto de odds dessa seleção. Alguns campos aparecem apenas quando os dados de mercado estão disponíveis.",
+
+  matchCardFields: {
+    prediction: {
+      title: "Palpite",
+      desc: "A recomendação de aposta para o evento.",
+    },
+    market: {
+      title: "Mercado",
+      desc: "O mercado de aposta usado para o palpite, como Moneyline ou Mais/Menos.",
+    },
+    bestPartnerOdds: {
+      title: "Melhor odd parceira",
+      desc: "A odd parceira em destaque exibida no momento para este palpite.",
+    },
+    sportsbook: {
+      title: "Casa de apostas",
+      desc: "A casa de apostas atualmente destacada no card.",
+    },
+    estimatedValue: {
+      title: "Valor estimado",
+      desc: "A vantagem estimada entre a odd oferecida e a avaliação do modelo.",
+    },
+    marketAverage: {
+      title: "Média do mercado",
+      desc: "A odd média entre as casas de apostas monitoradas, quando disponível.",
+    },
+    fairOdds: {
+      title: "Odd justa",
+      desc: "A odd justa estimada pelo modelo para este palpite.",
+    },
+    fairProbability: {
+      title: "Probabilidade justa",
+      desc: "A estimativa do modelo para a chance real desse resultado.",
+    },
+    vsMarketAverage: {
+      title: "Em relação à média do mercado",
+      desc: "Como a odd exibida se compara ao mercado em geral.",
+    },
+    marketConsensus: {
+      title: "Consenso do mercado",
+      desc: "A probabilidade implícita média entre as casas de apostas disponíveis, quando disponível.",
+    },
+    bookmakersTracked: {
+      title: "Casas monitoradas",
+      desc: "Quantas casas de apostas contribuem atualmente com dados de mercado.",
+    },
+    riskTier: {
+      title: "Nível de risco",
+      desc: "Uma classificação simples de risco com base no nível da odd e na profundidade do mercado.",
+    },
+    aiAnalysis: {
+      title: "Análise por IA",
+      desc: "Uma explicação curta gerada por IA para o palpite.",
+    },
+  },
+
   aiBettingInsights: "Sobre o MatchSignal",
   aiBettingInsightsDesc:
-    "O MatchSignal fornece conteúdo de apostas gerado por IA apenas para fins informativos e educacionais. Não é uma operadora de apostas e não garante resultados. Aposte com responsabilidade e arrisque apenas o que você pode perder.",
+    "O MatchSignal fornece conteúdo de apostas gerado por IA apenas para fins informativos. O MatchSignal não é uma operadora de apostas e não garante resultados. Aposte com responsabilidade.",
+
   navAbout: "Sobre",
   navContact: "Contato",
-  navPrivacy: "Política de privacidade",
-  navTerms: "Termos de uso",
-  navAffiliate: "Divulgação de afiliados",
-  navResponsible: "Jogo responsável",
-  navCookie: "Política de cookies",
+  navPrivacy: "Política de Privacidade",
+  navTerms: "Termos de Uso",
+  navAffiliate: "Divulgação de Afiliados",
+  navResponsible: "Jogo Responsável",
+  navCookie: "Política de Cookies",
   platformName: "MatchSignal",
   builtWithAi: "Criado com IA",
 },

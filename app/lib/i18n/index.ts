@@ -1,5 +1,5 @@
-import type { Translation } from "./types";
 import { deepMerge } from "./deepMerge";
+import type { Translation, DeepPartial } from "./types";
 import en from "./en";
 import hu from "./hu";
 import de from "./de";
@@ -12,10 +12,6 @@ import zh from "./zh";
 import ja from "./ja";
 import hi from "./hi";
 
-type DeepPartial<T> = {
-  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
-};
-
 export const LANGS = [
   "en", "hu", "de", "fr", "es", "it", "pt", "ar", "zh", "ja", "hi",
 ] as const;
@@ -23,16 +19,25 @@ export const LANGS = [
 export type Lang = (typeof LANGS)[number];
 
 const overrides: Partial<Record<Lang, DeepPartial<Translation>>> = {
-  hu, de, fr, es, it, pt, ar, zh, ja, hi,
+  hu,
+  de,
+  fr,
+  es,
+  it,
+  pt,
+  ar,
+  zh,
+  ja,
+  hi,
 };
 
 function buildTranslation(lang: Lang): Translation {
   const override = overrides[lang];
   if (!override) return en;
-  return deepMerge(en, override as any);
+  return deepMerge(en, override as DeepPartial<Translation>);
 }
 
-export const translations = Object.fromEntries(
+export const translations: Record<Lang, Translation> = Object.fromEntries(
   LANGS.map((lang) => [lang, buildTranslation(lang)])
 ) as Record<Lang, Translation>;
 

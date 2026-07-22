@@ -7,7 +7,12 @@ function qp(v: string | null, fallback = ""): string {
   return v ?? fallback;
 }
 
+function isMissingNumericInput(value: string): boolean {
+  return value.trim() === "";
+}
+
 function formatPercent(value: string, withPlus = false): string {
+  if (isMissingNumericInput(value)) return "—";
   const n = Number(value);
   if (Number.isNaN(n)) return value || "—";
   const prefix = withPlus && n > 0 ? "+" : "";
@@ -15,6 +20,7 @@ function formatPercent(value: string, withPlus = false): string {
 }
 
 function formatOdds(value: string): string {
+  if (isMissingNumericInput(value)) return "—";
   const n = Number(value);
   if (Number.isNaN(n)) return value || "—";
   return n.toFixed(2);
@@ -395,8 +401,8 @@ export async function GET(req: Request) {
             }}
           >
             <MetricCard label="PARTNER ODDS" value={formatOdds(partnerOdds)} accent="#7dd3fc" />
-            <MetricCard label="MARKET AVG" value={formatOdds(marketAverageOdds)} accent="#c4b5fd" />
-            <MetricCard label="EST. VALUE" value={formatPercent(estimatedValuePct, true)} accent="#facc15" />
+            <MetricCard label="MARKET AVERAGE" value={formatOdds(marketAverageOdds)} accent="#c4b5fd" />
+            <MetricCard label="ESTIMATED VALUE" value={formatPercent(estimatedValuePct, true)} accent="#facc15" />
           </div>
 
           <div
@@ -408,8 +414,8 @@ export async function GET(req: Request) {
             }}
           >
             <MetricCard label="FAIR ODDS" value={formatOdds(fairOdds)} accent="#93c5fd" />
-            <MetricCard label="FAIR PROB." value={formatPercent(fairProbability)} accent="#a7f3d0" />
-            <MetricCard label="BOOKS" value={bookmakerCount || "0"} accent="#fca5a5" />
+            <MetricCard label="FAIR PROBABILITY" value={formatPercent(fairProbability)} accent="#a7f3d0" />
+            <MetricCard label="BOOKMAKERS" value={bookmakerCount || "0"} accent="#fca5a5" />
           </div>
 
           <div
@@ -421,12 +427,12 @@ export async function GET(req: Request) {
             }}
           >
             <MetricCard
-              label="CONSENSUS"
+              label="MARKET CONSENSUS"
               value={formatPercent(consensusImpliedProb)}
               accent="#67e8f9"
             />
             <MetricCard
-              label="VS AVG"
+              label="VS MARKET AVERAGE"
               value={formatPercent(bookmakerSpreadPct, true)}
               accent="#f9a8d4"
             />
@@ -578,6 +584,8 @@ function MetricCard({
           letterSpacing: 1,
           color: accent,
           display: "flex",
+          justifyContent: "center",
+          textAlign: "center",
         }}
       >
         {label}

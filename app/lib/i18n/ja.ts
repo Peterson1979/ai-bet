@@ -1,6 +1,6 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
-const ja: Partial<Translation> = {
+const ja: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "無料AI予測 – サッカー、NBA、テニスなど",
   heroDesc: "AIによる様々なスポーツの試合予測。",
@@ -136,34 +136,77 @@ const ja: Partial<Translation> = {
   footer: {
   betIntelligence: "MatchSignalの仕組み",
   betIntelligenceDesc:
-    "MatchSignalは、ブックメーカーのオッズデータ、市場コンテキスト、AI生成の試合分析を組み合わせ、予想の比較や価格差の把握、各イベントの素早い理解をサポートします。",
-  matchPreviewFeatureTitle: "AI試合プレビュー",
-  matchPreviewFeatureDesc:
-    "各イベントごとに、対戦カード、大会、ベッティングの観点をすばやく把握できるように設計された、短く中立的なAI生成サマリーです。",
-  oddsComparisonFeatureTitle: "オッズ比較",
-  oddsComparisonFeatureDesc:
-    "各試合の利用可能な最良オッズを、複数のブックメーカーから収集・比較して表示します。",
-  marketDepthFeatureTitle: "市場の厚み",
-  marketDepthFeatureDesc:
-    "各試合カードには、そのイベントを現在何社のブックメーカーが価格付けしているかが表示され、市場カバーの広さを把握できます。",
-  impliedProbFeatureTitle: "市場確率とコンセンサス",
-  impliedProbFeatureDesc:
-    "試合カードには、暗黙確率、公正確率、市場コンセンサスなどの市場ベースの確率指標が含まれる場合があり、提案されたピックをより広い価格形成の中で比較しやすくします。",
-  consensusProbFeatureTitle: "バリューシグナル",
-  consensusProbFeatureDesc:
-    "各ピックは市場の価格データに基づいて評価されます。✅ Market aligned はオッズが市場全体の見方に近いことを意味し、⚡ Value odds は市場平均より有利な価格の可能性を示し、⚠ Below market は利用可能なオッズが市場基準より不利であることを示します。",
-  riskTierFeatureTitle: "リスクレベル",
-  riskTierFeatureDesc:
-    "各試合カードには、オッズ水準、市場カバー、全体的な価格コンテキストなどに基づくリスクレベルが表示されます。🟢 Low Risk は通常、短めのオッズと広いブックメーカーのカバーを示し、🔴 High Risk は長めのオッズや市場サポートの薄さを示すことが多いです。",
+    "MatchSignalは、ブックメーカーのオッズ、市場コンテキスト、AI分析を組み合わせて、オッズの比較と各予想の理解をより素早く行えるようにします。",
+
+  matchCardGuideTitle: "MatchCardの見方",
+  matchCardGuideDesc:
+    "各カードには、推奨予想、その対象マーケット、そしてその選択に関するオッズの文脈が表示されます。一部の項目は、市場データが利用可能な場合にのみ表示されます。",
+
+  matchCardFields: {
+    prediction: {
+      title: "予想",
+      desc: "そのイベントに対する推奨ピックです。",
+    },
+    market: {
+      title: "マーケット",
+      desc: "その予想に使用されるベット市場です。たとえばMoneylineやOver/Underなどです。",
+    },
+    bestPartnerOdds: {
+      title: "最良の提携オッズ",
+      desc: "この予想に対して現在表示されている注目の提携オッズです。",
+    },
+    sportsbook: {
+      title: "ブックメーカー",
+      desc: "カード上で現在強調表示されているブックメーカーです。",
+    },
+    estimatedValue: {
+      title: "推定バリュー",
+      desc: "提示オッズとモデル評価との間にある推定優位性です。",
+    },
+    marketAverage: {
+      title: "市場平均",
+      desc: "追跡中のブックメーカー全体における平均オッズです。利用可能な場合に表示されます。",
+    },
+    fairOdds: {
+      title: "適正オッズ",
+      desc: "この予想に対してモデルが推定した適正オッズです。",
+    },
+    fairProbability: {
+      title: "適正確率",
+      desc: "その結果が起こる実際の確率についてのモデル推定です。",
+    },
+    vsMarketAverage: {
+      title: "市場平均との比較",
+      desc: "表示されているオッズが市場全体と比べてどう位置づけられるかを示します。",
+    },
+    marketConsensus: {
+      title: "市場コンセンサス",
+      desc: "利用可能なブックメーカー全体における平均インプライド確率です。利用可能な場合に表示されます。",
+    },
+    bookmakersTracked: {
+      title: "追跡中のブックメーカー数",
+      desc: "現在市場データに寄与しているブックメーカーの数です。",
+    },
+    riskTier: {
+      title: "リスク水準",
+      desc: "オッズ水準と市場の厚みに基づくシンプルなリスク分類です。",
+    },
+    aiAnalysis: {
+      title: "AI分析",
+      desc: "この予想に関するAI生成の短い説明です。",
+    },
+  },
+
   aiBettingInsights: "MatchSignalについて",
   aiBettingInsightsDesc:
-    "MatchSignalは、情報提供および学習目的に限り、AI生成のベッティングコンテンツを提供します。賭け事の運営者ではなく、結果を保証するものでもありません。責任あるベッティングを心がけ、失っても差し支えない範囲でのみ賭けてください。",
+    "MatchSignalは、AIによって生成されたベッティング情報を情報提供のみを目的として提供します。MatchSignalはベッティング事業者ではなく、結果を保証するものではありません。責任ある利用をお願いします。",
+
   navAbout: "概要",
   navContact: "お問い合わせ",
   navPrivacy: "プライバシーポリシー",
   navTerms: "利用規約",
   navAffiliate: "アフィリエイト開示",
-  navResponsible: "責任あるギャンブル",
+  navResponsible: "責任ある利用",
   navCookie: "クッキーポリシー",
   platformName: "MatchSignal",
   builtWithAi: "AIで構築",

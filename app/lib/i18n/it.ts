@@ -1,6 +1,6 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
-const it: Partial<Translation> = {
+const it: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "Pronostici IA gratuiti – Calcio, NBA, Tennis e altro",
   heroDesc: "Previsioni generate dall'IA per più sport.",
@@ -135,37 +135,80 @@ const it: Partial<Translation> = {
  footer: {
   betIntelligence: "Come funziona MatchSignal",
   betIntelligenceDesc:
-    "MatchSignal combina quote dei bookmaker, contesto di mercato e analisi delle partite generate dall’IA per aiutarti a confrontare i pronostici, individuare differenze di prezzo e capire ogni evento a colpo d’occhio.",
-  matchPreviewFeatureTitle: "Anteprima IA della partita",
-  matchPreviewFeatureDesc:
-    "Un riepilogo breve, neutrale e generato dall’IA per ogni evento, pensato per offrire rapidamente contesto su sfida, competizione e angolo di scommessa.",
-  oddsComparisonFeatureTitle: "Confronto quote",
-  oddsComparisonFeatureDesc:
-    "Mostriamo le migliori quote disponibili per ogni partita, raccolte e confrontate tra più bookmaker.",
-  marketDepthFeatureTitle: "Profondità del mercato",
-  marketDepthFeatureDesc:
-    "Ogni scheda partita mostra quanti bookmaker stanno quotando attualmente l’evento, aiutandoti a capire quanto ampiamente il mercato sia coperto.",
-  impliedProbFeatureTitle: "Probabilità di mercato e consenso",
-  impliedProbFeatureDesc:
-    "Le schede partita possono includere indicatori di probabilità basati sul mercato, come probabilità implicita, probabilità equa e consenso di mercato, per aiutarti a confrontare la selezione suggerita con un quadro più ampio del pricing di mercato.",
-  consensusProbFeatureTitle: "Segnale di valore",
-  consensusProbFeatureDesc:
-    "Ogni selezione viene valutata usando dati di pricing di mercato. ✅ Allineato al mercato significa che la quota è vicina alla valutazione complessiva del mercato, ⚡ Value odds segnala un prezzo potenzialmente migliore della media di mercato, mentre ⚠ Sotto il mercato indica che la quota disponibile è meno favorevole rispetto al riferimento di mercato.",
-  riskTierFeatureTitle: "Livello di rischio",
-  riskTierFeatureDesc:
-    "Ogni scheda partita include un livello di rischio basato su fattori come il livello delle quote, la copertura del mercato e il contesto generale del pricing. 🟢 Rischio basso di solito riflette quote più contenute e una copertura più ampia dei bookmaker, mentre 🔴 Rischio alto indica spesso quote più elevate o un supporto di mercato più limitato.",
-  aiBettingInsights: "Informazioni su MatchSignal",
+    "MatchSignal combina quote dei bookmaker, contesto di mercato e analisi AI per aiutarti a confrontare le quote più rapidamente e capire meglio ogni pronostico.",
+
+  matchCardGuideTitle: "Come leggere una MatchCard",
+  matchCardGuideDesc:
+    "Ogni scheda mette in evidenza il pronostico consigliato, il mercato di riferimento e il contesto quota della selezione. Alcuni campi vengono mostrati solo quando i dati di mercato sono disponibili.",
+
+  matchCardFields: {
+    prediction: {
+      title: "Pronostico",
+      desc: "Il suggerimento consigliato per l’evento.",
+    },
+    market: {
+      title: "Mercato",
+      desc: "Il mercato di scommessa usato per il pronostico, ad esempio Moneyline o Over/Under.",
+    },
+    bestPartnerOdds: {
+      title: "Migliore quota partner",
+      desc: "La quota partner in evidenza attualmente mostrata per questo pronostico.",
+    },
+    sportsbook: {
+      title: "Bookmaker",
+      desc: "Il bookmaker attualmente evidenziato nella scheda.",
+    },
+    estimatedValue: {
+      title: "Valore stimato",
+      desc: "Il vantaggio stimato tra la quota offerta e la valutazione del modello.",
+    },
+    marketAverage: {
+      title: "Media di mercato",
+      desc: "La quota media tra i bookmaker monitorati, se disponibile.",
+    },
+    fairOdds: {
+      title: "Quota equa",
+      desc: "La quota equa stimata dal modello per questo pronostico.",
+    },
+    fairProbability: {
+      title: "Probabilità equa",
+      desc: "La stima del modello sulla probabilità reale di questo esito.",
+    },
+    vsMarketAverage: {
+      title: "Rispetto alla media di mercato",
+      desc: "Come la quota mostrata si confronta con il mercato più ampio.",
+    },
+    marketConsensus: {
+      title: "Consenso di mercato",
+      desc: "La probabilità implicita media tra i bookmaker disponibili, se disponibile.",
+    },
+    bookmakersTracked: {
+      title: "Bookmaker monitorati",
+      desc: "Quanti bookmaker contribuiscono attualmente ai dati di mercato.",
+    },
+    riskTier: {
+      title: "Livello di rischio",
+      desc: "Una semplice classificazione del rischio basata sul livello della quota e sulla profondità del mercato.",
+    },
+    aiAnalysis: {
+      title: "Analisi AI",
+      desc: "Una breve spiegazione generata dall’AI per questo pronostico.",
+    },
+  },
+
+  aiBettingInsights: "Su MatchSignal",
   aiBettingInsightsDesc:
-    "MatchSignal fornisce contenuti di scommessa generati dall’IA esclusivamente a scopo informativo ed educativo. Non è un operatore di scommesse e non garantisce risultati. Scommetti in modo responsabile e rischia solo ciò che puoi permetterti di perdere.",
+    "MatchSignal fornisce contenuti sulle scommesse generati dall’AI esclusivamente a scopo informativo. MatchSignal non è un operatore di scommesse e non garantisce risultati. Ti invitiamo a giocare responsabilmente.",
+
   navAbout: "Chi siamo",
   navContact: "Contatti",
   navPrivacy: "Informativa sulla privacy",
   navTerms: "Termini di utilizzo",
-  navAffiliate: "Divulgazione di affiliazione",
+  navAffiliate: "Informativa affiliati",
   navResponsible: "Gioco responsabile",
   navCookie: "Cookie policy",
   platformName: "MatchSignal",
-  builtWithAi: "Creato con IA",
+  builtWithAi: "Creato con AI",
 },
   glossary: {
     pageTitle: "Mercati delle scommesse spiegati",

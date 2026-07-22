@@ -1,6 +1,6 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
-const hu: Partial<Translation> = {
+const hu: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "Ingyenes AI fogadási tippek – Foci, NBA, Tenisz és még több",
   heroDesc: "AI által generált sport előrejelzések több sportágra.",
@@ -158,37 +158,80 @@ text: "🏆 Legjobb fogadási bónuszok — Sportfogadóirodák összehasonlít�
  footer: {
   betIntelligence: "Hogyan működik a MatchSignal",
   betIntelligenceDesc:
-    "A MatchSignal fogadóirodai oddsadatokat, piaci kontextust és AI által generált mérkőzéselemzést kombinál, hogy segítsen összehasonlítani a tippeket, felismerni az árazási különbségeket és gyorsan megérteni az adott eseményt.",
-  matchPreviewFeatureTitle: "AI mérkőzés előzetes",
-  matchPreviewFeatureDesc:
-    "Rövid, semleges, AI által generált összefoglaló minden eseményhez, amely gyors kontextust ad a párosításhoz, a versenysorozathoz és a fogadási szemponthoz.",
-  oddsComparisonFeatureTitle: "Szorzó összehasonlítás",
-  oddsComparisonFeatureDesc:
-    "Megmutatjuk az egyes mérkőzések legjobb elérhető oddsait, amelyeket több fogadóirodától gyűjtünk és hasonlítunk össze.",
-  marketDepthFeatureTitle: "Piaci mélység",
-  marketDepthFeatureDesc:
-    "Minden mérkőzéskártya megmutatja, hány fogadóiroda árazza jelenleg az eseményt, így jobban látható, milyen szélesen lefedett a piac.",
-  impliedProbFeatureTitle: "Piaci valószínűség és konszenzus",
-  impliedProbFeatureDesc:
-    "A mérkőzéskártyák tartalmazhatnak piaci alapú valószínűségi mutatókat, például implied probabilityt, fair probabilityt és piaci konszenzust, hogy könnyebben össze tudd vetni az ajánlott tippet a tágabb piaci képpel.",
-  consensusProbFeatureTitle: "Value jelzés",
-  consensusProbFeatureDesc:
-    "Minden tippet piaci árazási adatok alapján értékelünk. ✅ A Piaccal összhangban azt jelenti, hogy az odds közel áll a szélesebb piaci megítéléshez, ⚡ az Értékes odds a piaci átlagnál kedvezőbb árazást jelezhet, míg ⚠ a Piaci átlag alatt azt mutatja, hogy az elérhető odds kevésbé kedvező a piaci alapvonalhoz képest.",
-  riskTierFeatureTitle: "Kockázati szint",
-  riskTierFeatureDesc:
-    "Minden mérkőzéskártya tartalmaz egy kockázati besorolást olyan tényezők alapján, mint az odds szintje, a piaci lefedettség és az általános árazási kontextus. 🟢 Az Alacsony kockázat általában rövidebb oddsot és szélesebb fogadóirodai lefedettséget jelez, míg 🔴 a Magas kockázat gyakran hosszabb oddsra vagy gyengébb piaci támogatásra utal.",
-  aiBettingInsights: "A MatchSignal-ról",
+    "A MatchSignal a bukmékeri oddsokat, a piaci kontextust és az AI-elemzést ötvözi, hogy gyorsabban tudd összehasonlítani az árakat és könnyebben értelmezhesd az egyes tippeket.",
+
+  matchCardGuideTitle: "Hogyan olvasd a MatchCardot",
+  matchCardGuideDesc:
+    "Minden kártya kiemeli az ajánlott tippet, a hozzá tartozó piacot és a kiválasztás árazási kontextusát. Egyes mezők csak akkor jelennek meg, ha piaci adat is rendelkezésre áll.",
+
+  matchCardFields: {
+    prediction: {
+      title: "Előrejelzés",
+      desc: "Az eseményhez ajánlott tipp.",
+    },
+    market: {
+      title: "Piac",
+      desc: "A tipphez tartozó fogadási piac, például Moneyline vagy Over/Under.",
+    },
+    bestPartnerOdds: {
+      title: "Legjobb partner odds",
+      desc: "Az adott tipphez jelenleg megjelenített kiemelt partneri odds.",
+    },
+    sportsbook: {
+      title: "Bukméker",
+      desc: "A kártyán jelenleg kiemelt fogadóiroda.",
+    },
+    estimatedValue: {
+      title: "Becsült value",
+      desc: "A kínált odds és a modell megítélése közötti becsült előny.",
+    },
+    marketAverage: {
+      title: "Piaci átlag",
+      desc: "A követett bukmékereknél mért átlagos odds, ha elérhető.",
+    },
+    fairOdds: {
+      title: "Fair odds",
+      desc: "A modell által becsült valós odds az adott tippre.",
+    },
+    fairProbability: {
+      title: "Fair valószínűség",
+      desc: "A modell becslése az adott kimenetel valódi esélyére.",
+    },
+    vsMarketAverage: {
+      title: "Piaci átlaghoz képest",
+      desc: "A megjelenített odds viszonya a szélesebb piachoz.",
+    },
+    marketConsensus: {
+      title: "Piaci konszenzus",
+      desc: "Az elérhető bukmékerek átlagos implikált valószínűsége, ha elérhető.",
+    },
+    bookmakersTracked: {
+      title: "Követett bukmékerek",
+      desc: "Hány bukméker adatai járulnak hozzá jelenleg a piaci képhez.",
+    },
+    riskTier: {
+      title: "Kockázati szint",
+      desc: "Egyszerű kockázati besorolás az odds szintje és a piaci mélység alapján.",
+    },
+    aiAnalysis: {
+      title: "AI elemzés",
+      desc: "Rövid, AI által generált magyarázat a tippről.",
+    },
+  },
+
+  aiBettingInsights: "A MatchSignalról",
   aiBettingInsightsDesc:
-    "A MatchSignal AI által generált fogadási tartalmat nyújt kizárólag tájékoztató és edukációs célból. Nem fogadásszervező, és nem garantál eredményeket. Kérjük, fogadj felelősségteljesen, és csak akkora összeget kockáztass, amelynek elvesztését megengedheted magadnak.",
+    "A MatchSignal AI által generált fogadási tartalmat kínál kizárólag tájékoztatási céllal. Nem fogadásszervező, és nem garantál eredményeket. Kérjük, fogadj felelősségteljesen.",
+
   navAbout: "Rólunk",
   navContact: "Kapcsolat",
-  navPrivacy: "Adatvédelem",
+  navPrivacy: "Adatvédelmi szabályzat",
   navTerms: "Felhasználási feltételek",
-  navAffiliate: "Affiliate közzététel",
-  navResponsible: "Felelős játék",
+  navAffiliate: "Affiliate tájékoztató",
+  navResponsible: "Felelős szerencsejáték",
   navCookie: "Cookie szabályzat",
   platformName: "MatchSignal",
-  builtWithAi: "AI segítségével készült",
+  builtWithAi: "AI-val készült",
 },
   glossary: {
     pageTitle: "Fogadási piacok magyarázata",

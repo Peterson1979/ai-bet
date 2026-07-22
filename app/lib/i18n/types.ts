@@ -1,4 +1,50 @@
-// app/i18n/types.ts  (a jelenlegi verziód már jó alapnak)
+// app/i18n/types.ts
+
+type MatchCardField = {
+  title: string;
+  desc: string;
+};
+
+type FooterTranslation = {
+  betIntelligence: string;
+  betIntelligenceDesc: string;
+  matchCardGuideTitle: string;
+  matchCardGuideDesc: string;
+  matchCardFields: {
+    prediction: MatchCardField;
+    market: MatchCardField;
+    bestPartnerOdds: MatchCardField;
+    sportsbook: MatchCardField;
+    estimatedValue: MatchCardField;
+    marketAverage: MatchCardField;
+    fairOdds: MatchCardField;
+    fairProbability: MatchCardField;
+    vsMarketAverage: MatchCardField;
+    marketConsensus: MatchCardField;
+    bookmakersTracked: MatchCardField;
+    riskTier: MatchCardField;
+    aiAnalysis: MatchCardField;
+  };
+  aiBettingInsights: string;
+  aiBettingInsightsDesc: string;
+  navAbout: string;
+  navContact: string;
+  navPrivacy: string;
+  navTerms: string;
+  navAffiliate: string;
+  navResponsible: string;
+  navCookie: string;
+  platformName: string;
+  builtWithAi: string;
+};
+
+type GlossaryEntry = {
+  term: string;
+  definition: string;
+};
+export type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
+};
 export type Translation = {
   heroTitle: string;
   heroSubtitle: string;
@@ -63,16 +109,16 @@ export type Translation = {
   viewAllPredictionsSport: string;
   noEventsTodaySport: string;
   bestPartnerOdds: string;
-sportsbookLabel: string;
-marketAverage: string;
-fairProbability: string;
-vsMarketAverage: string;
-bookmakersTracked: string;
-whyThisSignal: string;
-marketInfoAriaLabel: string;
-closeMarketInfoAriaLabel: string;
-claimOfferAt: string;
-estimatedValue: string;
+  sportsbookLabel: string;
+  marketAverage: string;
+  fairProbability: string;
+  vsMarketAverage: string;
+  bookmakersTracked: string;
+  whyThisSignal: string;
+  marketInfoAriaLabel: string;
+  closeMarketInfoAriaLabel: string;
+  claimOfferAt: string;
+  estimatedValue: string;
 
   sports: {
     topPicks: string;
@@ -159,33 +205,7 @@ estimatedValue: string;
     bookOdds: string;
   };
 
-  footer: {
-    betIntelligence: string;
-    betIntelligenceDesc: string;
-    matchPreviewFeatureTitle: string;
-    matchPreviewFeatureDesc: string;
-    oddsComparisonFeatureTitle: string;
-    oddsComparisonFeatureDesc: string;
-    marketDepthFeatureTitle: string;
-    marketDepthFeatureDesc: string;
-    impliedProbFeatureTitle: string;
-    impliedProbFeatureDesc: string;
-    consensusProbFeatureTitle: string;
-    consensusProbFeatureDesc: string;
-    riskTierFeatureTitle: string;
-    riskTierFeatureDesc: string;
-    aiBettingInsights: string;
-    aiBettingInsightsDesc: string;
-    navAbout: string;
-    navContact: string;
-    navPrivacy: string;
-    navTerms: string;
-    navAffiliate: string;
-    navResponsible: string;
-    navCookie: string;
-    platformName: string;
-    builtWithAi: string;
-  };
+  footer: FooterTranslation;
 
   glossary: {
     pageTitle: string;
@@ -193,34 +213,37 @@ estimatedValue: string;
     learnMore: string;
     tooltipLearnMore: string;
     markets: {
-      doubleChance: { term: string; definition: string };
-      drawNoBet: { term: string; definition: string };
-      homeWin: { term: string; definition: string };
-      awayWin: { term: string; definition: string };
-      matchWinner: { term: string; definition: string };
-      moneyline: { term: string; definition: string };
-      over15: { term: string; definition: string };
-      under45: { term: string; definition: string };
-      over45: { term: string; definition: string };
-      under75: { term: string; definition: string };
-      over185Games: { term: string; definition: string };
-      under305Games: { term: string; definition: string };
-      playerToWinSet: { term: string; definition: string };
-      handicapGames: { term: string; definition: string };
-      over1495Points: { term: string; definition: string };
-      under1795Points: { term: string; definition: string };
-      over335Points: { term: string; definition: string };
-      under545Points: { term: string; definition: string };
-      over75Runs: { term: string; definition: string };
-      under95Runs: { term: string; definition: string };
-      teamTotalOver: { term: string; definition: string };
-      teamTotalUnder: { term: string; definition: string };
-      teamTotalOver15: { term: string; definition: string };
-      runLine: { term: string; definition: string };
-      methodOfVictory: { term: string; definition: string };
-      over25Rounds: { term: string; definition: string };
-      under25Rounds: { term: string; definition: string };
+      doubleChance: GlossaryEntry;
+      drawNoBet: GlossaryEntry;
+      homeWin: GlossaryEntry;
+      awayWin: GlossaryEntry;
+      matchWinner: GlossaryEntry;
+      moneyline: GlossaryEntry;
+      over15: GlossaryEntry;
+      under45: GlossaryEntry;
+      over45: GlossaryEntry;
+      under75: GlossaryEntry;
+      over185Games: GlossaryEntry;
+      under305Games: GlossaryEntry;
+      playerToWinSet: GlossaryEntry;
+      handicapGames: GlossaryEntry;
+      over1495Points: GlossaryEntry;
+      under1795Points: GlossaryEntry;
+      over335Points: GlossaryEntry;
+      under545Points: GlossaryEntry;
+      over75Runs: GlossaryEntry;
+      under95Runs: GlossaryEntry;
+      teamTotalOver: GlossaryEntry;
+      teamTotalUnder: GlossaryEntry;
+      teamTotalOver15: GlossaryEntry;
+      runLine: GlossaryEntry;
+      methodOfVictory: GlossaryEntry;
+      over25Rounds: GlossaryEntry;
+      under25Rounds: GlossaryEntry;
     };
-    quickNote: { title: string; text: string };
+    quickNote: {
+      title: string;
+      text: string;
+    };
   };
 };

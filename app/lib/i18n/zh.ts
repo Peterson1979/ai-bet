@@ -1,6 +1,6 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
-const zh: Partial<Translation> = {
+const zh:DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "免费 AI 预测推荐 – 足球、NBA、网球等",
   heroDesc: "由 AI 生成的各项体育赛事预测。",
@@ -136,34 +136,77 @@ const zh: Partial<Translation> = {
   footer: {
   betIntelligence: "MatchSignal 如何运作",
   betIntelligenceDesc:
-    "MatchSignal 结合博彩公司赔率数据、市场背景和 AI 生成的赛事分析，帮助你比较预测、发现定价差异，并快速理解每场赛事。",
-  matchPreviewFeatureTitle: "AI 赛事前瞻",
-  matchPreviewFeatureDesc:
-    "针对每个赛事提供简短、中立的 AI 生成摘要，帮助你快速了解对阵、赛事背景和投注角度。",
-  oddsComparisonFeatureTitle: "赔率比较",
-  oddsComparisonFeatureDesc:
-    "我们展示每场比赛可获得的最佳赔率，并在多家博彩公司之间进行收集和比较。",
-  marketDepthFeatureTitle: "市场深度",
-  marketDepthFeatureDesc:
-    "每张赛事卡片都会显示当前有多少家博彩公司为该赛事提供赔率，帮助你判断市场覆盖范围。",
-  impliedProbFeatureTitle: "市场概率与共识",
-  impliedProbFeatureDesc:
-    "赛事卡片可能包含基于市场的概率指标，例如隐含概率、公允概率和市场共识，帮助你将推荐选择放在更广泛的市场定价背景中进行比较。",
-  consensusProbFeatureTitle: "价值信号",
-  consensusProbFeatureDesc:
-    "每个推荐都会根据市场定价数据进行评估。✅ Market aligned 表示该赔率接近整体市场看法，⚡ Value odds 表示该价格可能优于市场平均水平，而 ⚠ Below market 表示当前可用赔率低于市场基准，吸引力较弱。",
-  riskTierFeatureTitle: "风险等级",
-  riskTierFeatureDesc:
-    "每张赛事卡片都包含一个风险等级，该等级基于赔率水平、市场覆盖范围和整体定价背景等因素。🟢 Low Risk 通常表示较低赔率和更广泛的博彩公司覆盖，而 🔴 High Risk 往往意味着较高赔率或较弱的市场支持。",
+    "MatchSignal 结合博彩公司赔率、市场背景和 AI 分析，帮助你更快比较赔率，并更轻松地理解每个推荐。",
+
+  matchCardGuideTitle: "如何阅读 MatchCard",
+  matchCardGuideDesc:
+    "每张卡片都会突出显示推荐选项、对应市场以及该选择的赔率背景信息。某些字段仅在市场数据可用时显示。",
+
+  matchCardFields: {
+    prediction: {
+      title: "预测",
+      desc: "该赛事的推荐选项。",
+    },
+    market: {
+      title: "市场",
+      desc: "该推荐使用的投注市场，例如 Moneyline 或 Over/Under。",
+    },
+    bestPartnerOdds: {
+      title: "最佳合作方赔率",
+      desc: "当前为该推荐显示的重点合作方赔率。",
+    },
+    sportsbook: {
+      title: "博彩公司",
+      desc: "卡片中当前突出显示的博彩公司。",
+    },
+    estimatedValue: {
+      title: "预估价值",
+      desc: "提供赔率与模型判断之间的预估优势。",
+    },
+    marketAverage: {
+      title: "市场平均值",
+      desc: "已跟踪博彩公司之间的平均赔率（如可用）。",
+    },
+    fairOdds: {
+      title: "合理赔率",
+      desc: "模型为该推荐估算的合理赔率。",
+    },
+    fairProbability: {
+      title: "合理概率",
+      desc: "模型对该结果真实发生概率的估计。",
+    },
+    vsMarketAverage: {
+      title: "相对市场平均值",
+      desc: "显示赔率与更广泛市场相比的情况。",
+    },
+    marketConsensus: {
+      title: "市场共识",
+      desc: "可用博彩公司之间的平均隐含概率（如可用）。",
+    },
+    bookmakersTracked: {
+      title: "跟踪的博彩公司",
+      desc: "当前有多少博彩公司为市场数据提供支持。",
+    },
+    riskTier: {
+      title: "风险等级",
+      desc: "基于赔率水平和市场深度的简单风险分级。",
+    },
+    aiAnalysis: {
+      title: "AI 分析",
+      desc: "针对该推荐的简短 AI 生成说明。",
+    },
+  },
+
   aiBettingInsights: "关于 MatchSignal",
   aiBettingInsightsDesc:
-    "MatchSignal 提供的 AI 生成投注内容仅用于信息和教育目的。它不是博彩公司，也不保证任何结果。请理性投注，只投入你能够承受损失的金额。",
+    "MatchSignal 提供的 AI 生成投注内容仅供参考。MatchSignal 不是投注运营商，也不保证结果。请理性参与。",
+
   navAbout: "关于我们",
   navContact: "联系我们",
   navPrivacy: "隐私政策",
   navTerms: "使用条款",
   navAffiliate: "联盟披露",
-  navResponsible: "负责任博彩",
+  navResponsible: "理性参与",
   navCookie: "Cookie 政策",
   platformName: "MatchSignal",
   builtWithAi: "由 AI 构建",

@@ -9,15 +9,21 @@ export default function Footer() {
   const lang = (params?.lang as Lang) || "en";
   const t = translations[lang] ?? translations.en;
 
-  const features = [
-  { key: "matchPreviewFeature" },
-  { key: "marketDepthFeature" },
-  { key: "impliedProbFeature" },
-  { key: "consensusProbFeature" },
-  { key: "riskTierFeature" },
-];
-
-  const getText = (key: string) => (t.footer as any)[key];
+  const fieldKeys = [
+    "prediction",
+    "market",
+    "bestPartnerOdds",
+    "sportsbook",
+    "estimatedValue",
+    "marketAverage",
+    "fairOdds",
+    "fairProbability",
+    "vsMarketAverage",
+    "marketConsensus",
+    "bookmakersTracked",
+    "riskTier",
+    "aiAnalysis",
+  ] as const;
 
   const navLinks = [
     { href: `/${lang}/about`, label: t.footer.navAbout },
@@ -31,11 +37,8 @@ export default function Footer() {
 
   return (
     <footer className="mt-20 border-t border-[#1E293B] bg-[#060B14]">
-
-      {/* PLATFORM EXPLANATION */}
       <div className="border-b border-[#1E293B]">
         <div className="mx-auto max-w-[1500px] px-4 py-14 md:px-6">
-
           <div className="mb-10">
             <h3 className="text-3xl font-black text-white">
               {t.footer.betIntelligence}
@@ -46,34 +49,70 @@ export default function Footer() {
             </p>
           </div>
 
+          <div className="mb-8">
+            <h4 className="text-2xl font-black text-white">
+              {t.footer.matchCardGuideTitle}
+            </h4>
 
-          {/* FEATURES */}
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {features.map((f) => (
-              <div
-                key={f.key}
-                className="rounded-2xl border border-cyan-400/20 bg-[#0F172A] p-5"
-              >
-                <h4 className="font-black text-cyan-300">
-                  {getText(`${f.key}Title`)}
-                </h4>
-
-                <p className="mt-3 text-sm text-slate-300 leading-6">
-                  {getText(`${f.key}Desc`)}
-                </p>
-              </div>
-            ))}
+            <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-300">
+              {t.footer.matchCardGuideDesc}
+            </p>
           </div>
 
+          <div className="space-y-3 md:hidden">
+            {fieldKeys.map((key) => {
+              const item = t.footer.matchCardFields[key];
+
+              return (
+                <details
+                  key={key}
+                  className="group rounded-2xl border border-cyan-400/20 bg-[#0F172A]"
+                >
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-4 font-black text-cyan-300">
+                    <span>{item.title}</span>
+                    <span
+                      aria-hidden="true"
+                      className="text-slate-400 transition group-open:rotate-180"
+                    >
+                      ⌄
+                    </span>
+                  </summary>
+
+                  <div className="px-4 pb-4">
+                    <p className="text-sm leading-6 text-slate-300">
+                      {item.desc}
+                    </p>
+                  </div>
+                </details>
+              );
+            })}
+          </div>
+
+          <div className="hidden gap-5 md:grid md:grid-cols-2">
+            {fieldKeys.map((key) => {
+              const item = t.footer.matchCardFields[key];
+
+              return (
+                <div
+                  key={key}
+                  className="rounded-2xl border border-cyan-400/20 bg-[#0F172A] p-5"
+                >
+                  <h5 className="font-black text-cyan-300">
+                    {item.title}
+                  </h5>
+
+                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                    {item.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-
-      {/* BOTTOM SECTION */}
       <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-6">
-
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-
           <div>
             <h4 className="text-lg font-black text-white">
               {t.footer.aiBettingInsights}
@@ -84,9 +123,7 @@ export default function Footer() {
             </p>
           </div>
 
-
           <div className="flex flex-wrap gap-5 text-sm text-slate-400">
-
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -96,14 +133,10 @@ export default function Footer() {
                 {link.label}
               </Link>
             ))}
-
           </div>
-
         </div>
 
-
         <div className="mt-8 flex flex-col gap-3 border-t border-[#1E293B] pt-6 md:flex-row md:items-center md:justify-between">
-
           <p className="text-[12px] text-slate-500">
             © {new Date().getFullYear()} {t.footer.platformName}
           </p>
@@ -111,11 +144,8 @@ export default function Footer() {
           <div className="text-[12px] text-slate-500">
             {t.footer.builtWithAi}
           </div>
-
         </div>
-
       </div>
-
     </footer>
   );
 }

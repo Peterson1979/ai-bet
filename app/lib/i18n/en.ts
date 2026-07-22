@@ -155,28 +155,71 @@ stickyCta: {
   footer: {
   betIntelligence: "How MatchSignal Works",
   betIntelligenceDesc:
-    "MatchSignal combines bookmaker odds data, market context and AI-generated match analysis to help you compare picks, spot pricing differences and understand each event at a glance.",
-  matchPreviewFeatureTitle: "AI Match Preview",
-  matchPreviewFeatureDesc:
-    "A short, neutral AI-generated summary for each event, designed to give quick context around the matchup, competition and betting angle.",
-  oddsComparisonFeatureTitle: "Odds Comparison",
-  oddsComparisonFeatureDesc:
-    "We show the best available odds for each match, gathered and compared across multiple bookmakers in real time.",
-  marketDepthFeatureTitle: "Market Depth",
-  marketDepthFeatureDesc:
-    "Each match card shows how many bookmakers currently price the event, helping you gauge how widely the market is covered.",
-  impliedProbFeatureTitle: "Market Probability & Consensus",
-  impliedProbFeatureDesc:
-    "Each match card can include market-based probability indicators such as implied probability, fair probability and market consensus, helping you compare the suggested pick against the broader pricing picture.",
-  consensusProbFeatureTitle: "Value Signal",
-  consensusProbFeatureDesc:
-    "Each pick is evaluated against market pricing data. ✅ Market aligned means the odds are close to the broader market view, ⚡ Value odds signals potentially better-than-average pricing, and ⚠ Below market suggests the available odds are less favorable than the market baseline.",
-  riskTierFeatureTitle: "Risk Tier",
-  riskTierFeatureDesc:
-    "Every match card includes a risk tier based on factors such as odds level, market coverage and overall pricing context. 🟢 Low Risk usually reflects shorter odds and broader bookmaker coverage, while 🔴 High Risk often signals longer odds or thinner market support.",
+    "MatchSignal combines bookmaker odds, market context and AI analysis to help you compare prices and understand each pick quickly.",
+
+  matchCardGuideTitle: "How to read a MatchCard",
+  matchCardGuideDesc:
+    "Each card highlights the recommended pick, the market behind it, and the pricing context around that selection. Some fields appear only when market data is available.",
+
+  matchCardFields: {
+    prediction: {
+      title: "Prediction",
+      desc: "The recommended pick for the event.",
+    },
+    market: {
+      title: "Market",
+      desc: "The betting market used for the pick, such as Moneyline or Over/Under.",
+    },
+    bestPartnerOdds: {
+      title: "Best partner odds",
+      desc: "The featured partner price currently shown for the pick.",
+    },
+    sportsbook: {
+      title: "Sportsbook",
+      desc: "The bookmaker currently highlighted on the card.",
+    },
+    estimatedValue: {
+      title: "Estimated value",
+      desc: "The estimated edge between the offered odds and the model view.",
+    },
+    marketAverage: {
+      title: "Market average",
+      desc: "The average odds across tracked bookmakers, when available.",
+    },
+    fairOdds: {
+      title: "Fair odds",
+      desc: "The model’s estimated fair price for the pick.",
+    },
+    fairProbability: {
+      title: "Fair probability",
+      desc: "The model’s estimate of the outcome’s true chance.",
+    },
+    vsMarketAverage: {
+      title: "Vs market average",
+      desc: "How the displayed odds compare with the broader market.",
+    },
+    marketConsensus: {
+      title: "Market consensus",
+      desc: "The average implied probability across available bookmakers, when available.",
+    },
+    bookmakersTracked: {
+      title: "Bookmakers tracked",
+      desc: "How many bookmakers currently contribute market data.",
+    },
+    riskTier: {
+      title: "Risk tier",
+      desc: "A simple risk label based on odds level and market depth.",
+    },
+    aiAnalysis: {
+      title: "AI Analysis",
+      desc: "A short AI-generated explanation of the pick.",
+    },
+  },
+
   aiBettingInsights: "About MatchSignal",
   aiBettingInsightsDesc:
-    "MatchSignal provides AI-generated betting content for informational and educational purposes only. It is not a betting operator and does not guarantee outcomes. Please bet responsibly and only wager what you can afford to lose.",
+    "MatchSignal provides AI-generated betting content for informational purposes only. It is not a betting operator and does not guarantee outcomes. Please bet responsibly.",
+
   navAbout: "About",
   navContact: "Contact",
   navPrivacy: "Privacy Policy",

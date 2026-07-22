@@ -1,6 +1,6 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
-const fr: Partial<Translation> = {
+const fr: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "Pronostics IA gratuits – Football, NBA, Tennis & plus",
   heroDesc: "Prédictions générées par IA pour plusieurs sports.",
@@ -136,37 +136,80 @@ const fr: Partial<Translation> = {
  footer: {
   betIntelligence: "Comment fonctionne MatchSignal",
   betIntelligenceDesc:
-    "MatchSignal combine les cotes des bookmakers, le contexte du marché et des analyses de match générées par l’IA pour vous aider à comparer les pronostics, repérer les écarts de prix et comprendre chaque événement en un coup d’œil.",
-  matchPreviewFeatureTitle: "Aperçu IA du match",
-  matchPreviewFeatureDesc:
-    "Un résumé court, neutre et généré par l’IA pour chaque événement, conçu pour donner rapidement du contexte sur l’affiche, la compétition et l’angle de pari.",
-  oddsComparisonFeatureTitle: "Comparaison des cotes",
-  oddsComparisonFeatureDesc:
-    "Nous affichons les meilleures cotes disponibles pour chaque match, collectées et comparées auprès de plusieurs bookmakers.",
-  marketDepthFeatureTitle: "Profondeur du marché",
-  marketDepthFeatureDesc:
-    "Chaque carte de match indique combien de bookmakers proposent actuellement des cotes sur l’événement, afin de vous aider à évaluer l’étendue de la couverture du marché.",
-  impliedProbFeatureTitle: "Probabilité de marché et consensus",
-  impliedProbFeatureDesc:
-    "Les cartes de match peuvent inclure des indicateurs de probabilité basés sur le marché, comme la probabilité implicite, la probabilité juste et le consensus du marché, afin de vous aider à comparer la sélection suggérée avec une vision plus large du pricing.",
-  consensusProbFeatureTitle: "Signal de value",
-  consensusProbFeatureDesc:
-    "Chaque sélection est évaluée à partir des données de pricing du marché. ✅ Aligné sur le marché signifie que la cote est proche de l’évaluation globale du marché, ⚡ Value odds signale un prix potentiellement meilleur que la moyenne du marché, et ⚠ Sous le marché indique que la cote disponible est moins favorable que la référence du marché.",
-  riskTierFeatureTitle: "Niveau de risque",
-  riskTierFeatureDesc:
-    "Chaque carte de match inclut un niveau de risque basé sur des facteurs comme le niveau de cote, la couverture du marché et le contexte global du pricing. 🟢 Faible risque correspond généralement à des cotes plus courtes et à une couverture plus large des bookmakers, tandis que 🔴 Risque élevé signale souvent des cotes plus longues ou un soutien de marché plus limité.",
+    "MatchSignal combine les cotes des bookmakers, le contexte du marché et l’analyse par IA pour vous aider à comparer les cotes plus rapidement et à comprendre chaque pronostic plus facilement.",
+
+  matchCardGuideTitle: "Comment lire une MatchCard",
+  matchCardGuideDesc:
+    "Chaque carte met en avant le pronostic recommandé, le marché correspondant et le contexte de prix autour de cette sélection. Certains champs n’apparaissent que lorsque des données de marché sont disponibles.",
+
+  matchCardFields: {
+    prediction: {
+      title: "Pronostic",
+      desc: "Le pari recommandé pour l’événement.",
+    },
+    market: {
+      title: "Marché",
+      desc: "Le marché de pari utilisé pour ce pronostic, par exemple Moneyline ou Plus/Moins.",
+    },
+    bestPartnerOdds: {
+      title: "Meilleure cote partenaire",
+      desc: "La cote partenaire mise en avant et actuellement affichée pour ce pronostic.",
+    },
+    sportsbook: {
+      title: "Bookmaker",
+      desc: "Le bookmaker actuellement mis en avant sur la carte.",
+    },
+    estimatedValue: {
+      title: "Value estimée",
+      desc: "L’avantage estimé entre la cote proposée et l’évaluation du modèle.",
+    },
+    marketAverage: {
+      title: "Moyenne du marché",
+      desc: "La cote moyenne observée chez les bookmakers suivis, lorsqu’elle est disponible.",
+    },
+    fairOdds: {
+      title: "Cote juste",
+      desc: "La cote juste estimée par le modèle pour ce pronostic.",
+    },
+    fairProbability: {
+      title: "Probabilité juste",
+      desc: "L’estimation du modèle de la probabilité réelle de cette issue.",
+    },
+    vsMarketAverage: {
+      title: "Par rapport à la moyenne du marché",
+      desc: "Comment la cote affichée se compare au marché global.",
+    },
+    marketConsensus: {
+      title: "Consensus du marché",
+      desc: "La probabilité implicite moyenne calculée à partir des bookmakers disponibles, lorsqu’elle est disponible.",
+    },
+    bookmakersTracked: {
+      title: "Bookmakers suivis",
+      desc: "Le nombre de bookmakers qui alimentent actuellement les données de marché.",
+    },
+    riskTier: {
+      title: "Niveau de risque",
+      desc: "Une étiquette simple de risque basée sur le niveau de cote et la profondeur du marché.",
+    },
+    aiAnalysis: {
+      title: "Analyse IA",
+      desc: "Une courte explication générée par IA pour ce pronostic.",
+    },
+  },
+
   aiBettingInsights: "À propos de MatchSignal",
   aiBettingInsightsDesc:
-    "MatchSignal fournit du contenu de paris généré par l’IA à des fins uniquement informatives et éducatives. Ce n’est pas un opérateur de paris et il ne garantit aucun résultat. Pariez de manière responsable et ne misez que ce que vous pouvez vous permettre de perdre.",
+    "MatchSignal fournit des contenus de paris générés par IA à titre informatif uniquement. MatchSignal n’est pas un opérateur de paris et ne garantit aucun résultat. Veuillez parier de manière responsable.",
+
   navAbout: "À propos",
   navContact: "Contact",
   navPrivacy: "Politique de confidentialité",
   navTerms: "Conditions d’utilisation",
   navAffiliate: "Divulgation d’affiliation",
   navResponsible: "Jeu responsable",
-  navCookie: "Politique de cookies",
+  navCookie: "Politique relative aux cookies",
   platformName: "MatchSignal",
-  builtWithAi: "Créé avec l’IA",
+  builtWithAi: "Conçu avec l’IA",
 },
   glossary: {
     pageTitle: "Marchés de paris expliqués",

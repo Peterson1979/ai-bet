@@ -1,4 +1,4 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
 const de: Partial<Translation> = {
   heroTitle: "MATCH SIGNAL",
@@ -133,39 +133,82 @@ const de: Partial<Translation> = {
     bookOdds: "Buchmacher-Quote",
   },
   footer: {
-  betIntelligence: "Wie MatchSignal funktioniert",
+  betIntelligence: "So funktioniert MatchSignal",
   betIntelligenceDesc:
-    "MatchSignal kombiniert Buchmacherquoten, Marktkontext und KI-generierte Spielanalysen, damit du Tipps vergleichen, Preisunterschiede erkennen und jedes Event auf einen Blick besser verstehen kannst.",
-  matchPreviewFeatureTitle: "KI Spielvorschau",
-  matchPreviewFeatureDesc:
-    "Eine kurze, neutrale, KI-generierte Zusammenfassung für jedes Event, die schnellen Kontext zur Paarung, zum Wettbewerb und zum Wettansatz liefert.",
-  oddsComparisonFeatureTitle: "Quotenvergleich",
-  oddsComparisonFeatureDesc:
-    "Wir zeigen die besten verfügbaren Quoten für jedes Spiel, gesammelt und über mehrere Buchmacher hinweg verglichen.",
-  marketDepthFeatureTitle: "Markttiefe",
-  marketDepthFeatureDesc:
-    "Jede Matchkarte zeigt, wie viele Buchmacher das Event aktuell bepreisen, damit du einschätzen kannst, wie breit der Markt abgedeckt ist.",
-  impliedProbFeatureTitle: "Marktwahrscheinlichkeit & Konsens",
-  impliedProbFeatureDesc:
-    "Matchkarten können marktbasierte Wahrscheinlichkeitsindikatoren wie implizite Wahrscheinlichkeit, faire Wahrscheinlichkeit und Marktkonsens enthalten, damit du den vorgeschlagenen Tipp besser mit dem breiteren Marktbild vergleichen kannst.",
-  consensusProbFeatureTitle: "Value Signal",
-  consensusProbFeatureDesc:
-    "Jeder Tipp wird anhand von Marktdaten zur Preisbildung bewertet. ✅ Marktkonform bedeutet, dass die Quote nahe an der breiteren Markteinschätzung liegt, ⚡ Wertquote signalisiert potenziell bessere als durchschnittliche Marktpreise, und ⚠ Unter Marktniveau deutet darauf hin, dass die verfügbare Quote im Vergleich zur Marktgrundlage weniger attraktiv ist.",
-  riskTierFeatureTitle: "Risikostufe",
-  riskTierFeatureDesc:
-    "Jede Matchkarte enthält eine Risikostufe, die auf Faktoren wie Quotenhöhe, Marktabdeckung und dem allgemeinen Preisumfeld basiert. 🟢 Niedriges Risiko steht in der Regel für kürzere Quoten und breitere Buchmacherabdeckung, während 🔴 Hohes Risiko häufig auf längere Quoten oder eine dünnere Marktunterstützung hinweist.",
+    "MatchSignal kombiniert Buchmacherquoten, Marktkontext und KI-Analysen, damit du Quoten schneller vergleichen und jeden Tipp leichter einordnen kannst.",
+
+  matchCardGuideTitle: "So liest du eine MatchCard",
+  matchCardGuideDesc:
+    "Jede Karte zeigt den empfohlenen Tipp, den dazugehörigen Markt und den Quoten-Kontext dieser Auswahl. Einige Felder werden nur angezeigt, wenn Marktdaten verfügbar sind.",
+
+  matchCardFields: {
+    prediction: {
+      title: "Prognose",
+      desc: "Der empfohlene Tipp für das Ereignis.",
+    },
+    market: {
+      title: "Markt",
+      desc: "Der Wettmarkt für den Tipp, zum Beispiel Moneyline oder Over/Under.",
+    },
+    bestPartnerOdds: {
+      title: "Beste Partnerquote",
+      desc: "Die aktuell angezeigte hervorgehobene Partnerquote für diesen Tipp.",
+    },
+    sportsbook: {
+      title: "Buchmacher",
+      desc: "Der auf der Karte aktuell hervorgehobene Buchmacher.",
+    },
+    estimatedValue: {
+      title: "Geschätzter Value",
+      desc: "Der geschätzte Vorteil zwischen der angebotenen Quote und der Einschätzung des Modells.",
+    },
+    marketAverage: {
+      title: "Marktdurchschnitt",
+      desc: "Die durchschnittliche Quote über die verfolgten Buchmacher hinweg, falls verfügbar.",
+    },
+    fairOdds: {
+      title: "Faire Quote",
+      desc: "Die vom Modell geschätzte faire Quote für diesen Tipp.",
+    },
+    fairProbability: {
+      title: "Faire Wahrscheinlichkeit",
+      desc: "Die vom Modell geschätzte tatsächliche Eintrittswahrscheinlichkeit dieses Ergebnisses.",
+    },
+    vsMarketAverage: {
+      title: "Gegenüber dem Marktdurchschnitt",
+      desc: "Wie sich die angezeigte Quote im Vergleich zum breiteren Markt einordnet.",
+    },
+    marketConsensus: {
+      title: "Marktkonsens",
+      desc: "Die durchschnittliche implizite Wahrscheinlichkeit über verfügbare Buchmacher hinweg, falls verfügbar.",
+    },
+    bookmakersTracked: {
+      title: "Verfolgte Buchmacher",
+      desc: "Wie viele Buchmacher aktuell Marktdaten beisteuern.",
+    },
+    riskTier: {
+      title: "Risikostufe",
+      desc: "Eine einfache Risikoeinstufung basierend auf Quotenhöhe und Markttiefe.",
+    },
+    aiAnalysis: {
+      title: "KI-Analyse",
+      desc: "Eine kurze KI-generierte Begründung für den Tipp.",
+    },
+  },
+
   aiBettingInsights: "Über MatchSignal",
   aiBettingInsightsDesc:
-    "MatchSignal stellt KI-generierte Wettinhalte ausschließlich zu Informations- und Bildungszwecken bereit. Es ist kein Wettanbieter und garantiert keine Ergebnisse. Bitte wette verantwortungsvoll und setze nur Beträge ein, deren Verlust du dir leisten kannst.",
+    "MatchSignal bietet KI-generierte Wettinhalte ausschließlich zu Informationszwecken. MatchSignal ist kein Wettanbieter und übernimmt keine Garantie für Ergebnisse. Bitte spiele verantwortungsvoll.",
+
   navAbout: "Über uns",
   navContact: "Kontakt",
-  navPrivacy: "Datenschutz",
+  navPrivacy: "Datenschutzerklärung",
   navTerms: "Nutzungsbedingungen",
-  navAffiliate: "Affiliate-Offenlegung",
+  navAffiliate: "Affiliate-Hinweis",
   navResponsible: "Verantwortungsvolles Spielen",
   navCookie: "Cookie-Richtlinie",
   platformName: "MatchSignal",
-  builtWithAi: "Mit KI erstellt",
+  builtWithAi: "Mit KI entwickelt",
 },
   glossary: {
     pageTitle: "Wettmärkte erklärt",

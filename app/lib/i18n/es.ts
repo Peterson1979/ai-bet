@@ -1,6 +1,6 @@
-import type { Translation } from "./types";
+import type { Translation, DeepPartial } from "./types";
 
-const es: Partial<Translation> = {
+const es: DeepPartial<Translation> = {
   heroTitle: "MATCH SIGNAL",
   heroSubtitle: "Tips de apuestas IA gratis – Fútbol, NBA, Tenis y más",
   heroDesc: "Predicciones generadas por IA para múltiples deportes.",
@@ -133,31 +133,75 @@ const es: Partial<Translation> = {
     bookOdds: "Cuotas de la casa",
   },
   
+  
   footer: {
   betIntelligence: "Cómo funciona MatchSignal",
   betIntelligenceDesc:
-    "MatchSignal combina cuotas de casas de apuestas, contexto de mercado y análisis de partidos generados por IA para ayudarte a comparar pronósticos, detectar diferencias de precio y entender cada evento de un vistazo.",
-  matchPreviewFeatureTitle: "Vista previa IA del partido",
-  matchPreviewFeatureDesc:
-    "Un resumen breve, neutral y generado por IA para cada evento, pensado para ofrecer contexto rápido sobre el enfrentamiento, la competición y el enfoque de apuesta.",
-  oddsComparisonFeatureTitle: "Comparación de cuotas",
-  oddsComparisonFeatureDesc:
-    "Mostramos las mejores cuotas disponibles para cada partido, recopiladas y comparadas entre múltiples casas de apuestas.",
-  marketDepthFeatureTitle: "Profundidad de mercado",
-  marketDepthFeatureDesc:
-    "Cada tarjeta de partido muestra cuántas casas de apuestas están ofreciendo cuotas actualmente para el evento, ayudándote a entender qué tan ampliamente está cubierto el mercado.",
-  impliedProbFeatureTitle: "Probabilidad de mercado y consenso",
-  impliedProbFeatureDesc:
-    "Las tarjetas de partido pueden incluir indicadores de probabilidad basados en el mercado, como probabilidad implícita, probabilidad justa y consenso de mercado, para ayudarte a comparar la selección sugerida con una visión más amplia del precio de mercado.",
-  consensusProbFeatureTitle: "Señal de valor",
-  consensusProbFeatureDesc:
-    "Cada selección se evalúa en función de datos de precios de mercado. ✅ Alineado con el mercado significa que la cuota está cerca de la visión general del mercado, ⚡ Value odds señala un precio potencialmente mejor que el promedio del mercado, y ⚠ Por debajo del mercado indica que la cuota disponible es menos favorable que la referencia del mercado.",
-  riskTierFeatureTitle: "Nivel de riesgo",
-  riskTierFeatureDesc:
-    "Cada tarjeta de partido incluye un nivel de riesgo basado en factores como el nivel de cuota, la cobertura del mercado y el contexto general de precios. 🟢 Riesgo bajo suele reflejar cuotas más bajas y una cobertura más amplia por parte de las casas de apuestas, mientras que 🔴 Riesgo alto suele indicar cuotas más altas o un respaldo de mercado más limitado.",
+    "MatchSignal combina cuotas de casas de apuestas, contexto de mercado y análisis con IA para ayudarte a comparar cuotas más rápido y entender mejor cada pronóstico.",
+
+  matchCardGuideTitle: "Cómo leer una MatchCard",
+  matchCardGuideDesc:
+    "Cada tarjeta destaca el pronóstico recomendado, el mercado correspondiente y el contexto de cuotas de esa selección. Algunos campos solo aparecen cuando hay datos de mercado disponibles.",
+
+  matchCardFields: {
+    prediction: {
+      title: "Pronóstico",
+      desc: "La selección recomendada para el evento.",
+    },
+    market: {
+      title: "Mercado",
+      desc: "El mercado de apuesta utilizado para el pronóstico, por ejemplo Moneyline u Over/Under.",
+    },
+    bestPartnerOdds: {
+      title: "Mejor cuota de socio",
+      desc: "La cuota destacada del socio que se muestra actualmente para esta selección.",
+    },
+    sportsbook: {
+      title: "Casa de apuestas",
+      desc: "La casa de apuestas destacada actualmente en la tarjeta.",
+    },
+    estimatedValue: {
+      title: "Valor estimado",
+      desc: "La ventaja estimada entre la cuota ofrecida y la valoración del modelo.",
+    },
+    marketAverage: {
+      title: "Promedio del mercado",
+      desc: "La cuota media entre las casas de apuestas seguidas, cuando esté disponible.",
+    },
+    fairOdds: {
+      title: "Cuota justa",
+      desc: "La cuota justa estimada por el modelo para esta selección.",
+    },
+    fairProbability: {
+      title: "Probabilidad justa",
+      desc: "La estimación del modelo sobre la probabilidad real de este resultado.",
+    },
+    vsMarketAverage: {
+      title: "Frente al promedio del mercado",
+      desc: "Cómo se compara la cuota mostrada con el mercado en general.",
+    },
+    marketConsensus: {
+      title: "Consenso del mercado",
+      desc: "La probabilidad implícita media entre las casas de apuestas disponibles, cuando esté disponible.",
+    },
+    bookmakersTracked: {
+      title: "Casas seguidas",
+      desc: "Cuántas casas de apuestas aportan actualmente datos de mercado.",
+    },
+    riskTier: {
+      title: "Nivel de riesgo",
+      desc: "Una clasificación simple del riesgo basada en el nivel de la cuota y la profundidad del mercado.",
+    },
+    aiAnalysis: {
+      title: "Análisis con IA",
+      desc: "Una breve explicación generada por IA para esta selección.",
+    },
+  },
+
   aiBettingInsights: "Sobre MatchSignal",
   aiBettingInsightsDesc:
-    "MatchSignal ofrece contenido de apuestas generado por IA únicamente con fines informativos y educativos. No es un operador de apuestas y no garantiza resultados. Apuesta de forma responsable y arriesga solo lo que puedas permitirte perder.",
+    "MatchSignal ofrece contenido de apuestas generado por IA únicamente con fines informativos. MatchSignal no es un operador de apuestas y no garantiza resultados. Juega con responsabilidad.",
+
   navAbout: "Sobre nosotros",
   navContact: "Contacto",
   navPrivacy: "Política de privacidad",
