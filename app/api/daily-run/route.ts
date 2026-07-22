@@ -397,7 +397,47 @@ export async function GET(request: Request) {
       });
     }
 
-    await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
+        await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
+
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;
+
+    let socialRun: {
+      ok: boolean;
+      status: number;
+      body: unknown;
+    } | null = null;
+
+    try {
+      const socialRes = await fetch(`${siteUrl}/api/social-run?force=1`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${process.env.CRON_SECRET}`,
+        },
+        cache: "no-store",
+      });
+
+      let socialBody: unknown = null;
+
+      try {
+        socialBody = await socialRes.json();
+      } catch {
+        socialBody = null;
+      }
+
+      socialRun = {
+        ok: socialRes.ok,
+        status: socialRes.status,
+        body: socialBody,
+      };
+    } catch (error) {
+      socialRun = {
+        ok: false,
+        status: 500,
+        body: {
+          error: error instanceof Error ? error.message : "social-run trigger failed",
+        },
+      };
+    }
 
     return Response.json({
       success: true,
@@ -405,6 +445,7 @@ export async function GET(request: Request) {
       data: result,
       message: "Picks generated successfully.",
       generatedSports: result.sports.length,
+      socialRun,
     });
   } catch (error) {
     console.error("[daily-run] Error:", error);
