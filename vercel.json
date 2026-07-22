@@ -4,10 +4,6 @@
     {
       "path": "/api/daily-run",
       "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/social-run",
-      "schedule": "10 6 * * *"
     }
   ]
 }
