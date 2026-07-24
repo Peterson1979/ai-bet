@@ -93,7 +93,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     name: "1win",
     rating: 9.2,
     bonus: "Multiple Bet Bonus",
-    baseUrl: "https://one-vv5693.com/betting?p=840g",
+    baseUrl: "https://one-vv2457.com/betting?p=a7zi",
     logoUrl: "/logos/affiliates/1win.png",
     aliases: ["1win", "1 win"],
     sports: [
