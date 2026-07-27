@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 
 const MIN_BOOKMAKERS = 3;
 const MIN_START_BUFFER_MINUTES = 90;
-const MAX_CAROUSEL_PICKS = 5;
+const MAX_CAROUSEL_PICKS = 3;
 const LOCK_TTL_SECONDS = 15 * 60;
 
 type CarouselPick = Candidate;
@@ -146,20 +146,21 @@ function formatNumber(value: number | null | undefined, digits = 2): string {
 function buildCardUrl(origin: string, slidePick: TopPick) {
   const cardUrl = new URL("/api/social-card", origin);
 
-  cardUrl.searchParams.set("template", "v3");
+  cardUrl.searchParams.set("template", "v4");
   cardUrl.searchParams.set("league", slidePick.league);
   cardUrl.searchParams.set("homeTeam", slidePick.homeTeam);
   cardUrl.searchParams.set("awayTeam", slidePick.awayTeam);
   cardUrl.searchParams.set("prediction", slidePick.prediction);
   cardUrl.searchParams.set("market", slidePick.market);
   cardUrl.searchParams.set("riskTier", slidePick.riskTier);
-  cardUrl.searchParams.set("bookmakerCount", String(slidePick.bookmakerCount));
   cardUrl.searchParams.set("startTime", formatStartTimeUtc(slidePick.startTime));
 
   const partnerOdds = getPrimaryOdds(slidePick);
   const estimatedValue = getPrimaryValue(slidePick);
 
-  if (partnerOdds !== null) cardUrl.searchParams.set("partnerOdds", formatNumber(partnerOdds));
+  if (partnerOdds !== null) {
+    cardUrl.searchParams.set("partnerOdds", formatNumber(partnerOdds));
+  }
   if (typeof slidePick.marketAverageOdds === "number") {
     cardUrl.searchParams.set("marketAverageOdds", formatNumber(slidePick.marketAverageOdds));
   }
@@ -203,32 +204,30 @@ export async function GET(req: Request) {
     console.log("[social-run] start", { dateKey });
 
     const bearer = req.headers.get("authorization");
-const cronHeader = req.headers.get("x-cron-secret");
+    const cronHeader = req.headers.get("x-cron-secret");
 
-const hasBearer = !!bearer;
-const hasCronHeader = !!cronHeader;
+    const hasBearer = !!bearer;
+    const hasCronHeader = !!cronHeader;
 
-const bearerToken = bearer?.startsWith("Bearer ")
-  ? bearer.slice("Bearer ".length)
-  : null;
+    const bearerToken = bearer?.startsWith("Bearer ")
+      ? bearer.slice("Bearer ".length)
+      : null;
 
-const isAuthorized =
-  (bearerToken && bearerToken === env.CRON_SECRET) ||
-  (cronHeader && cronHeader === env.CRON_SECRET);
+    const isAuthorized =
+      (bearerToken && bearerToken === env.CRON_SECRET) ||
+      (cronHeader && cronHeader === env.CRON_SECRET);
 
-if (!isAuthorized) {
-  console.warn("[social-run] unauthorized", {
-    hasBearer,
-    hasCronHeader,
-  });
+    if (!isAuthorized) {
+      console.warn("[social-run] unauthorized", {
+        hasBearer,
+        hasCronHeader,
+      });
 
-  return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
-}
+      return Response.json({ ok: false, error: "unauthorized" }, { status: 401 });
+    }
 
-const force = new URL(req.url).searchParams.get("force") === "1";
-console.log("[social-run] auth ok", { force });
-
-    
+    const force = new URL(req.url).searchParams.get("force") === "1";
+    console.log("[social-run] auth ok", { force });
 
     if (!force) {
       stage = "acquiring-lock";
@@ -291,7 +290,7 @@ console.log("[social-run] auth ok", { force });
       return Response.json({
         ok: true,
         skipped: true,
-        reason: "not enough picks for carousel",
+        reason: "not enough picks for post",
         pickId: pick.id,
         topPicksCount: topPicks.length,
       });
