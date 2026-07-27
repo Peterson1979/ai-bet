@@ -12,11 +12,6 @@ declare global {
 
 export default function AnalyticsProvider() {
   useEffect(() => {
-    const consent = getConsent() ?? {
-      analytics: false,
-      ads: false,
-    };
-
     window.dataLayer = window.dataLayer || [];
 
     window.gtag =
@@ -25,6 +20,12 @@ export default function AnalyticsProvider() {
         window.dataLayer.push(args);
       };
 
+    const consent = getConsent() ?? {
+      analytics: false,
+      ads: false,
+    };
+
+    // Google Consent Mode v2
     window.gtag("consent", "default", {
       analytics_storage: consent.analytics ? "granted" : "denied",
       ad_storage: consent.ads ? "granted" : "denied",
@@ -33,7 +34,7 @@ export default function AnalyticsProvider() {
     });
 
     window.gtag("js", new Date());
-    window.gtag("config", "G-XXXXXXXXXX");
+
   }, []);
 
   return null;

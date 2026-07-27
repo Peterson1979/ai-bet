@@ -3,12 +3,20 @@ export type ConsentState = {
   ads: boolean;
 };
 
-const KEY = "ai_tips_consent";
+const KEY = "matchsignal_consent";
 
 export function getConsent(): ConsentState | null {
   if (typeof window === "undefined") return null;
+
   const raw = localStorage.getItem(KEY);
-  return raw ? JSON.parse(raw) : null;
+
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
 
 export function setConsent(state: ConsentState) {

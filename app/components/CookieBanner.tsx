@@ -34,7 +34,7 @@ export default function CookieBanner() {
       <div className="mx-auto max-w-5xl flex flex-col md:flex-row items-center justify-between gap-4">
 
         <p className="text-sm text-slate-200">
-          We use cookies for analytics (GA4) and advertising (Google AdSense).
+          We use cookies for analytics (GA4) and advertising (Google AdSense).Google may use cookies to personalize ads and measure advertising performance.
         </p>
 
         <div className="flex gap-3">
