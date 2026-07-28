@@ -127,26 +127,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     ],
     enabled: true,
   },
-  {
-    id: "flexlinks1",
-    name: "Oddsjam",
-    rating: 8.7,
-    bonus: "Exclusive Offer",
-    baseUrl:
-      "https://track.flexlinkspro.com/g.ashx?foid=1.53600.1000000017&trid=1549943.243014&foc=16&fot=9999&fos=6",
-    logoUrl: "/logos/affiliates/oddsjam.png",
-    aliases: ["oddsjam", "odds jam"],
-    sports: [
-      "Football",
-      "NBA",
-      "NFL",
-      "Hockey",
-      "Tennis",
-      "Baseball",
-      "MMA/BOXING",
-    ],
-    enabled: true,
-  },
+  
   {
     id: "flexlinks2",
     name: "BetQL",
