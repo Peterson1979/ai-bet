@@ -49,44 +49,44 @@ function shouldHideMarket(prediction: string, market: string): boolean {
 function fitTeamName(name: string): { text: string; fontSize: number; lineHeight: number } {
   const clean = name.trim();
 
-  if (clean.length <= 12) return { text: clean, fontSize: 54, lineHeight: 1.02 };
-  if (clean.length <= 18) return { text: clean, fontSize: 46, lineHeight: 1.03 };
-  if (clean.length <= 24) return { text: clean, fontSize: 40, lineHeight: 1.05 };
-  return { text: clean, fontSize: 34, lineHeight: 1.07 };
+  if (clean.length <= 12) return { text: clean, fontSize: 50, lineHeight: 1.03 };
+  if (clean.length <= 18) return { text: clean, fontSize: 44, lineHeight: 1.04 };
+  if (clean.length <= 24) return { text: clean, fontSize: 38, lineHeight: 1.05 };
+  return { text: clean, fontSize: 33, lineHeight: 1.07 };
 }
 
 function fitLeagueName(name: string): { text: string; fontSize: number } {
   const clean = name.trim();
 
-  if (clean.length <= 18) return { text: clean, fontSize: 34 };
-  if (clean.length <= 28) return { text: clean, fontSize: 29 };
-  if (clean.length <= 38) return { text: clean, fontSize: 25 };
-  return { text: clean, fontSize: 21 };
+  if (clean.length <= 18) return { text: clean, fontSize: 31 };
+  if (clean.length <= 28) return { text: clean, fontSize: 27 };
+  if (clean.length <= 38) return { text: clean, fontSize: 23 };
+  return { text: clean, fontSize: 20 };
 }
 
 function fitPrediction(prediction: string): { text: string; fontSize: number; lineHeight: number } {
   const clean = prediction.trim();
 
-  if (clean.length <= 14) return { text: clean, fontSize: 34, lineHeight: 1.08 };
-  if (clean.length <= 22) return { text: clean, fontSize: 29, lineHeight: 1.1 };
-  if (clean.length <= 34) return { text: clean, fontSize: 24, lineHeight: 1.12 };
-  return { text: clean, fontSize: 21, lineHeight: 1.14 };
+  if (clean.length <= 14) return { text: clean, fontSize: 31, lineHeight: 1.08 };
+  if (clean.length <= 22) return { text: clean, fontSize: 27, lineHeight: 1.1 };
+  if (clean.length <= 34) return { text: clean, fontSize: 23, lineHeight: 1.12 };
+  return { text: clean, fontSize: 20, lineHeight: 1.14 };
 }
 
 function fitMarket(text: string): { text: string; fontSize: number; lineHeight: number } {
   const clean = text.trim();
 
-  if (clean.length <= 18) return { text: clean, fontSize: 24, lineHeight: 1.08 };
-  if (clean.length <= 28) return { text: clean, fontSize: 21, lineHeight: 1.1 };
-  return { text: clean, fontSize: 18, lineHeight: 1.12 };
+  if (clean.length <= 18) return { text: clean, fontSize: 22, lineHeight: 1.08 };
+  if (clean.length <= 28) return { text: clean, fontSize: 19, lineHeight: 1.1 };
+  return { text: clean, fontSize: 17, lineHeight: 1.12 };
 }
 
 function fitWhy(text: string): { text: string; fontSize: number; lineHeight: number } {
   const clean = text.trim();
 
-  if (clean.length <= 54) return { text: clean, fontSize: 20, lineHeight: 1.2 };
-  if (clean.length <= 84) return { text: clean, fontSize: 18, lineHeight: 1.22 };
-  return { text: clean, fontSize: 16, lineHeight: 1.24 };
+  if (clean.length <= 54) return { text: clean, fontSize: 18, lineHeight: 1.2 };
+  if (clean.length <= 84) return { text: clean, fontSize: 16, lineHeight: 1.22 };
+  return { text: clean, fontSize: 15, lineHeight: 1.24 };
 }
 
 function getLeagueIcon(league: string): string {
@@ -137,21 +137,21 @@ function MetricCard({
     <div
       style={{
         flex: 1,
-        borderRadius: "18px",
+        borderRadius: "20px",
         border: `1px solid ${accent}33`,
         background: "linear-gradient(180deg, rgba(20,33,58,0.98) 0%, rgba(12,23,42,0.98) 100%)",
-        padding: "12px 8px",
+        padding: "14px 10px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        minHeight: "104px",
+        minHeight: "94px",
       }}
     >
       <div
         style={{
-          fontSize: 12,
+          fontSize: 13,
           fontWeight: 800,
           letterSpacing: 0.8,
           color: accent,
@@ -164,9 +164,9 @@ function MetricCard({
       <div
         style={{
           marginTop: "8px",
-          fontSize: 27,
+          fontSize: 28,
           fontWeight: 900,
-          lineHeight: 1.02,
+          lineHeight: 1.03,
           color: "#f8fafc",
           display: "flex",
           textAlign: "center",
@@ -232,11 +232,11 @@ export async function GET(req: Request) {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            gap: "12px",
-            borderRadius: "30px",
+            gap: "10px",
+            borderRadius: "28px",
             border: "1px solid rgba(56,189,248,0.18)",
             background: "linear-gradient(180deg, rgba(7,14,27,0.98) 0%, rgba(8,16,31,0.98) 100%)",
-            padding: "18px",
+            padding: "16px",
           }}
         >
           <div
@@ -247,15 +247,16 @@ export async function GET(req: Request) {
               alignItems: "center",
               justifyContent: "center",
               gap: "2px",
-              paddingTop: "4px",
+              paddingTop: "2px",
+              paddingBottom: "2px",
             }}
           >
             <div
               style={{
                 display: "flex",
-                fontSize: 58,
+                fontSize: 56,
                 fontWeight: 900,
-                letterSpacing: 2.8,
+                letterSpacing: 2.6,
                 lineHeight: 1,
                 color: "#f8fafc",
                 textAlign: "center",
@@ -267,9 +268,9 @@ export async function GET(req: Request) {
             <div
               style={{
                 display: "flex",
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: 800,
-                letterSpacing: 3.4,
+                letterSpacing: 3.2,
                 color: "#7dd3fc",
                 textAlign: "center",
               }}
@@ -283,10 +284,10 @@ export async function GET(req: Request) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "12px",
+              gap: "10px",
             }}
           >
-            <div style={{ fontSize: 32, display: "flex" }}>{leagueIcon}</div>
+            <div style={{ fontSize: 30, display: "flex" }}>{leagueIcon}</div>
             <div
               style={{
                 fontSize: leagueFit.fontSize,
@@ -303,13 +304,13 @@ export async function GET(req: Request) {
           <div
             style={{
               width: "100%",
-              borderRadius: "26px",
+              borderRadius: "24px",
               border: "1px solid rgba(56,189,248,0.22)",
               background: "linear-gradient(180deg, rgba(9,18,34,0.98) 0%, rgba(7,14,26,0.98) 100%)",
-              padding: "18px",
+              padding: "16px",
               display: "flex",
               flexDirection: "column",
-              gap: "14px",
+              gap: "12px",
             }}
           >
             <div
@@ -317,14 +318,14 @@ export async function GET(req: Request) {
                 display: "flex",
                 alignItems: "stretch",
                 justifyContent: "space-between",
-                gap: "12px",
+                gap: "10px",
               }}
             >
               <div
                 style={{
                   flex: 1,
-                  minHeight: "118px",
-                  borderRadius: "22px",
+                  minHeight: "110px",
+                  borderRadius: "20px",
                   border: "1px solid rgba(56,189,248,0.20)",
                   background: "linear-gradient(180deg, #142746 0%, #0c172b 100%)",
                   display: "flex",
@@ -335,7 +336,7 @@ export async function GET(req: Request) {
                   fontSize: homeFit.fontSize,
                   fontWeight: 900,
                   lineHeight: homeFit.lineHeight,
-                  padding: "16px",
+                  padding: "14px",
                 }}
               >
                 {homeFit.text}
@@ -343,9 +344,9 @@ export async function GET(req: Request) {
 
               <div
                 style={{
-                  width: "104px",
-                  minHeight: "118px",
-                  borderRadius: "26px",
+                  width: "100px",
+                  minHeight: "110px",
+                  borderRadius: "24px",
                   border: "1px solid rgba(56,189,248,0.28)",
                   background: "linear-gradient(180deg, #183662 0%, #10213d 60%, #0b1629 100%)",
                   display: "flex",
@@ -362,8 +363,8 @@ export async function GET(req: Request) {
               <div
                 style={{
                   flex: 1,
-                  minHeight: "118px",
-                  borderRadius: "22px",
+                  minHeight: "110px",
+                  borderRadius: "20px",
                   border: "1px solid rgba(56,189,248,0.20)",
                   background: "linear-gradient(180deg, #142746 0%, #0c172b 100%)",
                   display: "flex",
@@ -374,7 +375,7 @@ export async function GET(req: Request) {
                   fontSize: awayFit.fontSize,
                   fontWeight: 900,
                   lineHeight: awayFit.lineHeight,
-                  padding: "16px",
+                  padding: "14px",
                 }}
               >
                 {awayFit.text}
@@ -386,7 +387,7 @@ export async function GET(req: Request) {
                 display: "flex",
                 justifyContent: "center",
                 textAlign: "center",
-                fontSize: 22,
+                fontSize: 20,
                 color: "#dbeafe",
                 fontWeight: 700,
               }}
@@ -398,10 +399,10 @@ export async function GET(req: Request) {
           <div
             style={{
               width: "100%",
-              borderRadius: "26px",
+              borderRadius: "24px",
               border: "1px solid rgba(56,189,248,0.22)",
               background: "linear-gradient(180deg, rgba(10,19,35,1) 0%, rgba(7,13,24,1) 100%)",
-              padding: "18px 20px",
+              padding: "16px 18px",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
@@ -410,10 +411,10 @@ export async function GET(req: Request) {
           >
             <div
               style={{
-                fontSize: 16,
+                fontSize: 15,
                 fontWeight: 800,
                 color: "#7dd3fc",
-                letterSpacing: 1.2,
+                letterSpacing: 1.1,
                 display: "flex",
               }}
             >
@@ -422,7 +423,7 @@ export async function GET(req: Request) {
 
             <div
               style={{
-                marginTop: "10px",
+                marginTop: "8px",
                 fontSize: predictionFit.fontSize,
                 fontWeight: 900,
                 lineHeight: predictionFit.lineHeight,
@@ -437,7 +438,7 @@ export async function GET(req: Request) {
             {!hideMarketLine ? (
               <div
                 style={{
-                  marginTop: "8px",
+                  marginTop: "6px",
                   fontSize: marketFit.fontSize,
                   fontWeight: 700,
                   lineHeight: marketFit.lineHeight,
@@ -457,57 +458,84 @@ export async function GET(req: Request) {
               gap: "10px",
             }}
           >
-            <MetricCard label="ODDS" value={formatOdds(partnerOdds)} accent="#7dd3fc" />
-            <MetricCard label="MARKET" value={formatOdds(marketAverageOdds)} accent="#c4b5fd" />
-            <MetricCard label="VALUE" value={formatPercent(estimatedValuePct, true)} accent="#facc15" />
-            <MetricCard label="FAIR" value={formatOdds(fairOdds)} accent="#93c5fd" />
+            <MetricCard label="PARTNER ODDS" value={formatOdds(partnerOdds)} accent="#7dd3fc" />
+            <MetricCard label="MARKET AVG" value={formatOdds(marketAverageOdds)} accent="#c4b5fd" />
+            <MetricCard label="EST. VALUE" value={formatPercent(estimatedValuePct, true)} accent="#facc15" />
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+            }}
+          >
+            <MetricCard label="FAIR ODDS" value={formatOdds(fairOdds)} accent="#93c5fd" />
+            <MetricCard label="FAIR PROB." value={formatPercent(fairProbability)} accent="#a7f3d0" />
+            <div
+              style={{
+                flex: 1,
+                borderRadius: "20px",
+                border: `1px solid ${riskColors.border}`,
+                background: "linear-gradient(180deg, rgba(20,33,58,0.98) 0%, rgba(12,23,42,0.98) 100%)",
+                padding: "14px 10px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                minHeight: "94px",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 13,
+                  fontWeight: 800,
+                  letterSpacing: 0.8,
+                  color: riskColors.text,
+                  display: "flex",
+                }}
+              >
+                RISK
+              </div>
+              <div
+                style={{
+                  marginTop: "8px",
+                  fontSize: 28,
+                  fontWeight: 900,
+                  lineHeight: 1.03,
+                  color: riskColors.text,
+                  display: "flex",
+                  textAlign: "center",
+                }}
+              >
+                {riskTier.toUpperCase()}
+              </div>
+            </div>
           </div>
 
           <div
             style={{
               width: "100%",
-              borderRadius: "24px",
+              borderRadius: "22px",
               border: "1px solid rgba(56,189,248,0.20)",
               background: "linear-gradient(180deg, rgba(9,18,34,0.98) 0%, rgba(7,14,26,0.98) 100%)",
-              padding: "16px 18px",
+              padding: "16px 16px",
               display: "flex",
               flexDirection: "column",
-              gap: "10px",
+              gap: "8px",
+              minHeight: whyFits.length > 1 ? "122px" : "100px",
             }}
           >
             <div
               style={{
+                fontSize: 15,
+                fontWeight: 900,
+                color: "#67e8f9",
+                letterSpacing: 1,
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
               }}
             >
-              <div
-                style={{
-                  fontSize: 16,
-                  fontWeight: 900,
-                  color: "#67e8f9",
-                  letterSpacing: 1,
-                  display: "flex",
-                }}
-              >
-                WHY THIS SIGNAL
-              </div>
-
-              <div
-                style={{
-                  borderRadius: "999px",
-                  border: `1px solid ${riskColors.border}`,
-                  padding: "6px 12px",
-                  display: "flex",
-                  color: riskColors.text,
-                  fontSize: 16,
-                  fontWeight: 900,
-                  background: "rgba(255,255,255,0.02)",
-                }}
-              >
-                {riskTier.toUpperCase()} RISK
-              </div>
+              WHY THIS SIGNAL
             </div>
 
             {whyFits.length > 0 ? (
@@ -516,14 +544,14 @@ export async function GET(req: Request) {
                   key={`why-${idx}`}
                   style={{
                     display: "flex",
-                    gap: "10px",
+                    gap: "8px",
                     alignItems: "flex-start",
                   }}
                 >
                   <div
                     style={{
                       color: "#67e8f9",
-                      fontSize: 18,
+                      fontSize: 16,
                       marginTop: "1px",
                       display: "flex",
                     }}
@@ -538,7 +566,7 @@ export async function GET(req: Request) {
                       display: "flex",
                     }}
                   >
-                    {item.text}
+                      {item.text}
                   </div>
                 </div>
               ))
@@ -546,8 +574,8 @@ export async function GET(req: Request) {
               <div
                 style={{
                   color: "#cbd5e1",
-                  fontSize: 18,
-                  lineHeight: 1.24,
+                  fontSize: 16,
+                  lineHeight: 1.22,
                   display: "flex",
                 }}
               >
@@ -558,7 +586,6 @@ export async function GET(req: Request) {
 
           <div
             style={{
-              marginTop: "auto",
               borderRadius: "999px",
               border: "1px solid rgba(253,224,71,0.34)",
               background: "linear-gradient(180deg, #fef08a 0%, #facc15 52%, #eab308 100%)",
@@ -572,19 +599,19 @@ export async function GET(req: Request) {
                 borderRadius: "999px",
                 background:
                   "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 28%, rgba(255,255,255,0) 100%)",
-                padding: "14px 20px",
+                padding: "12px 18px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "10px",
+                gap: "8px",
                 color: "#111827",
-                fontSize: 24,
+                fontSize: 21,
                 fontWeight: 900,
                 textAlign: "center",
               }}
             >
               <span style={{ display: "flex" }}>MORE FREE PICKS AT MATCHSIGNAL</span>
-              <span style={{ display: "flex", fontSize: 22 }}>→</span>
+              <span style={{ display: "flex", fontSize: 19 }}>→</span>
             </div>
           </div>
         </div>
