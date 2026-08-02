@@ -49,28 +49,28 @@ function shouldHideMarket(prediction: string, market: string): boolean {
 function fitTeamName(name: string): { text: string; fontSize: number; lineHeight: number } {
   const clean = name.trim();
 
-  if (clean.length <= 12) return { text: clean, fontSize: 50, lineHeight: 1.03 };
-  if (clean.length <= 18) return { text: clean, fontSize: 44, lineHeight: 1.04 };
-  if (clean.length <= 24) return { text: clean, fontSize: 38, lineHeight: 1.05 };
-  return { text: clean, fontSize: 33, lineHeight: 1.07 };
+  if (clean.length <= 12) return { text: clean, fontSize: 52, lineHeight: 1.03 };
+  if (clean.length <= 18) return { text: clean, fontSize: 46, lineHeight: 1.04 };
+  if (clean.length <= 24) return { text: clean, fontSize: 40, lineHeight: 1.05 };
+  return { text: clean, fontSize: 34, lineHeight: 1.07 };
 }
 
 function fitLeagueName(name: string): { text: string; fontSize: number } {
   const clean = name.trim();
 
-  if (clean.length <= 18) return { text: clean, fontSize: 31 };
-  if (clean.length <= 28) return { text: clean, fontSize: 27 };
-  if (clean.length <= 38) return { text: clean, fontSize: 23 };
-  return { text: clean, fontSize: 20 };
+  if (clean.length <= 18) return { text: clean, fontSize: 32 };
+  if (clean.length <= 28) return { text: clean, fontSize: 28 };
+  if (clean.length <= 38) return { text: clean, fontSize: 24 };
+  return { text: clean, fontSize: 21 };
 }
 
 function fitPrediction(prediction: string): { text: string; fontSize: number; lineHeight: number } {
   const clean = prediction.trim();
 
-  if (clean.length <= 14) return { text: clean, fontSize: 31, lineHeight: 1.08 };
-  if (clean.length <= 22) return { text: clean, fontSize: 27, lineHeight: 1.1 };
-  if (clean.length <= 34) return { text: clean, fontSize: 23, lineHeight: 1.12 };
-  return { text: clean, fontSize: 20, lineHeight: 1.14 };
+  if (clean.length <= 14) return { text: clean, fontSize: 32, lineHeight: 1.08 };
+  if (clean.length <= 22) return { text: clean, fontSize: 28, lineHeight: 1.1 };
+  if (clean.length <= 34) return { text: clean, fontSize: 24, lineHeight: 1.12 };
+  return { text: clean, fontSize: 21, lineHeight: 1.14 };
 }
 
 function fitMarket(text: string): { text: string; fontSize: number; lineHeight: number } {
@@ -146,7 +146,8 @@ function MetricCard({
         alignItems: "center",
         justifyContent: "center",
         textAlign: "center",
-        minHeight: "94px",
+        minHeight: "96px",
+        height: "100%",
       }}
     >
       <div
@@ -223,7 +224,7 @@ export async function GET(req: Request) {
           background: "linear-gradient(180deg, #040913 0%, #0a1424 45%, #08111f 100%)",
           color: "#ffffff",
           fontFamily: "Arial, sans-serif",
-          padding: "16px",
+          padding: "14px",
         }}
       >
         <div
@@ -236,7 +237,7 @@ export async function GET(req: Request) {
             borderRadius: "28px",
             border: "1px solid rgba(56,189,248,0.18)",
             background: "linear-gradient(180deg, rgba(7,14,27,0.98) 0%, rgba(8,16,31,0.98) 100%)",
-            padding: "16px",
+            padding: "14px",
           }}
         >
           <div
@@ -249,6 +250,7 @@ export async function GET(req: Request) {
               gap: "2px",
               paddingTop: "2px",
               paddingBottom: "2px",
+              flex: "0 0 auto",
             }}
           >
             <div
@@ -256,7 +258,7 @@ export async function GET(req: Request) {
                 display: "flex",
                 fontSize: 56,
                 fontWeight: 900,
-                letterSpacing: 2.6,
+                letterSpacing: 2.4,
                 lineHeight: 1,
                 color: "#f8fafc",
                 textAlign: "center",
@@ -270,7 +272,7 @@ export async function GET(req: Request) {
                 display: "flex",
                 fontSize: 15,
                 fontWeight: 800,
-                letterSpacing: 3.2,
+                letterSpacing: 3,
                 color: "#7dd3fc",
                 textAlign: "center",
               }}
@@ -285,6 +287,7 @@ export async function GET(req: Request) {
               alignItems: "center",
               justifyContent: "center",
               gap: "10px",
+              flex: "0 0 auto",
             }}
           >
             <div style={{ fontSize: 30, display: "flex" }}>{leagueIcon}</div>
@@ -304,6 +307,7 @@ export async function GET(req: Request) {
           <div
             style={{
               width: "100%",
+              flex: "1.45 1 0",
               borderRadius: "24px",
               border: "1px solid rgba(56,189,248,0.22)",
               background: "linear-gradient(180deg, rgba(9,18,34,0.98) 0%, rgba(7,14,26,0.98) 100%)",
@@ -319,12 +323,13 @@ export async function GET(req: Request) {
                 alignItems: "stretch",
                 justifyContent: "space-between",
                 gap: "10px",
+                flex: 1,
               }}
             >
               <div
                 style={{
                   flex: 1,
-                  minHeight: "110px",
+                  height: "100%",
                   borderRadius: "20px",
                   border: "1px solid rgba(56,189,248,0.20)",
                   background: "linear-gradient(180deg, #142746 0%, #0c172b 100%)",
@@ -345,7 +350,7 @@ export async function GET(req: Request) {
               <div
                 style={{
                   width: "100px",
-                  minHeight: "110px",
+                  height: "100%",
                   borderRadius: "24px",
                   border: "1px solid rgba(56,189,248,0.28)",
                   background: "linear-gradient(180deg, #183662 0%, #10213d 60%, #0b1629 100%)",
@@ -363,7 +368,7 @@ export async function GET(req: Request) {
               <div
                 style={{
                   flex: 1,
-                  minHeight: "110px",
+                  height: "100%",
                   borderRadius: "20px",
                   border: "1px solid rgba(56,189,248,0.20)",
                   background: "linear-gradient(180deg, #142746 0%, #0c172b 100%)",
@@ -390,6 +395,7 @@ export async function GET(req: Request) {
                 fontSize: 20,
                 color: "#dbeafe",
                 fontWeight: 700,
+                flex: "0 0 auto",
               }}
             >
               {startTime || "Upcoming event"}
@@ -399,6 +405,7 @@ export async function GET(req: Request) {
           <div
             style={{
               width: "100%",
+              flex: "0.95 1 0",
               borderRadius: "24px",
               border: "1px solid rgba(56,189,248,0.22)",
               background: "linear-gradient(180deg, rgba(10,19,35,1) 0%, rgba(7,13,24,1) 100%)",
@@ -406,6 +413,7 @@ export async function GET(req: Request) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
               textAlign: "center",
             }}
           >
@@ -456,6 +464,8 @@ export async function GET(req: Request) {
             style={{
               display: "flex",
               gap: "10px",
+              flex: "0.9 1 0",
+              alignItems: "stretch",
             }}
           >
             <MetricCard label="PARTNER ODDS" value={formatOdds(partnerOdds)} accent="#7dd3fc" />
@@ -467,6 +477,8 @@ export async function GET(req: Request) {
             style={{
               display: "flex",
               gap: "10px",
+              flex: "0.9 1 0",
+              alignItems: "stretch",
             }}
           >
             <MetricCard label="FAIR ODDS" value={formatOdds(fairOdds)} accent="#93c5fd" />
@@ -483,7 +495,7 @@ export async function GET(req: Request) {
                 alignItems: "center",
                 justifyContent: "center",
                 textAlign: "center",
-                minHeight: "94px",
+                height: "100%",
               }}
             >
               <div
@@ -516,6 +528,7 @@ export async function GET(req: Request) {
           <div
             style={{
               width: "100%",
+              flex: "1.05 1 0",
               borderRadius: "22px",
               border: "1px solid rgba(56,189,248,0.20)",
               background: "linear-gradient(180deg, rgba(9,18,34,0.98) 0%, rgba(7,14,26,0.98) 100%)",
@@ -523,7 +536,7 @@ export async function GET(req: Request) {
               display: "flex",
               flexDirection: "column",
               gap: "8px",
-              minHeight: whyFits.length > 1 ? "122px" : "100px",
+              justifyContent: "center",
             }}
           >
             <div
@@ -566,7 +579,7 @@ export async function GET(req: Request) {
                       display: "flex",
                     }}
                   >
-                      {item.text}
+                    {item.text}
                   </div>
                 </div>
               ))
@@ -586,11 +599,13 @@ export async function GET(req: Request) {
 
           <div
             style={{
+              flex: "0.72 1 0",
               borderRadius: "999px",
               border: "1px solid rgba(253,224,71,0.34)",
               background: "linear-gradient(180deg, #fef08a 0%, #facc15 52%, #eab308 100%)",
               padding: "5px",
               display: "flex",
+              alignItems: "stretch",
             }}
           >
             <div
