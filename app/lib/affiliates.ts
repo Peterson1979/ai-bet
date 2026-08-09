@@ -68,7 +68,6 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     enabled: true,
   },
   {
- 
     id: "22bet",
     name: "22Bet",
     rating: 9.5,
@@ -89,13 +88,33 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     enabled: true,
   },
   {
-    id: "1win",
-    name: "1win",
+    id: "mybookie",
+    name: "MyBookie",
+    rating: 9.4,
+    bonus: "100% Bet Back Bonus up to $500",
+    baseUrl:
+      "https://record.webpartners.co/_BhuVJrZ91xv2Bt63Rqn6jGNd7ZgqdRLk/1/",
+    logoUrl: "/logos/affiliates/mybookie.png",
+    aliases: ["mybookie", "my bookie", "mybookie.ag"],
+    sports: [
+      "Football",
+      "NBA",
+      "NFL",
+      "Hockey",
+      "Tennis",
+      "Baseball",
+      "MMA/BOXING",
+    ],
+    enabled: true,
+  },
+  {
+    id: "rakebit",
+    name: "Rakebit",
     rating: 9.2,
-    bonus: "Multiple Bet Bonus",
-    baseUrl: "https://one-vv8098.com/betting?p=16id",
-    logoUrl: "/logos/affiliates/1win.png",
-    aliases: ["1win", "1 win"],
+    bonus: "Exclusive 100% Bonus up to $4,000",
+    baseUrl: "https://rake-tracker.com/dllndxig1",
+    logoUrl: "/logos/affiliates/rakebit.png",
+    aliases: ["rakebit", "rake bit"],
     sports: [
       "Football",
       "NBA",
@@ -127,7 +146,45 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     ],
     enabled: true,
   },
-  
+  {
+    id: "vegasnova",
+    name: "VegasNova",
+    rating: 8.8,
+    bonus: "100% Bonus up to €2,000",
+    baseUrl:
+      "https://www.playershub.partners/visit/?bta=2494219&nci=5361",
+    logoUrl: "/logos/affiliates/vegasnova.png",
+    aliases: ["vegasnova", "vegas nova"],
+    sports: [
+      "Football",
+      "NBA",
+      "NFL",
+      "Hockey",
+      "Tennis",
+      "Baseball",
+      "MMA/BOXING",
+    ],
+    enabled: true,
+  },
+  {
+    id: "cazeus",
+    name: "CaZeus",
+    rating: 8.7,
+    bonus: "100% Sport First Deposit Bonus up to €100",
+    baseUrl: "https://czs.lynmonkel.com/?mid=230354_2230451",
+    logoUrl: "/logos/affiliates/caseus.png",
+    aliases: ["cazeus", "ca zeus", "caseus"],
+    sports: [
+      "Football",
+      "NBA",
+      "NFL",
+      "Hockey",
+      "Tennis",
+      "Baseball",
+      "MMA/BOXING",
+    ],
+    enabled: true,
+  },
   {
     id: "flexlinks2",
     name: "BetQL",
@@ -207,8 +264,6 @@ export function buildAffiliateUrl(
 
   return url.toString();
 }
-
- 
 
 export function getSidebarSites() {
   return AFFILIATE_SITES.filter(isSiteEnabled).map((site) => ({
