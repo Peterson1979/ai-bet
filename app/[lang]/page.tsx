@@ -86,6 +86,13 @@ export default async function HomePage({
     ? sortSportBlocks(predictions.sports)
     : [];
 
+  const now = new Date();
+  const hasActiveMatches = orderedSports.some(
+    (s) =>
+      s.hasMatches &&
+      (s.topPicks || []).some((p) => new Date(p.startTime) > now)
+  );
+
   return (
     <main className="min-h-screen text-white bg-gradient-to-b from-[#060B14] via-[#070D18] to-[#050A12] pb-24 md:pb-0">
       <script
@@ -119,12 +126,6 @@ export default async function HomePage({
             ))}
           </div>
 
-          {/* AFFILIATE SLIDER — 3 mp alatt fogadóirodához juttat */}
-         
-<AffiliateSlider lang={lang} />
-          {/* FEATURED SPORTSBOOKS — Editor's Picks (Top 3) */}
-          <FeaturedSportsbooks lang={lang} />
-
           {/* TOP PICKS — sportágankénti blokkok, dinamikus sorrendben */}
           <div className="mt-4">
             <section id="top-picks" className="mb-16 scroll-mt-28">
@@ -136,19 +137,57 @@ export default async function HomePage({
               </div>
             </section>
 
-            {orderedSports.map((sportBlock) => (
-              <SportSection
-                key={sportBlock.sport}
-                sportBlock={sportBlock}
-                lang={lang}
-                limit={HOMEPAGE_MATCH_LIMIT}
-                showViewAll
-              />
-            ))}
+            {hasActiveMatches ? (
+              orderedSports.map((sportBlock) => (
+                <SportSection
+                  key={sportBlock.sport}
+                  sportBlock={sportBlock}
+                  lang={lang}
+                  limit={HOMEPAGE_MATCH_LIMIT}
+                  mobileLimit={2}
+                  desktopColumns={3}
+                  showViewAll
+                />
+              ))
+            ) : (
+              <div className="rounded-[24px] border-2 border-cyan-400/20 bg-gradient-to-b from-[#0B1220] to-[#0F172A] p-6 md:p-10 mb-12 text-center shadow-[0_0_30px_rgba(56,189,248,0.05)]">
+                <div className="mx-auto w-12 h-12 rounded-full bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center text-2xl mb-4">
+                  📊
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-white mb-2">
+                  {t.homepageNoPicksTitle}
+                </h3>
+                <p className="text-sm md:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed mb-6">
+                  {t.homepageNoPicksDesc}
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <a
+                    href={`/${lang}/tools`}
+                    className="px-5 py-2.5 rounded-xl border border-cyan-400/40 bg-cyan-500/10 text-cyan-300 text-sm font-bold hover:bg-cyan-500/20 transition"
+                  >
+                    {t.system.navTools}
+                  </a>
+                  <a
+                    href={`/${lang}/betting-glossary`}
+                    className="px-5 py-2.5 rounded-xl border border-cyan-400/20 bg-[#060B14] text-slate-300 text-sm font-bold hover:text-white hover:border-cyan-400/40 transition"
+                  >
+                    {t.system.navGlossary}
+                  </a>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* FEATURED SPORTSBOOKS — Editor's Picks (Top 3) */}
+          <FeaturedSportsbooks lang={lang} />
+
+          {/* AFFILIATE SLIDER — rotating partner logos */}
+          <div className="my-8">
+            <AffiliateSlider lang={lang} showDisclosure={false} />
           </div>
 
           {/* 🏆 TOP RATED SPORTSBOOKS — footer felett */}
-          <TopRatedSportsbooksList lang={lang} variant="footer" />
+          <TopRatedSportsbooksList lang={lang} variant="footer" showDisclosure={false} />
 
           <div className="mt-16">
             <Footer />

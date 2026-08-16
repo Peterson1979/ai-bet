@@ -69,6 +69,10 @@ export default function FeaturedSportsbooks({ lang = "en", bettingPageHref }: Pr
           {t.featuredSportsbooks.seeAll}
         </a>
       </div>
+
+      <p className="text-[11px] text-slate-400 text-center max-w-xl mx-auto mt-4 leading-relaxed">
+        {t.affiliateDisclaimer}
+      </p>
     </section>
   );
 }

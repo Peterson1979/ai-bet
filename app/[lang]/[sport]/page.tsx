@@ -200,7 +200,7 @@ export default async function SportPage({
                 hideHeading={true}
               />
 
-              <TopRatedSportsbooksList lang={lang} variant="inline" />
+              <TopRatedSportsbooksList lang={lang} variant="inline" showDisclosure={false} />
 
               {secondHalfBlock!.topPicks.length > 0 && (
                 <SportSection
@@ -252,7 +252,7 @@ export default async function SportPage({
 
           {/* COMMERCIAL AFFILIATE SLIDER (POSITIONED AFTER FIRST-PARTY CONTENT) */}
           <div className="my-10">
-            <AffiliateSlider />
+            <AffiliateSlider lang={lang} showDisclosure={true} />
           </div>
 
           <div className="mt-16">

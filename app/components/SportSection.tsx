@@ -16,6 +16,8 @@ type SportSectionProps = {
   sportBlock: SportBlock;
   lang: Lang;
   limit: number;
+  mobileLimit?: number;
+  desktopColumns?: 2 | 3;
   showViewAll?: boolean;
   idSuffix?: string;
   hideHeading?: boolean;
@@ -36,6 +38,8 @@ export default function SportSection({
   sportBlock,
   lang,
   limit,
+  mobileLimit,
+  desktopColumns,
   showViewAll = false,
   idSuffix = "",
   hideHeading = false,
@@ -48,13 +52,13 @@ export default function SportSection({
   const sportName =
     t.sports[sportKeyMap[sportBlock.sport.toLowerCase()] ?? "football"];
 
-  // Compact, centered layout for small card counts (e.g. homepage's 2-per-sport
-  // blocks) so there's no lopsided empty space on wide desktop screens.
-  const isCompact = limit <= 2;
-
-  const gridClass = isCompact
-    ? "grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto"
-    : "grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3";
+  // Layout grid sizing: opt-in 3-column desktop layout or original default behavior
+  const gridClass =
+    desktopColumns === 3
+      ? "grid grid-cols-1 gap-5 md:grid-cols-3"
+      : limit <= 2
+      ? "grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto"
+      : "grid grid-cols-1 gap-5 sm:grid-cols-2 2xl:grid-cols-3";
 
   const noEventsLabel = (
     t.noEventsTodaySport ?? "No {SPORT} events available today."
@@ -86,12 +90,17 @@ export default function SportSection({
         </div>
       ) : (
         <div className={gridClass}>
-          {activePicks.map((p) => {
+          {activePicks.map((p, index) => {
             const uiData = toMatchCardData(p, sportBlock.sport as SportType);
+            const isHiddenOnMobile =
+              typeof mobileLimit === "number" && index >= mobileLimit;
+
             return (
               <div
                 key={p.id}
-                className="transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)]"
+                className={`transition-all duration-200 hover:-translate-y-3 hover:scale-[1.05] hover:shadow-[0_35px_90px_rgba(34,211,238,0.25)] ${
+                  isHiddenOnMobile ? "hidden md:block" : ""
+                }`}
               >
                 <MatchCard data={uiData} lang={lang} />
               </div>

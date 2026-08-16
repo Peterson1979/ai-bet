@@ -81,6 +81,9 @@ export type Translation = {
   hideExplanation: string;
   viewOdds: string;
   compareAllOffers: string;
+  affiliateDisclaimer: string;
+  homepageNoPicksTitle: string;
+  homepageNoPicksDesc: string;
   seoTitle: string;
   seoDescription: string;
   matchSignal: string;

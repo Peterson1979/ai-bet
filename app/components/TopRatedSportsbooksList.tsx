@@ -5,12 +5,14 @@ type Props = {
   lang?: Lang;
   bettingPageHref?: string;
   variant?: "footer" | "inline";
+  showDisclosure?: boolean;
 };
 
 export default function TopRatedSportsbooksList({
   lang = "en",
   bettingPageHref,
   variant = "footer",
+  showDisclosure = true,
 }: Props) {
   const sites = getTopRatedList(3);
   const href = bettingPageHref ?? `/${lang}/betting`;
@@ -68,6 +70,12 @@ export default function TopRatedSportsbooksList({
           {t.topRatedSportsbooks.compareAll}
         </a>
       </div>
+
+      {showDisclosure && (
+        <p className="text-[11px] text-slate-400 text-center max-w-lg mx-auto mt-3 leading-relaxed">
+          {t.affiliateDisclaimer}
+        </p>
+      )}
     </section>
   );
 }

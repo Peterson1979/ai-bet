@@ -7,9 +7,14 @@ import { translations, Lang } from "@/app/lib/i18n";
 type Props = {
   className?: string;
   lang?: Lang;
+  showDisclosure?: boolean;
 };
 
-export default function AffiliateSlider({ className = "", lang = "en" }: Props) {
+export default function AffiliateSlider({
+  className = "",
+  lang = "en",
+  showDisclosure = false,
+}: Props) {
   const sites = getSliderSites();
   const t = translations[lang] ?? translations.en;
   const trackRef = useRef<HTMLDivElement>(null);
@@ -83,6 +88,12 @@ export default function AffiliateSlider({ className = "", lang = "en" }: Props) 
       <div className="pointer-events-none absolute inset-y-0 right-0 w-12 flex items-center justify-end pr-1 bg-gradient-to-l from-[#060B14] to-transparent md:hidden">
         <span className="text-cyan-300 text-lg animate-pulse">›</span>
       </div>
+
+      {showDisclosure && (
+        <p className="text-[11px] text-slate-400 text-center max-w-xl mx-auto mt-4 px-4 leading-relaxed">
+          {t.affiliateDisclaimer}
+        </p>
+      )}
     </section>
   );
 }
