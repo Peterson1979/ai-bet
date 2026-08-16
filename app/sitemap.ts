@@ -41,11 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8 
     },
     { 
-      path: "/news", 
-      changeFrequency: "hourly" as const, 
-      priority: 0.9 
-    },
-    { 
       path: "/tools", 
       changeFrequency: "monthly" as const, 
       priority: 0.7 

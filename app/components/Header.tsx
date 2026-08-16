@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { translations, Lang } from "@/app/lib/i18n";
@@ -9,7 +9,6 @@ export default function Header() {
   const nav = [
     { href: "/", label: t.system.navHome },
     { href: "/betting", label: t.system.navBetting },
-    { href: "/news", label: t.system.navNews },
     { href: "/tools", label: t.system.navTools },
     { href: "/betting-glossary", label: t.system.navGlossary },
   ];
