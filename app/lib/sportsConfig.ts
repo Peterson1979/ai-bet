@@ -88,6 +88,26 @@ export const DEFAULT_SPORT_ORDER: string[] = [
   "mma",
 ];
 
+export const SPORT_EMOJIS: Record<string, string> = {
+  football: "⚽",
+  nba: "🏀",
+  nfl: "🏈",
+  hockey: "🏒",
+  tennis: "🎾",
+  mlb: "⚾",
+  mma: "🥊",
+};
+
+export const SPORT_MARKETS: Record<string, string[]> = {
+  football: ["Match Winner (1X2)", "Double Chance", "Over/Under Goals", "Draw No Bet"],
+  nba: ["Moneyline", "Over/Under Points", "Team Totals"],
+  nfl: ["Moneyline", "Over/Under Points", "Team Totals"],
+  hockey: ["Moneyline", "Over/Under Goals", "Double Chance", "Team Totals"],
+  tennis: ["Match Winner", "Over/Under Games", "Game Handicap", "Player to Win a Set"],
+  mlb: ["Moneyline", "Run Line (-1.5)", "Over/Under Runs", "Team Totals"],
+  mma: ["Fight Winner (Moneyline)", "Round Totals (Over/Under)", "Method of Victory"],
+};
+
 type MinimalSportBlock = {
   sport: string;
   hasMatches: boolean;

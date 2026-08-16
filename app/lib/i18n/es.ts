@@ -332,6 +332,18 @@ const es: DeepPartial<Translation> = {
       text: "Los mercados Más/Menos predicen el número total de goles, puntos, carreras o rounds, mientras que los mercados Moneyline/Ganador del partido predicen quién ganará. Los mercados de hándicap dan a un lado una ventaja o desventaja virtual para crear cuotas más equilibradas.",
     },
   },
+  sportGuide: {
+    overviewTitle: "Cómo analiza MatchSignal {SPORT}",
+    overviewDesc: "MatchSignal analiza cuotas de casas de apuestas y datos de mercado en {SPORT} para calcular probabilidades reales y valor esperado (+EV).",
+    marketsTitle: "Mercados de apuestas de {SPORT} analizados",
+    marketsDesc: "Nuestro análisis evalúa los principales mercados en busca de cuotas con valor:",
+    signalsTitle: "Señales de valor y riesgo",
+    signalsDesc: "Cada pronóstico incluye consenso de mercado, probabilidad justa y nivel de riesgo (Bajo, Medio, Alto).",
+    toolsTitle: "Calculadoras de apuestas y glosario",
+    toolsDesc: "Calcula probabilidades implícitas y márgenes con nuestras herramientas interactivas gratuitas.",
+    noMatchesTitle: "Sin pronósticos de {SPORT} disponibles",
+    noMatchesDesc: "Actualmente no hay pronósticos de MatchSignal disponibles para {SPORT}. Esto puede ocurrir cuando no hay eventos próximos o datos de mercado suficientes. Vuelve más tarde o explora nuestras herramientas y glosario.",
+  },
 };
 
 export default es;

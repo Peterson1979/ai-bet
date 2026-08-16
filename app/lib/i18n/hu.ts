@@ -353,6 +353,18 @@ text: "🏆 Legjobb fogadási bónuszok — Sportfogadóirodák összehasonlít�
       text: "A Több/Kevesebb piacok a mérkőzésen esett gólok, pontok, futások vagy menetek számát jelzik előre, míg a Moneyline/Meccs győztese piacok azt, hogy ki nyer. A Handicap piacok virtuális előnyt vagy hátrányt adnak az egyik félnek a kiegyensúlyozottabb szorzók érdekében.",
     },
   },
+  sportGuide: {
+    overviewTitle: "Hogyan elemzi a MatchSignal a(z) {SPORT} mérkőzéseket?",
+    overviewDesc: "A MatchSignal folyamatosan figyeli a fogadóirodák oddsait és a piaci eloszlást a(z) {SPORT} eseményeknél, hogy kiszámítsa a valós esélyeket és a pozitív várható értéket (+EV).",
+    marketsTitle: "Elemzett {SPORT} fogadási piacok",
+    marketsDesc: "Automatizált elemzésünk a legfontosabb fogadási piacokat vizsgálja az értékes oddsok azonosításához:",
+    signalsTitle: "Érték- és kockázati jelzések",
+    signalsDesc: "Minden tipp tartalmazza a piaci konszenzust, a számított valós valószínűséget és a kockázati kategóriát (Alacsony, Közepes, Magas).",
+    toolsTitle: "Fogadási kalkulátorok és fogalomtár",
+    toolsDesc: "Számítsa ki a valószínűségeket és a fogadási árréseket ingyenes interaktív kalkulátorainkkal.",
+    noMatchesTitle: "Nincsenek elérhető {SPORT} tippek",
+    noMatchesDesc: "Jelenleg nincsenek elérhető MatchSignal tippek a(z) {SPORT} kategóriában. Ez előfordulhat, ha nincsenek közelgő események vagy megfelelő piaci adatok. Nézzen vissza később, vagy használja eszközeinket és fogalomtárunkat.",
+  },
 };
 
 export default hu;

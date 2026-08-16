@@ -330,6 +330,18 @@ const it: DeepPartial<Translation> = {
       text: "I mercati Più/Meno predicono il numero totale di gol, punti, run o round, mentre i mercati Moneyline/Vincitore del match predicono chi vincerà. I mercati Handicap danno a un lato un vantaggio o svantaggio virtuale per creare quote più equilibrate.",
     },
   },
+  sportGuide: {
+    overviewTitle: "Come MatchSignal analizza {SPORT}",
+    overviewDesc: "MatchSignal monitora costantemente le quote dei bookmaker e i dati di mercato per {SPORT} per calcolare quote eque e valore atteso (+EV).",
+    marketsTitle: "Mercati di scommessa analizzati ({SPORT})",
+    marketsDesc: "La nostra analisi esamina i mercati chiave per individuare discrepanze di quota e valore:",
+    signalsTitle: "Segnali di valore e rischio",
+    signalsDesc: "Ogni pronostico include consenso del mercato, probabilità equa e livello di rischio (Basso, Medio, Alto).",
+    toolsTitle: "Calcolatori di scommesse e glossario",
+    toolsDesc: "Calcola probabilità implicite e margini con i nostri strumenti interattivi gratuiti.",
+    noMatchesTitle: "Nessun pronostico {SPORT} disponibile",
+    noMatchesDesc: "Al momento non ci sono pronostici MatchSignal disponibili per {SPORT}. Ciò può accadere in assenza di eventi imminenti o dati di mercato sufficienti. Torna più tardi o esplora i nostri strumenti e il glossario.",
+  },
 };
 
 export default it;

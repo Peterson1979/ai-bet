@@ -246,4 +246,17 @@ export type Translation = {
       text: string;
     };
   };
+
+  sportGuide: {
+    overviewTitle: string;
+    overviewDesc: string;
+    marketsTitle: string;
+    marketsDesc: string;
+    signalsTitle: string;
+    signalsDesc: string;
+    toolsTitle: string;
+    toolsDesc: string;
+    noMatchesTitle: string;
+    noMatchesDesc: string;
+  };
 };

@@ -18,6 +18,7 @@ type SportSectionProps = {
   limit: number;
   showViewAll?: boolean;
   idSuffix?: string;
+  hideHeading?: boolean;
 };
 
 const sportKeyMap: Record<string, keyof typeof translations.en.sports> = {
@@ -37,6 +38,7 @@ export default function SportSection({
   limit,
   showViewAll = false,
   idSuffix = "",
+  hideHeading = false,
 }: SportSectionProps) {
   const t = translations[lang] ?? translations.en;
   const activePicks = sportBlock.topPicks
@@ -67,14 +69,16 @@ export default function SportSection({
       id={`${sportBlock.sport.toLowerCase()}${idSuffix}`}
       className="mb-16 scroll-mt-28"
     >
-      <div className="mb-6">
-        <div className="flex items-center gap-4">
-          <h1 className="text-3xl font-black tracking-tight">
-            {t.sportPageTitle?.replace("{SPORT}", sportName)}
-          </h1>
-          <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+      {!hideHeading && (
+        <div className="mb-6">
+          <div className="flex items-center gap-4">
+            <h2 className="text-3xl font-black tracking-tight">
+              {t.sportPageTitle?.replace("{SPORT}", sportName)}
+            </h2>
+            <div className="h-[3px] flex-1 bg-gradient-to-r from-cyan-300/80 to-transparent" />
+          </div>
         </div>
-      </div>
+      )}
 
       {!sportBlock.hasMatches || activePicks.length === 0 ? (
         <div className="rounded-[24px] border-2 border-cyan-300/20 bg-[#0B1220] p-6">

@@ -331,6 +331,18 @@ const zh:DeepPartial<Translation> = {
       text: "大/小盘预测进球、得分、跑垒或回合的总数，而独赢盘/比赛胜者预测谁将获胜。让分盘通过给一方虚拟的优势或劣势来创造更平衡的赔率。",
     },
   },
+  sportGuide: {
+    overviewTitle: "MatchSignal 如何分析 {SPORT}",
+    overviewDesc: "MatchSignal 持续跟踪各博彩公司的赔率与市场数据，计算 {SPORT} 赛事的真实胜率与正期望值 (+EV)。",
+    marketsTitle: "涵盖的 {SPORT} 投注市场",
+    marketsDesc: "我们的自动化模型评估主要投注市场，发现赔率差异与价值机会：",
+    signalsTitle: "价值与风险信号",
+    signalsDesc: "每个预测均包含市场共识度、计算出的真实概率及风险等级（低、中、高）。",
+    toolsTitle: "投注计算器与术语表",
+    toolsDesc: "使用我们的免费互动计算器转换赔率并计算博彩公司抽水。",
+    noMatchesTitle: "暂无 {SPORT} 预测",
+    noMatchesDesc: "当前暂无适用于 {SPORT} 的 MatchSignal 预测。当没有即将进行的比赛或有效市场数据时可能会出现此情况。请稍后查看或使用我们的分析工具与术语表。",
+  },
 };
 
 export default zh;

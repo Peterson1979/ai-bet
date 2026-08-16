@@ -331,6 +331,18 @@ const pt: DeepPartial<Translation> = {
       text: "Os mercados Mais/Menos preveem o número total de golos, pontos, corridas ou rounds, enquanto os mercados Moneyline/Vencedor do jogo preveem quem vai ganhar. Os mercados de handicap dão a um lado uma vantagem ou desvantagem virtual para criar odds mais equilibradas.",
     },
   },
+  sportGuide: {
+    overviewTitle: "Como o MatchSignal avalia {SPORT}",
+    overviewDesc: "O MatchSignal analisa odds de casas de apostas e dados de mercado em {SPORT} para calcular probabilidades justas e valor esperado (+EV).",
+    marketsTitle: "Mercados de apostas de {SPORT} analisados",
+    marketsDesc: "Nossa análise automática avalia os principais mercados para encontrar oportunidades de valor:",
+    signalsTitle: "Sinais de valor e risco",
+    signalsDesc: "Cada palpite inclui consenso de mercado, probabilidade justa e nível de risco (Baixo, Médio, Alto).",
+    toolsTitle: "Calculadoras de apostas e glossário",
+    toolsDesc: "Calcule probabilidades implícitas e margens com nossas ferramentas interativas gratuitas.",
+    noMatchesTitle: "Nenhum palpite de {SPORT} disponível",
+    noMatchesDesc: "No momento, não há palpites do MatchSignal disponíveis para {SPORT}. Isso pode acontecer quando não há eventos futuros ou dados de mercado suficientes. Volte mais tarde ou explore nossas ferramentas e glossário.",
+  },
 };
 
 export default pt;

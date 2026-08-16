@@ -350,6 +350,18 @@ stickyCta: {
       text: "Over/Under markets predict the total number of goals, points, runs, or rounds in an event, while Moneyline/Match Winner markets predict who will win. Handicap markets give one side a virtual advantage or disadvantage to create more balanced odds.",
     },
   },
+  sportGuide: {
+    overviewTitle: "How MatchSignal Evaluates {SPORT}",
+    overviewDesc: "MatchSignal continuously tracks bookmaker odds, historical performance data, and market spreads across {SPORT} events to calculate fair odds and isolate positive expected value (+EV).",
+    marketsTitle: "Analyzed {SPORT} Betting Markets",
+    marketsDesc: "Our automated analysis evaluates key betting markets for pricing discrepancies and value opportunities:",
+    signalsTitle: "Key Value & Risk Signals",
+    signalsDesc: "Every prediction includes market consensus depth, calculated fair probabilities, and disciplined risk tiers (Low, Medium, High).",
+    toolsTitle: "Betting Calculators & Glossary",
+    toolsDesc: "Test strategies, compute implied probabilities, and calculate margins using our free interactive betting tools.",
+    noMatchesTitle: "No Upcoming {SPORT} Picks",
+    noMatchesDesc: "There are currently no MatchSignal picks available for {SPORT}. This can happen when no upcoming events or qualifying market data are available. Check back later or explore our betting tools and glossary below.",
+  },
 };
 
 export default en;

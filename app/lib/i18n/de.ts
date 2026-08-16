@@ -330,6 +330,18 @@ const de: Partial<Translation> = {
       text: "Über/Unter-Märkte sagen die Gesamtzahl der Tore, Punkte, Runs oder Runden vorher, während Moneyline/Spielsieger-Märkte den Gewinner vorhersagen. Handicap-Märkte geben einer Seite einen virtuellen Vor- oder Nachteil, um ausgewogenere Quoten zu schaffen.",
     },
   },
+  sportGuide: {
+    overviewTitle: "Wie MatchSignal {SPORT} bewertet",
+    overviewDesc: "MatchSignal analysiert kontinuierlich Buchmacher-Quoten und Marktdaten für {SPORT}, um faire Quoten und positiven Erwartungswert (+EV) zu ermitteln.",
+    marketsTitle: "Analysierte {SPORT} Wettmärkte",
+    marketsDesc: "Unsere Analyse prüft zentrale Wettmärkte auf Preisunterschiede und Value-Chancen:",
+    signalsTitle: "Value- & Risikosignale",
+    signalsDesc: "Jede Vorhersage umfasst Marktkonsens, berechnete Wahrscheinlichkeiten und Risikostufen (Niedrig, Mittel, Hoch).",
+    toolsTitle: "Wettrechner & Glossar",
+    toolsDesc: "Nutzen Sie unsere interaktiven Rechner, um Quoten umzurechnen und Buchmachermargen zu prüfen.",
+    noMatchesTitle: "Keine aktuellen {SPORT} Tipps",
+    noMatchesDesc: "Derzeit sind keine MatchSignal Tipps für {SPORT} verfügbar. Dies kann vorkommen, wenn keine anstehenden Spiele oder ausreichenden Marktdaten vorliegen. Schauen Sie später wieder vorbei oder nutzen Sie unsere Tools und das Glossar.",
+  },
 };
 
 export default de;
