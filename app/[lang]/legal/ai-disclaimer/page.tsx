@@ -1,4 +1,15 @@
-export default function AIDisclaimerPage() {
+import { redirect } from "next/navigation";
+import type { Lang } from "@/app/lib/i18n";
+
+export default async function AIDisclaimerPage({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}) {
+  const { lang } = await params;
+  if (lang !== "en") {
+    redirect("/en/legal/ai-disclaimer");
+  }
 return (
 <> <h1 className="text-4xl font-black text-white">
 AI Disclaimer </h1>

@@ -1,4 +1,15 @@
-export default function TermsOfUsePage() {
+import { redirect } from "next/navigation";
+import type { Lang } from "@/app/lib/i18n";
+
+export default async function TermsOfUsePage({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}) {
+  const { lang } = await params;
+  if (lang !== "en") {
+    redirect("/en/legal/terms-of-use");
+  }
   return (
     <>
       <h1 className="text-4xl font-black text-white">Terms of Use</h1>

@@ -1,4 +1,15 @@
-export default function ResponsibleGamblingPage() {
+import { redirect } from "next/navigation";
+import type { Lang } from "@/app/lib/i18n";
+
+export default async function ResponsibleGamblingPage({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}) {
+  const { lang } = await params;
+  if (lang !== "en") {
+    redirect("/en/legal/responsible-gambling");
+  }
   return (
     <>
       <h1 className="text-4xl font-black text-white">

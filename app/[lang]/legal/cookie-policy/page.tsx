@@ -1,4 +1,15 @@
-export default function CookiePolicyPage() {
+import { redirect } from "next/navigation";
+import type { Lang } from "@/app/lib/i18n";
+
+export default async function CookiePolicyPage({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}) {
+  const { lang } = await params;
+  if (lang !== "en") {
+    redirect("/en/legal/cookie-policy");
+  }
   return (
     <main className="mx-auto max-w-3xl px-6 py-16 text-slate-200">
       <h1 className="text-3xl font-black text-white mb-6">

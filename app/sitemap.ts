@@ -29,7 +29,7 @@ const sports = [
 
 export default function sitemap(): MetadataRoute.Sitemap {
 
-  const staticPages = [
+  const multilingualPages = [
     { 
       path: "", 
       changeFrequency: "daily" as const, 
@@ -51,12 +51,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     },
     {
-      path: "/about",
+      path: "/contact",
       changeFrequency: "monthly" as const,
       priority: 0.5,
     },
+  ];
+
+  const englishOnlyPages = [
     {
-      path: "/contact",
+      path: "/about",
       changeFrequency: "monthly" as const,
       priority: 0.5,
     },
@@ -93,7 +96,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   for (const lang of langs) {
 
-    for (const page of staticPages) {
+    for (const page of multilingualPages) {
 
       entries.push({
         url: `${baseUrl}/${lang}${page.path}`,
@@ -115,6 +118,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       });
 
     }
+
+  }
+
+
+  for (const page of englishOnlyPages) {
+
+    entries.push({
+      url: `${baseUrl}/en${page.path}`,
+      lastModified: new Date(),
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
+    });
 
   }
 

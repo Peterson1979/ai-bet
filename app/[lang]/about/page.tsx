@@ -1,27 +1,41 @@
+import { redirect } from "next/navigation";
 import { translations, Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
 
-export const generateMetadata = ({
+export async function generateMetadata({
   params,
 }: {
-  params: { lang: Lang };
-}) => {
-  const t = translations[params.lang] ?? translations.en;
+  params: Promise<{ lang: Lang }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  if (lang !== "en") {
+    redirect("/en/about");
+  }
+
+  const t = translations.en;
 
   return {
     title: `About | ${t.seoTitle}`,
-    description: t.seoDescription,
+    description: t.heroDesc,
     keywords:
       "AI betting, sports predictions, betting analytics, value bets, machine learning odds",
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro"}/en/about`,
+    },
   };
-};
+}
 
-export default function AboutPage({
+export default async function AboutPage({
   params,
 }: {
-  params: { lang: Lang };
+  params: Promise<{ lang: Lang }>;
 }) {
-  const lang = params.lang;
-  const t = translations[lang] ?? translations.en;
+  const { lang } = await params;
+  if (lang !== "en") {
+    redirect("/en/about");
+  }
+
+  const t = translations.en;
 
   const jsonLd = {
     "@context": "https://schema.org",
