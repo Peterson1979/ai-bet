@@ -3,7 +3,7 @@
 import { useId, useState } from "react";
 import { MatchCardData } from "../types/match";
 import { translations, Lang } from "@/app/lib/i18n";
-import { getSiteByBookmakerName, getBadgeLabel } from "@/app/lib/affiliates";
+import { getSiteByBookmakerName } from "@/app/lib/affiliates";
 
 type Props = {
   data: MatchCardData;
@@ -227,10 +227,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       ? partnerOffer.odds
       : data.partnerOdds;
 
-  const ctaBadge =
-    partnerOffer?.badgeLabel ||
-    (fallbackSite ? getBadgeLabel(fallbackSite) : null);
-
   const primaryCtaHref = partnerOffer?.trackingUrl || data.bookmakerUrl || "#";
 
   const primaryCtaLabel = partnerName
@@ -398,12 +394,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           )}
 
           <span>{primaryCtaLabel}</span>
-
-          {ctaBadge && (
-            <span className="text-[10px] font-black uppercase tracking-wide text-emerald-300 border border-emerald-400/40 bg-emerald-500/10 rounded-full px-2 py-0.5">
-              {ctaBadge}
-            </span>
-          )}
         </a>
 
         <a

@@ -2,7 +2,6 @@
 
 import {
   buildAffiliateUrl,
-  getBadgeLabel,
   getMatchCardUrl,
   getSiteByBookmakerName,
 } from "@/app/lib/affiliates";
@@ -25,7 +24,7 @@ function toAffiliateOffer(
     rating:
       typeof match.partnerRating === "number" ? match.partnerRating : site.rating,
     odds: typeof match.partnerOdds === "number" ? match.partnerOdds : null,
-    badgeLabel: getBadgeLabel(site),
+    badgeLabel: null,
   };
 }
 
