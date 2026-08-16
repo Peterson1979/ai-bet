@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import SportSection from "@/app/components/SportSection";
@@ -11,6 +12,18 @@ import { SPORTPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import type { PredictionCard } from "@/app/types/prediction";
 import type { Metadata } from "next";
 
+const SPORT_KEY_MAP: Record<
+  string,
+  "football" | "nba" | "nfl" | "hockey" | "tennis" | "mlb" | "mma"
+> = {
+  football: "football",
+  nba: "nba",
+  nfl: "nfl",
+  hockey: "hockey",
+  tennis: "tennis",
+  mlb: "mlb",
+  mma: "mma",
+};
 
 export async function generateMetadata({
   params,
@@ -23,27 +36,18 @@ export async function generateMetadata({
 
   const { lang, sport } = await params;
 
+  const sportKey =
+    SPORT_KEY_MAP[sport.toLowerCase()];
+
+  if (!sportKey) {
+    notFound();
+  }
+
   const t = translations[lang] ?? translations.en;
 
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ??
     "https://matchsignal.pro";
-
-
-  const sportKeyMap: Record<string, keyof typeof t.sports> = {
-    football: "football",
-    soccer: "football",
-    nba: "nba",
-    nfl: "nfl",
-    hockey: "hockey",
-    tennis: "tennis",
-    mlb: "mlb",
-    mma: "mma",
-  };
-
-
-  const sportKey =
-    sportKeyMap[sport.toLowerCase()] ?? "football";
 
 
   const sportName =
@@ -115,6 +119,13 @@ export default async function SportPage({
 
   const { lang, sport } = await params;
 
+  const sportKey =
+    SPORT_KEY_MAP[sport.toLowerCase()];
+
+  if (!sportKey) {
+    notFound();
+  }
+
   const predictions: PredictionsData | null =
     await getPredictions();
 
@@ -125,24 +136,8 @@ console.log("DESCRIPTION TEMPLATE:", t.sportPageDescription);
 
   const sportBlock = predictions?.sports.find(
     (item) =>
-      item.sport.toLowerCase() === sport.toLowerCase()
+      item.sport.toLowerCase() === sportKey
   );
-
-
-  const sportKeyMap: Record<string, keyof typeof t.sports> = {
-    football: "football",
-    soccer: "football",
-    nba: "nba",
-    nfl: "nfl",
-    hockey: "hockey",
-    tennis: "tennis",
-    mlb: "mlb",
-    mma: "mma",
-  };
-
-
-  const sportKey =
-    sportKeyMap[sport.toLowerCase()] ?? "football";
 
 
   const sportName =
