@@ -167,6 +167,16 @@ function deriveRiskTier(params: {
 }
 
 export async function GET(request: Request) {
+  const cronSecret = process.env.CRON_SECRET;
+  const authHeader = request.headers.get("authorization");
+
+  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+    return Response.json(
+      { ok: false, error: "unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const today = new Date().toISOString().split("T")[0];
     const CACHE_KEY = `predictions:${today}`;
