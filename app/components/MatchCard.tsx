@@ -326,11 +326,6 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             <p className="text-sm font-black text-slate-100 mt-1">
               {partnerName}
             </p>
-            {typeof partnerRating === "number" && (
-              <p className="text-[11px] text-slate-400 mt-1">
-                {(t.common?.rating ?? "Rating")} {partnerRating.toFixed(1)}
-              </p>
-            )}
           </div>
         </div>
 

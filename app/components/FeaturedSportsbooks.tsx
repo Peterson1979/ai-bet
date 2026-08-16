@@ -16,13 +16,12 @@ export default function FeaturedSportsbooks({ lang = "en", bettingPageHref }: Pr
   return (
     <section className="w-full py-8 px-4">
       <div className="text-center mb-6">
-        <span className="text-cyan-300 text-lg tracking-widest">★★★★★</span>
-        <h2 className="text-xl font-black text-white mt-1">{t.featuredSportsbooks.title}</h2>
-        <p className="text-sm text-slate-400">{t.featuredSportsbooks.subtitle}</p>
+        <h2 className="text-xl font-black text-white">{t.featuredSportsbooks.title}</h2>
+        <p className="text-sm text-slate-400 mt-1">{t.featuredSportsbooks.subtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-5xl mx-auto">
-        {sites.map((site, i) => (
+        {sites.map((site) => (
           <a
             key={site.id}
             href={site.url}
@@ -30,12 +29,6 @@ export default function FeaturedSportsbooks({ lang = "en", bettingPageHref }: Pr
             rel="noopener noreferrer sponsored"
             className="relative flex flex-col items-center text-center gap-3 rounded-[26px] border-4 border-cyan-300/80 bg-gradient-to-b from-[#070D18] via-[#0B1220] to-[#050A12] p-6 shadow-[0_0_0_1px_rgba(34,211,238,0.25),0_18px_0_rgba(0,0,0,0.6),0_45px_120px_rgba(56,189,248,0.35)] transition-all duration-300 hover:-translate-y-2 hover:scale-[1.03] hover:border-cyan-200"
           >
-            {i === 0 && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-cyan-400 text-[#050A12] text-[10px] font-black uppercase tracking-wider px-3 py-1">
-                #1 Rated
-              </span>
-            )}
-
             {site.logoUrl ? (
               <span className="flex items-center justify-center bg-[#1a2744] rounded-xl px-4 py-3 mt-2 w-full max-w-[180px] border border-cyan-300/20">
                 <img
@@ -48,14 +41,10 @@ export default function FeaturedSportsbooks({ lang = "en", bettingPageHref }: Pr
               <span className="text-lg font-black text-white mt-2">{site.name}</span>
             )}
 
-            <span className="text-cyan-300 font-black text-sm">
-              {site.rating.toFixed(1)} / 10
-            </span>
-
             <span className="text-sm text-slate-200">{site.bonus}</span>
 
-            <span className="mt-2 w-full rounded-xl border-2 border-cyan-300/40 bg-cyan-500/10 py-2 text-sm font-bold text-cyan-200">
-              {t.bettingPage.claimBonus} →
+            <span className="mt-auto w-full rounded-xl border-2 border-cyan-300/40 bg-cyan-500/10 py-2 text-sm font-bold text-cyan-200">
+              {t.topRatedSportsbooks.viewOffer}
             </span>
           </a>
         ))}

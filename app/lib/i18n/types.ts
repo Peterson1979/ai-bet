@@ -158,6 +158,7 @@ export type Translation = {
   topRatedSportsbooks: {
     title: string;
     compareAll: string;
+    viewOffer: string;
   };
 
   stickyCta: {
@@ -171,6 +172,7 @@ export type Translation = {
     titleMainHighlight: string;
     subtitle: string;
     recommended: string;
+    partnerBadge?: string;
     siteDescription: string;
     claimBonus: string;
     visitSite: string;

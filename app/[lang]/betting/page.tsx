@@ -45,10 +45,7 @@ export default async function BettingPage({
               >
                 <div className="mb-4 flex items-center justify-between">
                   <span className="rounded-full border border-cyan-400/25 bg-cyan-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-cyan-200">
-                    {t.bettingPage.recommended} #{index + 1}
-                  </span>
-                  <span className="rounded-xl border border-emerald-400/40 bg-emerald-500/10 px-3 py-1 text-sm font-black text-emerald-300">
-                    {site.rating}
+                    {t.bettingPage.partnerBadge ?? "Featured Partner"}
                   </span>
                 </div>
 
