@@ -34,7 +34,7 @@ Earnings Disclaimer </h1>
 
   <p className="mt-4">
     Users may lose some or all money wagered. Any betting activity is
-    undertaken entirely at the user's own risk.
+    undertaken entirely at the user&apos;s own risk.
   </p>
 
   <h2 className="mt-8 text-2xl font-bold text-white">
