@@ -46,7 +46,7 @@ export default async function RootLayout({
   return (
     <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
       <head>
-        {/* Google Consent Mode v2 Default State Initialization */}
+        {/* Google Consent Mode v2 Default State Initialization (All denied on fresh load) */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -54,25 +54,13 @@ export default async function RootLayout({
               function gtag(){dataLayer.push(arguments);}
               window.googlefc = window.googlefc || {};
               window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
-              try {
-                var raw = localStorage.getItem('matchsignal_consent');
-                var c = raw ? JSON.parse(raw) : null;
-                gtag('consent', 'default', {
-                  'analytics_storage': (c && c.analytics) ? 'granted' : 'denied',
-                  'ad_storage': (c && c.ads) ? 'granted' : 'denied',
-                  'ad_user_data': (c && c.ads) ? 'granted' : 'denied',
-                  'ad_personalization': (c && c.ads) ? 'granted' : 'denied',
-                  'wait_for_update': 500
-                });
-              } catch(e) {
-                gtag('consent', 'default', {
-                  'analytics_storage': 'denied',
-                  'ad_storage': 'denied',
-                  'ad_user_data': 'denied',
-                  'ad_personalization': 'denied',
-                  'wait_for_update': 500
-                });
-              }
+              gtag('consent', 'default', {
+                'analytics_storage': 'denied',
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'wait_for_update': 500
+              });
             `,
           }}
         />

@@ -5,42 +5,42 @@ import {
   getCustomConsent,
   updateCustomConsent,
   hasCustomConsentChoice,
-  initGoogleCmpListener,
-  isGoogleCmpNotApplicable,
-  GoogleConsentValues,
+  getAuthority,
+  initConsentOrchestrator,
 } from "@/app/lib/consent";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const [showCustomize, setShowCustomize] = useState(false);
-  const [googleValues, setGoogleValues] = useState<GoogleConsentValues | null>(null);
-
   const [analyticsAllowed, setAnalyticsAllowed] = useState(false);
-  const [adsAllowed, setAdsAllowed] = useState(false);
 
   useEffect(() => {
-    // Listen to Google CMP status updates
-    initGoogleCmpListener((vals: GoogleConsentValues) => {
-      setGoogleValues(vals);
-
-      // Only show custom banner if Google CMP is explicitly NOT_APPLICABLE and user hasn't made a choice
-      if (isGoogleCmpNotApplicable(vals)) {
+    const updateVisibility = () => {
+      const auth = getAuthority();
+      if (auth === "custom") {
         if (!hasCustomConsentChoice()) {
           setVisible(true);
+        } else {
+          setVisible(false);
+          setShowCustomize(false);
         }
-      } else {
-        // Hide custom banner for GRANTED, DENIED, NOT_CONFIGURED, and UNKNOWN
+      } else if (auth === "google") {
         setVisible(false);
         setShowCustomize(false);
+      } else {
+        // Pending
+        setVisible(false);
       }
-    });
+    };
+
+    updateVisibility();
+    const cleanup = initConsentOrchestrator(updateVisibility);
 
     // Listen for manual request to reopen custom consent settings
     const handleOpen = () => {
       const current = getCustomConsent();
       if (current) {
         setAnalyticsAllowed(current.analytics);
-        setAdsAllowed(current.ads);
       }
       setShowCustomize(true);
       setVisible(true);
@@ -48,43 +48,43 @@ export default function CookieBanner() {
 
     window.addEventListener("matchsignal_open_consent", handleOpen);
     return () => {
+      cleanup();
       window.removeEventListener("matchsignal_open_consent", handleOpen);
     };
   }, []);
 
-  // If banner is not visible or Google CMP is not NOT_APPLICABLE, render nothing
   if (!visible) return null;
 
-  const handleAcceptAll = () => {
-    updateCustomConsent({ analytics: true, ads: true });
+  const handleAllowAnalytics = () => {
+    updateCustomConsent({ analytics: true });
     setVisible(false);
     setShowCustomize(false);
   };
 
-  const handleRejectNonEssential = () => {
-    updateCustomConsent({ analytics: false, ads: false });
+  const handleNecessaryOnly = () => {
+    updateCustomConsent({ analytics: false });
     setVisible(false);
     setShowCustomize(false);
   };
 
   const handleSaveCustom = () => {
-    updateCustomConsent({ analytics: analyticsAllowed, ads: adsAllowed });
+    updateCustomConsent({ analytics: analyticsAllowed });
     setVisible(false);
     setShowCustomize(false);
   };
 
   return (
     <aside
-      aria-label="Cookie and Privacy Consent"
+      aria-label="Privacy and Consent Choices"
       className="fixed bottom-0 left-0 right-0 z-[999] bg-[#070D18]/95 backdrop-blur-md border-t border-cyan-400/30 p-4 md:p-6 text-white shadow-[0_-10px_40px_rgba(0,0,0,0.8)]"
     >
       <div className="mx-auto max-w-5xl">
         {!showCustomize ? (
           <div className="flex flex-col md:flex-row items-center justify-between gap-5">
             <div className="text-xs md:text-sm text-slate-200 leading-relaxed space-y-1">
-              <p className="font-bold text-white text-sm">Privacy &amp; Cookie Choices</p>
+              <p className="font-bold text-white text-sm">Privacy choices</p>
               <p className="text-slate-300">
-                MatchSignal uses strictly necessary storage for site operations. We also use analytics (GA4) and advertising (Google AdSense) with your consent to measure traffic and deliver relevant experiences.
+                We use necessary storage to operate MatchSignal. With your permission, we also use analytics to understand how the site is used and improve it. Advertising consent is managed separately where Google’s consent platform is available.
               </p>
             </div>
 
@@ -99,25 +99,25 @@ export default function CookieBanner() {
 
               <button
                 type="button"
-                onClick={handleRejectNonEssential}
+                onClick={handleNecessaryOnly}
                 className="px-4 py-2 text-xs font-bold text-slate-200 border border-cyan-500/40 bg-cyan-950/40 rounded-xl hover:bg-cyan-900/60 transition"
               >
-                Necessary Only
+                Necessary only
               </button>
 
               <button
                 type="button"
-                onClick={handleAcceptAll}
+                onClick={handleAllowAnalytics}
                 className="px-5 py-2 text-xs font-black text-black bg-cyan-400 rounded-xl hover:bg-cyan-300 transition shadow-lg shadow-cyan-400/20"
               >
-                Accept All
+                Allow analytics
               </button>
             </div>
           </div>
         ) : (
           <div className="space-y-4">
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-sm font-black text-white">Customize Consent Preferences</h3>
+              <h3 className="text-sm font-black text-white">Customize Privacy Choices</h3>
               <button
                 type="button"
                 onClick={() => setShowCustomize(false)}
@@ -153,18 +153,13 @@ export default function CookieBanner() {
                 </p>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-[#050A14] p-3.5">
+              <div className="rounded-xl border border-white/10 bg-[#050A14] p-3.5 opacity-75">
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="font-bold text-white">Advertising (AdSense)</span>
-                  <input
-                    type="checkbox"
-                    checked={adsAllowed}
-                    onChange={(e) => setAdsAllowed(e.target.checked)}
-                    className="w-4 h-4 rounded accent-cyan-400 cursor-pointer"
-                  />
+                  <span className="text-[10px] uppercase font-bold text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded">Google CMP</span>
                 </div>
                 <p className="text-slate-400 text-[11px] leading-relaxed">
-                  Enables advertising delivery through Google AdSense.
+                  Advertising consent is managed separately via Google’s certified consent platform where available.
                 </p>
               </div>
             </div>
@@ -172,10 +167,10 @@ export default function CookieBanner() {
             <div className="flex justify-end gap-2.5 pt-2">
               <button
                 type="button"
-                onClick={handleRejectNonEssential}
+                onClick={handleNecessaryOnly}
                 className="px-4 py-2 text-xs font-semibold text-slate-300 border border-slate-600 rounded-xl hover:text-white transition"
               >
-                Reject All Non-Essential
+                Necessary only
               </button>
 
               <button

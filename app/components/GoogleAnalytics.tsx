@@ -5,8 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import {
   isAnalyticsAllowed,
-  initGoogleCmpListener,
-  GoogleConsentValues,
+  initConsentOrchestrator,
 } from "@/app/lib/consent";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -32,28 +31,19 @@ function GA4PageViewTracker({ enabled }: { enabled: boolean }) {
 }
 
 export default function GoogleAnalytics() {
-  const [googleValues, setGoogleValues] = useState<GoogleConsentValues | null>(null);
   const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
-    setAllowed(isAnalyticsAllowed(googleValues));
+    // Initial check (always false on mount while authority is pending)
+    setAllowed(isAnalyticsAllowed());
 
-    // Register Google CMP listener for Funding Choices / Privacy & Messaging
-    initGoogleCmpListener((vals) => {
-      setGoogleValues(vals);
-      setAllowed(isAnalyticsAllowed(vals));
+    // Register orchestrator listener to update allowed state when authority or consent updates
+    const cleanup = initConsentOrchestrator(() => {
+      setAllowed(isAnalyticsAllowed());
     });
 
-    // Register listener for custom consent updates
-    const handleCustomUpdate = () => {
-      setAllowed(isAnalyticsAllowed(googleValues));
-    };
-
-    window.addEventListener("matchsignal_consent_updated", handleCustomUpdate);
-    return () => {
-      window.removeEventListener("matchsignal_consent_updated", handleCustomUpdate);
-    };
-  }, [googleValues]);
+    return cleanup;
+  }, []);
 
   // Basic Mode: Do NOT load or initialize GA4 script until analytics permission is granted
   if (!GA_ID || !allowed) {
