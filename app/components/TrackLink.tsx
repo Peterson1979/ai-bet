@@ -29,7 +29,7 @@ export default function TrackLink({ league, slug, children }: Props) {
     <a
       href={url}
       target="_blank"
-      rel="noopener noreferrer"
+      rel="noopener noreferrer sponsored"
       onClick={() => trackClick(league, slug)}
       style={{
         display: "inline-block",

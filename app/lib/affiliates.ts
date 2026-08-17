@@ -240,29 +240,47 @@ function supportsSport(site: AffiliateSite, sport: string): boolean {
   });
 }
 
+export function sanitizeExternalUrl(rawUrl: string): string {
+  try {
+    const parsed = new URL(rawUrl);
+    if (parsed.protocol === "https:" || parsed.protocol === "http:") {
+      return parsed.toString();
+    }
+  } catch {
+    // Malformed URL
+  }
+  return "https://www.matchsignal.pro";
+}
+
 export function buildAffiliateUrl(
   site: AffiliateSite,
   source: AffiliateSource = "sidebar"
 ): string {
   // Fluxbrox redirect-alapú linkeknél NE adj hozzá extra query paramétert:
-  // a fluxbrox script string-összefűzéssel csapja a végleges URL-hez,
-  // ami elrontja azt, ha a célnak már van saját ?querystringje -> 404.
   if (site.baseUrl.includes("redirectURL=")) {
-    return site.baseUrl;
+    return sanitizeExternalUrl(site.baseUrl);
   }
 
-  const url = new URL(site.baseUrl);
-  const params = new URLSearchParams(site.trackingParams ?? "");
+  try {
+    const url = new URL(site.baseUrl);
+    if (url.protocol !== "https:" && url.protocol !== "http:") {
+      return "https://www.matchsignal.pro";
+    }
 
-  params.set("utm_source", "betai");
-  params.set("utm_medium", source);
-  params.set("utm_campaign", site.id);
+    const params = new URLSearchParams(site.trackingParams ?? "");
 
-  params.forEach((value, key) => {
-    url.searchParams.set(key, value);
-  });
+    params.set("utm_source", "betai");
+    params.set("utm_medium", source);
+    params.set("utm_campaign", site.id);
 
-  return url.toString();
+    params.forEach((value, key) => {
+      url.searchParams.set(key, value);
+    });
+
+    return url.toString();
+  } catch {
+    return "https://www.matchsignal.pro";
+  }
 }
 
 export function getSidebarSites() {
