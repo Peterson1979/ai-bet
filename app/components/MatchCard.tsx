@@ -128,20 +128,24 @@ function MarketTooltip({
   );
 }
 
-function LocalTime({ utcTime }: { utcTime: string }) {
-  const local = new Date(utcTime).toLocaleString(undefined, {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
-  return (
-    <span className="text-[10px] text-slate-500 mt-1 block">
-      🕐 {local}
-    </span>
-  );
+function formatMatchDateTime(startTime?: string): string {
+  if (!startTime) return "";
+  try {
+    const d = new Date(startTime);
+    if (Number.isNaN(d.getTime())) return "";
+    return (
+      d.toLocaleString("en-GB", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "UTC",
+      }) + " UTC"
+    );
+  } catch {
+    return "";
+  }
 }
 
 function StatRow({
@@ -270,10 +274,9 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         </div>
 
         <div className="text-right shrink-0">
-          <span className="text-[11px] text-slate-300 whitespace-nowrap">
-            {data.startTime ? new Date(data.startTime).toLocaleString() : t.tbd}
+          <span className="text-[11px] font-medium text-slate-300 whitespace-nowrap">
+            {data.startTime ? formatMatchDateTime(data.startTime) : t.tbd}
           </span>
-          {data.startTime && <LocalTime utcTime={data.startTime} />}
         </div>
       </div>
 
