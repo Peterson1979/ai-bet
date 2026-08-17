@@ -28,6 +28,15 @@ const redis = new Redis({
 
 const CACHE_TTL = 60 * 60 * 25;
 const MAX_EVENTS_PER_SPORT = 12;
+const LOCK_TTL_SECONDS = 360;
+
+const RELEASE_LOCK_LUA = `
+if redis.call("get", KEYS[1]) == ARGV[1] then
+  return redis.call("del", KEYS[1])
+else
+  return 0
+end
+`;
 
 type SportResult = {
   sport: string;
@@ -177,18 +186,54 @@ export async function GET(request: Request) {
     );
   }
 
+  const today = new Date().toISOString().split("T")[0];
+  const CACHE_KEY = `predictions:${today}`;
+  const LOCK_KEY = `cron:daily-run:lock:${today}`;
+
+  const url = new URL(request.url);
+  const force = url.searchParams.get("force") === "1";
+
   try {
-    const today = new Date().toISOString().split("T")[0];
-    const CACHE_KEY = `predictions:${today}`;
-
-    const url = new URL(request.url);
-    const force = url.searchParams.get("force") === "1";
-
     const cached = await redis.get(CACHE_KEY);
     if (cached && !force) {
       return Response.json({ success: true, cached: true, data: cached });
     }
+  } catch (error) {
+    console.error("[daily-run] Cache lookup error:", error);
+    return Response.json(
+      { success: false, error: "Cache lookup failed." },
+      { status: 500 }
+    );
+  }
 
+  const runId = crypto.randomUUID();
+  let lockAcquired = false;
+
+  try {
+    const acquired = await redis.set(LOCK_KEY, runId, {
+      nx: true,
+      ex: LOCK_TTL_SECONDS,
+    });
+
+    if (!acquired) {
+      console.log("[daily-run] skipped: generation already in progress", { today });
+      return Response.json({
+        success: true,
+        skipped: true,
+        reason: "generation_in_progress",
+      });
+    }
+
+    lockAcquired = true;
+  } catch (error) {
+    console.error("[daily-run] Lock acquisition error:", error);
+    return Response.json(
+      { success: false, error: "Lock acquisition failed." },
+      { status: 500 }
+    );
+  }
+
+  try {
     const sportsData = await getDailyEvents();
 
     const result: {
@@ -407,7 +452,7 @@ export async function GET(request: Request) {
       });
     }
 
-        await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
+    await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;
 
@@ -418,13 +463,13 @@ export async function GET(request: Request) {
     } | null = null;
 
     try {
-const socialRes = await fetch(`${siteUrl}/api/social-run?force=1`, {
-  method: "GET",
-  headers: {
-    "x-cron-secret": process.env.CRON_SECRET ?? "",
-  },
-  cache: "no-store",
-});
+      const socialRes = await fetch(`${siteUrl}/api/social-run`, {
+        method: "GET",
+        headers: {
+          "x-cron-secret": process.env.CRON_SECRET ?? "",
+        },
+        cache: "no-store",
+      });
 
       let socialBody: unknown = null;
 
@@ -463,5 +508,13 @@ const socialRes = await fetch(`${siteUrl}/api/social-run?force=1`, {
       { success: false, error: "Generation failed." },
       { status: 500 }
     );
+  } finally {
+    if (lockAcquired) {
+      try {
+        await redis.eval(RELEASE_LOCK_LUA, [LOCK_KEY], [runId]);
+      } catch (releaseError) {
+        console.error("[daily-run] Lock release error:", releaseError);
+      }
+    }
   }
 }
