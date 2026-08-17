@@ -5,7 +5,13 @@ import { calculateSocialScore } from "../../lib/social/score";
 import { publishInstagramCarousel } from "../../lib/social/publish-instagram";
 import { publishFacebook } from "../../lib/social/publish-facebook";
 import { generateFacebookCarouselCaption } from "../../lib/social/caption-facebook";
-import { isAlreadyPosted, savePostedResult } from "../../lib/social/persist-result";
+import {
+  getPublicationId,
+  getPublicationState,
+  updatePublicationChannel,
+  isLegacyPosted,
+  savePostedResult,
+} from "../../lib/social/persist-result";
 import type { Candidate, PredictionFile, TopPick } from "../../lib/social/types";
 import { uploadBufferToBlob } from "../../lib/social/upload-image";
 import { renderCardToJpeg } from "../../lib/social/render-card-to-jpeg";
@@ -18,6 +24,14 @@ const MIN_BOOKMAKERS = 3;
 const MIN_START_BUFFER_MINUTES = 90;
 const MAX_CAROUSEL_PICKS = 3;
 const LOCK_TTL_SECONDS = 15 * 60;
+
+const RELEASE_LOCK_LUA = `
+if redis.call("get", KEYS[1]) == ARGV[1] then
+  return redis.call("del", KEYS[1])
+else
+  return 0
+end
+`;
 
 type CarouselPick = Candidate;
 
@@ -196,6 +210,7 @@ export async function GET(req: Request) {
   const now = new Date();
   const dateKey = now.toISOString().slice(0, 10);
   const lockKey = `social-run-lock:${dateKey}`;
+  const runId = crypto.randomUUID();
 
   let lockAcquired = false;
   let stage = "start";
@@ -229,21 +244,22 @@ export async function GET(req: Request) {
     const force = new URL(req.url).searchParams.get("force") === "1";
     console.log("[social-run] auth ok", { force });
 
-    if (!force) {
-      stage = "acquiring-lock";
-      const acquired = await redis.set(lockKey, "1", { nx: true, ex: LOCK_TTL_SECONDS });
+    stage = "acquiring-lock";
+    const acquired = await redis.set(lockKey, runId, {
+      nx: true,
+      ex: LOCK_TTL_SECONDS,
+    });
 
-      if (!acquired) {
-        console.log("[social-run] skipped: publish already in progress");
-        return Response.json({
-          ok: true,
-          skipped: true,
-          reason: "publish already in progress",
-        });
-      }
-
-      lockAcquired = true;
+    if (!acquired) {
+      console.log("[social-run] skipped: publish already in progress");
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: "publish_in_progress",
+      });
     }
+
+    lockAcquired = true;
 
     stage = "loading-predictions";
     const redisKey = `predictions:${dateKey}`;
@@ -257,42 +273,62 @@ export async function GET(req: Request) {
       );
     }
 
-    stage = "selecting-pick";
-    const pick = selectPick(predictions, now);
-
-    if (!pick) {
-      console.log("[social-run] skipped: no eligible pick");
-      return Response.json({
-        ok: true,
-        skipped: true,
-        reason: "no eligible pick",
-      });
-    }
-
-    if (!force && (await isAlreadyPosted(pick.id))) {
-      console.log("[social-run] skipped: already posted", { pickId: pick.id });
-      return Response.json({
-        ok: true,
-        skipped: true,
-        reason: "already posted",
-        pickId: pick.id,
-      });
-    }
-
     stage = "selecting-carousel-picks";
     const topPicks = getTopPicks(predictions, now);
 
     if (topPicks.length < 2) {
-      console.log("[social-run] skipped: not enough picks", {
-        pickId: pick.id,
+      console.log("[social-run] skipped: not enough picks for post", {
         topPicksCount: topPicks.length,
       });
       return Response.json({
         ok: true,
         skipped: true,
         reason: "not enough picks for post",
-        pickId: pick.id,
         topPicksCount: topPicks.length,
+      });
+    }
+
+    const publicationId = getPublicationId(dateKey, topPicks);
+    const pickIds = topPicks.map((p) => p.id);
+    const primaryPick = selectPick(predictions, now) ?? topPicks[0];
+
+    stage = "checking-publication-state";
+    const pubState = await getPublicationState(publicationId);
+
+    const igAlreadyPublished = pubState?.instagram?.status === "published";
+    const fbAlreadyPublished = pubState?.facebook?.status === "published";
+
+    if (igAlreadyPublished && fbAlreadyPublished) {
+      console.log("[social-run] skipped: all channels already published", {
+        publicationId,
+      });
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: "all_channels_already_published",
+        publicationId,
+        instagram: {
+          status: "skipped",
+          postId: pubState?.instagram?.postId ?? null,
+        },
+        facebook: {
+          status: "skipped",
+          postId: pubState?.facebook?.postId ?? null,
+        },
+      });
+    }
+
+    if (!pubState && primaryPick && (await isLegacyPosted(primaryPick.id))) {
+      console.log("[social-run] skipped: legacy publication already recorded", {
+        pickId: primaryPick.id,
+        publicationId,
+      });
+      return Response.json({
+        ok: true,
+        skipped: true,
+        reason: "legacy_publication_already_recorded",
+        publicationId,
+        pickId: primaryPick.id,
       });
     }
 
@@ -340,70 +376,124 @@ export async function GET(req: Request) {
       const jpegBuffer = await renderCardToJpeg(cardUrl);
       const imageUrl = await uploadBufferToBlob(
         jpegBuffer,
-        `${pick.id}-carousel-${i + 1}.jpg`,
+        `${publicationId}-slide-${i + 1}.jpg`,
         "image/jpeg"
       );
 
       uploadedCarouselImageUrls.push(imageUrl);
     }
 
-    if (!force && (await isAlreadyPosted(pick.id))) {
-      console.log("[social-run] skipped after render: already posted", { pickId: pick.id });
-      return Response.json({
-        ok: true,
-        skipped: true,
-        reason: "already posted after render",
-        pickId: pick.id,
-        instagramSlidesCount: uploadedCarouselImageUrls.length,
-        instagramSlideImageUrls: uploadedCarouselImageUrls,
-      });
-    }
-
     stage = "publishing-instagram";
     let ig: unknown = null;
     let instagramError: string | null = null;
+    let instagramResultStatus: "published" | "skipped" | "failed" = "skipped";
+    let igPostId: string | null = pubState?.instagram?.postId ?? null;
 
-    try {
-      ig = await publishInstagramCarousel(uploadedCarouselImageUrls, instagramCaption);
-      console.log("[social-run] instagram publish done");
-    } catch (error) {
-      instagramError =
-        error instanceof Error ? error.message : "unknown instagram publish error";
-      console.error("[social-run] instagram publish failed", { instagramError });
+    if (igAlreadyPublished) {
+      console.log("[social-run] instagram already published, skipping", {
+        publicationId,
+      });
+      instagramResultStatus = "skipped";
+    } else {
+      try {
+        ig = await publishInstagramCarousel(uploadedCarouselImageUrls, instagramCaption);
+        igPostId = (ig as any)?.id ? String((ig as any).id) : null;
+        instagramResultStatus = "published";
+        console.log("[social-run] instagram publish done", { igPostId });
+
+        await updatePublicationChannel(publicationId, dateKey, pickIds, "instagram", {
+          status: "published",
+          postId: igPostId,
+          publishedAt: new Date().toISOString(),
+        });
+      } catch (error) {
+        instagramError =
+          error instanceof Error ? error.message : "unknown instagram publish error";
+        console.error("[social-run] instagram publish failed", { instagramError });
+        instagramResultStatus = "failed";
+
+        await updatePublicationChannel(publicationId, dateKey, pickIds, "instagram", {
+          status: "failed",
+          error: instagramError.slice(0, 300),
+        });
+      }
     }
 
     stage = "publishing-facebook";
     let fb: unknown = null;
     let facebookError: string | null = null;
+    let facebookResultStatus: "published" | "skipped" | "failed" = "skipped";
+    let fbPostId: string | null = pubState?.facebook?.postId ?? null;
 
-    try {
-      fb = await publishFacebook(uploadedCarouselImageUrls, facebookCaption);
-      console.log("[social-run] facebook publish done");
-    } catch (error) {
-      facebookError =
-        error instanceof Error ? error.message : "unknown facebook publish error";
-      console.error("[social-run] facebook publish failed", { facebookError });
+    if (fbAlreadyPublished) {
+      console.log("[social-run] facebook already published, skipping", {
+        publicationId,
+      });
+      facebookResultStatus = "skipped";
+    } else {
+      try {
+        fb = await publishFacebook(uploadedCarouselImageUrls, facebookCaption);
+        fbPostId = (fb as any)?.post?.id ? String((fb as any).post.id) : null;
+        facebookResultStatus = "published";
+        console.log("[social-run] facebook publish done", { fbPostId });
+
+        await updatePublicationChannel(publicationId, dateKey, pickIds, "facebook", {
+          status: "published",
+          postId: fbPostId,
+          publishedAt: new Date().toISOString(),
+        });
+      } catch (error) {
+        facebookError =
+          error instanceof Error ? error.message : "unknown facebook publish error";
+        console.error("[social-run] facebook publish failed", { facebookError });
+        facebookResultStatus = "failed";
+
+        await updatePublicationChannel(publicationId, dateKey, pickIds, "facebook", {
+          status: "failed",
+          error: facebookError.slice(0, 300),
+        });
+      }
     }
 
-    stage = "saving-result";
-    await savePostedResult(pick, {
-      imageUrl: uploadedCarouselImageUrls[0] ?? null,
-      caption: instagramCaption,
-      ig,
-      fb,
-    });
+    const igFinalPublished =
+      igAlreadyPublished || instagramResultStatus === "published";
+    const fbFinalPublished =
+      fbAlreadyPublished || facebookResultStatus === "published";
+
+    if (igFinalPublished && fbFinalPublished && primaryPick) {
+      try {
+        await savePostedResult(primaryPick, {
+          imageUrl:
+            uploadedCarouselImageUrls[0] ?? pubState?.instagram?.postId ?? "",
+          caption: instagramCaption,
+          ig: ig ?? pubState?.instagram,
+          fb: fb ?? pubState?.facebook,
+        });
+      } catch (legacyErr) {
+        console.warn("[social-run] legacy savePostedResult error:", legacyErr);
+      }
+    }
+
+    const isFullySuccessful = igFinalPublished && fbFinalPublished;
 
     return Response.json({
-      ok: !instagramError && !facebookError,
-      pickId: pick.id,
+      ok: isFullySuccessful,
+      publicationId,
+      pickId: primaryPick?.id ?? null,
+      instagram: {
+        status: instagramResultStatus,
+        postId: igPostId,
+        error: instagramError,
+      },
+      facebook: {
+        status: facebookResultStatus,
+        postId: fbPostId,
+        error: facebookError,
+      },
       instagramSlidesCount: uploadedCarouselImageUrls.length,
       instagramSlideImageUrls: uploadedCarouselImageUrls,
-      instagram: ig,
-      facebook: fb,
       instagramCaption,
       facebookCaption,
-      instagramError,
-      facebookError,
       stage: "done",
     });
   } catch (error) {
@@ -423,7 +513,11 @@ export async function GET(req: Request) {
     );
   } finally {
     if (lockAcquired) {
-      await redis.del(lockKey);
+      try {
+        await redis.eval(RELEASE_LOCK_LUA, [lockKey], [runId]);
+      } catch (releaseError) {
+        console.error("[social-run] Lock release error:", releaseError);
+      }
     }
   }
 }
