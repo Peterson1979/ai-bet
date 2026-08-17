@@ -1,12 +1,10 @@
-"use client";
-
-import { useParams } from "next/navigation";
 import { translations, Lang } from "@/app/lib/i18n";
 
-export default function SimpleFooter() {
-  const params = useParams();
-  const lang = (params?.lang as Lang) || "en";
+type Props = {
+  lang?: Lang;
+};
 
+export default function SimpleFooter({ lang = "en" }: Props) {
   const t = translations[lang] ?? translations.en;
 
   const links = [
@@ -19,11 +17,8 @@ export default function SimpleFooter() {
 
   return (
     <footer className="mt-20 border-t border-[#1E293B] bg-[#060B14]">
-
       <div className="mx-auto max-w-[1500px] px-4 py-10 md:px-6">
-
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-
           <div>
             <h4 className="text-lg font-black text-white">
               {t.footer.aiBettingInsights}
@@ -45,11 +40,9 @@ export default function SimpleFooter() {
               </a>
             ))}
           </div>
-
         </div>
 
         <div className="mt-8 flex flex-col gap-3 border-t border-[#1E293B] pt-6 md:flex-row md:items-center md:justify-between">
-
           <p className="text-[12px] text-slate-500">
             © {new Date().getFullYear()} {t.footer.platformName}
           </p>
@@ -57,11 +50,8 @@ export default function SimpleFooter() {
           <div className="text-[12px] text-slate-500">
             {t.footer.builtWithAi}
           </div>
-
         </div>
-
       </div>
-
     </footer>
   );
 }

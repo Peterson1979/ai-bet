@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import Image from "next/image";
 import { MatchCardData } from "../types/match";
 import { translations, Lang } from "@/app/lib/i18n";
 import { getSiteByBookmakerName } from "@/app/lib/affiliates";
@@ -366,12 +367,13 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           className="flex items-center justify-center gap-2 rounded-xl border border-cyan-400/40 bg-cyan-500/15 py-2.5 px-3 text-sm font-bold text-cyan-200 hover:bg-cyan-500/25 transition shadow-md"
         >
           {partnerLogoUrl && (
-            <span className="flex items-center justify-center bg-white rounded px-1.5 py-0.5">
-              <img
-                loading="lazy"
+            <span className="flex items-center justify-center bg-white rounded px-1.5 py-0.5 shrink-0">
+              <Image
                 src={partnerLogoUrl}
                 alt={partnerName}
-                className="h-3.5 max-w-[50px] object-contain"
+                width={50}
+                height={14}
+                className="h-3.5 w-auto max-w-[50px] object-contain"
               />
             </span>
           )}

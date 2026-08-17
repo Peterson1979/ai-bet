@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getSidebarSites } from "@/app/lib/affiliates";
 import Header from "@/app/components/Header";
 import SimpleFooter from "@/app/components/SimpleFooter";
@@ -64,7 +65,7 @@ export default async function BettingPage({
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3" id="top-betting-sites">
-            {sites.map((site, index) => (
+            {sites.map((site) => (
               <a
                 key={site.id}
                 href={site.url}
@@ -80,11 +81,13 @@ export default async function BettingPage({
 
                 {/* Logo */}
                 {site.logoUrl ? (
-                <div className="mb-4 flex items-center justify-center bg-slate-300 rounded-xl border border-slate-300/50 px-4 py-3 w-full max-w-[200px]">  
-                    <img
+                  <div className="mb-4 flex items-center justify-center bg-slate-300 rounded-xl border border-slate-300/50 px-4 py-3 w-full max-w-[200px]">
+                    <Image
                       src={site.logoUrl}
                       alt={site.name}
-                      className="max-h-[36px] max-w-[160px] object-contain"
+                      width={160}
+                      height={36}
+                      className="max-h-[36px] max-w-[160px] w-auto h-auto object-contain"
                     />
                   </div>
                 ) : (
@@ -115,7 +118,7 @@ export default async function BettingPage({
             </p>
           </div>
         </div>
-        <SimpleFooter />
+        <SimpleFooter lang={lang} />
       </div>
     </main>
   );

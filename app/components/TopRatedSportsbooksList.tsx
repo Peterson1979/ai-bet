@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTopRatedList } from "@/app/lib/affiliates";
 import { translations, Lang } from "@/app/lib/i18n";
 
@@ -44,10 +45,12 @@ export default function TopRatedSportsbooksList({
             <div className="flex items-center gap-3">
               {site.logoUrl ? (
                 <span className="flex items-center justify-center bg-[#1a2744] rounded-md px-2 py-1 border border-cyan-300/20">
-                  <img
+                  <Image
                     src={site.logoUrl}
                     alt={site.name}
-                    className="max-h-[18px] max-w-[60px] object-contain"
+                    width={60}
+                    height={18}
+                    className="max-h-[18px] max-w-[60px] w-auto h-auto object-contain"
                   />
                 </span>
               ) : (

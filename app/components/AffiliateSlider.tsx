@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { getSliderSites } from "@/app/lib/affiliates";
 import { translations, Lang } from "@/app/lib/i18n";
@@ -68,10 +69,12 @@ export default function AffiliateSlider({
           >
             {site.logoUrl ? (
               <span className="flex items-center justify-center bg-[#1a2744] rounded-lg px-3 py-2 w-full border border-cyan-300/20">
-                <img
+                <Image
                   src={site.logoUrl}
                   alt={site.name}
-                  className="max-h-[28px] max-w-[100px] object-contain"
+                  width={100}
+                  height={28}
+                  className="max-h-[28px] max-w-[100px] w-auto h-auto object-contain"
                 />
               </span>
             ) : (

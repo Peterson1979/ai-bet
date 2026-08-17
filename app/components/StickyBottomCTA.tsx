@@ -1,5 +1,3 @@
-"use client";
-
 import { translations, Lang } from "@/app/lib/i18n";
 
 type Props = {

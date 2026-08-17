@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getFeaturedSites } from "@/app/lib/affiliates";
 import { translations, Lang } from "@/app/lib/i18n";
 
@@ -31,10 +32,12 @@ export default function FeaturedSportsbooks({ lang = "en", bettingPageHref }: Pr
           >
             {site.logoUrl ? (
               <span className="flex items-center justify-center bg-[#1a2744] rounded-xl px-4 py-3 mt-2 w-full max-w-[180px] border border-cyan-300/20">
-                <img
+                <Image
                   src={site.logoUrl}
                   alt={site.name}
-                  className="max-h-[40px] max-w-[150px] object-contain"
+                  width={150}
+                  height={40}
+                  className="max-h-[40px] max-w-[150px] w-auto h-auto object-contain"
                 />
               </span>
             ) : (

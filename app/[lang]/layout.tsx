@@ -1,8 +1,12 @@
 import "../globals.css";
 import { notFound } from "next/navigation";
 import { LANGS, Lang } from "@/app/lib/i18n";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+
+export const viewport: Viewport = {
+  themeColor: "#060B14",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.matchsignal.pro"),
