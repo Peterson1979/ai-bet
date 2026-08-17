@@ -5,6 +5,14 @@ import { AffiliateComplianceOverride } from "./types";
 
 const ISO_COUNTRY_REGEX = /^[A-Z]{2}$/;
 
+const POSITIVE_EVIDENCE_SOURCE_TYPES = new Set([
+  "regulator_license",
+  "affiliate_program_geo",
+  "partner_manager",
+  "legal_review",
+  "operator_terms",
+]);
+
 export type ValidationResult = {
   valid: boolean;
   errors: string[];
@@ -79,7 +87,8 @@ export function validateComplianceRegistry(
 
     // Verified requirements
     if (override.status === "verified") {
-      if (!override.sources || override.sources.length === 0) {
+      const sources = override.sources ?? [];
+      if (sources.length === 0) {
         errors.push(
           `Affiliate override "${affiliateId}" is marked "verified" but has 0 evidence sources.`
         );
@@ -108,6 +117,31 @@ export function validateComplianceRegistry(
         } else if (rDate.getTime() < vDate.getTime()) {
           errors.push(
             `Affiliate override "${affiliateId}" has reviewAfter (${override.reviewAfter}) earlier than verifiedAt (${override.verifiedAt}).`
+          );
+        }
+      }
+
+      // Conservative semantics checks:
+      // A sportsbook operator cannot be declared globally verified based solely on service restriction lists
+      const isSportsbook =
+        !override.affiliateKind || override.affiliateKind === "sportsbook_operator";
+      const hasOnlyRestrictionSources = sources.every(
+        (s) => s.type === "operator_service_restriction"
+      );
+
+      if (isSportsbook && override.verificationScope === "global" && hasOnlyRestrictionSources) {
+        errors.push(
+          `Affiliate override "${affiliateId}" is a sportsbook operator marked globally verified with only operator_service_restriction sources. Positive eligibility evidence is required for global scope.`
+        );
+      }
+
+      if (allowed.length > 0) {
+        const hasPositiveEvidence = sources.some((s) =>
+          POSITIVE_EVIDENCE_SOURCE_TYPES.has(s.type)
+        );
+        if (!hasPositiveEvidence) {
+          errors.push(
+            `Affiliate override "${affiliateId}" specifies allowedCountries but lacks positive evidence sources (e.g. regulator_license, affiliate_program_geo, partner_manager, legal_review).`
           );
         }
       }
