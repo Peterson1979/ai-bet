@@ -745,15 +745,15 @@ async function fetchSportEvents(
   sportLabel: string,
   leagueLabel: string,
   creditState: { used: number }
-): Promise<OddsEvent[]> {
-  if (!API_KEY || IS_BUILD) return [];
+): Promise<{ events: OddsEvent[]; failed: boolean; error?: string }> {
+  if (!API_KEY || IS_BUILD) return { events: [], failed: false };
 
   const cached = getCache(sportKey);
-  if (cached) return cached;
+  if (cached) return { events: cached, failed: false };
 
   if (creditState.used >= DAILY_CREDIT_LIMIT) {
     console.warn(`[odds] Napi kredit-keret (${DAILY_CREDIT_LIMIT}) elérve, kihagyva: ${sportKey}`);
-    return [];
+    return { events: [], failed: false };
   }
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
@@ -775,12 +775,12 @@ async function fetchSportEvents(
 
     if (!response) {
       console.error(`[odds] ${sportKey} fetch failed: no response`);
-      return [];
+      return { events: [], failed: true, error: `No response from The Odds API for ${sportKey}` };
     }
 
     if (!response.ok) {
       console.error(`[odds] ${sportKey} fetch failed: ${response.status}`);
-      return [];
+      return { events: [], failed: true, error: `The Odds API HTTP ${response.status} for ${sportKey}` };
     }
 
     const data = await response.json();
@@ -897,17 +897,29 @@ async function fetchSportEvents(
     events.sort(rankEvents);
 
     setCache(sportKey, events);
-    return events;
+    return { events, failed: false };
   } catch (error) {
     console.error(`[odds] fetchSportEvents error (${sportKey}):`, error);
-    return [];
+    return {
+      events: [],
+      failed: true,
+      error: error instanceof Error ? error.message : `Unknown fetch error for ${sportKey}`,
+    };
   }
 }
 
-export async function getDailyEvents(): Promise<{ sport: string; events: OddsEvent[] }[]> {
+export type DailySportEvents = {
+  sport: string;
+  events: OddsEvent[];
+  fetchFailed?: boolean;
+  error?: string;
+};
+
+export async function getDailyEvents(): Promise<DailySportEvents[]> {
+  const uniqueLabels = [...new Set(WATCHED_SPORTS.map((s) => s.label))];
+
   if (!API_KEY || IS_BUILD) {
-    const uniqueLabels = [...new Set(WATCHED_SPORTS.map((s) => s.label))];
-    return uniqueLabels.map((label) => ({ sport: label, events: [] }));
+    return uniqueLabels.map((label) => ({ sport: label, events: [], fetchFailed: false }));
   }
 
   try {
@@ -916,10 +928,18 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
       { cache: "no-store" }
     );
 
-    let activeSports: { key: string; active: boolean; has_outrights: boolean }[] = [];
-    if (activeSportsRes.ok) {
-      activeSports = await activeSportsRes.json();
+    if (!activeSportsRes.ok) {
+      console.error(`[odds] active sports fetch failed: ${activeSportsRes.status}`);
+      return uniqueLabels.map((label) => ({
+        sport: label,
+        events: [],
+        fetchFailed: true,
+        error: `Failed to fetch active sports from The Odds API (HTTP ${activeSportsRes.status})`,
+      }));
     }
+
+    const activeSports: { key: string; active: boolean; has_outrights: boolean }[] =
+      await activeSportsRes.json();
 
     const activeKeys = new Set<string>(
       activeSports
@@ -933,6 +953,7 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
 
     const creditState = { used: 0 };
     const eventsByLabel = new Map<string, OddsEvent[]>();
+    const failedByLabel = new Map<string, string>();
 
     for (const sport of sportsToFetch) {
       if (creditState.used >= DAILY_CREDIT_LIMIT) {
@@ -942,41 +963,65 @@ export async function getDailyEvents(): Promise<{ sport: string; events: OddsEve
         break;
       }
 
-      const events = await fetchSportEvents(sport.key, sport.label, sport.league, creditState);
+      const { events, failed, error } = await fetchSportEvents(
+        sport.key,
+        sport.label,
+        sport.league,
+        creditState
+      );
 
-      if (!eventsByLabel.has(sport.label)) {
-        eventsByLabel.set(sport.label, []);
+      if (failed) {
+        failedByLabel.set(sport.label, error ?? `Fetch failed for ${sport.key}`);
+      } else {
+        if (!eventsByLabel.has(sport.label)) {
+          eventsByLabel.set(sport.label, []);
+        }
+        eventsByLabel.get(sport.label)!.push(...events);
       }
-
-      eventsByLabel.get(sport.label)!.push(...events);
 
       await sleep(INTER_REQUEST_DELAY_MS);
     }
 
     console.log(`[odds] Napi kreditfelhasználás: ${creditState.used} / ${DAILY_CREDIT_LIMIT}`);
 
-    const results: { sport: string; events: OddsEvent[] }[] = [];
-
-    for (const [label, rawEvents] of eventsByLabel) {
-      const config = SPORT_CONFIG[label] ?? DEFAULT_CONFIG;
-      const deduped = dedupeEvents(rawEvents);
-      const selected = selectWithLeagueGuarantee(deduped, config.maxEvents);
-      results.push({ sport: label, events: selected });
-    }
-
-    const resultLabels = new Set(results.map((result) => result.sport));
-    const uniqueLabels = [...new Set(WATCHED_SPORTS.map((sport) => sport.label))];
+    const results: DailySportEvents[] = [];
 
     for (const label of uniqueLabels) {
-      if (!resultLabels.has(label)) {
-        results.push({ sport: label, events: [] });
+      if (failedByLabel.has(label)) {
+        results.push({
+          sport: label,
+          events: [],
+          fetchFailed: true,
+          error: failedByLabel.get(label),
+        });
+      } else if (eventsByLabel.has(label)) {
+        const config = SPORT_CONFIG[label] ?? DEFAULT_CONFIG;
+        const rawEvents = eventsByLabel.get(label)!;
+        const deduped = dedupeEvents(rawEvents);
+        const selected = selectWithLeagueGuarantee(deduped, config.maxEvents);
+        results.push({
+          sport: label,
+          events: selected,
+          fetchFailed: false,
+        });
+      } else {
+        // Genuinely off-season or no active games scheduled today
+        results.push({
+          sport: label,
+          events: [],
+          fetchFailed: false,
+        });
       }
     }
 
     return results;
   } catch (error) {
     console.error("[odds] getDailyEvents error:", error);
-    const uniqueLabels = [...new Set(WATCHED_SPORTS.map((sport) => sport.label))];
-    return uniqueLabels.map((label) => ({ sport: label, events: [] }));
+    return uniqueLabels.map((label) => ({
+      sport: label,
+      events: [],
+      fetchFailed: true,
+      error: error instanceof Error ? error.message : "getDailyEvents execution failed",
+    }));
   }
 }

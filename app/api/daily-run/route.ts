@@ -38,12 +38,38 @@ else
 end
 `;
 
+export type SportStatus = "success" | "no_events" | "failed";
+
 type SportResult = {
   sport: string;
+  status: SportStatus;
   hasMatches: boolean;
   message?: string;
   topPicks: any[];
 };
+
+function isSportFailed(sport?: { status?: string; message?: string }): boolean {
+  if (!sport) return false;
+  if (sport.status) {
+    return sport.status === "failed";
+  }
+  if (typeof sport.message === "string") {
+    const msg = sport.message.toLowerCase();
+    if (
+      msg.includes("ai generation failed") ||
+      msg.includes("upstream data fetch failed") ||
+      msg.includes("fetch failed")
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function countFailedSports(sports?: Array<{ status?: string; message?: string }>): number {
+  if (!Array.isArray(sports)) return 0;
+  return sports.filter(isSportFailed).length;
+}
 
 async function generateAI(prompt: string) {
   const { generatePrediction } = await import("@/app/lib/groq");
@@ -193,8 +219,10 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const force = url.searchParams.get("force") === "1";
 
+  let cached: any = null;
+
   try {
-    const cached = await redis.get(CACHE_KEY);
+    cached = await redis.get(CACHE_KEY);
     if (cached && !force) {
       return Response.json({ success: true, cached: true, data: cached });
     }
@@ -249,11 +277,24 @@ export async function GET(request: Request) {
     const seenEvents = new Set<string>();
 
     for (const sportBlock of sportsData) {
+      if (sportBlock.fetchFailed) {
+        result.sports.push({
+          sport: sportBlock.sport,
+          status: "failed",
+          hasMatches: false,
+          message:
+            sportBlock.error ?? `Upstream data fetch failed for ${sportBlock.sport}.`,
+          topPicks: [],
+        });
+        continue;
+      }
+
       const events = sportBlock.events?.slice(0, MAX_EVENTS_PER_SPORT) ?? [];
 
       if (events.length === 0) {
         result.sports.push({
           sport: sportBlock.sport,
+          status: "no_events",
           hasMatches: false,
           message: `No ${sportBlock.sport} events available today.`,
           topPicks: [],
@@ -267,6 +308,7 @@ export async function GET(request: Request) {
       if (!aiResults || aiResults.length === 0) {
         result.sports.push({
           sport: sportBlock.sport,
+          status: "failed",
           hasMatches: false,
           message: `AI generation failed for ${sportBlock.sport}.`,
           topPicks: [],
@@ -447,8 +489,86 @@ export async function GET(request: Request) {
 
       result.sports.push({
         sport: sportBlock.sport,
+        status: "success",
         hasMatches: rankedTopPicks.length > 0,
         topPicks: rankedTopPicks,
+      });
+    }
+
+    const newFailedCount = countFailedSports(result.sports);
+    const newHealthyCount = result.sports.length - newFailedCount;
+
+    let shouldStore = false;
+    let preserveReason: string | null = null;
+
+    if (newFailedCount === 0) {
+      // CASE A: 0 failures in new run -> STORE NEW
+      shouldStore = true;
+    } else if (!cached) {
+      // CASE B: Failures present and no existing today's cache
+      if (newHealthyCount > 0) {
+        // At least one sport completed healthily -> STORE PARTIAL
+        shouldStore = true;
+      } else {
+        // All attempted sports failed -> FAIL WITHOUT STORE
+        console.error(
+          "[daily-run] Initial generation completely failed on all sports. Not writing error shell to Redis."
+        );
+        return Response.json(
+          {
+            success: false,
+            stored: false,
+            error: "All sports failed during initial daily generation.",
+            health: {
+              attemptedSports: result.sports.length,
+              failedSports: newFailedCount,
+              healthySports: newHealthyCount,
+            },
+          },
+          { status: 500 }
+        );
+      }
+    } else {
+      // CASE C: Failures present and existing today's cache exists
+      const cachedFailedCount = countFailedSports(cached.sports);
+
+      if (newFailedCount < cachedFailedCount) {
+        // New run is demonstrably healthier than existing cache -> STORE NEW
+        shouldStore = true;
+      } else {
+        // New run is as degraded or more degraded than existing cache -> PRESERVE OLD
+        shouldStore = false;
+        preserveReason = "degraded_result_preserved_existing";
+      }
+    }
+
+    if (!shouldStore) {
+      const cachedFailedCount = countFailedSports(cached?.sports);
+      console.warn(
+        "[daily-run] Degraded generation rejected. Preserving existing healthy dataset in Redis.",
+        {
+          newFailedSports: newFailedCount,
+          cachedFailedSports: cachedFailedCount,
+          attemptedSports: result.sports.length,
+        }
+      );
+
+      return Response.json({
+        success: true,
+        stored: false,
+        skipped: true,
+        reason: preserveReason ?? "degraded_result_preserved_existing",
+        data: cached,
+        health: {
+          newFailedSports: newFailedCount,
+          cachedFailedSports: cachedFailedCount,
+          attemptedSports: result.sports.length,
+        },
+        socialRun: {
+          ok: true,
+          skipped: true,
+          reason: "generation_degraded_existing_preserved",
+        },
       });
     }
 
@@ -496,10 +616,16 @@ export async function GET(request: Request) {
 
     return Response.json({
       success: true,
+      stored: true,
       cached: false,
       data: result,
       message: "Picks generated successfully.",
       generatedSports: result.sports.length,
+      health: {
+        attemptedSports: result.sports.length,
+        failedSports: newFailedCount,
+        healthySports: newHealthyCount,
+      },
       socialRun,
     });
   } catch (error) {
