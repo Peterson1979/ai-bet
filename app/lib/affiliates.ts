@@ -342,7 +342,9 @@ export function getMatchCardUrl(sport: string): string {
     (a, b) => b.rating - a.rating
   )[0];
 
-  return fallback ? buildAffiliateUrl(fallback, "matchcard") : "#";
+  return fallback
+    ? buildAffiliateUrl(fallback, "matchcard")
+    : "https://www.matchsignal.pro";
 }
 
 export function getBookmakerAffiliateUrl(

@@ -204,7 +204,8 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       ? partnerOffer.odds
       : data.partnerOdds ?? data.bestOdds;
 
-  const primaryCtaHref = partnerOffer?.trackingUrl || data.bookmakerUrl || "#";
+  const primaryCtaHref =
+    partnerOffer?.trackingUrl || data.bookmakerUrl || `/${lang}/betting`;
 
   const primaryCtaLabel = partnerName
     ? (t.claimOfferAt ?? "Claim offer at {partner}").replace(
