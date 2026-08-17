@@ -269,6 +269,7 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
       rawArrayLength: parsed.length,
       validResults: results.length,
       invalidResults: invalidCount,
+      usage: data.usage,
     });
 
     if (results.length === 0) {

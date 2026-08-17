@@ -572,6 +572,51 @@ export async function GET(request: Request) {
       });
     }
 
+    // Translate AI analysis on final stored top picks across all healthy sports
+    try {
+      const { translateReasonings } = await import("@/app/lib/translation");
+      const itemsToTranslate: Array<{ id: string; reasoning: string }> = [];
+
+      for (const sport of result.sports) {
+        if (!Array.isArray(sport.topPicks)) continue;
+        for (const pick of sport.topPicks) {
+          if (pick.reasoning && pick.id) {
+            itemsToTranslate.push({ id: pick.id, reasoning: pick.reasoning });
+          }
+        }
+      }
+
+      if (itemsToTranslate.length > 0) {
+        const translationResult = await translateReasonings(itemsToTranslate);
+
+        for (const sport of result.sports) {
+          if (!Array.isArray(sport.topPicks)) continue;
+          for (const pick of sport.topPicks) {
+            const tr = translationResult.translations.get(pick.id);
+            if (tr && Object.keys(tr).length > 0) {
+              pick.reasoningTranslations = tr;
+            }
+          }
+        }
+
+        console.log("[daily-run] Translation summary:", {
+          totalItems: itemsToTranslate.length,
+          translatedCount: translationResult.translations.size,
+          requests: translationResult.usage.requests,
+          observedTokens: translationResult.usage.tokens,
+          cachedHits: translationResult.usage.cachedHits,
+          skippedByBudget: translationResult.usage.skippedByBudget,
+          skippedByRedis: translationResult.usage.skippedByRedis,
+          rateLimitRetries: translationResult.usage.rateLimitRetries,
+        });
+      }
+    } catch (trError) {
+      console.warn(
+        "[daily-run] Translation step encountered an error; continuing with canonical English.",
+        trError
+      );
+    }
+
     await redis.set(CACHE_KEY, result, { ex: CACHE_TTL });
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? new URL(request.url).origin;

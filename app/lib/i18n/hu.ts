@@ -25,7 +25,7 @@ const hu: DeepPartial<Translation> = {
   valueSignalValue: "⚡ Értékes szorzó",
   valueSignalBelow: "⚠ Piaci átlag alatt",
   valueSignalFair: "✅ Piaccal összhangban",
-  aiAnalysisLabel: "AI Elemzés (EN)",
+  aiAnalysisLabel: "AI elemzés",
   odds: "Szorzó",
   confidence: "Megbízhatóság",
   edge: "Előny",

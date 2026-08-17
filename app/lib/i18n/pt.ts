@@ -27,7 +27,7 @@ const pt: DeepPartial<Translation> = {
   valueSignalValue: "⚡ Odds de valor",
   valueSignalBelow: "⚠ Abaixo do mercado",
   valueSignalFair: "✅ Alinhado ao mercado",
-  aiAnalysisLabel: "Análise IA (EN)",
+  aiAnalysisLabel: "Análise IA",
   odds: "Odds",
   viewOdds: "Ver odds",
   compareAllOffers: "Comparar todas as ofertas →",

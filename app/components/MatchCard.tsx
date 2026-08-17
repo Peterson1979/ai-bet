@@ -290,7 +290,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
               {t.bestPartnerOdds ?? "Best Odds"}
             </span>
-            <p className={`text-xl font-black ${valueTone}`}>
+            <p className={`text-xl md:text-2xl font-black ${valueTone}`}>
               {partnerOddsLabel}
             </p>
           </div>
@@ -303,7 +303,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           <p className="text-[10px] uppercase font-bold text-slate-400">
             {t.estimatedValue ?? "Value Edge"}
           </p>
-          <p className={`text-sm font-black mt-0.5 ${valueTone}`}>
+          <p className={`text-sm md:text-base font-black mt-0.5 ${valueTone}`}>
             {estimatedValueLabel}
           </p>
         </div>
@@ -312,7 +312,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           <p className="text-[10px] uppercase font-bold text-slate-400">
             {t.marketAverage ?? "Market Avg"}
           </p>
-          <p className="text-sm font-black text-slate-200 mt-0.5">
+          <p className="text-sm md:text-base font-black text-slate-200 mt-0.5">
             {marketAverageLabel}
           </p>
         </div>
@@ -321,7 +321,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           <p className="text-[10px] uppercase font-bold text-slate-400">
             {t.fairProbability ?? "Fair Prob"}
           </p>
-          <p className="text-sm font-black text-slate-200 mt-0.5">
+          <p className="text-sm md:text-base font-black text-slate-200 mt-0.5">
             {fairProbLabel}
           </p>
         </div>
@@ -330,7 +330,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           <p className="text-[10px] uppercase font-bold text-slate-400">
             {t.bookmakersTracked ?? "Books Sampled"}
           </p>
-          <p className="text-sm font-black text-slate-200 mt-0.5">
+          <p className="text-sm md:text-base font-black text-slate-200 mt-0.5">
             {data.bookmakerCount ?? 0}
           </p>
         </div>
@@ -339,14 +339,14 @@ export default function MatchCard({ data, lang = "en" }: Props) {
       {/* 5. AI Rationale & Context */}
       <details className="rounded-xl border border-white/10 bg-[#060D1A] p-3 mb-4 group text-slate-300">
         <summary className="cursor-pointer list-none flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-cyan-300">
-          <span>{t.aiAnalysisLabel ?? "AI Analysis & Rationale"}</span>
+          <span>{t.aiAnalysisLabel ?? "AI Analysis"}</span>
           <span className="text-slate-400 group-open:rotate-180 transition">
             ⌄
           </span>
         </summary>
 
         <p className="mt-2 text-xs text-slate-300 leading-relaxed">
-          {data.reasoning || t.noExplanation}
+          {data.reasoningTranslations?.[lang] || data.reasoning || t.noExplanation}
         </p>
       </details>
 

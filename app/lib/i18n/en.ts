@@ -25,7 +25,7 @@ const en: Translation = {
   valueSignalValue: "⚡ Value odds",
   valueSignalBelow: "⚠ Below market",
   valueSignalFair: "✅ Market aligned",
-  aiAnalysisLabel: "AI Analysis (EN)",
+  aiAnalysisLabel: "AI Analysis",
   odds: "Odds",
   confidence: "Confidence",
   edge: "Edge",

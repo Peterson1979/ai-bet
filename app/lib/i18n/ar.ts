@@ -27,7 +27,7 @@ const ar:DeepPartial<Translation> = {
   valueSignalValue: "⚡ قيمة رهان",
   valueSignalBelow: "⚠ أقل من متوسط السوق",
   valueSignalFair: "✅ متوافق مع السوق",
-  aiAnalysisLabel: "تحليل الذكاء الاصطناعي (EN)",
+  aiAnalysisLabel: "تحليل الذكاء الاصطناعي",
   odds: "الاحتمالات",
   viewOdds: "عرض الاحتمالات",
   compareAllOffers: "مقارنة جميع العروض →",

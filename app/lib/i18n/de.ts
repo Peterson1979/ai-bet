@@ -27,7 +27,7 @@ const de: Partial<Translation> = {
   valueSignalValue: "⚡ Wertquote",
   valueSignalBelow: "⚠ Unter Marktniveau",
   valueSignalFair: "✅ Marktkonform",
-  aiAnalysisLabel: "KI-Analyse (EN)",
+  aiAnalysisLabel: "KI-Analyse",
   odds: "Quote",
   viewOdds: "Quoten ansehen",
   compareAllOffers: "Alle Angebote vergleichen →",
