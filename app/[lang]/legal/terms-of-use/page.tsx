@@ -1,5 +1,19 @@
 import { redirect } from "next/navigation";
 import type { Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+  return {
+    title: "Terms of Use | MatchSignal",
+    description:
+      "Terms of use and legal conditions for using MatchSignal sports betting analysis platform.",
+    alternates: {
+      canonical: `${baseUrl}/en/legal/terms-of-use`,
+    },
+  };
+}
 
 export default async function TermsOfUsePage({
   params,

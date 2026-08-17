@@ -1,5 +1,19 @@
 import { redirect } from "next/navigation";
 import type { Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+  return {
+    title: "Cookie Policy | MatchSignal",
+    description:
+      "Information about how cookies and tracking technologies are used on the MatchSignal sports betting platform.",
+    alternates: {
+      canonical: `${baseUrl}/en/legal/cookie-policy`,
+    },
+  };
+}
 
 export default async function CookiePolicyPage({
   params,

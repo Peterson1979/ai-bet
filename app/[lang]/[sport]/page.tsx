@@ -47,7 +47,7 @@ export async function generateMetadata({
   const t = translations[lang] ?? translations.en;
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
 
   const sportName = t.sports[sportKey];
 
@@ -70,15 +70,13 @@ export async function generateMetadata({
   supportedLangs.forEach((l) => {
     languages[l] = `${baseUrl}/${l}/${sport}`;
   });
+  languages["x-default"] = `${baseUrl}/en/${sport}`;
 
   return {
     title: `${t.sportPageTitle.replace("{SPORT}", sportName)} | MatchSignal`,
-
     description: t.sportPageDescription.replace("{SPORT}", sportName),
-
     alternates: {
       canonical: `${baseUrl}/${lang}/${sport}`,
-
       languages,
     },
   };

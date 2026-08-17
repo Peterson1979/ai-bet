@@ -3,7 +3,7 @@ import Hero from "../components/Hero";
 import MatchCard from "../components/MatchCard";
 import Footer from "../components/Footer";
 import { getPredictions } from "../lib/getPredictions";
-import { translations, Lang } from "@/app/lib/i18n";
+import { translations, Lang, LANGS } from "@/app/lib/i18n";
 import type { SportType } from "../types/match";
 import type { PredictionCard } from "@/app/types/prediction";
 import { toMatchCardData } from "@/app/lib/domain/matchMapper";
@@ -16,22 +16,25 @@ import { HOMEPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import { sortSportBlocks } from "@/app/lib/sportsConfig";
 import SportSection from "@/app/components/SportSection";
 
-const SUPPORTED_LANGS = ["en", "hu", "es", "de", "fr", "pt", "it", "hi", "ar", "zh", "ja"];
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ lang: Lang }>;
 }): Promise<Metadata> {
   const { lang } = await params;
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
+  const t = translations[lang] ?? translations.en;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
 
   const languages: Record<string, string> = {};
-  SUPPORTED_LANGS.forEach((l) => {
+  LANGS.forEach((l) => {
     languages[l] = `${baseUrl}/${l}`;
   });
+  languages["x-default"] = `${baseUrl}/en`;
 
   return {
+    title: t.seoTitle,
+    description: t.seoDescription,
     alternates: {
       canonical: `${baseUrl}/${lang}`,
       languages,
@@ -62,13 +65,15 @@ export default async function HomePage({
   const predictions: PredictionsData | null = await getPredictions();
 
   const t = translations[lang] ?? translations.en;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: t.seoTitle,
     description: t.seoDescription,
-    url: process.env.NEXT_PUBLIC_SITE_URL,
+    url: `${baseUrl}/${lang}`,
   };
 
   const sportLinks = [

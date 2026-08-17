@@ -5,16 +5,29 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "AI Betting Tips - Daily Value Bets",
+  metadataBase: new URL("https://www.matchsignal.pro"),
+  title: {
+    default: "MatchSignal – Free AI Sports Betting Tips & Market Analysis",
+    template: "%s | MatchSignal",
+  },
   description:
-    "AI-powered football predictions with odds comparison and value bet detection.",
+    "Free AI-powered sports betting tips, market analysis, and value odds across Football, NBA, NFL, NHL, Tennis, MLB, and MMA.",
   keywords: [
     "betting tips",
-    "football predictions",
+    "sports predictions",
+    "football betting tips",
     "AI betting",
     "value bets",
     "odds analysis",
   ],
+  openGraph: {
+    siteName: "MatchSignal",
+    type: "website",
+    url: "https://www.matchsignal.pro",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default async function RootLayout({

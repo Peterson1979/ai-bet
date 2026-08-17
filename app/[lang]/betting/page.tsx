@@ -1,7 +1,34 @@
 import { getSidebarSites } from "@/app/lib/affiliates";
 import Header from "@/app/components/Header";
 import SimpleFooter from "@/app/components/SimpleFooter";
-import { translations, Lang } from "@/app/lib/i18n";
+import { translations, Lang, LANGS } from "@/app/lib/i18n";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: Lang }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const t = translations[lang] ?? translations.en;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+
+  const languages: Record<string, string> = {};
+  LANGS.forEach((l) => {
+    languages[l] = `${baseUrl}/${l}/betting`;
+  });
+  languages["x-default"] = `${baseUrl}/en/betting`;
+
+  return {
+    title: `${t.bettingPage.title} | MatchSignal`,
+    description: t.bettingPage.description,
+    alternates: {
+      canonical: `${baseUrl}/${lang}/betting`,
+      languages,
+    },
+  };
+}
 
 export default async function BettingPage({
   params,
@@ -11,13 +38,15 @@ export default async function BettingPage({
   const { lang } = await params;
   const t = translations[lang] ?? translations.en;
   const sites = await Promise.resolve(getSidebarSites());
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: t.bettingPage.title,
     description: t.bettingPage.description,
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/betting`,
+    url: `${baseUrl}/${lang}/betting`,
   };
 
   return (

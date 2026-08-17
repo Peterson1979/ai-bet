@@ -16,7 +16,7 @@ export async function generateMetadata({
   }
 
   const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
 
   return {
     title: "About MatchSignal | Quantitative Sports Analytics & Methodology",

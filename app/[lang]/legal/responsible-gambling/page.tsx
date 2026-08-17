@@ -1,5 +1,19 @@
 import { redirect } from "next/navigation";
 import type { Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+  return {
+    title: "Responsible Gambling | MatchSignal",
+    description:
+      "Responsible gambling resources, guidelines, and self-exclusion support information for MatchSignal users.",
+    alternates: {
+      canonical: `${baseUrl}/en/legal/responsible-gambling`,
+    },
+  };
+}
 
 export default async function ResponsibleGamblingPage({
   params,

@@ -1,7 +1,7 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import TopRatedSportsbooksList from "@/app/components/TopRatedSportsbooksList";
-import { translations, Lang } from "@/app/lib/i18n";
+import { translations, Lang, LANGS } from "@/app/lib/i18n";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -12,11 +12,21 @@ export async function generateMetadata({
   const { lang } = await params;
   const t = translations[lang] ?? translations.en;
   const g = t.glossary;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+
+  const languages: Record<string, string> = {};
+  LANGS.forEach((l) => {
+    languages[l] = `${baseUrl}/${l}/betting-glossary`;
+  });
+  languages["x-default"] = `${baseUrl}/en/betting-glossary`;
+
   return {
-    title: g.pageTitle + " – MatchSignal",
+    title: `${g.pageTitle} | MatchSignal`,
     description: g.pageSubtitle,
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/betting-glossary`,
+      canonical: `${baseUrl}/${lang}/betting-glossary`,
+      languages,
     },
   };
 }

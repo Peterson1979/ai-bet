@@ -1,5 +1,19 @@
 import { redirect } from "next/navigation";
 import type { Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+  return {
+    title: "Affiliate Disclosure | MatchSignal",
+    description:
+      "Commercial affiliate disclosure and advertising transparency for MatchSignal.",
+    alternates: {
+      canonical: `${baseUrl}/en/legal/affiliate-disclosure`,
+    },
+  };
+}
 
 export default async function AffiliateDisclosurePage({
   params,

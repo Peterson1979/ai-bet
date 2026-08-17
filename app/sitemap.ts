@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://matchsignal.pro";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
 
 const langs = [
   "en",
@@ -28,22 +28,21 @@ const sports = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-
   const multilingualPages = [
-    { 
-      path: "", 
-      changeFrequency: "daily" as const, 
-      priority: 1 
+    {
+      path: "",
+      changeFrequency: "daily" as const,
+      priority: 1,
     },
-    { 
-      path: "/betting", 
-      changeFrequency: "monthly" as const, 
-      priority: 0.8 
+    {
+      path: "/betting",
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
     },
-    { 
-      path: "/tools", 
-      changeFrequency: "monthly" as const, 
-      priority: 0.7 
+    {
+      path: "/tools",
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
     },
     {
       path: "/betting-glossary",
@@ -88,51 +87,48 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
       priority: 0.3,
     },
+    {
+      path: "/legal/earnings-disclaimer",
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
+    {
+      path: "/legal/ai-disclaimer",
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    },
   ];
-
 
   const entries: MetadataRoute.Sitemap = [];
 
-
   for (const lang of langs) {
-
     for (const page of multilingualPages) {
-
       entries.push({
         url: `${baseUrl}/${lang}${page.path}`,
         lastModified: new Date(),
         changeFrequency: page.changeFrequency,
         priority: page.priority,
       });
-
     }
 
-
     for (const sport of sports) {
-
       entries.push({
         url: `${baseUrl}/${lang}/${sport}`,
         lastModified: new Date(),
         changeFrequency: "daily",
         priority: 0.8,
       });
-
     }
-
   }
 
-
   for (const page of englishOnlyPages) {
-
     entries.push({
       url: `${baseUrl}/en${page.path}`,
       lastModified: new Date(),
       changeFrequency: page.changeFrequency,
       priority: page.priority,
     });
-
   }
-
 
   return entries;
 }

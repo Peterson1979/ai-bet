@@ -1,5 +1,19 @@
 import { redirect } from "next/navigation";
 import type { Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+  return {
+    title: "AI Disclaimer | MatchSignal",
+    description:
+      "Artificial intelligence limitations, methodology, and informational disclaimer for MatchSignal sports analysis.",
+    alternates: {
+      canonical: `${baseUrl}/en/legal/ai-disclaimer`,
+    },
+  };
+}
 
 export default async function AIDisclaimerPage({
   params,

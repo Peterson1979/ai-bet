@@ -1,5 +1,19 @@
 import { redirect } from "next/navigation";
 import type { Lang } from "@/app/lib/i18n";
+import type { Metadata } from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+  return {
+    title: "Privacy Policy | MatchSignal",
+    description:
+      "Privacy policy and data protection information for users of the MatchSignal sports betting analysis platform.",
+    alternates: {
+      canonical: `${baseUrl}/en/legal/privacy-policy`,
+    },
+  };
+}
 
 export default async function PrivacyPolicyPage({
   params,
