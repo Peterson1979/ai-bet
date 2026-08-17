@@ -17,64 +17,67 @@ export default async function CookiePolicyPage({
       </h1>
 
       <p className="mb-6">
-        MatchSignal uses cookies to improve user experience, analyze traffic,
-        and serve relevant advertising through Google AdSense.
+        MatchSignal uses cookies and browser storage technologies to maintain essential
+        platform functionality, analyze aggregated website traffic, and manage advertising delivery.
       </p>
 
       <h2 className="text-xl font-bold mt-8 mb-2 text-white">
-        What are cookies
+        What Are Cookies
       </h2>
 
       <p className="mb-4">
-        Cookies are small text files stored on your device when you visit our website.
-        They help us understand how users interact with the platform.
+        Cookies are small data files stored directly on your computer or mobile device by your
+        web browser. They help web applications remember preferences and understand how visitors
+        navigate through pages.
       </p>
 
       <h2 className="text-xl font-bold mt-8 mb-2 text-white">
-        Types of cookies we use
+        Categories of Cookies Used
       </h2>
 
-      <ul className="list-disc pl-6 space-y-2">
+      <ul className="list-disc pl-6 space-y-2 text-slate-300">
         <li>
-          <b>Essential cookies</b> – required for basic site functionality
+          <strong className="text-white">Strictly Necessary Cookies:</strong> Essential for core site
+          navigation, language preferences, and security.
         </li>
         <li>
-          <b>Analytics cookies (Google Analytics)</b> – measure traffic and usage
+          <strong className="text-white">Analytics Cookies:</strong> Collect aggregated, non-personally
+          identifiable information to measure audience trends and improve system speed.
         </li>
         <li>
-          <b>Advertising cookies (Google AdSense)</b> – show relevant ads
+          <strong className="text-white">Advertising Cookies:</strong> Used by advertising partners
+          (such as Google AdSense) to deliver contextual or personalized ads based on user consent.
         </li>
       </ul>
 
       <h2 className="text-xl font-bold mt-8 mb-2 text-white">
-        Cookie consent
+        Managing Your Cookie Preferences
       </h2>
 
       <p className="mb-4">
-        You can accept or reject non-essential cookies using the cookie banner.
-        Your preferences are stored locally in your browser.
+        You can customize or withdraw your consent for non-essential cookies at any time via the
+        on-site consent banner or by adjusting your browser&apos;s cookie and tracking settings.
       </p>
 
       <h2 className="text-xl font-bold mt-8 mb-2 text-white">
-        Third-party cookies
+        Contact Information
       </h2>
 
-      <p className="mb-4">
-        We use third-party services such as Google Analytics and Google AdSense,
-        which may place cookies according to their own policies.
-      </p>
+      <div className="mt-4 text-sm text-slate-400">
+        <p>Operator: Forray Gyöngyi (Sole proprietor / individual entrepreneur)</p>
+        <p>Address: 7633 Pécs, Esztergár Lajos utca 9/B, Hungary</p>
+        <p>Hungarian Tax Number: 74264166-1-22</p>
+        <p>Hungarian Sole Proprietor Registration Number: 57756666</p>
+        <p className="mt-2">
+          Privacy &amp; Cookie Inquiries:{" "}
+          <a href="mailto:privacy@matchsignal.pro" className="text-cyan-400 underline">
+            privacy@matchsignal.pro
+          </a>
+        </p>
+      </div>
 
-      <h2 className="text-xl font-bold mt-8 mb-2 text-white">
-        Your control
-      </h2>
-
-      <p className="mb-4">
-        You can disable cookies in your browser settings at any time.
-      </p>
-
-      <p className="mt-10 text-sm text-slate-400">
-        Operator: MatchSignal<br />
-        Contact: kicksignalhq@gmail.com
+      <p className="mt-8 text-xs text-slate-500">
+        Last updated: August 2026
       </p>
     </main>
   );

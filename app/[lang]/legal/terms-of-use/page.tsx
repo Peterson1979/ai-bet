@@ -15,8 +15,21 @@ export default async function TermsOfUsePage({
       <h1 className="text-4xl font-black text-white">Terms of Use</h1>
 
       <p className="mt-6">
-        By using MatchSignal, you agree to these Terms of Use.
+        By accessing or using MatchSignal, you agree to be bound by these Terms of Use.
       </p>
+
+      <h2 className="mt-8 text-2xl font-bold text-white">
+        Website Operator
+      </h2>
+
+      <div className="mt-4 text-slate-300">
+        <p className="font-bold text-white">Operator (Website, Commercial &amp; Affiliate Activity):</p>
+        <p>Forray Gyöngyi</p>
+        <p>Legal status: Sole proprietor (individual entrepreneur)</p>
+        <p>Address: 7633 Pécs, Esztergár Lajos utca 9/B, Hungary</p>
+        <p>Hungarian Tax Number: 74264166-1-22</p>
+        <p>Hungarian Sole Proprietor Registration Number: 57756666</p>
+      </div>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
         Informational Content Only
@@ -24,26 +37,29 @@ export default async function TermsOfUsePage({
 
       <p className="mt-4">
         MatchSignal provides informational sports analysis, statistics,
-        predictions and betting-related content for educational and
+        data comparisons and betting-related content for educational and
         entertainment purposes only.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        No Betting Services
+        No Betting or Gambling Services
       </h2>
 
       <p className="mt-4">
-        MatchSignal does not accept bets, process gambling transactions,
-        hold player funds or operate as a sportsbook.
+        MatchSignal is not a bookmaker, betting platform, or gambling operator.
+        We do not accept bets, facilitate gambling transactions, hold customer funds,
+        or provide financial services.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        User Responsibility
+        User Responsibility &amp; Jurisdictional Compliance
       </h2>
 
       <p className="mt-4">
-        Any decisions made based on information provided on this website
-        are entirely the responsibility of the user.
+        Users are solely responsible for ensuring that any betting or gambling activities
+        they participate in comply with the laws and regulations of their jurisdiction.
+        Any decisions made based on information found on MatchSignal are made entirely
+        at the user&apos;s own risk.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
@@ -51,8 +67,9 @@ export default async function TermsOfUsePage({
       </h2>
 
       <p className="mt-4">
-        We strive to provide accurate information but do not guarantee
-        completeness, reliability or accuracy.
+        While we endeavor to provide accurate and timely information, we make no warranties
+        or representations regarding the completeness, accuracy, or reliability of any data,
+        odds, predictions, or analyses displayed on this website.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
@@ -60,20 +77,29 @@ export default async function TermsOfUsePage({
       </h2>
 
       <p className="mt-4">
-        MatchSignal shall not be liable for any losses, damages or costs arising
-        from the use of this website.
+        MatchSignal, its operator, and contributors shall not be liable for any direct,
+        indirect, incidental, consequential, or pecuniary losses arising from the use of
+        or reliance on this website.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Contact
+        Contact Information
       </h2>
 
-      <p className="mt-4">
-        kicksignalhq@gmail.com
+      <p className="mt-4 text-slate-300">
+        Legal and formal inquiries:{" "}
+        <a href="mailto:legal@matchsignal.pro" className="text-cyan-400 underline">
+          legal@matchsignal.pro
+        </a>
+        <br />
+        General inquiries:{" "}
+        <a href="mailto:contact@matchsignal.pro" className="text-cyan-400 underline">
+          contact@matchsignal.pro
+        </a>
       </p>
 
       <p className="mt-8 text-sm text-slate-400">
-        Last updated: June 2026
+        Last updated: August 2026
       </p>
     </>
   );

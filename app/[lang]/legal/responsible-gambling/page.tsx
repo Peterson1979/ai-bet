@@ -17,55 +17,60 @@ export default async function ResponsibleGamblingPage({
       </h1>
 
       <p className="mt-6">
-        MatchSignal promotes responsible gambling practices.
+        MatchSignal is committed to supporting responsible gambling practices.
       </p>
 
       <p className="mt-4">
-        Sports betting should be treated as entertainment, not as a source of
-        income or financial recovery.
+        Sports betting should be approached strictly as a form of leisure and entertainment,
+        never as a financial plan, employment alternative, or method to recover debt.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Important Guidelines
+        Key Guidelines for Safe Play
       </h2>
 
-      <ul className="mt-4 list-disc pl-6 space-y-2">
-        <li>Only bet money you can afford to lose.</li>
-        <li>Set limits before placing bets.</li>
-        <li>Do not chase losses.</li>
-        <li>Take regular breaks from betting activities.</li>
-        <li>Never gamble while under emotional stress.</li>
-        <li>Seek help if gambling becomes problematic.</li>
+      <ul className="mt-4 list-disc pl-6 space-y-2 text-slate-300">
+        <li>Wager only funds you can comfortably afford to lose.</li>
+        <li>Set strict time and monetary budgets before placing bets.</li>
+        <li>Never chase losses or increase stakes impulsively.</li>
+        <li>Take regular, scheduled breaks from gambling activities.</li>
+        <li>Never gamble under the influence of alcohol, drugs, or emotional stress.</li>
+        <li>Recognize that no system, model, or AI prediction guarantees a winning bet.</li>
       </ul>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Age Restriction
+        Age Restrictions (18+)
       </h2>
 
       <p className="mt-4">
-        This website is intended for adults only. Users must comply with the
-        minimum legal gambling age applicable in their jurisdiction.
+        MatchSignal is intended exclusively for adults aged 18 and older, or the applicable legal
+        gambling age in your jurisdiction. Underage gambling is strictly prohibited by law.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Support Organizations
+        Independent Support &amp; Assistance
       </h2>
 
       <p className="mt-4">
-        If gambling is causing problems in your life, contact a local gambling
-        support organization or professional counseling service.
+        MatchSignal is not a gambling operator, bookmaker, or mental health treatment provider.
+        If gambling is impacting your personal life, health, or finances, we strongly encourage
+        seeking immediate, confidential support from recognized international and local organizations
+        such as Gamblers Anonymous, GamCare, Gambling Therapy, or your national helpline services.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Contact
+        Contact Information
       </h2>
 
-      <p className="mt-4">
-        kicksignalhq@gmail.com
+      <p className="mt-4 text-slate-300">
+        For user support and responsible gambling inquiries:{" "}
+        <a href="mailto:support@matchsignal.pro" className="text-cyan-400 underline">
+          support@matchsignal.pro
+        </a>
       </p>
 
       <p className="mt-8 text-sm text-slate-400">
-        Last updated: June 2026
+        Last updated: August 2026
       </p>
     </>
   );
