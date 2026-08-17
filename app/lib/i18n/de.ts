@@ -45,7 +45,6 @@ const de: Partial<Translation> = {
   whyThisSignal: "Warum dieses Signal",
   marketInfoAriaLabel: "Marktinfo",
   closeMarketInfoAriaLabel: "Marktinfo schließen",
-  claimOfferAt: "Angebot sichern bei {partner}",
   estimatedValue: "Geschätzter Value",
   sportPageTitle: "{SPORT} Vorhersagen & KI-Wettanalyse",
   sportPageDescription: "KI-basierte {SPORT}-Vorhersagen, Wettanalyse und Value-Tipps.",

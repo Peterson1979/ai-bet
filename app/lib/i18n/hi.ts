@@ -45,7 +45,6 @@ const hi: DeepPartial<Translation> = {
   whyThisSignal: "यह सिग्नल क्यों",
   marketInfoAriaLabel: "मार्केट जानकारी",
   closeMarketInfoAriaLabel: "मार्केट जानकारी बंद करें",
-  claimOfferAt: "{partner} पर ऑफ़र प्राप्त करें",
   estimatedValue: "अनुमानित मूल्य",
   sportPageTitle: "{SPORT} भविष्यवाणियाँ और AI सट्टेबाजी विश्लेषण",
   sportPageDescription: "AI के साथ {SPORT} भविष्यवाणियाँ, सट्टेबाजी विश्लेषण और वैल्यू पिक।",

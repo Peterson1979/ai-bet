@@ -45,7 +45,6 @@ const ja: DeepPartial<Translation> = {
   whyThisSignal: "このシグナルの理由",
   marketInfoAriaLabel: "マーケット情報",
   closeMarketInfoAriaLabel: "マーケット情報を閉じる",
-  claimOfferAt: "{partner} でオファーを獲得",
   estimatedValue: "推定バリュー",
   sportPageTitle: "{SPORT}予測とAI賭け分析",
   sportPageDescription: "AIによる{SPORT}予測、賭け分析、バリューピック。",

@@ -45,7 +45,6 @@ const zh:DeepPartial<Translation> = {
   whyThisSignal: "为何出现此信号",
   marketInfoAriaLabel: "市场信息",
   closeMarketInfoAriaLabel: "关闭市场信息",
-  claimOfferAt: "在 {partner} 领取优惠",
   estimatedValue: "估算价值",
   sportPageTitle: "{SPORT} 预测与 AI 博彩分析",
   sportPageDescription: "AI {SPORT} 预测、博彩分析及价值选择。",

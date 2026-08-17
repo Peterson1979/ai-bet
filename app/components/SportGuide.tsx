@@ -62,9 +62,6 @@ export default function SportGuide({ sportKey, lang }: SportGuideProps) {
                 <span>⚡</span>
                 {g.signalsTitle}
               </h3>
-              <p className="text-xs text-slate-400 mb-4 leading-relaxed">
-                {g.signalsDesc}
-              </p>
               <ul className="space-y-2 text-xs text-slate-300">
                 <li className="flex items-start gap-2">
                   <span className="text-cyan-400 font-bold">✓</span>
@@ -72,7 +69,7 @@ export default function SportGuide({ sportKey, lang }: SportGuideProps) {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-emerald-400 font-bold">✓</span>
-                  <span>{t.consensusProb ?? "Market Consensus Depth"}</span>
+                  <span>{t.bookmakersTracked ?? "Books Sampled"}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-purple-400 font-bold">✓</span>

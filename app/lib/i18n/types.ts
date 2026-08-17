@@ -120,7 +120,6 @@ export type Translation = {
   whyThisSignal: string;
   marketInfoAriaLabel: string;
   closeMarketInfoAriaLabel: string;
-  claimOfferAt: string;
   estimatedValue: string;
 
   sports: {

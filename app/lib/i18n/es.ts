@@ -45,7 +45,6 @@ const es: DeepPartial<Translation> = {
   whyThisSignal: "Por qué esta señal",
   marketInfoAriaLabel: "Información del mercado",
   closeMarketInfoAriaLabel: "Cerrar información del mercado",
-  claimOfferAt: "Aprovecha la oferta en {partner}",
   estimatedValue: "Valor estimado",
   sportPageTitle: "Predicciones de {SPORT} y análisis de apuestas con IA",
   sportPageDescription: "Predicciones de {SPORT} con IA, análisis de apuestas y selecciones de valor.",

@@ -45,7 +45,6 @@ const ar:DeepPartial<Translation> = {
   whyThisSignal: "لماذا هذا الإشارة",
   marketInfoAriaLabel: "معلومات السوق",
   closeMarketInfoAriaLabel: "إغلاق معلومات السوق",
-  claimOfferAt: "احصل على العرض لدى {partner}",
   estimatedValue: "القيمة التقديرية",
   sportPageTitle: "توقعات {SPORT} وتحليلات المراهنات بالذكاء الاصطناعي",
   sportPageDescription: "توقعات {SPORT} وتحليلات المراهنات وفرص القيمة باستخدام الذكاء الاصطناعي.",

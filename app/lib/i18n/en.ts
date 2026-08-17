@@ -77,7 +77,6 @@ bookmakersTracked: "Bookmakers tracked",
 whyThisSignal: "Why this signal",
 marketInfoAriaLabel: "Market info",
 closeMarketInfoAriaLabel: "Close market info",
-claimOfferAt: "Claim offer at {partner}",
 estimatedValue: "Estimated value",
   sports: {
     topPicks: "Top Picks",
@@ -176,7 +175,7 @@ estimatedValue: "Estimated value",
       desc: "The betting market used for the pick, such as Moneyline or Over/Under.",
     },
     bestPartnerOdds: {
-      title: "Best partner odds",
+      title: "Best Odds",
       desc: "The featured partner price currently shown for the pick.",
     },
     sportsbook: {
@@ -184,11 +183,11 @@ estimatedValue: "Estimated value",
       desc: "The bookmaker currently highlighted on the card.",
     },
     estimatedValue: {
-      title: "Estimated value",
+      title: "Value Edge",
       desc: "The estimated edge between the offered odds and the model view.",
     },
     marketAverage: {
-      title: "Market average",
+      title: "Market Avg",
       desc: "The average odds across tracked bookmakers, when available.",
     },
     fairOdds: {
@@ -208,7 +207,7 @@ estimatedValue: "Estimated value",
       desc: "The average implied probability across available bookmakers, when available.",
     },
     bookmakersTracked: {
-      title: "Bookmakers tracked",
+      title: "Books Sampled",
       desc: "How many bookmakers currently contribute market data.",
     },
     riskTier: {
@@ -357,7 +356,7 @@ estimatedValue: "Estimated value",
   },
   sportGuide: {
     overviewTitle: "How MatchSignal Evaluates {SPORT}",
-    overviewDesc: "MatchSignal continuously tracks bookmaker odds, historical performance data, and market spreads across {SPORT} events to calculate fair odds and isolate positive expected value (+EV).",
+    overviewDesc: "MatchSignal analyzes bookmaker odds and market data across {SPORT} events to estimate probabilities and identify positive expected value (+EV).",
     marketsTitle: "Analyzed {SPORT} Betting Markets",
     marketsDesc: "Our automated analysis evaluates key betting markets for pricing discrepancies and value opportunities:",
     signalsTitle: "Key Value & Risk Signals",

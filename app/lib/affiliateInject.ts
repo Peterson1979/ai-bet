@@ -43,7 +43,7 @@ export function injectAffiliateOffer(match: MatchCardData): MatchCardData {
           ? partnerOffer.odds
           : match.partnerOdds ?? null,
       bookmakerUrl: partnerOffer.trackingUrl,
-      ctaLabel: `Claim offer at ${partnerOffer.bookmakerName}`,
+      ctaLabel: `View odds at ${partnerOffer.bookmakerName}`,
     };
   }
 

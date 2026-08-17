@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
+const baseUrl = "https://www.matchsignal.pro";
 
 const langs = [
   "en",

@@ -208,10 +208,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
     partnerOffer?.trackingUrl || data.bookmakerUrl || `/${lang}/betting`;
 
   const primaryCtaLabel = partnerName
-    ? (t.claimOfferAt ?? "Claim offer at {partner}").replace(
-        "{partner}",
-        partnerName
-      )
+    ? `${t.viewOdds ?? "View odds"} — ${partnerName}`
     : data.ctaLabel || t.viewOdds || "View odds";
 
   const valueTone =

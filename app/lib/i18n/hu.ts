@@ -54,7 +54,6 @@ const hu: DeepPartial<Translation> = {
   whyThisSignal: "Miért ez a jelzés",
   marketInfoAriaLabel: "Piaci információ",
   closeMarketInfoAriaLabel: "Piaci információ bezárása",
-  claimOfferAt: "Ajánlat igénylése itt: {partner}",
   estimatedValue: "Becsült érték",
   sportPageTitle: "{SPORT} előrejelzések és AI fogadási elemzés",
 sportPageDescription: "AI-alapú {SPORT} előrejelzések, fogadási elemzés és értékes tippek.",
