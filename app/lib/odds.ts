@@ -1,4 +1,5 @@
 // app/lib/odds.ts
+import { Redis } from "@upstash/redis";
 import { SPORT_CONFIG, DEFAULT_CONFIG } from "./sportsConfig";
 import { AFFILIATE_SITES } from "./affiliates";
 
@@ -8,10 +9,114 @@ const IS_BUILD = process.env.NODE_ENV === "production" && !process.env.VERCEL_EN
 const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 10;
 
-const DAILY_CREDIT_LIMIT = 15;
+export const DAILY_CREDIT_LIMIT = 15;
+const REDIS_CREDIT_KEY_PREFIX = "odds:credits:";
+const REDIS_CREDIT_TTL_SECONDS = 36 * 3600; // 36 hours
 const ODDS_MAX_RETRIES = 3;
 const ODDS_RETRY_FALLBACK_MS = 5000;
 const INTER_REQUEST_DELAY_MS = 300;
+
+let redisClient: Redis | null = null;
+
+function getRedisClient(): Redis | null {
+  if (!redisClient && process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+    redisClient = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    });
+  }
+  return redisClient;
+}
+
+export function getUtcDateKey(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+const RESERVE_CREDIT_LUA = `
+local key = KEYS[1]
+local requested = tonumber(ARGV[1])
+local limit = tonumber(ARGV[2])
+local ttl = tonumber(ARGV[3])
+
+local current = tonumber(redis.call('get', key) or '0')
+if current + requested <= limit then
+    local newTotal = redis.call('incrby', key, requested)
+    if newTotal == requested then
+        redis.call('expire', key, ttl)
+    end
+    return { 1, newTotal }
+else
+    return { 0, current }
+end
+`;
+
+const RECONCILE_CREDIT_LUA = `
+local key = KEYS[1]
+local refund = tonumber(ARGV[1])
+
+local current = tonumber(redis.call('get', key) or '0')
+if current >= refund then
+    redis.call('decrby', key, refund)
+else
+    redis.call('set', key, 0)
+end
+return tonumber(redis.call('get', key) or '0')
+`;
+
+export async function reservePersistentDailyCredit(
+  dateKey: string,
+  requestedAmount: number = 1
+): Promise<{ allowed: boolean; currentTotal: number }> {
+  const redis = getRedisClient();
+  if (!redis) return { allowed: true, currentTotal: requestedAmount };
+  try {
+    const key = `${REDIS_CREDIT_KEY_PREFIX}${dateKey}`;
+    const result = (await redis.eval(
+      RESERVE_CREDIT_LUA,
+      [key],
+      [requestedAmount, DAILY_CREDIT_LIMIT, REDIS_CREDIT_TTL_SECONDS]
+    )) as [number, number];
+
+    const allowed = result?.[0] === 1;
+    const currentTotal = result?.[1] ?? 0;
+    return { allowed, currentTotal };
+  } catch (err) {
+    console.warn("[odds] Could not reserve daily credit in Redis:", err);
+    return { allowed: true, currentTotal: requestedAmount };
+  }
+}
+
+export async function refundPersistentDailyCredit(
+  dateKey: string,
+  refundAmount: number = 1
+): Promise<number> {
+  const redis = getRedisClient();
+  if (!redis || refundAmount <= 0) return 0;
+  try {
+    const key = `${REDIS_CREDIT_KEY_PREFIX}${dateKey}`;
+    const result = (await redis.eval(
+      RECONCILE_CREDIT_LUA,
+      [key],
+      [refundAmount]
+    )) as number;
+    return result ?? 0;
+  } catch (err) {
+    console.warn("[odds] Could not refund daily credit in Redis:", err);
+    return 0;
+  }
+}
+
+export async function getPersistentDailyCreditsUsed(dateKey: string): Promise<number> {
+  const redis = getRedisClient();
+  if (!redis) return 0;
+  try {
+    const val = await redis.get<number>(`${REDIS_CREDIT_KEY_PREFIX}${dateKey}`);
+    return typeof val === "number" && Number.isFinite(val) ? val : 0;
+  } catch (err) {
+    console.warn("[odds] Could not read daily credit usage from Redis:", err);
+    return 0;
+  }
+}
 
 const WATCHED_SPORTS = [
   { key: "soccer_fifa_world_cup", label: "Football", league: "FIFA World Cup", priority: 1 },
@@ -740,11 +845,41 @@ async function fetchOddsWithRetry(
   return { response: null, counted: false };
 }
 
+function balanceSportsByPriority(
+  activeWatchedSports: Array<(typeof WATCHED_SPORTS)[number]>
+): Array<(typeof WATCHED_SPORTS)[number]> {
+  const groups = new Map<string, Array<(typeof WATCHED_SPORTS)[number]>>();
+  for (const item of activeWatchedSports) {
+    if (!groups.has(item.label)) groups.set(item.label, []);
+    groups.get(item.label)!.push(item);
+  }
+
+  for (const list of groups.values()) {
+    list.sort((a, b) => a.priority - b.priority);
+  }
+
+  const balanced: Array<(typeof WATCHED_SPORTS)[number]> = [];
+  let added = true;
+  let round = 0;
+  while (added) {
+    added = false;
+    for (const list of groups.values()) {
+      if (round < list.length) {
+        balanced.push(list[round]);
+        added = true;
+      }
+    }
+    round++;
+  }
+  return balanced;
+}
+
 async function fetchSportEvents(
   sportKey: string,
   sportLabel: string,
   leagueLabel: string,
-  creditState: { used: number }
+  creditState: { used: number },
+  dateKey: string
 ): Promise<{ events: OddsEvent[]; failed: boolean; error?: string }> {
   if (!API_KEY || IS_BUILD) return { events: [], failed: false };
 
@@ -752,9 +887,19 @@ async function fetchSportEvents(
   if (cached) return { events: cached, failed: false };
 
   if (creditState.used >= DAILY_CREDIT_LIMIT) {
-    console.warn(`[odds] Napi kredit-keret (${DAILY_CREDIT_LIMIT}) elérve, kihagyva: ${sportKey}`);
+    console.warn(`[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping: ${sportKey}`);
     return { events: [], failed: false };
   }
+
+  const reservation = await reservePersistentDailyCredit(dateKey, 1);
+  if (!reservation.allowed) {
+    console.warn(
+      `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached in Redis, skipping: ${sportKey}`
+    );
+    creditState.used = DAILY_CREDIT_LIMIT;
+    return { events: [], failed: false };
+  }
+  creditState.used = reservation.currentTotal;
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
   const markets = "h2h";
@@ -767,11 +912,7 @@ async function fetchSportEvents(
       `&markets=${markets}` +
       `&oddsFormat=decimal`;
 
-    const { response, counted } = await fetchOddsWithRetry(url, sportKey);
-
-    if (counted) {
-      creditState.used += 1;
-    }
+    const { response } = await fetchOddsWithRetry(url, sportKey);
 
     if (!response) {
       console.error(`[odds] ${sportKey} fetch failed: no response`);
@@ -784,6 +925,16 @@ async function fetchSportEvents(
     }
 
     const data = await response.json();
+
+    const lastCharged = Number(response.headers.get("x-requests-last"));
+    const isZeroCharged =
+      (Number.isFinite(lastCharged) && lastCharged === 0) ||
+      (Array.isArray(data) && data.length === 0);
+
+    if (isZeroCharged) {
+      const reconciled = await refundPersistentDailyCredit(dateKey, 1);
+      creditState.used = reconciled;
+    }
 
     let events: OddsEvent[] = data.map((event: any) => {
       const allOffers = extractAllOffers(event);
@@ -922,6 +1073,16 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
     return uniqueLabels.map((label) => ({ sport: label, events: [], fetchFailed: false }));
   }
 
+  const dateKey = getUtcDateKey();
+  const persistentUsed = await getPersistentDailyCreditsUsed(dateKey);
+
+  if (persistentUsed >= DAILY_CREDIT_LIMIT) {
+    console.warn(
+      `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) already reached for ${dateKey} (used: ${persistentUsed}). Skipping upstream charged calls.`
+    );
+    return uniqueLabels.map((label) => ({ sport: label, events: [], fetchFailed: false }));
+  }
+
   try {
     const activeSportsRes = await fetch(
       `https://api.the-odds-api.com/v4/sports/?apiKey=${API_KEY}&all=false`,
@@ -947,18 +1108,17 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
         .map((sport) => sport.key)
     );
 
-    const sportsToFetch = WATCHED_SPORTS
-      .filter((sport) => activeKeys.has(sport.key))
-      .sort((a, b) => a.priority - b.priority);
+    const activeWatched = WATCHED_SPORTS.filter((sport) => activeKeys.has(sport.key));
+    const sportsToFetch = balanceSportsByPriority(activeWatched);
 
-    const creditState = { used: 0 };
+    const creditState = { used: persistentUsed };
     const eventsByLabel = new Map<string, OddsEvent[]>();
     const failedByLabel = new Map<string, string>();
 
     for (const sport of sportsToFetch) {
       if (creditState.used >= DAILY_CREDIT_LIMIT) {
         console.warn(
-          `[odds] Napi kredit-keret (${DAILY_CREDIT_LIMIT}) elérve, további sportok kihagyva.`
+          `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping remaining sports.`
         );
         break;
       }
@@ -967,7 +1127,8 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
         sport.key,
         sport.label,
         sport.league,
-        creditState
+        creditState,
+        dateKey
       );
 
       if (failed) {
@@ -982,7 +1143,7 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
       await sleep(INTER_REQUEST_DELAY_MS);
     }
 
-    console.log(`[odds] Napi kreditfelhasználás: ${creditState.used} / ${DAILY_CREDIT_LIMIT}`);
+    console.log(`[odds] Daily credit usage on ${dateKey}: ${creditState.used} / ${DAILY_CREDIT_LIMIT}`);
 
     const results: DailySportEvents[] = [];
 
