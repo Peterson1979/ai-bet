@@ -34,59 +34,80 @@ export default async function PrivacyPolicyPage({
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Website Operator
+        Data Controller
       </h2>
 
       <div className="mt-4 text-slate-300">
-        <p className="font-bold text-white">Operator:</p>
+        <p className="font-bold text-white">Data Controller (Website, Commercial &amp; Affiliate Activity):</p>
         <p>Forray Gyöngyi</p>
-        <p>Legal status: Sole proprietor (individual entrepreneur)</p>
+        <p>Legal status: Sole proprietor / individual entrepreneur</p>
         <p>Address: 7633 Pécs, Esztergár Lajos utca 9/B, Hungary</p>
         <p>Hungarian Tax Number: 74264166-1-22</p>
         <p>Hungarian Sole Proprietor Registration Number: 57756666</p>
+        <p className="mt-2">
+          Data Protection Contact:{" "}
+          <a href="mailto:privacy@matchsignal.pro" className="text-cyan-400 underline">
+            privacy@matchsignal.pro
+          </a>
+        </p>
       </div>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Information We Collect
-      </h2>
-
-      <ul className="mt-4 list-disc pl-6 space-y-2 text-slate-300">
-        <li>Contact information submitted voluntarily via our contact form.</li>
-        <li>Aggregated, anonymized website analytics data (e.g., page views, referring paths).</li>
-        <li>Browser configuration, operating system, and general device telemetry.</li>
-        <li>Locally stored cookie and consent preferences.</li>
-      </ul>
-
-      <h2 className="mt-8 text-2xl font-bold text-white">
-        Third-Party Services &amp; Telemetry
+        Information We Process
       </h2>
 
       <div className="mt-4 space-y-4 text-slate-300">
         <div>
-          <p className="font-bold text-white">Analytics</p>
-          <p>
-            We may use privacy-conscious analytics services to understand audience engagement
-            and improve site performance.
+          <p className="font-bold text-white">1. Strictly Necessary Data &amp; Preferences</p>
+          <p className="mt-1">
+            We store your chosen language and consent choices in local browser storage to respect your privacy preferences across sessions.
           </p>
         </div>
 
         <div>
-          <p className="font-bold text-white">Advertising</p>
-          <p>
-            Advertising networks (such as Google AdSense) may process device identifiers and
-            cookies to serve non-personalized or personalized advertisements in accordance with
-            your consent preferences.
+          <p className="font-bold text-white">2. Contact Form Submissions</p>
+          <p className="mt-1">
+            When you send a message through our contact form, we collect your name, email address, and message solely to respond to your inquiry. We do not sell or share this information for commercial marketing.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-bold text-white">3. Google Analytics 4 (Consent-Gated)</p>
+          <p className="mt-1">
+            With your explicit consent, we use Google Analytics 4 to collect aggregated, pseudonymous telemetry (such as page views, device type, and referring sources) with IP anonymization enabled. We implement Google Consent Mode v2 to ensure no analytics cookies or tracking storage are activated unless you grant permission.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-bold text-white">4. Google AdSense (Consent-Gated)</p>
+          <p className="mt-1">
+            Advertising partners (including Google AdSense, publisher ID ca-pub-6847785471613763) may process device telemetry and cookies to serve contextual or personalized advertisements in accordance with your consent preferences.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-bold text-white">5. Commercial Affiliate Links</p>
+          <p className="mt-1">
+            When you click outbound sportsbook links, referral tracking tokens may be appended to the destination URL by the respective affiliate network. MatchSignal does not transmit your personal details or account information to sportsbooks.
           </p>
         </div>
       </div>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
-        Data Storage &amp; Security
+        Legal Bases for Processing (GDPR)
+      </h2>
+
+      <ul className="mt-4 list-disc pl-6 space-y-2 text-slate-300">
+        <li><strong>Consent (Art. 6(1)(a) GDPR):</strong> For Google Analytics 4 measurement and personalized advertising cookies.</li>
+        <li><strong>Legitimate Interests (Art. 6(1)(f) GDPR):</strong> For platform security, technical operation, and essential communication.</li>
+      </ul>
+
+      <h2 className="mt-8 text-2xl font-bold text-white">
+        Data Storage, Retention &amp; Security
       </h2>
 
       <p className="mt-4 text-slate-300">
-        We implement industry-standard technical and operational measures to protect data
-        against unauthorized access, alteration, or disclosure.
+        We implement industry-standard technical and operational measures to protect data against unauthorized access, loss, or alteration. Inquiries submitted via the contact form are retained only for the duration necessary to resolve the inquiry.
       </p>
 
       <h2 className="mt-8 text-2xl font-bold text-white">
@@ -94,8 +115,7 @@ export default async function PrivacyPolicyPage({
       </h2>
 
       <p className="mt-4 text-slate-300">
-        You may request access to, correction of, or deletion of personal data you have
-        submitted to us by contacting:{" "}
+        Under GDPR, you have the right to access, rectify, erase, or restrict processing of your personal data, and to withdraw consent at any time. For any data protection inquiries or to exercise your rights, please email:{" "}
         <a href="mailto:privacy@matchsignal.pro" className="text-cyan-400 underline">
           privacy@matchsignal.pro
         </a>

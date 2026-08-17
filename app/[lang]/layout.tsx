@@ -30,6 +30,9 @@ export const metadata: Metadata = {
   },
 };
 
+import CookieBanner from "@/app/components/CookieBanner";
+import GoogleAnalytics from "@/app/components/GoogleAnalytics";
+
 export default async function RootLayout({
   children,
   params,
@@ -43,6 +46,37 @@ export default async function RootLayout({
   return (
     <html lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
       <head>
+        {/* Google Consent Mode v2 Default State Initialization */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              window.googlefc = window.googlefc || {};
+              window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+              try {
+                var raw = localStorage.getItem('matchsignal_consent');
+                var c = raw ? JSON.parse(raw) : null;
+                gtag('consent', 'default', {
+                  'analytics_storage': (c && c.analytics) ? 'granted' : 'denied',
+                  'ad_storage': (c && c.ads) ? 'granted' : 'denied',
+                  'ad_user_data': (c && c.ads) ? 'granted' : 'denied',
+                  'ad_personalization': (c && c.ads) ? 'granted' : 'denied',
+                  'wait_for_update': 500
+                });
+              } catch(e) {
+                gtag('consent', 'default', {
+                  'analytics_storage': 'denied',
+                  'ad_storage': 'denied',
+                  'ad_user_data': 'denied',
+                  'ad_personalization': 'denied',
+                  'wait_for_update': 500
+                });
+              }
+            `,
+          }}
+        />
+
         <meta
           name="verify-admitad"
           content="ab993ad49e"
@@ -56,9 +90,11 @@ export default async function RootLayout({
       </head>
 
       <body className="min-h-screen bg-[#060B14] text-white antialiased">
+        <GoogleAnalytics />
         <div className="flex min-h-screen flex-col">
           {children}
         </div>
+        <CookieBanner />
       </body>
     </html>
   );

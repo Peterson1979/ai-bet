@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { translations, Lang } from "@/app/lib/i18n";
+import { triggerReopenConsent } from "@/app/lib/consent";
 
 export default function Footer() {
   const params = useParams();
@@ -123,7 +124,7 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-5 text-sm text-slate-400">
+          <div className="flex flex-wrap items-center gap-5 text-sm text-slate-400">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -133,6 +134,13 @@ export default function Footer() {
                 {link.label}
               </Link>
             ))}
+            <button
+              type="button"
+              onClick={() => triggerReopenConsent()}
+              className="transition hover:text-cyan-300 cursor-pointer text-sm text-slate-400"
+            >
+              Cookie Settings
+            </button>
           </div>
         </div>
 

@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import { MatchCardData } from "../types/match";
 import { translations, Lang } from "@/app/lib/i18n";
 import { getSiteByBookmakerName } from "@/app/lib/affiliates";
+import { trackAffiliateClick } from "@/app/lib/analytics";
 
 type Props = {
   data: MatchCardData;
@@ -354,6 +355,14 @@ export default function MatchCard({ data, lang = "en" }: Props) {
           href={primaryCtaHref}
           target="_blank"
           rel="noopener noreferrer sponsored"
+          onClick={() => {
+            trackAffiliateClick({
+              bookmaker_name: partnerName,
+              sport: data.sport,
+              market: data.market,
+              placement: "matchcard_cta",
+            });
+          }}
           className="flex items-center justify-center gap-2 rounded-xl border border-cyan-400/40 bg-cyan-500/15 py-2.5 px-3 text-sm font-bold text-cyan-200 hover:bg-cyan-500/25 transition shadow-md"
         >
           {partnerLogoUrl && (

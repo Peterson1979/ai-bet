@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import type { Lang } from "@/app/lib/i18n";
 import type { Metadata } from "next";
+import ManageCookieButton from "@/app/components/ManageCookieButton";
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl =
@@ -46,32 +47,35 @@ export default async function CookiePolicyPage({
       </p>
 
       <h2 className="text-xl font-bold mt-8 mb-2 text-white">
-        Categories of Cookies Used
+        Categories of Storage &amp; Cookies Used
       </h2>
 
       <ul className="list-disc pl-6 space-y-2 text-slate-300">
         <li>
-          <strong className="text-white">Strictly Necessary Cookies:</strong> Essential for core site
-          navigation, language preferences, and security.
+          <strong className="text-white">Strictly Necessary:</strong> Essential for core site
+          navigation, language preferences, security, and storing your consent choices in local storage.
         </li>
         <li>
-          <strong className="text-white">Analytics Cookies:</strong> Collect aggregated, non-personally
-          identifiable information to measure audience trends and improve system speed.
+          <strong className="text-white">Analytics (Google Analytics 4):</strong> With your consent,
+          measures page traffic and usage trends. Under our privacy-safe basic mode, GA4 is not loaded until analytics consent is granted.
         </li>
         <li>
-          <strong className="text-white">Advertising Cookies:</strong> Used by advertising partners
-          (such as Google AdSense) to deliver contextual or personalized ads based on user consent.
+          <strong className="text-white">Advertising (Google AdSense):</strong> Used by Google AdSense
+          (publisher ID ca-pub-6847785471613763) to deliver contextual or personalized advertisements in accordance with your consent preferences.
         </li>
       </ul>
 
       <h2 className="text-xl font-bold mt-8 mb-2 text-white">
-        Managing Your Cookie Preferences
+        Consent Management Architecture
       </h2>
 
       <p className="mb-4">
-        You can customize or withdraw your consent for non-essential cookies at any time via the
-        on-site consent banner or by adjusting your browser&apos;s cookie and tracking settings.
+        For visitors in the European Economic Area (EEA), United Kingdom, and Switzerland, consent for advertising and measurement is governed via a Google-certified Consent Management Platform (CMP). Where Google CMP does not apply, MatchSignal provides an on-site consent banner allowing you to accept, reject, or customize non-essential storage. We support Google Consent Mode v2 to ensure your choices are respected across all integrated Google services.
       </p>
+
+      <div className="my-6">
+        <ManageCookieButton />
+      </div>
 
       <h2 className="text-xl font-bold mt-8 mb-2 text-white">
         Contact Information
