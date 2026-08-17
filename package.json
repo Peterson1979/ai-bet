@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "lint": "eslint"
+    "lint": "eslint",
+    "validate:affiliates": "npx tsx scripts/validate-affiliates.mjs"
   },
   "dependencies": {
     "@sparticuz/chromium": "^149.0.0",
