@@ -169,29 +169,25 @@ function buildCardUrl(origin: string, slidePick: TopPick) {
   cardUrl.searchParams.set("riskTier", slidePick.riskTier);
   cardUrl.searchParams.set("startTime", formatStartTimeUtc(slidePick.startTime));
 
-  const partnerOdds = getPrimaryOdds(slidePick);
+  const primaryOdds = getPrimaryOdds(slidePick);
   const estimatedValue = getPrimaryValue(slidePick);
 
-  if (partnerOdds !== null) {
-    cardUrl.searchParams.set("partnerOdds", formatNumber(partnerOdds));
+  if (primaryOdds !== null) {
+    cardUrl.searchParams.set("bestOdds", formatNumber(primaryOdds));
+    cardUrl.searchParams.set("partnerOdds", formatNumber(primaryOdds));
   }
   if (typeof slidePick.marketAverageOdds === "number") {
     cardUrl.searchParams.set("marketAverageOdds", formatNumber(slidePick.marketAverageOdds));
   }
-  if (typeof slidePick.fairOdds === "number") {
-    cardUrl.searchParams.set("fairOdds", formatNumber(slidePick.fairOdds));
-  }
-  if (typeof slidePick.fairProbability === "number") {
-    cardUrl.searchParams.set("fairProbability", slidePick.fairProbability.toFixed(1));
-  }
   if (estimatedValue !== null) {
+    cardUrl.searchParams.set("valueEdge", estimatedValue.toFixed(1));
     cardUrl.searchParams.set("estimatedValuePct", estimatedValue.toFixed(1));
   }
-  if (typeof slidePick.consensusImpliedProb === "number") {
-    cardUrl.searchParams.set("consensusImpliedProb", slidePick.consensusImpliedProb.toFixed(1));
+  if (typeof slidePick.bookmakerCount === "number") {
+    cardUrl.searchParams.set("booksSampled", String(slidePick.bookmakerCount));
   }
-  if (typeof slidePick.bookmakerSpreadPct === "number") {
-    cardUrl.searchParams.set("bookmakerSpreadPct", slidePick.bookmakerSpreadPct.toFixed(1));
+  if (slidePick.reasoning) {
+    cardUrl.searchParams.set("reasoning", slidePick.reasoning);
   }
 
   const whySignal =
