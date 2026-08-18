@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { getPublishedGuideManifest } from "@/app/lib/guides";
 
 const baseUrl = "https://www.matchsignal.pro";
 
@@ -127,6 +128,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: page.changeFrequency,
       priority: page.priority,
     });
+  }
+
+  const publishedGuides = getPublishedGuideManifest();
+
+  if (publishedGuides.length > 0) {
+    entries.push({
+      url: `${baseUrl}/en/guides`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    });
+
+    for (const guide of publishedGuides) {
+      entries.push({
+        url: `${baseUrl}/en/guides/${guide.slug}`,
+        lastModified: guide.updatedAt ? new Date(guide.updatedAt) : new Date(),
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
   }
 
   return entries;

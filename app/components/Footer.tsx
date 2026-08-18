@@ -25,6 +25,7 @@ export default function Footer() {
 
   const navLinks = [
     { href: `/${lang}/about`, label: t.footer.navAbout },
+    ...(lang === "en" ? [{ href: "/en/guides", label: "Betting Guides" }] : []),
     { href: `/${lang}/contact`, label: t.footer.navContact },
     { href: `/${lang}/legal/privacy-policy`, label: t.footer.navPrivacy },
     { href: `/${lang}/legal/terms-of-use`, label: t.footer.navTerms },

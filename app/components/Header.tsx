@@ -2,16 +2,20 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { translations, Lang } from "@/app/lib/i18n";
+
 export default function Header() {
   const params = useParams();
   const lang = (params?.lang as Lang) || "en";
   const t = translations[lang] ?? translations.en;
+
   const nav = [
     { href: "/", label: t.system.navHome },
     { href: "/betting", label: t.system.navBetting },
+    ...(lang === "en" ? [{ href: "/guides", label: "Guides" }] : []),
     { href: "/tools", label: t.system.navTools },
     { href: "/betting-glossary", label: t.system.navGlossary },
   ];
+
   return (
     <header
       style={{
@@ -61,6 +65,7 @@ export default function Header() {
     </header>
   );
 }
+
 const linkStyle = {
   color: "white",
   textDecoration: "none",
