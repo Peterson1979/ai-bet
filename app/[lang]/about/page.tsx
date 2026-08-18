@@ -205,9 +205,7 @@ export default async function AboutPage({
               <span>🧠</span> Quantitative Engine vs. AI
             </h2>
             <p className="text-slate-300 text-sm md:text-base leading-relaxed">
-              MatchSignal maintains a strict separation between deterministic
-              mathematics and qualitative AI reasoning. We do not use an AI
-              model to invent arbitrary odds or guess probabilities.
+              MatchSignal uses a hybrid analysis pipeline. Deterministic market math handles bookmaker-derived calculations and fallback value math, while the AI layer can contribute contextual reasoning plus bounded Fair Probability and estimated-value inputs. AI-provided numeric fields are validated and normalized before use, and deterministic fallbacks are used when those fields are unavailable.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -222,7 +220,7 @@ export default async function AboutPage({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-emerald-400 font-bold">✓</span>
-                    <span>No-vig fair probability & fair odds estimates</span>
+                    <span>No-vig market probability & fair-odds benchmarks</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-emerald-400 font-bold">✓</span>
@@ -230,7 +228,7 @@ export default async function AboutPage({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-emerald-400 font-bold">✓</span>
-                    <span>Expected value percentage (EV%)</span>
+                    <span>Fallback EV calculation from Fair Probability & offered odds</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-emerald-400 font-bold">✓</span>
@@ -254,7 +252,7 @@ export default async function AboutPage({
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-purple-400 font-bold">✓</span>
-                    <span>Provides narrative structure to quantitative findings</span>
+                    <span>Can contribute validated Fair Probability & estimated value inputs</span>
                   </li>
                 </ul>
               </div>
