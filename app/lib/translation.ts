@@ -2,9 +2,9 @@ import crypto from "crypto";
 import { redis } from "./redis";
 
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_MODEL = "openai/gpt-oss-20b";
 const MAX_DAILY_TRANSLATION_TOKENS = 100_000;
-const BATCH_SIZE = 4;
+const BATCH_SIZE = 3;
 const REQUEST_TIMEOUT_MS = 30_000;
 const MAX_TPM_ROLLING_SAFETY_TARGET = 7_000; // Safe threshold against 8,000 TPM limit
 const MAX_RETRIES_ON_RATE_LIMIT = 1;
@@ -103,7 +103,7 @@ function sleep(ms: number): Promise<void> {
 // Calculate conservative token reservation upper bound for a batch
 function calculateBatchReservation(batchCount: number): number {
   const estimatedPromptTokens = 350 + batchCount * 120;
-  const maxOutputTokens = 2048;
+  const maxOutputTokens = 2560;
   return estimatedPromptTokens + maxOutputTokens;
 }
 
@@ -351,7 +351,8 @@ ${promptItems}`;
           body: JSON.stringify({
             model,
             temperature: 0.1,
-            max_tokens: 2048,
+            max_completion_tokens: 2560,
+            reasoning_effort: "low",
             response_format: {
               type: "json_schema",
               json_schema: {

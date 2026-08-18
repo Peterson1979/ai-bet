@@ -11,6 +11,7 @@ export type PredictionCard = {
   market: string;
   prediction: string;
   reasoning: string;
+  reasoningTranslations?: Partial<Record<string, string>>;
   riskTier: RiskTier;
 
   bestOdds?: number;

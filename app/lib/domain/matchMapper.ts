@@ -22,6 +22,7 @@ type PredictionInput = {
   market?: string;
   prediction?: string;
   reasoning?: string;
+  reasoningTranslations?: Partial<Record<string, string>>;
   riskTier?: RiskTier | string;
 
   bestOdds?: number | null;
@@ -244,6 +245,7 @@ export function toMatchCardData(
     market: safeText(input.market, "Moneyline"),
     prediction: safeText(input.prediction, "No prediction"),
     reasoning: safeText(input.reasoning),
+    reasoningTranslations: input.reasoningTranslations,
     riskTier: normalizeRiskTier(input.riskTier),
 
     bestOdds,
