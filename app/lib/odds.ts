@@ -120,7 +120,8 @@ export async function getPersistentDailyCreditsUsed(dateKey: string): Promise<nu
 
 const WATCHED_SPORTS = [
   { key: "soccer_fifa_world_cup", label: "Football", league: "FIFA World Cup", priority: 1 },
-  { key: "soccer_uefa_champs_league_qualification", label: "Football", league: "Champions League Qualification", priority: 2 },
+  { key: "soccer_uefa_champs_league_qualification", label: "Football", league: "Champions League Qualification", priority: 1 },
+  { key: "soccer_uefa_champs_league", label: "Football", league: "Champions League", priority: 1 },
   { key: "soccer_uefa_europa_league", label: "Football", league: "Europa League", priority: 2 },
   { key: "soccer_uefa_conference_league", label: "Football", league: "Conference League", priority: 2 },
   { key: "soccer_epl", label: "Football", league: "Premier League", priority: 1 },
@@ -903,6 +904,10 @@ async function fetchSportEvents(
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
   const markets = "h2h";
+  const commenceTimeFrom = new Date().toISOString();
+  const commenceTimeTo = new Date(
+    Date.now() + config.maxHoursAhead * 60 * 60 * 1000
+  ).toISOString();
 
   try {
     const url =
@@ -910,7 +915,9 @@ async function fetchSportEvents(
       `?apiKey=${API_KEY}` +
       `&regions=eu` +
       `&markets=${markets}` +
-      `&oddsFormat=decimal`;
+      `&oddsFormat=decimal` +
+      `&commenceTimeFrom=${encodeURIComponent(commenceTimeFrom)}` +
+      `&commenceTimeTo=${encodeURIComponent(commenceTimeTo)}`;
 
     const { response } = await fetchOddsWithRetry(url, sportKey);
 
