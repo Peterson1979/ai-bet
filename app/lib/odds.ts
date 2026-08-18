@@ -904,10 +904,10 @@ async function fetchSportEvents(
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
   const markets = "h2h";
-  const commenceTimeFrom = new Date().toISOString();
+  const commenceTimeFrom = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
   const commenceTimeTo = new Date(
     Date.now() + config.maxHoursAhead * 60 * 60 * 1000
-  ).toISOString();
+  ).toISOString().replace(/\.\d{3}Z$/, "Z");
 
   try {
     const url =
@@ -922,20 +922,31 @@ async function fetchSportEvents(
     const { response } = await fetchOddsWithRetry(url, sportKey);
 
     if (!response) {
+      const reconciled = await refundPersistentDailyCredit(dateKey, 1);
+      creditState.used = reconciled;
       console.error(`[odds] ${sportKey} fetch failed: no response`);
       return { events: [], failed: true, error: `No response from The Odds API for ${sportKey}` };
     }
 
+    const lastChargedHeader = response.headers.get("x-requests-last");
+    const lastCharged =
+      lastChargedHeader === null ? null : Number(lastChargedHeader);
+
     if (!response.ok) {
-      console.error(`[odds] ${sportKey} fetch failed: ${response.status}`);
+      if (lastCharged === 0 || response.status === 422 || response.status === 429) {
+        const reconciled = await refundPersistentDailyCredit(dateKey, 1);
+        creditState.used = reconciled;
+      }
+
+      const errorBody = await response.text().catch(() => "");
+      console.error(`[odds] ${sportKey} fetch failed: ${response.status}`, errorBody);
       return { events: [], failed: true, error: `The Odds API HTTP ${response.status} for ${sportKey}` };
     }
 
     const data = await response.json();
 
-    const lastCharged = Number(response.headers.get("x-requests-last"));
     const isZeroCharged =
-      (Number.isFinite(lastCharged) && lastCharged === 0) ||
+      lastCharged === 0 ||
       (Array.isArray(data) && data.length === 0);
 
     if (isZeroCharged) {
