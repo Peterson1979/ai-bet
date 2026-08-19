@@ -145,11 +145,7 @@ function getTopPicks(predictions: PredictionFile, now: Date): CarouselPick[] {
 
 function formatStartTimeUtc(startTime: string): string {
   const date = new Date(startTime);
-  return date.toLocaleString("en-GB", {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: "UTC",
-  });
+  return `${date.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short", timeZone: "UTC" })} UTC`;
 }
 
 function formatNumber(value: number | null | undefined, digits = 2): string {

@@ -1,3 +1,4 @@
+import { RECOMMENDATION_LABEL } from "@/app/lib/localizedUiCopy";
 "use client";
 
 import { useId, useState } from "react";
@@ -152,6 +153,7 @@ function MarketTooltip({
 
 export default function MatchCard({ data, lang = "en" }: Props) {
   const t = translations[lang] ?? translations.en;
+  const recommendationLabel = RECOMMENDATION_LABEL[lang] ?? RECOMMENDATION_LABEL.en;
 
   const tier = data.riskTier ?? "High";
   const riskLabel =
@@ -277,7 +279,7 @@ export default function MatchCard({ data, lang = "en" }: Props) {
         <div className="pt-1 flex items-baseline justify-between gap-2">
           <div>
             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
-              Recommendation
+              {recommendationLabel}
             </span>
             <p className="text-base font-black text-white">
               {translatedPrediction}

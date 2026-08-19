@@ -1,3 +1,4 @@
+import { GUIDES_LABEL, PRIVACY_COPY } from "@/app/lib/localizedUiCopy";
 "use client";
 
 import Link from "next/link";
@@ -9,6 +10,7 @@ export default function Footer() {
   const params = useParams();
   const lang = (params?.lang as Lang) || "en";
   const t = translations[lang] ?? translations.en;
+  const privacyCopy = PRIVACY_COPY[lang] ?? PRIVACY_COPY.en;
 
   const fieldKeys = [
     "prediction",
@@ -25,7 +27,7 @@ export default function Footer() {
 
   const navLinks = [
     { href: `/${lang}/about`, label: t.footer.navAbout },
-    ...(lang === "en" ? [{ href: "/en/guides", label: "Betting Guides" }] : []),
+    { href: "/en/guides", label: GUIDES_LABEL[lang] ?? GUIDES_LABEL.en },
     { href: `/${lang}/contact`, label: t.footer.navContact },
     { href: `/${lang}/legal/privacy-policy`, label: t.footer.navPrivacy },
     { href: `/${lang}/legal/terms-of-use`, label: t.footer.navTerms },
@@ -136,9 +138,7 @@ export default function Footer() {
               type="button"
               onClick={() => triggerReopenConsent()}
               className="transition hover:text-cyan-300 cursor-pointer text-sm text-slate-400"
-            >
-              Cookie Settings
-            </button>
+            >{privacyCopy.cookieSettings}</button>
           </div>
         </div>
 
