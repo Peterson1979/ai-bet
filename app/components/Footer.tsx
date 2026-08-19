@@ -1,6 +1,6 @@
-import { GUIDES_LABEL, PRIVACY_COPY } from "@/app/lib/localizedUiCopy";
 "use client";
 
+import { GUIDES_LABEL, PRIVACY_COPY } from "@/app/lib/localizedUiCopy";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { translations, Lang } from "@/app/lib/i18n";

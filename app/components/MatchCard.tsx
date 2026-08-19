@@ -1,6 +1,6 @@
-import { RECOMMENDATION_LABEL } from "@/app/lib/localizedUiCopy";
 "use client";
 
+import { RECOMMENDATION_LABEL } from "@/app/lib/localizedUiCopy";
 import { useId, useState } from "react";
 import Image from "next/image";
 import { MatchCardData } from "../types/match";
