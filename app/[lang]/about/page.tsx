@@ -35,17 +35,12 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: La
         </section>
 
         <section className="rounded-2xl border border-amber-400/20 bg-amber-950/10 p-6">
-          <h2 className="text-2xl font-black">{copy.riskTitle}</h2><p className="mt-3 leading-7 text-slate-300">{copy.riskBody}</p>
-        </section>
-
-        <section>
           <h2 className="text-2xl font-black">{copy.limitsTitle}</h2>
           <ul className="mt-4 list-disc space-y-2 ps-6 text-slate-300">{copy.limits.map((item) => <li key={item}>{item}</li>)}</ul>
         </section>
 
-        <section className="grid gap-4 md:grid-cols-2">
-          <article className="rounded-2xl border border-cyan-400/20 bg-[#0B1220] p-6"><h2 className="text-xl font-black">{copy.commercialTitle}</h2><p className="mt-3 text-sm leading-7 text-slate-300">{copy.commercialBody}</p></article>
-          <article className="rounded-2xl border border-rose-400/20 bg-rose-950/10 p-6"><h2 className="text-xl font-black">{copy.responsibleTitle}</h2><p className="mt-3 text-sm leading-7 text-slate-300">{copy.responsibleBody}</p></article>
+        <section className="rounded-2xl border border-rose-400/20 bg-rose-950/10 p-6">
+          <h2 className="text-xl font-black">{copy.responsibleTitle}</h2><p className="mt-3 text-sm leading-7 text-slate-300">{copy.responsibleBody}</p>
         </section>
 
         <nav aria-label={copy.legalLinksTitle} className="border-t border-slate-700 pt-6">
