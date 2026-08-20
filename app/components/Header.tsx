@@ -13,7 +13,7 @@ export default function Header() {
   const nav = [
     { href: "/", label: t.system.navHome },
     { href: "/betting", label: t.system.navBetting },
-    { href: "/en/guides", label: GUIDES_LABEL[lang] ?? GUIDES_LABEL.en },
+    { href: "/guides", label: GUIDES_LABEL[lang] ?? GUIDES_LABEL.en },
     { href: "/tools", label: t.system.navTools },
     { href: "/betting-glossary", label: t.system.navGlossary },
   ];
@@ -52,7 +52,7 @@ export default function Header() {
           }}
         >
           {nav.map((item) => {
-            const href = item.href.startsWith("/en/") ? item.href : item.href === "/" ? `/${lang}` : `/${lang}${item.href}`;
+            const href = item.href === "/" ? `/${lang}` : `/${lang}${item.href}`;
             return (
               <Link key={item.href} href={href} style={linkStyle}>
                 {item.label}

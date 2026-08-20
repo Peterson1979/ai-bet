@@ -168,7 +168,7 @@ export default async function HomePage({
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <a
-                      href="/en/guides"
+                      href={`/${lang}/guides`}
                       className="px-5 py-2.5 rounded-xl border border-cyan-400/40 bg-cyan-500/10 text-cyan-300 text-sm font-bold hover:bg-cyan-500/20 transition"
                     >{GUIDES_LABEL[lang] ?? GUIDES_LABEL.en}</a>
                   <a

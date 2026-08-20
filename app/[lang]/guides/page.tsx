@@ -5,6 +5,8 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import {
   GUIDE_CATEGORIES,
+  GUIDE_LOCALES,
+  isGuideLocale,
   type GuideCategoryId,
 } from "@/app/lib/guides";
 import {
@@ -12,8 +14,18 @@ import {
   hasPublicGuideContent,
 } from "@/app/lib/guideRegistry";
 import { estimateReadingTime } from "@/app/lib/guideContent";
+import { GUIDE_PAGE_COPY } from "@/app/lib/localizedUiCopy";
 
 const baseUrl = "https://www.matchsignal.pro";
+
+function languageAlternates(path: string): Record<string, string> {
+  return {
+    ...Object.fromEntries(
+      GUIDE_LOCALES.map((locale) => [locale, `${baseUrl}/${locale}${path}`])
+    ),
+    "x-default": `${baseUrl}/en${path}`,
+  };
+}
 
 export async function generateMetadata({
   params,
@@ -22,25 +34,27 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
 
-  if (lang !== "en" || !hasPublicGuideContent()) {
+  if (!isGuideLocale(lang) || !hasPublicGuideContent(lang)) {
     return {
       title: "Betting Guides",
       robots: { index: false, follow: false },
     };
   }
 
+  const copy = GUIDE_PAGE_COPY[lang];
+  const canonical = `${baseUrl}/${lang}/guides`;
+
   return {
-    title: "Betting Guides",
-    description:
-      "Educational guides to betting odds, probability, expected value, bankroll management, betting psychology, responsible betting, and AI-assisted sports analysis.",
+    title: copy.pageTitle,
+    description: copy.pageDescription,
     alternates: {
-      canonical: `${baseUrl}/en/guides`,
+      canonical,
+      languages: languageAlternates("/guides"),
     },
     openGraph: {
-      title: "Betting Guides | MatchSignal",
-      description:
-        "Clear educational resources on odds, probability, value, risk, betting psychology, and AI-assisted sports analysis.",
-      url: `${baseUrl}/en/guides`,
+      title: `${copy.pageTitle} | MatchSignal`,
+      description: copy.pageDescription,
+      url: canonical,
       type: "website",
     },
   };
@@ -52,11 +66,12 @@ export default async function GuidesPage({
   params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  if (lang !== "en") notFound();
+  if (!isGuideLocale(lang)) notFound();
 
-  const guides = getPublishedGuides();
+  const guides = getPublishedGuides(lang);
   if (guides.length === 0) notFound();
 
+  const copy = GUIDE_PAGE_COPY[lang];
   const grouped = guides.reduce(
     (acc, guide) => {
       (acc[guide.category] ??= []).push(guide);
@@ -72,22 +87,23 @@ export default async function GuidesPage({
         <section className="mx-auto max-w-6xl">
           <div className="max-w-3xl">
             <p className="text-sm font-black uppercase tracking-[0.2em] text-cyan-300">
-              MatchSignal Education
+              {copy.educationLabel}
             </p>
             <h1 className="mt-3 text-4xl font-black tracking-tight md:text-6xl">
-              Betting Guides
+              {copy.pageTitle}
             </h1>
             <p className="mt-5 text-base leading-8 text-slate-300 md:text-lg">
-              Clear, practical resources explaining betting odds, probability,
-              expected value, risk, decision-making, and the role of AI in
-              sports analysis.
+              {copy.pageIntro}
             </p>
           </div>
 
           <div className="mt-12 space-y-12">
-            {Object.entries(GUIDE_CATEGORIES).map(([categoryId, categoryLabel]) => {
+            {Object.entries(GUIDE_CATEGORIES).map(([categoryId]) => {
               const categoryGuides = grouped[categoryId as GuideCategoryId];
               if (!categoryGuides?.length) return null;
+              const categoryLabel =
+                copy.categories[categoryId as GuideCategoryId] ??
+                GUIDE_CATEGORIES[categoryId as GuideCategoryId];
 
               return (
                 <section key={categoryId} aria-labelledby={`category-${categoryId}`}>
@@ -109,7 +125,7 @@ export default async function GuidesPage({
                         </p>
                         <h3 className="mt-3 text-xl font-black leading-snug">
                           <Link
-                            href={`/en/guides/${guide.slug}`}
+                            href={`/${lang}/guides/${guide.slug}`}
                             className="hover:text-cyan-300"
                           >
                             {guide.title}
@@ -119,12 +135,12 @@ export default async function GuidesPage({
                           {guide.description}
                         </p>
                         <div className="mt-5 flex items-center justify-between gap-4 text-xs text-slate-400">
-                          <span>{estimateReadingTime(guide)} min read</span>
+                          <span>{estimateReadingTime(guide)} {copy.minRead}</span>
                           <Link
-                            href={`/en/guides/${guide.slug}`}
+                            href={`/${lang}/guides/${guide.slug}`}
                             className="font-bold text-cyan-300 hover:text-cyan-200"
                           >
-                            Read guide →
+                            {copy.readGuide}
                           </Link>
                         </div>
                       </article>

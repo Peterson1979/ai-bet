@@ -1,4 +1,8 @@
+import type { Lang } from "@/app/lib/i18n";
+
 export const GUIDE_LOCALE = "en" as const;
+export type GuideLocale = Lang;
+export const GUIDE_LOCALES: readonly GuideLocale[] = ["en","hu","de","fr","es","it","pt","ar","zh","ja","hi"];
 
 export type GuideStatus = "draft" | "published";
 export type GuideCategoryId =
@@ -12,7 +16,7 @@ export type GuideCategoryId =
 
 export type GuideManifestEntry = {
   slug: string;
-  locale: typeof GUIDE_LOCALE;
+  locale: GuideLocale;
   title: string;
   category: GuideCategoryId;
   status: GuideStatus;
@@ -203,4 +207,8 @@ export function getPublishedGuideManifest(): GuideManifestEntry[] {
 
 export function hasPublishedGuides(): boolean {
   return getPublishedGuideManifest().length > 0;
+}
+
+export function isGuideLocale(value: string): value is GuideLocale {
+  return GUIDE_LOCALES.includes(value as GuideLocale);
 }

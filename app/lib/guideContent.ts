@@ -45,8 +45,10 @@ export function estimateReadingTime(content: GuideContent): number {
     content.responsibleGamblingNote ?? "",
   ].join(" ");
 
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.ceil(words / 220));
+  const cjkChars = (text.match(/[\u3040-\u30ff\u3400-\u9fff]/g) ?? []).length;
+  const nonCjkWords = text.replace(/[\u3040-\u30ff\u3400-\u9fff]/g, " ").trim().split(/\s+/).filter(Boolean).length;
+  const minutes = cjkChars / 500 + nonCjkWords / 220;
+  return Math.max(1, Math.ceil(minutes));
 }
 
 export function isGuideCategoryId(value: string): value is GuideCategoryId {

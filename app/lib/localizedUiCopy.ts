@@ -316,3 +316,321 @@ export const PRIVACY_COPY: Record<
     cookieSettings: "Cookie सेटिंग्स",
   },
 };
+
+export const GUIDE_PAGE_COPY: Record<Lang, {
+  educationLabel: string;
+  pageTitle: string;
+  pageDescription: string;
+  pageIntro: string;
+  readGuide: string;
+  minRead: string;
+  home: string;
+  keyTakeaways: string;
+  updated: string;
+  editorialTeam: string;
+  responsibleBetting: string;
+  responsibleLink: string;
+  relatedGuides: string;
+  exploreTitle: string;
+  exploreText: string;
+  viewAnalysis: string;
+  categories: Record<string, string>;
+}> = {
+  "en": {
+    "educationLabel": "MatchSignal Education",
+    "pageTitle": "Betting Guides",
+    "pageDescription": "Educational guides to betting odds, probability, expected value, bankroll management, betting psychology, responsible betting, and AI-assisted sports analysis.",
+    "pageIntro": "Clear, practical resources explaining betting odds, probability, expected value, risk, decision-making, and the role of AI in sports analysis.",
+    "readGuide": "Read guide →",
+    "minRead": "min read",
+    "home": "Home",
+    "keyTakeaways": "Key Takeaways",
+    "updated": "Updated",
+    "editorialTeam": "MatchSignal Editorial Team",
+    "responsibleBetting": "Responsible Betting",
+    "responsibleLink": "Read our responsible gambling guidance →",
+    "relatedGuides": "Related Guides",
+    "exploreTitle": "Explore MatchSignal Analysis",
+    "exploreText": "Apply these concepts when reviewing current match signals, market averages, value edges, and risk tiers.",
+    "viewAnalysis": "View current match analysis",
+    "categories": {
+      "betting-fundamentals": "Betting Fundamentals",
+      "odds-probability": "Odds & Probability",
+      "value-analysis": "Value & Analysis",
+      "bankroll-risk": "Bankroll & Risk",
+      "betting-psychology": "Betting Psychology",
+      "ai-data": "AI & Data",
+      "responsible-betting": "Responsible Betting"
+    }
+  },
+  "hu": {
+    "educationLabel": "MatchSignal Oktatás",
+    "pageTitle": "Fogadási útmutatók",
+    "pageDescription": "Oktató útmutatók a fogadási oddsokról, valószínűségről, várható értékről, bankroll-kezelésről, fogadási pszichológiáról, felelős fogadásról és AI-alapú sportelemzésről.",
+    "pageIntro": "Világos, gyakorlatias útmutatók az oddsokról, valószínűségről, várható értékről, kockázatról, döntéshozatalról és az AI sportelemzésben betöltött szerepéről.",
+    "readGuide": "Útmutató olvasása →",
+    "minRead": "perc olvasás",
+    "home": "Kezdőlap",
+    "keyTakeaways": "Főbb tanulságok",
+    "updated": "Frissítve",
+    "editorialTeam": "MatchSignal szerkesztőség",
+    "responsibleBetting": "Felelős fogadás",
+    "responsibleLink": "Olvasd el a felelős szerencsejátékról szóló útmutatónkat →",
+    "relatedGuides": "Kapcsolódó útmutatók",
+    "exploreTitle": "Fedezd fel a MatchSignal elemzéseit",
+    "exploreText": "Alkalmazd ezeket az elveket az aktuális meccsjelzések, piaci átlagok, value edge-ek és kockázati szintek áttekintésekor.",
+    "viewAnalysis": "Aktuális meccselemzések megtekintése",
+    "categories": {
+      "betting-fundamentals": "Fogadási alapok",
+      "odds-probability": "Oddsok és valószínűség",
+      "value-analysis": "Érték és elemzés",
+      "bankroll-risk": "Bankroll és kockázat",
+      "betting-psychology": "Fogadási pszichológia",
+      "ai-data": "AI és adatok",
+      "responsible-betting": "Felelős fogadás"
+    }
+  },
+  "de": {
+    "educationLabel": "MatchSignal Wissen",
+    "pageTitle": "Wettleitfäden",
+    "pageDescription": "Lernleitfäden zu Wettquoten, Wahrscheinlichkeit, Erwartungswert, Bankroll-Management, Wettpsychologie, verantwortungsvollem Wetten und KI-gestützter Sportanalyse.",
+    "pageIntro": "Klare, praktische Ressourcen zu Wettquoten, Wahrscheinlichkeit, Erwartungswert, Risiko, Entscheidungsfindung und der Rolle von KI in der Sportanalyse.",
+    "readGuide": "Leitfaden lesen →",
+    "minRead": "Min. Lesezeit",
+    "home": "Startseite",
+    "keyTakeaways": "Wichtigste Erkenntnisse",
+    "updated": "Aktualisiert",
+    "editorialTeam": "MatchSignal Redaktion",
+    "responsibleBetting": "Verantwortungsvolles Wetten",
+    "responsibleLink": "Hinweise zum verantwortungsvollen Glücksspiel lesen →",
+    "relatedGuides": "Verwandte Leitfäden",
+    "exploreTitle": "MatchSignal Analysen entdecken",
+    "exploreText": "Wende diese Konzepte bei der Prüfung aktueller Match-Signale, Marktdurchschnitte, Value Edges und Risikostufen an.",
+    "viewAnalysis": "Aktuelle Match-Analysen ansehen",
+    "categories": {
+      "betting-fundamentals": "Wettgrundlagen",
+      "odds-probability": "Quoten & Wahrscheinlichkeit",
+      "value-analysis": "Value & Analyse",
+      "bankroll-risk": "Bankroll & Risiko",
+      "betting-psychology": "Wettpsychologie",
+      "ai-data": "KI & Daten",
+      "responsible-betting": "Verantwortungsvolles Wetten"
+    }
+  },
+  "fr": {
+    "educationLabel": "Formation MatchSignal",
+    "pageTitle": "Guides de paris",
+    "pageDescription": "Guides pédagogiques sur les cotes, les probabilités, la valeur attendue, la gestion de bankroll, la psychologie des paris, le jeu responsable et l’analyse sportive assistée par IA.",
+    "pageIntro": "Des ressources claires et pratiques sur les cotes, les probabilités, la valeur attendue, le risque, la prise de décision et le rôle de l’IA dans l’analyse sportive.",
+    "readGuide": "Lire le guide →",
+    "minRead": "min de lecture",
+    "home": "Accueil",
+    "keyTakeaways": "Points clés",
+    "updated": "Mis à jour",
+    "editorialTeam": "Rédaction MatchSignal",
+    "responsibleBetting": "Pari responsable",
+    "responsibleLink": "Lire nos conseils sur le jeu responsable →",
+    "relatedGuides": "Guides associés",
+    "exploreTitle": "Explorer les analyses MatchSignal",
+    "exploreText": "Appliquez ces concepts lorsque vous examinez les signaux de match, les moyennes du marché, les value edges et les niveaux de risque.",
+    "viewAnalysis": "Voir les analyses de matchs actuelles",
+    "categories": {
+      "betting-fundamentals": "Fondamentaux des paris",
+      "odds-probability": "Cotes & probabilités",
+      "value-analysis": "Valeur & analyse",
+      "bankroll-risk": "Bankroll & risque",
+      "betting-psychology": "Psychologie des paris",
+      "ai-data": "IA & données",
+      "responsible-betting": "Pari responsable"
+    }
+  },
+  "es": {
+    "educationLabel": "Formación MatchSignal",
+    "pageTitle": "Guías de apuestas",
+    "pageDescription": "Guías educativas sobre cuotas, probabilidad, valor esperado, gestión de bankroll, psicología de las apuestas, juego responsable y análisis deportivo asistido por IA.",
+    "pageIntro": "Recursos claros y prácticos sobre cuotas, probabilidad, valor esperado, riesgo, toma de decisiones y el papel de la IA en el análisis deportivo.",
+    "readGuide": "Leer guía →",
+    "minRead": "min de lectura",
+    "home": "Inicio",
+    "keyTakeaways": "Puntos clave",
+    "updated": "Actualizado",
+    "editorialTeam": "Equipo editorial de MatchSignal",
+    "responsibleBetting": "Apuestas responsables",
+    "responsibleLink": "Lee nuestra guía sobre juego responsable →",
+    "relatedGuides": "Guías relacionadas",
+    "exploreTitle": "Explora los análisis de MatchSignal",
+    "exploreText": "Aplica estos conceptos al revisar señales de partidos, promedios de mercado, value edges y niveles de riesgo.",
+    "viewAnalysis": "Ver análisis actuales de partidos",
+    "categories": {
+      "betting-fundamentals": "Fundamentos de apuestas",
+      "odds-probability": "Cuotas y probabilidad",
+      "value-analysis": "Valor y análisis",
+      "bankroll-risk": "Bankroll y riesgo",
+      "betting-psychology": "Psicología de las apuestas",
+      "ai-data": "IA y datos",
+      "responsible-betting": "Apuestas responsables"
+    }
+  },
+  "it": {
+    "educationLabel": "Formazione MatchSignal",
+    "pageTitle": "Guide alle scommesse",
+    "pageDescription": "Guide educative su quote, probabilità, valore atteso, gestione del bankroll, psicologia delle scommesse, gioco responsabile e analisi sportiva assistita dall’IA.",
+    "pageIntro": "Risorse chiare e pratiche su quote, probabilità, valore atteso, rischio, processo decisionale e ruolo dell’IA nell’analisi sportiva.",
+    "readGuide": "Leggi la guida →",
+    "minRead": "min di lettura",
+    "home": "Home",
+    "keyTakeaways": "Punti chiave",
+    "updated": "Aggiornato",
+    "editorialTeam": "Redazione MatchSignal",
+    "responsibleBetting": "Scommesse responsabili",
+    "responsibleLink": "Leggi la nostra guida sul gioco responsabile →",
+    "relatedGuides": "Guide correlate",
+    "exploreTitle": "Esplora le analisi MatchSignal",
+    "exploreText": "Applica questi concetti quando esamini segnali delle partite, medie di mercato, value edge e livelli di rischio.",
+    "viewAnalysis": "Vedi le analisi attuali delle partite",
+    "categories": {
+      "betting-fundamentals": "Fondamenti delle scommesse",
+      "odds-probability": "Quote e probabilità",
+      "value-analysis": "Valore e analisi",
+      "bankroll-risk": "Bankroll e rischio",
+      "betting-psychology": "Psicologia delle scommesse",
+      "ai-data": "IA e dati",
+      "responsible-betting": "Scommesse responsabili"
+    }
+  },
+  "pt": {
+    "educationLabel": "Educação MatchSignal",
+    "pageTitle": "Guias de apostas",
+    "pageDescription": "Guias educativos sobre odds, probabilidade, valor esperado, gestão de banca, psicologia das apostas, apostas responsáveis e análise desportiva assistida por IA.",
+    "pageIntro": "Recursos claros e práticos sobre odds, probabilidade, valor esperado, risco, tomada de decisão e o papel da IA na análise desportiva.",
+    "readGuide": "Ler guia →",
+    "minRead": "min de leitura",
+    "home": "Início",
+    "keyTakeaways": "Principais conclusões",
+    "updated": "Atualizado",
+    "editorialTeam": "Equipa editorial MatchSignal",
+    "responsibleBetting": "Apostas responsáveis",
+    "responsibleLink": "Leia as nossas orientações sobre jogo responsável →",
+    "relatedGuides": "Guias relacionados",
+    "exploreTitle": "Explore as análises MatchSignal",
+    "exploreText": "Aplique estes conceitos ao analisar sinais de jogos, médias de mercado, value edges e níveis de risco.",
+    "viewAnalysis": "Ver análises atuais dos jogos",
+    "categories": {
+      "betting-fundamentals": "Fundamentos das apostas",
+      "odds-probability": "Odds e probabilidade",
+      "value-analysis": "Valor e análise",
+      "bankroll-risk": "Banca e risco",
+      "betting-psychology": "Psicologia das apostas",
+      "ai-data": "IA e dados",
+      "responsible-betting": "Apostas responsáveis"
+    }
+  },
+  "ar": {
+    "educationLabel": "تعليم MatchSignal",
+    "pageTitle": "أدلة المراهنات",
+    "pageDescription": "أدلة تعليمية حول الاحتمالات والأسعار والقيمة المتوقعة وإدارة رأس المال وعلم نفس المراهنات والمراهنة المسؤولة والتحليل الرياضي المدعوم بالذكاء الاصطناعي.",
+    "pageIntro": "موارد واضحة وعملية تشرح أسعار المراهنات والاحتمالات والقيمة المتوقعة والمخاطر واتخاذ القرار ودور الذكاء الاصطناعي في التحليل الرياضي.",
+    "readGuide": "قراءة الدليل ←",
+    "minRead": "دقيقة قراءة",
+    "home": "الرئيسية",
+    "keyTakeaways": "أهم النقاط",
+    "updated": "تم التحديث",
+    "editorialTeam": "فريق تحرير MatchSignal",
+    "responsibleBetting": "المراهنة المسؤولة",
+    "responsibleLink": "اقرأ إرشاداتنا حول المقامرة المسؤولة ←",
+    "relatedGuides": "أدلة ذات صلة",
+    "exploreTitle": "استكشف تحليلات MatchSignal",
+    "exploreText": "طبّق هذه المفاهيم عند مراجعة إشارات المباريات ومتوسطات السوق وفروق القيمة ومستويات المخاطر.",
+    "viewAnalysis": "عرض تحليلات المباريات الحالية",
+    "categories": {
+      "betting-fundamentals": "أساسيات المراهنات",
+      "odds-probability": "الأسعار والاحتمالات",
+      "value-analysis": "القيمة والتحليل",
+      "bankroll-risk": "رأس المال والمخاطر",
+      "betting-psychology": "علم نفس المراهنات",
+      "ai-data": "الذكاء الاصطناعي والبيانات",
+      "responsible-betting": "المراهنة المسؤولة"
+    }
+  },
+  "zh": {
+    "educationLabel": "MatchSignal 教育",
+    "pageTitle": "投注指南",
+    "pageDescription": "关于投注赔率、概率、期望值、资金管理、投注心理、负责任投注以及 AI 辅助体育分析的教育指南。",
+    "pageIntro": "清晰实用的资源，讲解投注赔率、概率、期望值、风险、决策以及 AI 在体育分析中的作用。",
+    "readGuide": "阅读指南 →",
+    "minRead": "分钟阅读",
+    "home": "首页",
+    "keyTakeaways": "要点",
+    "updated": "更新于",
+    "editorialTeam": "MatchSignal 编辑团队",
+    "responsibleBetting": "负责任投注",
+    "responsibleLink": "阅读我们的负责任博彩指南 →",
+    "relatedGuides": "相关指南",
+    "exploreTitle": "探索 MatchSignal 分析",
+    "exploreText": "在查看当前比赛信号、市场均值、价值优势和风险等级时应用这些概念。",
+    "viewAnalysis": "查看当前比赛分析",
+    "categories": {
+      "betting-fundamentals": "投注基础",
+      "odds-probability": "赔率与概率",
+      "value-analysis": "价值与分析",
+      "bankroll-risk": "资金与风险",
+      "betting-psychology": "投注心理",
+      "ai-data": "AI 与数据",
+      "responsible-betting": "负责任投注"
+    }
+  },
+  "ja": {
+    "educationLabel": "MatchSignal 学習",
+    "pageTitle": "ベッティングガイド",
+    "pageDescription": "ベッティングオッズ、確率、期待値、資金管理、ベッティング心理、責任あるベッティング、AI支援スポーツ分析に関する教育ガイド。",
+    "pageIntro": "オッズ、確率、期待値、リスク、意思決定、スポーツ分析におけるAIの役割をわかりやすく実践的に解説します。",
+    "readGuide": "ガイドを読む →",
+    "minRead": "分で読めます",
+    "home": "ホーム",
+    "keyTakeaways": "重要ポイント",
+    "updated": "更新",
+    "editorialTeam": "MatchSignal 編集チーム",
+    "responsibleBetting": "責任あるベッティング",
+    "responsibleLink": "責任あるギャンブルに関するガイドを読む →",
+    "relatedGuides": "関連ガイド",
+    "exploreTitle": "MatchSignal 分析を見る",
+    "exploreText": "現在の試合シグナル、市場平均、Value Edge、リスクレベルを確認する際に、これらの概念を活用してください。",
+    "viewAnalysis": "現在の試合分析を見る",
+    "categories": {
+      "betting-fundamentals": "ベッティングの基礎",
+      "odds-probability": "オッズと確率",
+      "value-analysis": "価値と分析",
+      "bankroll-risk": "資金管理とリスク",
+      "betting-psychology": "ベッティング心理",
+      "ai-data": "AIとデータ",
+      "responsible-betting": "責任あるベッティング"
+    }
+  },
+  "hi": {
+    "educationLabel": "MatchSignal शिक्षा",
+    "pageTitle": "बेटिंग गाइड",
+    "pageDescription": "बेटिंग ऑड्स, प्रायिकता, अपेक्षित मूल्य, बैंकरोल प्रबंधन, बेटिंग मनोविज्ञान, जिम्मेदार बेटिंग और AI-सहायित खेल विश्लेषण पर शैक्षिक गाइड।",
+    "pageIntro": "बेटिंग ऑड्स, प्रायिकता, अपेक्षित मूल्य, जोखिम, निर्णय लेने और खेल विश्लेषण में AI की भूमिका को समझाने वाले स्पष्ट और व्यावहारिक संसाधन।",
+    "readGuide": "गाइड पढ़ें →",
+    "minRead": "मिनट पढ़ने का समय",
+    "home": "होम",
+    "keyTakeaways": "मुख्य बातें",
+    "updated": "अपडेट किया गया",
+    "editorialTeam": "MatchSignal संपादकीय टीम",
+    "responsibleBetting": "जिम्मेदार बेटिंग",
+    "responsibleLink": "जिम्मेदार जुए पर हमारी गाइड पढ़ें →",
+    "relatedGuides": "संबंधित गाइड",
+    "exploreTitle": "MatchSignal विश्लेषण देखें",
+    "exploreText": "वर्तमान मैच सिग्नल, बाजार औसत, वैल्यू एज और जोखिम स्तर की समीक्षा करते समय इन अवधारणाओं का उपयोग करें।",
+    "viewAnalysis": "वर्तमान मैच विश्लेषण देखें",
+    "categories": {
+      "betting-fundamentals": "बेटिंग की मूल बातें",
+      "odds-probability": "ऑड्स और प्रायिकता",
+      "value-analysis": "मूल्य और विश्लेषण",
+      "bankroll-risk": "बैंकरोल और जोखिम",
+      "betting-psychology": "बेटिंग मनोविज्ञान",
+      "ai-data": "AI और डेटा",
+      "responsible-betting": "जिम्मेदार बेटिंग"
+    }
+  }
+};
