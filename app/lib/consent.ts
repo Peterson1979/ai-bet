@@ -29,11 +29,6 @@ declare global {
       getGoogleConsentModeValues?: () => any;
       showRevocationMessage?: () => void;
     };
-    __tcfapi?: (
-      command: string,
-      version: number,
-      callback: (tcData: any, success: boolean) => void
-    ) => void;
   }
 }
 
@@ -185,81 +180,46 @@ export function initConsentOrchestrator(onStateChange?: () => void): () => void 
   if (!orchestratorInitialized) {
     orchestratorInitialized = true;
 
-    const clearFallbackTimer = () => {
-      if (fallbackTimer) {
-        clearTimeout(fallbackTimer);
-        fallbackTimer = null;
-      }
-    };
-
-    const startFallbackTimer = () => {
-      clearFallbackTimer();
-      if (currentAuthority !== "pending") return;
-
+    // Start bounded fallback timer if authority is still pending
+    if (currentAuthority === "pending") {
       fallbackTimer = setTimeout(() => {
         if (currentAuthority === "pending") {
           setAuthority("custom", currentGoogleValues);
         }
       }, FALLBACK_TIMEOUT_MS);
-    };
+    }
 
-    startFallbackTimer();
-
+    // Register Google CMP listener
     window.googlefc = window.googlefc || {};
     window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
 
     window.googlefc.callbackQueue.push({
-      CONSENT_API_READY: () => {
-        // The Google CMP framework API is available before consent data exists.
-        // Use TCF gdprApplies to decide which UI owns consent for this visitor.
-        clearFallbackTimer();
-
-        if (typeof window.__tcfapi !== "function") {
-          startFallbackTimer();
-          return;
-        }
-
-        window.__tcfapi("addEventListener", 0, (tcData, success) => {
-          if (!success || !tcData) {
-            startFallbackTimer();
-            return;
-          }
-
-          if (tcData.gdprApplies === true) {
-            clearFallbackTimer();
-            setAuthority("google", currentGoogleValues);
-          } else if (tcData.gdprApplies === false) {
-            clearFallbackTimer();
-            setAuthority("custom", currentGoogleValues);
-          }
-        });
-      },
-
       CONSENT_MODE_DATA_READY: () => {
         try {
-          if (typeof window.googlefc?.getGoogleConsentModeValues !== "function") {
-            return;
-          }
+          if (typeof window.googlefc?.getGoogleConsentModeValues === "function") {
+            const raw = window.googlefc.getGoogleConsentModeValues();
+            const parsed: GoogleConsentValues = {
+              analyticsStorage: normalizeGoogleStatus(raw?.analyticsStoragePurposeConsentStatus),
+              adStorage: normalizeGoogleStatus(raw?.adStoragePurposeConsentStatus),
+              adUserData: normalizeGoogleStatus(raw?.adUserDataPurposeConsentStatus),
+              adPersonalization: normalizeGoogleStatus(raw?.adPersonalizationPurposeConsentStatus),
+            };
 
-          const raw = window.googlefc.getGoogleConsentModeValues();
-          const parsed: GoogleConsentValues = {
-            analyticsStorage: normalizeGoogleStatus(raw?.analyticsStoragePurposeConsentStatus),
-            adStorage: normalizeGoogleStatus(raw?.adStoragePurposeConsentStatus),
-            adUserData: normalizeGoogleStatus(raw?.adUserDataPurposeConsentStatus),
-            adPersonalization: normalizeGoogleStatus(raw?.adPersonalizationPurposeConsentStatus),
-          };
+            currentGoogleValues = parsed;
 
-          currentGoogleValues = parsed;
-
-          if (isGoogleAnalyticsAuthoritative(parsed)) {
-            clearFallbackTimer();
-            setAuthority("google", parsed);
-          } else if (isGoogleAnalyticsNotApplicable(parsed)) {
-            clearFallbackTimer();
-            setAuthority("custom", parsed);
-          } else if (currentAuthority === "google") {
-            // Keep Google authoritative while consent is still being resolved.
-            setAuthority("google", parsed);
+            if (isGoogleAnalyticsAuthoritative(parsed)) {
+              if (fallbackTimer) {
+                clearTimeout(fallbackTimer);
+                fallbackTimer = null;
+              }
+              setAuthority("google", parsed);
+            } else if (isGoogleAnalyticsNotApplicable(parsed)) {
+              if (fallbackTimer) {
+                clearTimeout(fallbackTimer);
+                fallbackTimer = null;
+              }
+              setAuthority("custom", parsed);
+            }
           }
         } catch (err) {
           console.warn("[consent] Error handling CONSENT_MODE_DATA_READY:", err);
