@@ -32,7 +32,7 @@ const de: Partial<Translation> = {
   homepageNoPicksDesc: "Aktuell sind keine MatchSignal Tipps verfügbar. Die Verfügbarkeit hängt von anstehenden Spielen und Marktdaten ab. Nutzen Sie unsere Rechner oder Sport-Guides.",
   seoTitle: "KI Wettvorhersagen",
   seoDescription: "KI-generierte Wettvorhersagen und Value Bets für mehrere Sportarten.",
-    bestPartnerOdds: "Beste Partnerquote",
+    bestTrackedOdds: "Beste erfasste Quote",
   sportsbookLabel: "Wettanbieter",
   marketAverage: "Marktdurchschnitt",
   fairProbability: "Faire Wahrscheinlichkeit",
@@ -143,9 +143,9 @@ const de: Partial<Translation> = {
       title: "Markt",
       desc: "Der Wettmarkt für den Tipp, zum Beispiel Moneyline oder Over/Under.",
     },
-    bestPartnerOdds: {
-      title: "Beste Partnerquote",
-      desc: "Die aktuell angezeigte hervorgehobene Partnerquote für diesen Tipp.",
+    bestTrackedOdds: {
+      title: "Beste erfasste Quote",
+      desc: "Die höchste erfasste Quote für denselben Markt und dieselbe Auswahl zum Analysezeitpunkt.",
     },
     sportsbook: {
       title: "Buchmacher",

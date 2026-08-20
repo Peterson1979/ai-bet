@@ -32,7 +32,7 @@ const pt: DeepPartial<Translation> = {
   homepageNoPicksDesc: "No momento, não há palpites do MatchSignal disponíveis. A disponibilidade depende de eventos futuros e dados de mercado. Explore nossas ferramentas ou guias esportivos.",
   seoTitle: "Previsões de apostas IA",
   seoDescription: "Previsões de apostas e value bets gerados por IA para vários desportos.",
-    bestPartnerOdds: "Melhor odd do parceiro",
+    bestTrackedOdds: "Melhor odd monitorizada",
   sportsbookLabel: "Casa de apostas",
   marketAverage: "Média de mercado",
   fairProbability: "Probabilidade justa",
@@ -144,9 +144,9 @@ const pt: DeepPartial<Translation> = {
       title: "Mercado",
       desc: "O mercado de aposta usado para o palpite, como Moneyline ou Mais/Menos.",
     },
-    bestPartnerOdds: {
-      title: "Melhor odd parceira",
-      desc: "A odd parceira em destaque exibida no momento para este palpite.",
+    bestTrackedOdds: {
+      title: "Melhor odd monitorizada",
+      desc: "A odd monitorizada mais alta para o mesmo mercado e seleção no momento da análise.",
     },
     sportsbook: {
       title: "Casa de apostas",

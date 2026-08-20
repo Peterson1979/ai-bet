@@ -21,10 +21,10 @@ type PredictionLike = {
   prediction?: string;
   reasoning?: string;
   riskTier?: string;
-  bestOdds?: number;
-  valueDiff?: number;
+  bestOdds?: number | null;
+  valueDiff?: number | null;
   bookmakerCount?: number;
-  bookmakerUrl?: string;
+  bookmakerUrl?: string | null;
   status?: string;
 };
 
@@ -46,7 +46,6 @@ export function isEligibleForSocialCarousel(
   if (!pick) return false;
   if ((pick.status ?? "").toLowerCase() !== "scheduled") return false;
   if (!pick.prediction) return false;
-  if (!pick.bookmakerUrl) return false;
   if ((pick.bookmakerCount ?? 0) < MIN_BOOKMAKERS) return false;
   if ((pick.valueDiff ?? 0) <= 0) return false;
   if (!pick.startTime) return false;

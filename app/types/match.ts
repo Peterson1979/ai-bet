@@ -62,8 +62,8 @@ export type MatchCardData = {
   bookmakerCount: number;
 
   bookmaker: string;
-  bookmakerUrl: string;
-  ctaLabel: string;
+  bookmakerUrl?: string | null;
+  ctaLabel?: string | null;
 
   partnerOffer?: AffiliateOffer;
   partnerOdds?: number | null;

@@ -105,10 +105,7 @@ export function buildInstagramCarouselPlan(
     startTime: pick.startTime,
     riskTier: pick.riskTier,
     bookmakerCount: pick.bookmakerCount,
-    partnerOdds:
-      typeof pick.partnerOffer?.odds === "number"
-        ? pick.partnerOffer.odds
-        : pick.partnerOdds ?? pick.bestOdds ?? null,
+    partnerOdds: pick.bestOdds ?? null,
     marketAverageOdds: pick.marketAverageOdds ?? null,
     fairOdds: pick.fairOdds ?? null,
     fairProbability: pick.fairProbability ?? null,

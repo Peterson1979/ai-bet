@@ -13,7 +13,7 @@ type FooterTranslation = {
   matchCardFields: {
     prediction: MatchCardField;
     market: MatchCardField;
-    bestPartnerOdds: MatchCardField;
+    bestTrackedOdds: MatchCardField;
     sportsbook: MatchCardField;
     estimatedValue: MatchCardField;
     marketAverage: MatchCardField;
@@ -107,7 +107,7 @@ export type Translation = {
   viewAllPredictions: string;
   viewAllPredictionsSport: string;
   noEventsTodaySport: string;
-  bestPartnerOdds: string;
+  bestTrackedOdds: string;
   sportsbookLabel: string;
   marketAverage: string;
   fairProbability: string;

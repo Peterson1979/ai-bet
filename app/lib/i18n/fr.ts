@@ -32,7 +32,7 @@ const fr: DeepPartial<Translation> = {
   homepageNoPicksDesc: "Aucun pronostic MatchSignal n'est disponible pour le moment. La disponibilité dépend des matchs à venir et des données de marché. Utilisez nos calculateurs ou guides sportifs.",
   seoTitle: "Prédictions de paris IA",
   seoDescription: "Prédictions de paris et value bets générés par IA pour plusieurs sports.",
-    bestPartnerOdds: "Meilleure cote partenaire",
+    bestTrackedOdds: "Meilleure cote suivie",
   sportsbookLabel: "Bookmaker",
   marketAverage: "Moyenne du marché",
   fairProbability: "Probabilité juste",
@@ -144,9 +144,9 @@ const fr: DeepPartial<Translation> = {
       title: "Marché",
       desc: "Le marché de pari utilisé pour ce pronostic, par exemple Moneyline ou Plus/Moins.",
     },
-    bestPartnerOdds: {
-      title: "Meilleure cote partenaire",
-      desc: "La cote partenaire mise en avant et actuellement affichée pour ce pronostic.",
+    bestTrackedOdds: {
+      title: "Meilleure cote suivie",
+      desc: "La cote suivie la plus élevée pour le même marché et la même sélection lors de l'analyse.",
     },
     sportsbook: {
       title: "Bookmaker",

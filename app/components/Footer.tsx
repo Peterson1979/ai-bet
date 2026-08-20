@@ -17,7 +17,7 @@ export default function Footer() {
   const fieldKeys = [
     "prediction",
     "market",
-    "bestPartnerOdds",
+    "bestTrackedOdds",
     "sportsbook",
     "estimatedValue",
     "marketAverage",

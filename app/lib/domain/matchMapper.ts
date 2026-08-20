@@ -32,8 +32,8 @@ type PredictionInput = {
   bookmakerCount?: number | null;
 
   bookmaker?: string;
-  bookmakerUrl?: string;
-  ctaLabel?: string;
+  bookmakerUrl?: string | null;
+  ctaLabel?: string | null;
 
   partnerOdds?: number | null;
   partnerBookmaker?: string | null;
@@ -199,11 +199,11 @@ export function toMatchCardData(
   const sport = forcedSport ?? normalizeSport(input.sport);
 
   const bestOdds = safeNumber(input.bestOdds);
-  const partnerOdds = safeNumber(input.partnerOdds) ?? bestOdds;
+  const partnerOdds = safeNumber(input.partnerOdds);
   const marketAverageOdds = safeNumber(input.marketAverageOdds);
   const impliedProbability =
     safeNumber(input.impliedProbability) ??
-    impliedProbabilityFromDecimalOdds(partnerOdds);
+    impliedProbabilityFromDecimalOdds(bestOdds);
 
   const consensusImpliedProb = safeNumber(input.consensusImpliedProb);
   const fairProbability =
@@ -214,11 +214,11 @@ export function toMatchCardData(
 
   const estimatedValuePct =
     safeNumber(input.estimatedValuePct) ??
-    estimatedValueFromFairProbabilityAndOdds(fairProbability, partnerOdds);
+    estimatedValueFromFairProbabilityAndOdds(fairProbability, bestOdds);
 
   const bookmakerSpreadPct =
     safeNumber(input.bookmakerSpreadPct) ??
-    spreadPctFromOdds(partnerOdds, marketAverageOdds);
+    spreadPctFromOdds(bestOdds, marketAverageOdds);
 
   const valueDiff =
     safeNumber(input.valueDiff) ??
@@ -255,12 +255,12 @@ export function toMatchCardData(
     bookmakerCount: safeNonNegativeInt(input.bookmakerCount),
 
     bookmaker: safeText(input.bookmaker, "Unknown"),
-    bookmakerUrl: safeText(input.bookmakerUrl, "#"),
-    ctaLabel: safeText(input.ctaLabel, "View Offer"),
+    bookmakerUrl: safeText(input.bookmakerUrl) || null,
+    ctaLabel: safeText(input.ctaLabel) || null,
 
     partnerOffer: undefined,
     partnerOdds,
-    partnerBookmaker: safeText(input.partnerBookmaker) || undefined,
+    partnerBookmaker: safeText(input.partnerBookmaker) || null,
     partnerRating: safeNumber(input.partnerRating),
     marketAverageOdds,
     fairProbability:

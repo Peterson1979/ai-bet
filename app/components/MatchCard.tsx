@@ -190,36 +190,33 @@ export default function MatchCard({ data, lang = "en", countryCode }: Props) {
       ? glossaryMarkets[marketKey].term
       : data.market;
 
-  const fallbackSite = getSiteByBookmakerName(
-    data.partnerBookmaker || data.bookmaker || ""
-  );
-
   const partnerOffer = data.partnerOffer;
   const partnerName =
     partnerOffer?.bookmakerName ||
     data.partnerBookmaker ||
-    fallbackSite?.name ||
-    data.bookmaker ||
-    "Partner Sportsbook";
+    null;
 
-  const affiliateSite = getSiteByBookmakerName(partnerName);
-  const canShowAffiliateCta = affiliateSite
-    ? canRenderAffiliate(affiliateSite.id, countryCode)
-    : false;
+  const affiliateSite = partnerName ? getSiteByBookmakerName(partnerName) : undefined;
 
-  const partnerLogoUrl = partnerOffer?.logoUrl || fallbackSite?.logoUrl;
+  const partnerLogoUrl = partnerOffer?.logoUrl || affiliateSite?.logoUrl;
   const partnerOdds =
     typeof partnerOffer?.odds === "number"
       ? partnerOffer.odds
-      : data.partnerOdds ?? data.bestOdds;
+      : data.partnerOdds ?? null;
+  const partnerTrackingUrl = partnerOffer?.trackingUrl || data.bookmakerUrl || null;
+  const canShowAffiliateCta = Boolean(
+    affiliateSite &&
+      partnerName &&
+      typeof partnerOdds === "number" &&
+      Number.isFinite(partnerOdds) &&
+      partnerOdds > 1 &&
+      partnerTrackingUrl &&
+      canRenderAffiliate(affiliateSite.id, countryCode)
+  );
 
-  const primaryCtaHref = canShowAffiliateCta
-    ? partnerOffer?.trackingUrl || data.bookmakerUrl || null
-    : null;
+  const primaryCtaHref = canShowAffiliateCta ? partnerTrackingUrl : null;
 
-  const primaryCtaLabel = partnerName
-    ? `${t.viewOdds ?? "View odds"} — ${partnerName}`
-    : data.ctaLabel || t.viewOdds || "View odds";
+  const primaryCtaLabel = `${t.viewOdds ?? "View odds"} — ${partnerName ?? ""} (${formatDecimal(partnerOdds)})`;
 
   const valueTone =
     typeof data.estimatedValuePct === "number"
@@ -230,7 +227,7 @@ export default function MatchCard({ data, lang = "en", countryCode }: Props) {
         : "text-slate-300"
       : "text-slate-300";
 
-  const partnerOddsLabel = formatDecimal(partnerOdds);
+  const bestOddsLabel = formatDecimal(data.bestOdds);
   const marketAverageLabel = formatDecimal(data.marketAverageOdds);
   const fairOddsLabel = formatDecimal(data.fairOdds);
   const fairProbLabel = formatPercent(data.fairProbability);
@@ -296,10 +293,10 @@ export default function MatchCard({ data, lang = "en", countryCode }: Props) {
 
           <div className="text-right">
             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
-              {t.bestPartnerOdds ?? "Best Odds"}
+              {t.bestTrackedOdds ?? "Best Tracked Odds"}
             </span>
             <p className={`text-xl md:text-2xl font-black ${valueTone}`}>
-              {partnerOddsLabel}
+              {bestOddsLabel}
             </p>
           </div>
         </div>
@@ -367,7 +364,7 @@ export default function MatchCard({ data, lang = "en", countryCode }: Props) {
           rel="noopener noreferrer sponsored"
           onClick={() => {
             trackAffiliateClick({
-              bookmaker_name: partnerName,
+              bookmaker_name: partnerName!,
               sport: data.sport,
               market: data.market,
               placement: "matchcard_cta",
@@ -379,7 +376,7 @@ export default function MatchCard({ data, lang = "en", countryCode }: Props) {
             <span className="flex items-center justify-center bg-white rounded px-1.5 py-0.5 shrink-0">
               <Image
                 src={partnerLogoUrl}
-                alt={partnerName}
+                alt={partnerName ?? ""}
                 width={50}
                 height={14}
                 className="h-3.5 w-auto max-w-[50px] object-contain"

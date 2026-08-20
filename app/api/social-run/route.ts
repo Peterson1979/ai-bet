@@ -36,9 +36,9 @@ end
 type CarouselPick = Candidate;
 
 function getPrimaryOdds(pick: TopPick): number | null {
+  if (typeof pick.bestOdds === "number") return pick.bestOdds;
   if (typeof pick.partnerOffer?.odds === "number") return pick.partnerOffer.odds;
   if (typeof pick.partnerOdds === "number") return pick.partnerOdds;
-  if (typeof pick.bestOdds === "number") return pick.bestOdds;
   return null;
 }
 
@@ -57,7 +57,7 @@ function isEligibleForCarouselPick(
   now: Date
 ): boolean {
   if (pick.status !== "scheduled") return false;
-  if (!pick.prediction || !pick.market || !pick.bookmakerUrl) return false;
+  if (!pick.prediction || !pick.market) return false;
   if (pick.bookmakerCount < MIN_BOOKMAKERS) return false;
 
   const primaryValue = getPrimaryValue(pick);
@@ -170,7 +170,13 @@ function buildCardUrl(origin: string, slidePick: TopPick) {
 
   if (primaryOdds !== null) {
     cardUrl.searchParams.set("bestOdds", formatNumber(primaryOdds));
-    cardUrl.searchParams.set("partnerOdds", formatNumber(primaryOdds));
+  }
+  const actualPartnerOdds =
+    typeof slidePick.partnerOffer?.odds === "number"
+      ? slidePick.partnerOffer.odds
+      : slidePick.partnerOdds;
+  if (typeof actualPartnerOdds === "number") {
+    cardUrl.searchParams.set("partnerOdds", formatNumber(actualPartnerOdds));
   }
   if (typeof slidePick.marketAverageOdds === "number") {
     cardUrl.searchParams.set("marketAverageOdds", formatNumber(slidePick.marketAverageOdds));
@@ -337,10 +343,7 @@ export async function GET(req: Request) {
         startTime: p.startTime,
         riskTier: p.riskTier,
         bookmakerCount: p.bookmakerCount,
-        partnerOdds:
-          typeof p.partnerOffer?.odds === "number"
-            ? p.partnerOffer.odds
-            : p.partnerOdds ?? p.bestOdds ?? null,
+        partnerOdds: p.bestOdds ?? null,
         marketAverageOdds: p.marketAverageOdds ?? null,
         fairOdds: p.fairOdds ?? null,
         fairProbability: p.fairProbability ?? null,

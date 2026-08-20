@@ -32,7 +32,7 @@ const ar:DeepPartial<Translation> = {
   homepageNoPicksDesc: "لا توجد حاليًا توقعات متاحة من MatchSignal. يعتمد توفر التوقعات على المباريات القادمة وبيانات السوق. استكشف أدوات المراهنات أو أدلة الرياضات.",
   seoTitle: "توقعات المراهنات بالذكاء الاصطناعي",
   seoDescription: "توقعات مراهنات وفرص Value Bet مدعومة بالذكاء الاصطناعي لمختلف الرياضات.",
-    bestPartnerOdds: "أفضل أودز لدى الشريك",
+    bestTrackedOdds: "أفضل سعر متتبّع",
   sportsbookLabel: "شركة المراهنات",
   marketAverage: "متوسط السوق",
   fairProbability: "احتمالية عادلة",
@@ -170,9 +170,9 @@ matchSignal: "MATCH SIGNAL",
       title: "السوق",
       desc: "سوق الرهان المستخدم لهذا الترشيح، مثل Moneyline أو Over/Under.",
     },
-    bestPartnerOdds: {
-      title: "أفضل سعر شريك",
-      desc: "سعر الشريك المميز المعروض حالياً لهذا الترشيح.",
+    bestTrackedOdds: {
+      title: "أفضل سعر متتبّع",
+      desc: "أعلى سعر تم تتبعه للسوق والاختيار نفسيهما عند إعداد التحليل.",
     },
     sportsbook: {
       title: "شركة المراهنات",

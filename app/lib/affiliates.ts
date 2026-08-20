@@ -497,35 +497,11 @@ export function findAffiliateSiteByName(
   });
 }
 
-export function getMatchCardUrl(sport: string): string {
-  const bySport = AFFILIATE_SITES.filter(isSiteEnabled).find((site) =>
-    supportsSport(site, sport)
-  );
-
-  if (bySport) {
-    return buildAffiliateUrl(bySport, "matchcard");
-  }
-
-  const fallback = AFFILIATE_SITES.filter(isSiteEnabled).sort(
-    (a, b) => b.rating - a.rating
-  )[0];
-
-  return fallback
-    ? buildAffiliateUrl(fallback, "matchcard")
-    : "https://www.matchsignal.pro";
-}
-
-export function getBookmakerAffiliateUrl(
-  bookmakerName: string,
-  sport: string
-): string {
+export function getExactBookmakerAffiliateUrl(
+  bookmakerName: string
+): string | null {
   const match = findAffiliateSiteByName(bookmakerName);
-
-  if (match) {
-    return buildAffiliateUrl(match, "matchcard");
-  }
-
-  return getMatchCardUrl(sport);
+  return match ? buildAffiliateUrl(match, "matchcard") : null;
 }
 
 export function getSiteByBookmakerName(

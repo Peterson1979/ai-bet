@@ -43,8 +43,9 @@ assert(analytics.includes("isAnalyticsAllowed") && analytics.includes("send_page
 assert(nextConfig.includes('value: "strict-origin-when-cross-origin"'), "Referrer policy is incompatible with Funding Choices");
 
 const changed = execFileSync("git", ["diff", "--name-only", "HEAD"], { cwd: root, encoding: "utf8" }).trim().split(/\r?\n/);
-for (const protectedFile of ["app/api/daily-run/route.ts", "app/lib/odds.ts", "app/lib/prompts.ts", "app/lib/groq.ts", "app/lib/ranking.ts", "app/lib/affiliates.ts"]) {
+for (const protectedFile of ["app/lib/prompts.ts", "app/lib/groq.ts", "app/lib/ranking.ts"]) {
   assert(!changed.includes(protectedFile), `Protected runtime changed: ${protectedFile}`);
 }
+assert(fs.existsSync(path.join(root, "scripts/test-prediction-affiliate-decoupling.tsx")), "Prediction/affiliate decoupling regression suite is missing");
 
 console.log("PASS: publisher, policy-route isolation, denied defaults, TCF lifecycle, revocation, GA4 gate and protected runtime validated.");

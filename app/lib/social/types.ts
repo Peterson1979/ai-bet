@@ -19,8 +19,8 @@ export type TopPick = {
 
   bookmakerCount: number;
   bookmaker: string;
-  bookmakerUrl: string;
-  ctaLabel: string;
+  bookmakerUrl?: string | null;
+  ctaLabel?: string | null;
   status: string;
 
   partnerBookmaker?: string | null;

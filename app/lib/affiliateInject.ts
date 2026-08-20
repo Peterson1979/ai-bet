@@ -2,7 +2,6 @@
 
 import {
   buildAffiliateUrl,
-  getMatchCardUrl,
   getSiteByBookmakerName,
 } from "@/app/lib/affiliates";
 import type { MatchCardData, AffiliateOffer } from "@/app/types/match";
@@ -11,7 +10,14 @@ function toAffiliateOffer(
   match: MatchCardData,
   siteName: string | null | undefined
 ): AffiliateOffer | undefined {
-  if (!siteName) return undefined;
+  if (
+    !siteName ||
+    typeof match.partnerOdds !== "number" ||
+    !Number.isFinite(match.partnerOdds) ||
+    match.partnerOdds <= 1
+  ) {
+    return undefined;
+  }
 
   const site = getSiteByBookmakerName(siteName);
   if (!site) return undefined;
@@ -29,7 +35,7 @@ function toAffiliateOffer(
 }
 
 export function injectAffiliateOffer(match: MatchCardData): MatchCardData {
-  const preferredSiteName = match.partnerBookmaker || match.bookmaker || null;
+  const preferredSiteName = match.partnerBookmaker || null;
   const partnerOffer = toAffiliateOffer(match, preferredSiteName);
 
   if (partnerOffer) {
@@ -50,9 +56,10 @@ export function injectAffiliateOffer(match: MatchCardData): MatchCardData {
   return {
     ...match,
     partnerOffer: undefined,
-    bookmakerUrl:
-      match.bookmakerUrl && match.bookmakerUrl !== "#"
-        ? match.bookmakerUrl
-        : getMatchCardUrl(match.sport),
+    partnerOdds: null,
+    partnerBookmaker: null,
+    partnerRating: null,
+    bookmakerUrl: null,
+    ctaLabel: null,
   };
 }

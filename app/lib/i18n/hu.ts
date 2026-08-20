@@ -41,7 +41,7 @@ const hu: DeepPartial<Translation> = {
   homepageNoPicksDesc: "Jelenleg nincsenek elérhető MatchSignal tippek. A tippek elérhetősége a közelgő eseményektől és a piaci adatoktól függ. Használja fogadási eszközeinket vagy sportág-útmutatóinkat.",
   seoTitle: "MatchSignal – AI Fogadási Tippek",
   seoDescription: "AI által generált fogadási tippek és value bet-ek több sportágra.",
-    bestPartnerOdds: "Legjobb partner odds",
+    bestTrackedOdds: "Legjobb követett odds",
   sportsbookLabel: "Fogadóiroda",
   marketAverage: "Piaci átlag",
   fairProbability: "Fair valószínűség",
@@ -165,9 +165,9 @@ faqFreeAnswer:
       title: "Piac",
       desc: "A tipphez tartozó fogadási piac, például Moneyline vagy Over/Under.",
     },
-    bestPartnerOdds: {
-      title: "Legjobb partner odds",
-      desc: "Az adott tipphez jelenleg megjelenített kiemelt partneri odds.",
+    bestTrackedOdds: {
+      title: "Legjobb követett odds",
+      desc: "Az elemzés készítésekor ugyanahhoz a piachoz és választáshoz követett legmagasabb odds.",
     },
     sportsbook: {
       title: "Bukméker",

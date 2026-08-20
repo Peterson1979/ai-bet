@@ -32,7 +32,7 @@ const ja: DeepPartial<Translation> = {
   homepageNoPicksDesc: "現在、MatchSignalの予想はありません。予想の提供は今後の試合日程や市場データに依存します。計算ツールやスポーツガイドをご活用ください。",
   seoTitle: "AI賭け予測",
   seoDescription: "様々なスポーツのためのAIによる賭け予測とバリューベット。",
-    bestPartnerOdds: "ベストパートナーオッズ",
+    bestTrackedOdds: "追跡中の最高オッズ",
   sportsbookLabel: "ブックメーカー",
   marketAverage: "市場平均オッズ",
   fairProbability: "フェアな確率",
@@ -144,9 +144,9 @@ const ja: DeepPartial<Translation> = {
       title: "マーケット",
       desc: "その予想に使用されるベット市場です。たとえばMoneylineやOver/Underなどです。",
     },
-    bestPartnerOdds: {
-      title: "最良の提携オッズ",
-      desc: "この予想に対して現在表示されている注目の提携オッズです。",
+    bestTrackedOdds: {
+      title: "追跡中の最高オッズ",
+      desc: "分析時点で同じ市場と選択について追跡された最高オッズです。",
     },
     sportsbook: {
       title: "ブックメーカー",

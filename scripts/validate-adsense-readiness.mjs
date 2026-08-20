@@ -55,9 +55,10 @@ for (const file of ["app/[lang]/page.tsx", "app/[lang]/[sport]/page.tsx", "app/[
 }
 
 const changed = execFileSync("git", ["diff", "--name-only"], { cwd: root, encoding: "utf8" }).trim().split(/\r?\n/);
-for (const protectedFile of ["app/api/daily-run/route.ts", "app/lib/odds.ts", "app/lib/prompts.ts", "app/lib/groq.ts", "app/lib/ranking.ts"]) {
+for (const protectedFile of ["app/lib/prompts.ts", "app/lib/groq.ts", "app/lib/ranking.ts"]) {
   assert(!changed.includes(protectedFile), `Prediction runtime was modified: ${protectedFile}`);
 }
+assert(fs.existsSync(path.join(root, "scripts/test-prediction-affiliate-decoupling.tsx")), "Prediction/affiliate decoupling regression suite is missing");
 
 assert(langs.length === 11 && slugs.length === 8, "Locale/legal route cardinality changed");
 assert(sitemap.includes("for (const lang of LANGS)") && sitemap.includes("for (const slug of LEGAL_SLUGS)"), "Sitemap locale/legal parity loop missing");

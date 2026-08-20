@@ -64,7 +64,7 @@ noEventsTodaySport: "No {SPORT} events available today.",
   faqFreeQuestion: "Are these {SPORT} betting predictions free?",
   faqFreeAnswer:
     "Yes, MatchSignal provides free AI-powered betting predictions and match analysis.",
-	bestPartnerOdds: "Best partner odds",
+	bestTrackedOdds: "Best tracked odds",
 sportsbookLabel: "Sportsbook",
 marketAverage: "Market average",
 fairProbability: "Fair probability",
@@ -162,9 +162,9 @@ estimatedValue: "Estimated value",
       title: "Market",
       desc: "The betting market used for the pick, such as Moneyline or Over/Under.",
     },
-    bestPartnerOdds: {
-      title: "Best Odds",
-      desc: "The featured partner price currently shown for the pick.",
+    bestTrackedOdds: {
+      title: "Best tracked odds",
+      desc: "The highest tracked price for the same market and selection when the analysis was generated.",
     },
     sportsbook: {
       title: "Sportsbook",

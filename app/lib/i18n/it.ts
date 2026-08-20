@@ -32,7 +32,7 @@ const it: DeepPartial<Translation> = {
   homepageNoPicksDesc: "Al momento non ci sono pronostici MatchSignal disponibili. La disponibilità dipende dai prossimi eventi e dai dati di mercato. Esplora i nostri strumenti o le guide sportive.",
   seoTitle: "Previsioni scommesse IA",
   seoDescription: "Previsioni scommesse e value bet generate dall'IA per più sport.",
-    bestPartnerOdds: "Migliore quota del partner",
+    bestTrackedOdds: "Migliore quota rilevata",
   sportsbookLabel: "Sito di scommesse",
   marketAverage: "Media di mercato",
   fairProbability: "Probabilità equa",
@@ -143,9 +143,9 @@ const it: DeepPartial<Translation> = {
       title: "Mercato",
       desc: "Il mercato di scommessa usato per il pronostico, ad esempio Moneyline o Over/Under.",
     },
-    bestPartnerOdds: {
-      title: "Migliore quota partner",
-      desc: "La quota partner in evidenza attualmente mostrata per questo pronostico.",
+    bestTrackedOdds: {
+      title: "Migliore quota rilevata",
+      desc: "La quota rilevata più alta per lo stesso mercato e la stessa selezione al momento dell'analisi.",
     },
     sportsbook: {
       title: "Bookmaker",

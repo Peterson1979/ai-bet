@@ -2,8 +2,12 @@ import { Redis } from "@upstash/redis";
 
 import { buildPredictionPrompt } from "@/app/lib/prompts";
 import { rankMatches } from "@/app/lib/ranking";
-import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
-import { calculateRiskTier } from "@/app/lib/sportsConfig";
+import { getExactBookmakerAffiliateUrl } from "@/app/lib/affiliates";
+import {
+  evaluatePredictionEligibility,
+  MIN_PRODUCTION_BOOKMAKERS,
+  type PublicationRejection,
+} from "@/app/lib/predictionEligibility";
 import {
   getDailyEvents,
   buildMarketCandidates,
@@ -11,10 +15,6 @@ import {
   getConsensusForCandidate,
   getPartnerOddsForCandidate,
   getAverageOddsForCandidate,
-  decimalOddsToImpliedProbability,
-  impliedProbabilityToDecimalOdds,
-  calculateEstimatedValuePct,
-  calculateBookmakerSpreadPct,
   buildWhySignalSummary,
 } from "@/app/lib/odds";
 
@@ -47,7 +47,46 @@ type SportResult = {
   hasMatches: boolean;
   message?: string;
   topPicks: any[];
+  diagnostics: SportDiagnostics;
 };
+
+type SportDiagnostics = {
+  eventsProcessed: number;
+  candidatesAvailable: number;
+  rejectedCandidateMissing: number;
+  rejectedBookmakerDepth: number;
+  rejectedMissingMarketOdds: number;
+  rejectedMissingProbability: number;
+  rejectedNonPositiveValue: number;
+  affiliateMatchAvailable: number;
+  affiliateMatchMissing: number;
+  publishedPicks: number;
+};
+
+function createSportDiagnostics(): SportDiagnostics {
+  return {
+    eventsProcessed: 0,
+    candidatesAvailable: 0,
+    rejectedCandidateMissing: 0,
+    rejectedBookmakerDepth: 0,
+    rejectedMissingMarketOdds: 0,
+    rejectedMissingProbability: 0,
+    rejectedNonPositiveValue: 0,
+    affiliateMatchAvailable: 0,
+    affiliateMatchMissing: 0,
+    publishedPicks: 0,
+  };
+}
+
+function countEligibilityRejection(
+  diagnostics: SportDiagnostics,
+  reason: PublicationRejection
+): void {
+  if (reason === "bookmaker_depth") diagnostics.rejectedBookmakerDepth += 1;
+  if (reason === "missing_market_odds") diagnostics.rejectedMissingMarketOdds += 1;
+  if (reason === "missing_probability") diagnostics.rejectedMissingProbability += 1;
+  if (reason === "non_positive_value") diagnostics.rejectedNonPositiveValue += 1;
+}
 
 function isSportFailed(sport?: { status?: string; message?: string }): boolean {
   if (!sport) return false;
@@ -81,70 +120,8 @@ function safeNumber(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
-
 function normalizeBookmakerName(value: string | null | undefined): string {
   return (value ?? "").toLowerCase().trim().replace(/\s+/g, "");
-}
-
-function resolveFairProbability(params: {
-  aiFairProbability?: number | null;
-  marketConsensus?: number | null;
-  impliedProbability?: number | null;
-  bookmakerCount?: number | null;
-}): number | null {
-  const aiFairProbability = safeNumber(params.aiFairProbability);
-  const marketConsensus = safeNumber(params.marketConsensus);
-  const impliedProbability = safeNumber(params.impliedProbability);
-  const bookmakerCount = safeNumber(params.bookmakerCount) ?? 0;
-
-  // Market data is the anchor. AI may only make a small bounded adjustment;
-  // it must never be able to manufacture a large value edge by itself.
-  const marketAnchor = marketConsensus ?? impliedProbability;
-  if (marketAnchor == null) return null;
-
-  const boundedAnchor = clamp(marketAnchor, 1, 99);
-  if (aiFairProbability == null) return boundedAnchor;
-
-  const maxAiDeviation =
-    bookmakerCount >= 10 ? 5 : bookmakerCount >= 6 ? 4 : 3;
-  const aiWeight = bookmakerCount >= 10 ? 0.2 : 0.15;
-
-  const boundedAiProbability = clamp(
-    aiFairProbability,
-    boundedAnchor - maxAiDeviation,
-    boundedAnchor + maxAiDeviation
-  );
-
-  return clamp(
-    boundedAnchor * (1 - aiWeight) + boundedAiProbability * aiWeight,
-    1,
-    99
-  );
-}
-
-function resolveEstimatedValuePct(params: {
-  explicitEstimatedValuePct?: number | null;
-  fairProbability?: number | null;
-  partnerOdds?: number | null;
-}): number | null {
-  const explicitEstimatedValuePct = safeNumber(params.explicitEstimatedValuePct);
-
-  if (explicitEstimatedValuePct != null) {
-    return Number(explicitEstimatedValuePct.toFixed(2));
-  }
-
-  const fairProbability = safeNumber(params.fairProbability);
-  const partnerOdds = safeNumber(params.partnerOdds);
-
-  if (fairProbability == null || partnerOdds == null || partnerOdds <= 1) {
-    return null;
-  }
-
-  const calculated = calculateEstimatedValuePct(fairProbability, partnerOdds);
-  return calculated == null ? null : Number(calculated.toFixed(2));
 }
 
 function resolveValueDiff(params: {
@@ -168,37 +145,6 @@ function resolveValueDiff(params: {
   return Number((fairProbability - impliedProbability).toFixed(2));
 }
 
-function deriveRiskTier(params: {
-  partnerOdds: number;
-  bookmakerCount: number;
-  estimatedValuePct?: number | null;
-  bookmakerSpreadPct?: number | null;
-}) {
-  const baseTier = calculateRiskTier(params.partnerOdds, params.bookmakerCount);
-  const estimatedValuePct = safeNumber(params.estimatedValuePct);
-  const bookmakerSpreadPct = safeNumber(params.bookmakerSpreadPct);
-
-  if (baseTier === "High") return "High";
-
-  const hasWeakValueSignal =
-    estimatedValuePct != null && estimatedValuePct < 0.75;
-  const hasLargePriceDislocation =
-    bookmakerSpreadPct != null && Math.abs(bookmakerSpreadPct) >= 6;
-
-  if (baseTier === "Low" && !hasWeakValueSignal && !hasLargePriceDislocation) {
-    return "Low";
-  }
-
-  if (baseTier === "Low" && (hasWeakValueSignal || hasLargePriceDislocation)) {
-    return "Medium";
-  }
-
-  if (baseTier === "Medium" && hasLargePriceDislocation && hasWeakValueSignal) {
-    return "High";
-  }
-
-  return baseTier;
-}
 
 export async function GET(request: Request) {
   const cronSecret = process.env.CRON_SECRET;
@@ -276,6 +222,8 @@ export async function GET(request: Request) {
     const seenEvents = new Set<string>();
 
     for (const sportBlock of sportsData) {
+      const diagnostics = createSportDiagnostics();
+
       if (sportBlock.fetchFailed) {
         result.sports.push({
           sport: sportBlock.sport,
@@ -284,6 +232,7 @@ export async function GET(request: Request) {
           message:
             sportBlock.error ?? `Upstream data fetch failed for ${sportBlock.sport}.`,
           topPicks: [],
+          diagnostics,
         });
         continue;
       }
@@ -297,6 +246,7 @@ export async function GET(request: Request) {
           hasMatches: false,
           message: `No ${sportBlock.sport} events available today.`,
           topPicks: [],
+          diagnostics,
         });
         continue;
       }
@@ -311,6 +261,7 @@ export async function GET(request: Request) {
           hasMatches: false,
           message: `AI generation failed for ${sportBlock.sport}.`,
           topPicks: [],
+          diagnostics,
         });
         continue;
       }
@@ -321,19 +272,31 @@ export async function GET(request: Request) {
         const event = events[i];
         const ai = aiResults[i];
 
-        if (!event || !ai) continue;
+        if (!event) continue;
+        diagnostics.eventsProcessed += 1;
+        if (!ai) {
+          diagnostics.rejectedCandidateMissing += 1;
+          continue;
+        }
 
         const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
         if (seenEvents.has(eventKey)) continue;
 
         const candidates = buildMarketCandidates(event);
+        diagnostics.candidatesAvailable += candidates.length;
         const selectedCandidate = candidates.find(
           (candidate) => candidate.id === ai.candidateId
         );
-        if (!selectedCandidate) continue;
+        if (!selectedCandidate) {
+          diagnostics.rejectedCandidateMissing += 1;
+          continue;
+        }
 
         const bookmakerCount = selectedCandidate.bookmakerCount;
-        if (bookmakerCount < 3) continue;
+        if (bookmakerCount < MIN_PRODUCTION_BOOKMAKERS) {
+          diagnostics.rejectedBookmakerDepth += 1;
+          continue;
+        }
 
         seenEvents.add(eventKey);
 
@@ -383,82 +346,49 @@ export async function GET(request: Request) {
 
         const partnerOdds = event.rawBookmakers
           ? safeNumber(partnerOffer.odds)
-          : safeNumber(partnerOffer.odds) ?? marketBestOdds ?? null;
-
-        if (
-          partnerOdds == null ||
-          partnerOdds <= 1 ||
-          (event.rawBookmakers && !partnerOffer.bookmaker)
-        ) {
-          continue;
-        }
-
-        const partnerBookmaker =
-          partnerOffer.bookmaker ??
-          marketOdds.bestBookmaker ??
-          event.bookmaker ??
-          "Partner offer";
-
-        const bookmakerUrl = getBookmakerAffiliateUrl(
-          normalizeBookmakerName(partnerBookmaker),
-          event.sport
+          : safeNumber(partnerOffer.odds);
+        const partnerBookmaker = partnerOffer.bookmaker ?? null;
+        const bookmakerUrl =
+          partnerOdds != null && partnerOdds > 1 && partnerBookmaker
+            ? getExactBookmakerAffiliateUrl(
+                normalizeBookmakerName(partnerBookmaker)
+              )
+            : null;
+        const hasAffiliateMatch = Boolean(
+          partnerOdds != null &&
+            partnerOdds > 1 &&
+            partnerBookmaker &&
+            bookmakerUrl
         );
 
-        const impliedProbability =
-          decimalOddsToImpliedProbability(partnerOdds) ??
-          safeNumber(event.impliedProbability) ??
-          null;
+        if (hasAffiliateMatch) diagnostics.affiliateMatchAvailable += 1;
+        else diagnostics.affiliateMatchMissing += 1;
 
-        if (impliedProbability == null) {
-          continue;
-        }
-
-        const aiFairProbability = safeNumber(ai.fairProbability);
-        const fairProbability = resolveFairProbability({
-          aiFairProbability,
+        const eligibility = evaluatePredictionEligibility({
+          bestOdds: marketBestOdds,
+          marketAverageOdds,
           marketConsensus,
-          impliedProbability,
+          aiFairProbability: safeNumber(ai.fairProbability),
           bookmakerCount,
         });
-
-        const fairOdds =
-          fairProbability != null
-            ? impliedProbabilityToDecimalOdds(fairProbability)
-            : null;
-
-        const bookmakerSpreadPct = calculateBookmakerSpreadPct(
-          partnerOdds,
-          marketAverageOdds
-        );
-
-        const estimatedValuePct = resolveEstimatedValuePct({
-          fairProbability,
-          partnerOdds,
-        });
-
-        if (estimatedValuePct == null || estimatedValuePct <= 0) {
+        if (!eligibility.eligible) {
+          countEligibilityRejection(diagnostics, eligibility.reason);
           continue;
         }
 
         const valueDiff = resolveValueDiff({
-          fairProbability,
-          impliedProbability,
-        });
-
-        const riskTier = deriveRiskTier({
-          partnerOdds,
-          bookmakerCount,
-          estimatedValuePct,
-          bookmakerSpreadPct,
+          fairProbability: eligibility.fairProbability,
+          impliedProbability: eligibility.impliedProbability,
         });
 
         const whySignal = buildWhySignalSummary({
-          estimatedValuePct,
+          estimatedValuePct: eligibility.estimatedValuePct,
           consensusImpliedProb: marketConsensus,
-          partnerImpliedProbability: impliedProbability,
+          marketImpliedProbability: eligibility.impliedProbability,
           bookmakerCount,
-          riskTier,
-          partnerBookmaker,
+          riskTier: eligibility.riskTier,
+          trackedBookmaker: marketOdds.bestBookmaker ?? event.bookmaker ?? null,
+          partnerBookmaker: hasAffiliateMatch ? partnerBookmaker : null,
         });
 
         topPicks.push({
@@ -471,27 +401,28 @@ export async function GET(request: Request) {
           market: selectedMarket,
           prediction: selectedPrediction,
           reasoning: ai.reasoning ?? "",
-          riskTier,
-          bestOdds: partnerOdds,
-          impliedProbability,
+          riskTier: eligibility.riskTier,
+          bestOdds: eligibility.bestOdds,
+          impliedProbability: eligibility.impliedProbability,
           consensusImpliedProb: marketConsensus,
           valueDiff,
           bookmakerCount,
-          bookmaker: partnerBookmaker,
-          bookmakerUrl,
-          ctaLabel: "View Offer",
+          bookmaker: marketOdds.bestBookmaker ?? event.bookmaker ?? "Unknown",
+          bookmakerUrl: hasAffiliateMatch ? bookmakerUrl : null,
+          ctaLabel: hasAffiliateMatch ? "View Offer" : null,
           status: "scheduled",
 
-          partnerOdds,
-          partnerBookmaker,
-          partnerRating: partnerOffer.rating ?? null,
+          partnerOdds: hasAffiliateMatch ? partnerOdds : null,
+          partnerBookmaker: hasAffiliateMatch ? partnerBookmaker : null,
+          partnerRating: hasAffiliateMatch ? partnerOffer.rating ?? null : null,
           marketAverageOdds,
-          fairProbability,
-          fairOdds,
-          estimatedValuePct,
-          bookmakerSpreadPct,
+          fairProbability: eligibility.fairProbability,
+          fairOdds: eligibility.fairOdds,
+          estimatedValuePct: eligibility.estimatedValuePct,
+          bookmakerSpreadPct: eligibility.bookmakerSpreadPct,
           whySignal,
         });
+        diagnostics.publishedPicks += 1;
       }
 
       const rankedTopPicks = rankMatches(topPicks);
@@ -501,6 +432,12 @@ export async function GET(request: Request) {
         status: "success",
         hasMatches: rankedTopPicks.length > 0,
         topPicks: rankedTopPicks,
+        diagnostics,
+      });
+
+      console.info("[daily-run] publication diagnostics", {
+        sport: sportBlock.sport,
+        ...diagnostics,
       });
     }
 

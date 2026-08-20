@@ -32,7 +32,7 @@ const zh:DeepPartial<Translation> = {
   homepageNoPicksDesc: "当前暂无适用的 MatchSignal 预测。预测可用性取决于即将进行的比赛和有效市场数据。欢迎使用我们的分析工具或查阅体育指南。",
   seoTitle: "AI 博彩预测",
   seoDescription: "由 AI 生成的各项体育赛事博彩预测和价值投注。",
-    bestPartnerOdds: "最佳合作伙伴赔率",
+    bestTrackedOdds: "最佳追踪赔率",
   sportsbookLabel: "博彩公司",
   marketAverage: "市场平均值",
   fairProbability: "公平概率",
@@ -144,9 +144,9 @@ const zh:DeepPartial<Translation> = {
       title: "市场",
       desc: "该推荐使用的投注市场，例如 Moneyline 或 Over/Under。",
     },
-    bestPartnerOdds: {
-      title: "最佳合作方赔率",
-      desc: "当前为该推荐显示的重点合作方赔率。",
+    bestTrackedOdds: {
+      title: "最佳追踪赔率",
+      desc: "生成分析时，同一市场和选择中追踪到的最高赔率。",
     },
     sportsbook: {
       title: "博彩公司",

@@ -859,35 +859,36 @@ export function calculateBookmakerSpreadPct(
 export function buildWhySignalSummary(params: {
   estimatedValuePct?: number | null;
   consensusImpliedProb?: number | null;
-  partnerImpliedProbability?: number | null;
+  marketImpliedProbability?: number | null;
   bookmakerCount?: number;
   riskTier?: "Low" | "Medium" | "High";
+  trackedBookmaker?: string | null;
   partnerBookmaker?: string | null;
 }): string[] {
   const bullets: string[] = [];
 
   if (typeof params.estimatedValuePct === "number") {
     if (params.estimatedValuePct >= 3) {
-      bullets.push("Partner offer shows a strong positive value edge.");
+      bullets.push("The best tracked price shows a strong positive value edge.");
     } else if (params.estimatedValuePct >= 1) {
-      bullets.push("Partner offer still prices this pick above fair value.");
+      bullets.push("The best tracked price still sits above fair value.");
     } else if (params.estimatedValuePct > -1) {
-      bullets.push("Partner offer sits close to fair market value.");
+      bullets.push("The best tracked price sits close to fair market value.");
     } else {
-      bullets.push("Partner price is slightly below fair value, so upside is thinner.");
+      bullets.push("The best tracked price is below fair value, so upside is thinner.");
     }
   }
 
   if (
     typeof params.consensusImpliedProb === "number" &&
-    typeof params.partnerImpliedProbability === "number"
+    typeof params.marketImpliedProbability === "number"
   ) {
-    const gap = params.consensusImpliedProb - params.partnerImpliedProbability;
+    const gap = params.consensusImpliedProb - params.marketImpliedProbability;
 
     if (gap >= 1.5) {
       bullets.push("Consensus still supports the selected outcome.");
     } else if (gap <= -1.5) {
-      bullets.push("Consensus is softer than the partner price suggests.");
+      bullets.push("Consensus is softer than the best tracked price suggests.");
     } else {
       bullets.push("Consensus is broadly aligned with this selection.");
     }
@@ -903,8 +904,12 @@ export function buildWhySignalSummary(params: {
     }
   }
 
+  if (params.trackedBookmaker) {
+    bullets.push(`Best tracked price comes from ${params.trackedBookmaker}.`);
+  }
+
   if (params.partnerBookmaker) {
-    bullets.push(`Best eligible partner offer comes from ${params.partnerBookmaker}.`);
+    bullets.push(`A matching partner offer is available from ${params.partnerBookmaker}.`);
   }
 
   if (params.riskTier === "Low") {
@@ -924,14 +929,16 @@ function buildWhySignal(params: {
   impliedProbability: number | null;
   bookmakerCount: number;
   riskTier?: "Low" | "Medium" | "High";
+  trackedBookmaker: string | null;
   partnerBookmaker: string | null;
 }): string[] {
   return buildWhySignalSummary({
     estimatedValuePct: params.estimatedValuePct,
     consensusImpliedProb: params.consensusImpliedProb,
-    partnerImpliedProbability: params.impliedProbability,
+    marketImpliedProbability: params.impliedProbability,
     bookmakerCount: params.bookmakerCount,
     riskTier: params.riskTier,
+    trackedBookmaker: params.trackedBookmaker,
     partnerBookmaker: params.partnerBookmaker,
   });
 }
@@ -1489,7 +1496,7 @@ async function fetchSportEvents(
       );
 
       const partnerOdds = partnerOffer.odds;
-      const partnerImpliedProbability = decimalOddsToImpliedProbability(partnerOdds);
+      const marketImpliedProbability = decimalOddsToImpliedProbability(bestOdds);
 
       const marketAverageOdds = getAverageOddsForMarket(
         event.bookmakers || [],
@@ -1499,19 +1506,20 @@ async function fetchSportEvents(
       );
 
       const fairOdds = impliedProbabilityToDecimalOdds(fairProbabilityPct);
-      const estimatedValuePct = calculateEstimatedValuePct(fairProbabilityPct, partnerOdds);
-      const bookmakerSpreadPct = calculateBookmakerSpreadPct(partnerOdds, marketAverageOdds);
+      const estimatedValuePct = calculateEstimatedValuePct(fairProbabilityPct, bestOdds);
+      const bookmakerSpreadPct = calculateBookmakerSpreadPct(bestOdds, marketAverageOdds);
 
       const valueDiff =
-        fairProbabilityPct !== null && partnerImpliedProbability !== null
-          ? round1(fairProbabilityPct - partnerImpliedProbability)
+        fairProbabilityPct !== null && marketImpliedProbability !== null
+          ? round1(fairProbabilityPct - marketImpliedProbability)
           : null;
 
       const whySignal = buildWhySignal({
         estimatedValuePct,
         consensusImpliedProb,
-        impliedProbability: partnerImpliedProbability,
+        impliedProbability: marketImpliedProbability,
         bookmakerCount: allOffers.length,
+        trackedBookmaker: bestOffer?.bookmaker ?? null,
         partnerBookmaker: partnerOffer.bookmaker,
       });
 
@@ -1527,7 +1535,7 @@ async function fetchSportEvents(
         bookmakerRank: bestOffer?.bookmakerRank ?? 0,
         odds: bestOdds,
         bestOdds,
-        impliedProbability: round1(partnerImpliedProbability),
+        impliedProbability: round1(marketImpliedProbability),
         consensusImpliedProb: round1(consensusImpliedProb),
         valueDiff,
         partnerOdds: round2(partnerOdds),

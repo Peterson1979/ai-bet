@@ -40,7 +40,7 @@ export function selectPick(predictions: PredictionFile, now = new Date()) {
       const t = new Date(pick.startTime).getTime();
       return t >= nowMs && t <= plus48h;
     })
-    .filter((pick) => !!pick.prediction && !!pick.market && !!pick.bookmakerUrl)
+    .filter((pick) => !!pick.prediction && !!pick.market)
     .filter((pick) => pick.bookmakerCount >= 3)
     .filter((pick) => hasPositiveSocialValue(pick))
     .map((pick) => ({

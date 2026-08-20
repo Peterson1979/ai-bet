@@ -15,9 +15,9 @@ function isFiniteNumber(value: unknown): value is number {
 }
 
 function getPrimaryOdds(pick: Candidate): number | null {
+  if (isFiniteNumber(pick.bestOdds)) return pick.bestOdds;
   if (isFiniteNumber(pick.partnerOffer?.odds)) return pick.partnerOffer.odds;
   if (isFiniteNumber(pick.partnerOdds)) return pick.partnerOdds;
-  if (isFiniteNumber(pick.bestOdds)) return pick.bestOdds;
   return null;
 }
 
