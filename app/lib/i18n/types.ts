@@ -59,10 +59,6 @@ export type Translation = {
   sportPageDescription: string;
 
   topPicks: string;
-  premiumOffers: string;
-  premiumOffersDesc: string;
-  recommendedSites: string;
-  recommendedSitesDesc: string;
   noMatches: string;
   tbd: string;
   noExplanation: string;
@@ -137,13 +133,11 @@ export type Translation = {
     navHome: string;
     navTopPicks: string;
     navBetting: string;
-    navNews: string;
     navTools: string;
     navGlossary: string;
   };
 
   common: {
-    rating: string;
     visitSite: string;
     compareAllOffers: string;
   };
@@ -154,7 +148,7 @@ export type Translation = {
     seeAll: string;
   };
 
-  topRatedSportsbooks: {
+  partnerSportsbooks: {
     title: string;
     compareAll: string;
     viewOffer: string;
@@ -179,16 +173,9 @@ export type Translation = {
     affiliateText: string;
   };
 
-  sportNews: {
-    title: string;
-    description: string;
-    titleMain: string;
-    subtitle: string;
-    sidebarTitle: string;
-  };
-
   tools: {
     title: string;
+    subtitle: string;
     oddsConverter: string;
     oddsConverterDesc: string;
     fractional: string;

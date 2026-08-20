@@ -11,7 +11,7 @@ import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 import type { Metadata } from "next";
 import AffiliateSlider from "../components/AffiliateSlider";
 import FeaturedSportsbooks from "../components/FeaturedSportsbooks";
-import TopRatedSportsbooksList from "../components/TopRatedSportsbooksList";
+import PartnerSportsbooksList from "../components/PartnerSportsbooksList";
 import StickyBottomCTA from "../components/StickyBottomCTA";
 import { HOMEPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import { sortSportBlocks } from "@/app/lib/sportsConfig";
@@ -190,7 +190,7 @@ export default async function HomePage({
             )}
           </div>
 
-          {/* FEATURED SPORTSBOOKS — Editor's Picks (Top 3) */}
+          {/* Featured sportsbook partners */}
           <FeaturedSportsbooks lang={lang} countryCode={countryCode} />
 
           {/* AFFILIATE SLIDER — rotating partner logos */}
@@ -198,8 +198,8 @@ export default async function HomePage({
             <AffiliateSlider lang={lang} countryCode={countryCode} showDisclosure={false} />
           </div>
 
-          {/* 🏆 TOP RATED SPORTSBOOKS — footer felett */}
-          <TopRatedSportsbooksList lang={lang} countryCode={countryCode} variant="footer" showDisclosure={false} />
+          {/* Partner sportsbook list */}
+          <PartnerSportsbooksList lang={lang} countryCode={countryCode} variant="footer" showDisclosure={false} />
 
           <div className="mt-16">
             <Footer />

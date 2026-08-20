@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
-import TopRatedSportsbooksList from "@/app/components/TopRatedSportsbooksList";
+import PartnerSportsbooksList from "@/app/components/PartnerSportsbooksList";
 import { translations, Lang } from "@/app/lib/i18n";
 
 // ========================
@@ -229,7 +229,7 @@ export default function ToolsClient({ lang }: { lang: Lang }) {
 
       <div className="pt-[70px] max-w-[1500px] mx-auto px-4 pb-16">
         <h1 className="text-4xl font-black mb-2 pt-12">{t.tools.title}</h1>
-        <p className="text-slate-300 mb-10">{t.sportNews.subtitle}</p>
+        <p className="text-slate-300 mb-10">{t.tools.subtitle}</p>
 
         <div className="grid grid-cols-1 xl:grid-cols-[1fr_320px] gap-8 items-start">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -240,7 +240,7 @@ export default function ToolsClient({ lang }: { lang: Lang }) {
           </div>
 
           <aside className="h-fit xl:sticky xl:top-24">
-            <TopRatedSportsbooksList lang={lang} variant="footer" />
+            <PartnerSportsbooksList lang={lang} countryCode={lang === "hu" ? "HU" : undefined} variant="footer" />
           </aside>
         </div>
       </div>

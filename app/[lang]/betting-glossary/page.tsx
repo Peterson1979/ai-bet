@@ -1,6 +1,6 @@
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import TopRatedSportsbooksList from "@/app/components/TopRatedSportsbooksList";
+import PartnerSportsbooksList from "@/app/components/PartnerSportsbooksList";
 import { translations, Lang, LANGS } from "@/app/lib/i18n";
 import type { Metadata } from "next";
 
@@ -97,7 +97,7 @@ export default async function BettingGlossaryPage({
 
             {/* RIGHT SIDEBAR */}
             <aside className="h-fit xl:sticky xl:top-24">
-              <TopRatedSportsbooksList lang={lang} variant="footer" />
+              <PartnerSportsbooksList lang={lang} countryCode={lang === "hu" ? "HU" : undefined} variant="footer" />
             </aside>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { translations, Lang } from "@/app/lib/i18n";
+import { LEGAL_NAV_COPY } from "@/app/lib/legalNavCopy";
 
 type Props = {
   lang?: Lang;
@@ -6,6 +7,7 @@ type Props = {
 
 export default function SimpleFooter({ lang = "en" }: Props) {
   const t = translations[lang] ?? translations.en;
+  const legalCopy = LEGAL_NAV_COPY[lang];
 
   const links = [
     { href: `/${lang}/legal/privacy-policy`, label: t.footer.navPrivacy },
@@ -13,6 +15,9 @@ export default function SimpleFooter({ lang = "en" }: Props) {
     { href: `/${lang}/legal/affiliate-disclosure`, label: t.footer.navAffiliate },
     { href: `/${lang}/legal/responsible-gambling`, label: t.footer.navResponsible },
     { href: `/${lang}/legal/cookie-policy`, label: t.footer.navCookie },
+    { href: `/${lang}/legal/ai-disclaimer`, label: legalCopy.ai },
+    { href: `/${lang}/legal/earnings-disclaimer`, label: legalCopy.earnings },
+    { href: `/${lang}/legal/legal-notice`, label: legalCopy.notice },
   ];
 
   return (

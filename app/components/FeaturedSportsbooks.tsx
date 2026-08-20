@@ -48,7 +48,7 @@ export default function FeaturedSportsbooks({ lang = "en", bettingPageHref, coun
             <span className="text-sm text-slate-200">{site.bonus}</span>
 
             <span className="mt-auto w-full rounded-xl border-2 border-cyan-300/40 bg-cyan-500/10 py-2 text-sm font-bold text-cyan-200">
-              {t.topRatedSportsbooks.viewOffer}
+              {t.partnerSportsbooks.viewOffer}
             </span>
           </a>
         ))}

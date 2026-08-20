@@ -6,7 +6,7 @@ import Footer from "@/app/components/Footer";
 import SportSection from "@/app/components/SportSection";
 import SportGuide from "@/app/components/SportGuide";
 import AffiliateSlider from "@/app/components/AffiliateSlider";
-import TopRatedSportsbooksList from "@/app/components/TopRatedSportsbooksList";
+import PartnerSportsbooksList from "@/app/components/PartnerSportsbooksList";
 
 import { getPredictions } from "@/app/lib/getPredictions";
 import { translations, Lang } from "@/app/lib/i18n";
@@ -201,7 +201,7 @@ export default async function SportPage({
                 hideHeading={true}
               />
 
-              <TopRatedSportsbooksList lang={lang} countryCode={countryCode} variant="inline" showDisclosure={false} />
+              <PartnerSportsbooksList lang={lang} countryCode={countryCode} variant="inline" showDisclosure={false} />
 
               {secondHalfBlock!.topPicks.length > 0 && (
                 <SportSection

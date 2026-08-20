@@ -5,12 +5,14 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { translations, Lang } from "@/app/lib/i18n";
 import { triggerReopenConsent } from "@/app/lib/consent";
+import { LEGAL_NAV_COPY } from "@/app/lib/legalNavCopy";
 
 export default function Footer() {
   const params = useParams();
   const lang = (params?.lang as Lang) || "en";
   const t = translations[lang] ?? translations.en;
   const privacyCopy = PRIVACY_COPY[lang] ?? PRIVACY_COPY.en;
+  const legalCopy = LEGAL_NAV_COPY[lang];
 
   const fieldKeys = [
     "prediction",
@@ -34,6 +36,9 @@ export default function Footer() {
     { href: `/${lang}/legal/affiliate-disclosure`, label: t.footer.navAffiliate },
     { href: `/${lang}/legal/responsible-gambling`, label: t.footer.navResponsible },
     { href: `/${lang}/legal/cookie-policy`, label: t.footer.navCookie },
+    { href: `/${lang}/legal/ai-disclaimer`, label: legalCopy.ai },
+    { href: `/${lang}/legal/earnings-disclaimer`, label: legalCopy.earnings },
+    { href: `/${lang}/legal/legal-notice`, label: legalCopy.notice },
   ];
 
   return (

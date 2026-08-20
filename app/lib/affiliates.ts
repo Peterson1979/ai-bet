@@ -479,7 +479,7 @@ export function getFeaturedSites(count: number = 3, countryCode?: string) {
     }));
 }
 
-export function getTopRatedList(count: number = 3, countryCode?: string) {
+export function getPartnerList(count: number = 3, countryCode?: string) {
   return getFeaturedSites(count, countryCode);
 }
 
@@ -526,20 +526,6 @@ export function getBookmakerAffiliateUrl(
   }
 
   return getMatchCardUrl(sport);
-}
-
-export function getBadgeLabel(site: AffiliateSite): string {
-  const sortedByRating = [...AFFILIATE_SITES]
-    .filter(isSiteEnabled)
-    .sort((a, b) => b.rating - a.rating);
-
-  const rank = sortedByRating.findIndex((s) => s.id === site.id);
-
-  if (rank === 0) return "Top Rated";
-  if (rank === 1) return "Best Odds";
-  if (rank === 2) return "Editor's Pick";
-  if (site.rating >= 9.0) return "Highly Recommended";
-  return "Trusted Partner";
 }
 
 export function getSiteByBookmakerName(

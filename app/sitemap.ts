@@ -1,21 +1,9 @@
 import type { MetadataRoute } from "next";
 import { GUIDE_LOCALES, getPublishedGuideManifest } from "@/app/lib/guides";
+import { LANGS } from "@/app/lib/i18n";
+import { LEGAL_SLUGS } from "@/app/lib/legal/types";
 
 const baseUrl = "https://www.matchsignal.pro";
-
-const langs = [
-  "en",
-  "hu",
-  "de",
-  "fr",
-  "es",
-  "it",
-  "pt",
-  "ar",
-  "zh",
-  "ja",
-  "hi",
-];
 
 const sports = [
   "football",
@@ -54,60 +42,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.5,
     },
-  ];
-
-  const englishOnlyPages = [
     {
       path: "/about",
       changeFrequency: "monthly" as const,
       priority: 0.5,
     },
-    {
-      path: "/legal/privacy-policy",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      path: "/legal/terms-of-use",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      path: "/legal/affiliate-disclosure",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      path: "/legal/responsible-gambling",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      path: "/legal/cookie-policy",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      path: "/legal/earnings-disclaimer",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      path: "/legal/ai-disclaimer",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
   ];
 
   const entries: MetadataRoute.Sitemap = [];
 
-  for (const lang of langs) {
+  for (const lang of LANGS) {
     for (const page of multilingualPages) {
       entries.push({
         url: `${baseUrl}/${lang}${page.path}`,
         lastModified: new Date(),
         changeFrequency: page.changeFrequency,
         priority: page.priority,
+      });
+    }
+
+    for (const slug of LEGAL_SLUGS) {
+      entries.push({
+        url: `${baseUrl}/${lang}/legal/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: "yearly",
+        priority: 0.3,
       });
     }
 
@@ -119,15 +78,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.8,
       });
     }
-  }
-
-  for (const page of englishOnlyPages) {
-    entries.push({
-      url: `${baseUrl}/en${page.path}`,
-      lastModified: new Date(),
-      changeFrequency: page.changeFrequency,
-      priority: page.priority,
-    });
   }
 
   const publishedGuides = getPublishedGuideManifest();
