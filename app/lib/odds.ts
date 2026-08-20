@@ -15,6 +15,8 @@ const REDIS_CREDIT_TTL_SECONDS = 36 * 3600; // 36 hours
 const ODDS_MAX_RETRIES = 3;
 const ODDS_RETRY_FALLBACK_MS = 5000;
 const INTER_REQUEST_DELAY_MS = 300;
+const EVENT_DISCOVERY_CACHE_TTL_MS = 1000 * 60 * 10;
+const eventDiscoveryCache = new Map<string, { hasEvents: boolean; timestamp: number }>();
 
 let redisClient: Redis | null = null;
 
@@ -203,6 +205,7 @@ export type OddsEvent = {
   id: string;
   sport: string;
   league: string;
+  sourceSportKey?: string;
   homeTeam: string;
   awayTeam: string;
   commenceTime: string;
@@ -243,6 +246,10 @@ const BOOKMAKER_RANKINGS: Record<string, number> = {
   NordicBet: 4,
   Coolbet: 4,
 };
+
+function safeFiniteNumber(value: unknown): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -435,6 +442,227 @@ function extractOutcomeOddsForMarket(
   }
 
   return null;
+}
+
+export type MarketCandidate = {
+  id: string;
+  eventId: string;
+  apiMarketKey: string;
+  market: string;
+  prediction: string;
+  outcomeName: string;
+  point: number | null;
+  bookmakerCount: number;
+  consensusImpliedProb: number | null;
+};
+
+const SUPPORTED_CANDIDATE_MARKETS = new Set([
+  "h2h",
+  "totals",
+  "spreads",
+  "double_chance",
+  "draw_no_bet",
+  "h2h_s1",
+]);
+
+function marketCandidateLabel(apiMarketKey: string, sport: string): string {
+  if (apiMarketKey === "h2h") {
+    if (sport === "Football") return "Match Winner (1X2)";
+    if (sport === "Tennis") return "Match Winner";
+    if (sport === "MMA") return "Fight Winner (Moneyline)";
+    return "Moneyline";
+  }
+  if (apiMarketKey === "totals") {
+    if (sport === "Football" || sport === "Hockey") return "Over/Under Goals";
+    if (sport === "Tennis") return "Over/Under Games";
+    if (sport === "MLB") return "Over/Under Runs";
+    if (sport === "MMA") return "Round Totals (Over/Under)";
+    return "Over/Under Points";
+  }
+  if (apiMarketKey === "spreads") {
+    if (sport === "Tennis") return "Game Handicap";
+    if (sport === "MLB") return "Run Line";
+    if (sport === "Hockey") return "Puck Line";
+    return "Spread";
+  }
+  if (apiMarketKey === "double_chance") return "Double Chance";
+  if (apiMarketKey === "draw_no_bet") return "Draw No Bet";
+  if (apiMarketKey === "h2h_s1") return "First Set Winner";
+  return apiMarketKey;
+}
+
+function marketCandidatePointKey(point: number | null): string {
+  return point === null ? "none" : String(point);
+}
+
+function marketCandidatePrediction(
+  apiMarketKey: string,
+  outcomeName: string,
+  point: number | null
+): string {
+  if (point === null) return outcomeName;
+  const pointText =
+    apiMarketKey === "spreads" && point > 0 ? `+${point}` : String(point);
+  return `${outcomeName} ${pointText}`;
+}
+
+function findCandidateOutcome(
+  bookmaker: any,
+  candidate: MarketCandidate
+): any | null {
+  const market = bookmaker.markets?.find((m: any) => m.key === candidate.apiMarketKey);
+  if (!market) return null;
+  return (
+    market.outcomes?.find((outcome: any) => {
+      if (outcome.name !== candidate.outcomeName) return false;
+      const point = typeof outcome.point === "number" && Number.isFinite(outcome.point)
+        ? outcome.point
+        : null;
+      return point === candidate.point;
+    }) ?? null
+  );
+}
+
+export function buildMarketCandidates(event: OddsEvent): MarketCandidate[] {
+  const grouped = new Map<
+    string,
+    {
+      apiMarketKey: string;
+      outcomeName: string;
+      point: number | null;
+      prices: number[];
+      bookmakers: Set<string>;
+    }
+  >();
+
+  for (const bookmaker of event.rawBookmakers ?? []) {
+    for (const market of bookmaker.markets ?? []) {
+      const apiMarketKey = String(market.key ?? "");
+      if (!SUPPORTED_CANDIDATE_MARKETS.has(apiMarketKey)) continue;
+
+      for (const outcome of market.outcomes ?? []) {
+        const price = safeFiniteNumber(outcome.price);
+        if (price === null || price <= 1) continue;
+
+        const outcomeName = String(outcome.name ?? "").trim();
+        if (!outcomeName) continue;
+
+        const point = safeFiniteNumber(outcome.point);
+        const key = `${apiMarketKey}|${outcomeName}|${marketCandidatePointKey(point)}`;
+        let entry = grouped.get(key);
+        if (!entry) {
+          entry = {
+            apiMarketKey,
+            outcomeName,
+            point,
+            prices: [],
+            bookmakers: new Set<string>(),
+          };
+          grouped.set(key, entry);
+        }
+
+        entry.prices.push(price);
+        entry.bookmakers.add(String(bookmaker.title ?? bookmaker.key ?? "unknown"));
+      }
+    }
+  }
+
+  return [...grouped.entries()]
+    .map(([key, entry]) => {
+      const avg = average(entry.prices);
+      return {
+        id: `${event.id}::${key}`,
+        eventId: event.id,
+        apiMarketKey: entry.apiMarketKey,
+        market: marketCandidateLabel(entry.apiMarketKey, event.sport),
+        prediction: marketCandidatePrediction(
+          entry.apiMarketKey,
+          entry.outcomeName,
+          entry.point
+        ),
+        outcomeName: entry.outcomeName,
+        point: entry.point,
+        bookmakerCount: entry.bookmakers.size,
+        consensusImpliedProb:
+          avg === null ? null : round1(decimalOddsToImpliedProbability(avg)),
+      };
+    })
+    .filter((candidate) => candidate.bookmakerCount >= 3);
+}
+
+export function getBestOddsForCandidate(
+  rawBookmakers: any[],
+  candidate: MarketCandidate
+): { bestOdds: number | null; bestBookmaker: string; bookmakerRank: number } {
+  let bestOdds: number | null = null;
+  let bestBookmaker = "Unknown";
+  let bookmakerRank = 0;
+
+  for (const bookmaker of rawBookmakers ?? []) {
+    const outcome = findCandidateOutcome(bookmaker, candidate);
+    const price = safeFiniteNumber(outcome?.price);
+    if (price === null || price <= 1) continue;
+    if (bestOdds === null || price > bestOdds) {
+      bestOdds = price;
+      bestBookmaker = bookmaker.title || "Unknown";
+      bookmakerRank = getBookmakerRank(bookmaker.title);
+    }
+  }
+
+  return { bestOdds: round2(bestOdds), bestBookmaker, bookmakerRank };
+}
+
+export function getAverageOddsForCandidate(
+  rawBookmakers: any[],
+  candidate: MarketCandidate
+): number | null {
+  const prices: number[] = [];
+  for (const bookmaker of rawBookmakers ?? []) {
+    const price = safeFiniteNumber(findCandidateOutcome(bookmaker, candidate)?.price);
+    if (price !== null && price > 1) prices.push(price);
+  }
+  const avg = average(prices);
+  return avg === null ? null : round2(avg);
+}
+
+export function getConsensusForCandidate(
+  rawBookmakers: any[],
+  candidate: MarketCandidate
+): number | null {
+  const averageOdds = getAverageOddsForCandidate(rawBookmakers, candidate);
+  return decimalOddsToImpliedProbability(averageOdds);
+}
+
+export function getPartnerOddsForCandidate(
+  rawBookmakers: any[],
+  candidate: MarketCandidate,
+  sportLabel: string
+): { odds: number | null; bookmaker: string | null; rating: number | null } {
+  const affiliateCandidates = getAffiliateCandidatesForSport(sportLabel);
+  const partnerMap = new Map(
+    affiliateCandidates.map((site) => [normalizeName(site.name), site] as const)
+  );
+  let bestOdds: number | null = null;
+  let bestBookmaker: string | null = null;
+  let bestRating: number | null = null;
+
+  for (const bookmaker of rawBookmakers ?? []) {
+    const matchedPartner = partnerMap.get(normalizeName(bookmaker.title || ""));
+    if (!matchedPartner) continue;
+    const price = safeFiniteNumber(findCandidateOutcome(bookmaker, candidate)?.price);
+    if (price === null || price <= 1) continue;
+    if (bestOdds === null || price > bestOdds) {
+      bestOdds = price;
+      bestBookmaker = matchedPartner.name;
+      bestRating = matchedPartner.rating ?? null;
+    }
+  }
+
+  return {
+    odds: round2(bestOdds),
+    bookmaker: bestBookmaker,
+    rating: round1(bestRating),
+  };
 }
 
 export function getPartnerOddsForMarket(
@@ -846,6 +1074,270 @@ async function fetchOddsWithRetry(
   return { response: null, counted: false };
 }
 
+type FeaturedMarketPlanItem = {
+  sport: (typeof WATCHED_SPORTS)[number];
+  marketKeys: string[];
+};
+
+function getFeaturedMarketPreference(sportLabel: string): string[] {
+  switch (sportLabel) {
+    case "Football":
+      return ["h2h", "totals"];
+    case "Tennis":
+      return ["h2h", "totals", "spreads"];
+    case "NBA":
+    case "NFL":
+    case "Hockey":
+    case "MLB":
+      return ["h2h", "totals", "spreads"];
+    case "MMA":
+      return ["h2h"];
+    default:
+      return ["h2h"];
+  }
+}
+
+function buildFeaturedMarketPlan(
+  availableSports: Array<(typeof WATCHED_SPORTS)[number]>,
+  creditBudget: number
+): FeaturedMarketPlanItem[] {
+  if (creditBudget <= 0 || availableSports.length === 0) return [];
+
+  const plan: FeaturedMarketPlanItem[] = [];
+  const plannedKeys = new Set<string>();
+  let cost = 0;
+
+  const addSport = (sport: (typeof WATCHED_SPORTS)[number]): boolean => {
+    if (plannedKeys.has(sport.key) || cost >= creditBudget) return false;
+    plan.push({ sport, marketKeys: ["h2h"] });
+    plannedKeys.add(sport.key);
+    cost += 1;
+    return true;
+  };
+
+  // Phase 1: guarantee broad sport coverage before spending on extra markets.
+  const seenLabels = new Set<string>();
+  for (const sport of availableSports) {
+    if (seenLabels.has(sport.label)) continue;
+    if (cost >= creditBudget) break;
+    if (addSport(sport)) seenLabels.add(sport.label);
+  }
+
+  // Phase 2: Football and Tennis are fragmented across many competition keys.
+  // Give each a second active competition when budget allows.
+  for (const label of ["Football", "Tennis"]) {
+    if (cost >= creditBudget) break;
+    const extra = availableSports.find(
+      (sport) => sport.label === label && !plannedKeys.has(sport.key)
+    );
+    if (extra) addSport(extra);
+  }
+
+  // Phase 3: add totals to primary sport entries before adding handicaps.
+  for (const item of plan) {
+    if (cost >= creditBudget) break;
+    const preference = getFeaturedMarketPreference(item.sport.label);
+    if (preference.includes("totals") && !item.marketKeys.includes("totals")) {
+      item.marketKeys.push("totals");
+      cost += 1;
+    }
+  }
+
+  // Phase 4: use any remaining budget for spreads / handicaps.
+  const spreadPriority = ["Tennis", "NBA", "NFL", "MLB", "Hockey"];
+  for (const label of spreadPriority) {
+    if (cost >= creditBudget) break;
+    const item = plan.find((entry) => entry.sport.label === label);
+    if (!item) continue;
+    const preference = getFeaturedMarketPreference(label);
+    if (preference.includes("spreads") && !item.marketKeys.includes("spreads")) {
+      item.marketKeys.push("spreads");
+      cost += 1;
+    }
+  }
+
+  // Phase 5: if credits still remain, add more active competition keys with h2h.
+  for (const sport of availableSports) {
+    if (cost >= creditBudget) break;
+    addSport(sport);
+  }
+
+  return plan;
+}
+
+function mergeBookmakerMarkets(baseBookmakers: any[], extraBookmakers: any[]): any[] {
+  const merged = new Map<string, any>();
+
+  const bookmakerKey = (bookmaker: any) =>
+    String(bookmaker.key ?? bookmaker.title ?? "").trim().toLowerCase();
+
+  for (const bookmaker of baseBookmakers ?? []) {
+    const key = bookmakerKey(bookmaker);
+    if (!key) continue;
+    merged.set(key, {
+      ...bookmaker,
+      markets: [...(bookmaker.markets ?? [])],
+    });
+  }
+
+  for (const bookmaker of extraBookmakers ?? []) {
+    const key = bookmakerKey(bookmaker);
+    if (!key) continue;
+
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, {
+        ...bookmaker,
+        markets: [...(bookmaker.markets ?? [])],
+      });
+      continue;
+    }
+
+    const markets = [...(existing.markets ?? [])];
+    for (const market of bookmaker.markets ?? []) {
+      const index = markets.findIndex((item: any) => item.key === market.key);
+      if (index >= 0) markets[index] = market;
+      else markets.push(market);
+    }
+
+    merged.set(key, { ...existing, ...bookmaker, markets });
+  }
+
+  return [...merged.values()];
+}
+
+async function enrichEventWithAdditionalMarkets(
+  event: OddsEvent,
+  requestedMarketKeys: string[],
+  creditState: { used: number },
+  dateKey: string
+): Promise<void> {
+  if (!API_KEY || IS_BUILD || !event.sourceSportKey || requestedMarketKeys.length === 0) return;
+
+  const availableCredits = DAILY_CREDIT_LIMIT - creditState.used;
+  if (availableCredits <= 0) return;
+
+  const marketKeys = requestedMarketKeys.slice(0, availableCredits);
+  const requestedCredits = marketKeys.length;
+  if (requestedCredits <= 0) return;
+
+  const reservation = await reservePersistentDailyCredit(dateKey, requestedCredits);
+  if (!reservation.allowed) {
+    creditState.used = DAILY_CREDIT_LIMIT;
+    return;
+  }
+  creditState.used = reservation.currentTotal;
+
+  const url =
+    `https://api.the-odds-api.com/v4/sports/${event.sourceSportKey}/events/${event.id}/odds` +
+    `?apiKey=${API_KEY}` +
+    `&regions=eu` +
+    `&markets=${marketKeys.join(",")}` +
+    `&oddsFormat=decimal`;
+
+  try {
+    const { response } = await fetchOddsWithRetry(
+      url,
+      `${event.sourceSportKey}:${event.id}:additional`
+    );
+
+    if (!response) {
+      creditState.used = await refundPersistentDailyCredit(dateKey, requestedCredits);
+      return;
+    }
+
+    const lastChargedHeader = response.headers.get("x-requests-last");
+    const lastCharged =
+      lastChargedHeader === null ? null : Number(lastChargedHeader);
+
+    if (!response.ok) {
+      const actualCharged =
+        lastCharged !== null && Number.isFinite(lastCharged) && lastCharged >= 0
+          ? Math.min(requestedCredits, lastCharged)
+          : requestedCredits;
+      if (actualCharged < requestedCredits) {
+        creditState.used = await refundPersistentDailyCredit(
+          dateKey,
+          requestedCredits - actualCharged
+        );
+      }
+      const errorBody = await response.text().catch(() => "");
+      console.warn(
+        `[odds] Additional markets failed for ${event.id}: ${response.status}`,
+        errorBody.slice(0, 500)
+      );
+      return;
+    }
+
+    const data = await response.json();
+    const actualCharged =
+      lastCharged !== null && Number.isFinite(lastCharged) && lastCharged >= 0
+        ? Math.min(requestedCredits, lastCharged)
+        : requestedCredits;
+
+    if (actualCharged < requestedCredits) {
+      creditState.used = await refundPersistentDailyCredit(
+        dateKey,
+        requestedCredits - actualCharged
+      );
+    }
+
+    if (Array.isArray(data?.bookmakers)) {
+      event.rawBookmakers = mergeBookmakerMarkets(
+        event.rawBookmakers ?? [],
+        data.bookmakers
+      );
+    }
+
+    console.log(
+      `[odds] Additional markets for ${event.id}: requested=${marketKeys.join(",")} charged=${actualCharged}`
+    );
+  } catch (error) {
+    // Keep the reservation on uncertain failures: the upstream request may already have been charged.
+    console.warn(`[odds] Additional market enrichment error for ${event.id}:`, error);
+  }
+}
+
+async function hasUpcomingEventsForSport(
+  sportKey: string,
+  sportLabel: string
+): Promise<boolean | null> {
+  if (!API_KEY || IS_BUILD) return null;
+
+  const cached = eventDiscoveryCache.get(sportKey);
+  if (cached && Date.now() - cached.timestamp < EVENT_DISCOVERY_CACHE_TTL_MS) {
+    return cached.hasEvents;
+  }
+
+  const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
+  const commenceTimeFrom = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+  const commenceTimeTo = new Date(
+    Date.now() + config.maxHoursAhead * 60 * 60 * 1000
+  ).toISOString().replace(/\.\d{3}Z$/, "Z");
+
+  try {
+    const url =
+      `https://api.the-odds-api.com/v4/sports/${sportKey}/events/` +
+      `?apiKey=${API_KEY}` +
+      `&commenceTimeFrom=${encodeURIComponent(commenceTimeFrom)}` +
+      `&commenceTimeTo=${encodeURIComponent(commenceTimeTo)}`;
+
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) {
+      console.warn(`[odds] Free event discovery failed for ${sportKey}: ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json();
+    const hasEvents = Array.isArray(data) && data.length > 0;
+    eventDiscoveryCache.set(sportKey, { hasEvents, timestamp: Date.now() });
+    return hasEvents;
+  } catch (error) {
+    console.warn(`[odds] Free event discovery error for ${sportKey}:`, error);
+    return null;
+  }
+}
+
 function balanceSportsByPriority(
   activeWatchedSports: Array<(typeof WATCHED_SPORTS)[number]>
 ): Array<(typeof WATCHED_SPORTS)[number]> {
@@ -879,20 +1371,24 @@ async function fetchSportEvents(
   sportKey: string,
   sportLabel: string,
   leagueLabel: string,
+  marketKeys: string[],
   creditState: { used: number },
   dateKey: string
 ): Promise<{ events: OddsEvent[]; failed: boolean; error?: string }> {
   if (!API_KEY || IS_BUILD) return { events: [], failed: false };
 
-  const cached = getCache(sportKey);
+  const requestedMarkets = marketKeys.length > 0 ? marketKeys : ["h2h"];
+  const requestedCredits = requestedMarkets.length;
+  const cacheKey = `${sportKey}:${requestedMarkets.join(",")}`;
+  const cached = getCache(cacheKey);
   if (cached) return { events: cached, failed: false };
 
-  if (creditState.used >= DAILY_CREDIT_LIMIT) {
+  if (creditState.used + requestedCredits > DAILY_CREDIT_LIMIT) {
     console.warn(`[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping: ${sportKey}`);
     return { events: [], failed: false };
   }
 
-  const reservation = await reservePersistentDailyCredit(dateKey, 1);
+  const reservation = await reservePersistentDailyCredit(dateKey, requestedCredits);
   if (!reservation.allowed) {
     console.warn(
       `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached in Redis, skipping: ${sportKey}`
@@ -903,7 +1399,7 @@ async function fetchSportEvents(
   creditState.used = reservation.currentTotal;
 
   const config = SPORT_CONFIG[sportLabel] ?? DEFAULT_CONFIG;
-  const markets = "h2h";
+  const markets = requestedMarkets.join(",");
   const commenceTimeFrom = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
   const commenceTimeTo = new Date(
     Date.now() + config.maxHoursAhead * 60 * 60 * 1000
@@ -922,7 +1418,7 @@ async function fetchSportEvents(
     const { response } = await fetchOddsWithRetry(url, sportKey);
 
     if (!response) {
-      const reconciled = await refundPersistentDailyCredit(dateKey, 1);
+      const reconciled = await refundPersistentDailyCredit(dateKey, requestedCredits);
       creditState.used = reconciled;
       console.error(`[odds] ${sportKey} fetch failed: no response`);
       return { events: [], failed: true, error: `No response from The Odds API for ${sportKey}` };
@@ -934,7 +1430,7 @@ async function fetchSportEvents(
 
     if (!response.ok) {
       if (lastCharged === 0 || response.status === 422 || response.status === 429) {
-        const reconciled = await refundPersistentDailyCredit(dateKey, 1);
+        const reconciled = await refundPersistentDailyCredit(dateKey, requestedCredits);
         creditState.used = reconciled;
       }
 
@@ -945,12 +1441,18 @@ async function fetchSportEvents(
 
     const data = await response.json();
 
-    const isZeroCharged =
-      lastCharged === 0 ||
-      (Array.isArray(data) && data.length === 0);
+    const actualCharged =
+      lastCharged !== null && Number.isFinite(lastCharged) && lastCharged >= 0
+        ? Math.min(requestedCredits, lastCharged)
+        : Array.isArray(data) && data.length === 0
+          ? 0
+          : requestedCredits;
 
-    if (isZeroCharged) {
-      const reconciled = await refundPersistentDailyCredit(dateKey, 1);
+    if (actualCharged < requestedCredits) {
+      const reconciled = await refundPersistentDailyCredit(
+        dateKey,
+        requestedCredits - actualCharged
+      );
       creditState.used = reconciled;
     }
 
@@ -1017,6 +1519,7 @@ async function fetchSportEvents(
         id: event.id,
         sport: sportLabel,
         league: event.sport_title || leagueLabel,
+        sourceSportKey: sportKey,
         homeTeam: event.home_team,
         awayTeam: event.away_team,
         commenceTime: event.commence_time,
@@ -1065,7 +1568,7 @@ async function fetchSportEvents(
     events = rangeFiltered;
     events.sort(rankEvents);
 
-    setCache(sportKey, events);
+    setCache(cacheKey, events);
     return { events, failed: false };
   } catch (error) {
     console.error(`[odds] fetchSportEvents error (${sportKey}):`, error);
@@ -1127,14 +1630,49 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
     );
 
     const activeWatched = WATCHED_SPORTS.filter((sport) => activeKeys.has(sport.key));
-    const sportsToFetch = balanceSportsByPriority(activeWatched);
+    const balancedActiveWatched = balanceSportsByPriority(activeWatched);
+    const remainingCredits = Math.max(0, DAILY_CREDIT_LIMIT - persistentUsed);
+    const sportsToFetch: Array<(typeof WATCHED_SPORTS)[number]> = [];
+
+    for (const sport of balancedActiveWatched) {
+      if (sportsToFetch.length >= remainingCredits) break;
+
+      const hasUpcomingEvents = await hasUpcomingEventsForSport(sport.key, sport.label);
+      if (hasUpcomingEvents === false) {
+        console.log(`[odds] ${sport.key}: no events in MatchSignal window, skipping paid odds request.`);
+        continue;
+      }
+
+      // Discovery errors fail open: do not suppress a sport solely because the free check failed.
+      sportsToFetch.push(sport);
+      await sleep(100);
+    }
+
+    console.log(
+      `[odds] Event discovery selected ${sportsToFetch.length} paid candidates from ${activeWatched.length} active watched sports.`
+    );
+
+    const activeLabelCount = new Set(sportsToFetch.map((sport) => sport.label)).size;
+    const maximumSpecialReserve =
+      (sportsToFetch.some((sport) => sport.label === "Football") ? 2 : 0) +
+      (sportsToFetch.some((sport) => sport.label === "Tennis") ? 1 : 0);
+    const coverageSurplus = Math.max(0, remainingCredits - activeLabelCount);
+    const specialMarketReserve = Math.min(maximumSpecialReserve, coverageSurplus);
+    const featuredCreditBudget = Math.max(0, remainingCredits - specialMarketReserve);
+
+    const marketPlan = buildFeaturedMarketPlan(sportsToFetch, featuredCreditBudget);
+    console.log(
+      "[odds] Featured market plan:",
+      marketPlan.map((item) => `${item.sport.key}=[${item.marketKeys.join(",")}]`).join(" | ")
+    );
 
     const creditState = { used: persistentUsed };
     const eventsByLabel = new Map<string, OddsEvent[]>();
     const failedByLabel = new Map<string, string>();
 
-    for (const sport of sportsToFetch) {
-      if (creditState.used >= DAILY_CREDIT_LIMIT) {
+    for (const planItem of marketPlan) {
+      const sport = planItem.sport;
+      if (creditState.used + planItem.marketKeys.length > DAILY_CREDIT_LIMIT) {
         console.warn(
           `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping remaining sports.`
         );
@@ -1145,6 +1683,7 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
         sport.key,
         sport.label,
         sport.league,
+        planItem.marketKeys,
         creditState,
         dateKey
       );
@@ -1159,6 +1698,28 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
       }
 
       await sleep(INTER_REQUEST_DELAY_MS);
+    }
+
+    const footballEvents = eventsByLabel.get("Football") ?? [];
+    if (footballEvents.length > 0 && creditState.used < DAILY_CREDIT_LIMIT) {
+      const target = [...footballEvents].sort(rankEvents)[0];
+      await enrichEventWithAdditionalMarkets(
+        target,
+        ["double_chance", "draw_no_bet"],
+        creditState,
+        dateKey
+      );
+    }
+
+    const tennisEvents = eventsByLabel.get("Tennis") ?? [];
+    if (tennisEvents.length > 0 && creditState.used < DAILY_CREDIT_LIMIT) {
+      const target = [...tennisEvents].sort(rankEvents)[0];
+      await enrichEventWithAdditionalMarkets(
+        target,
+        ["h2h_s1"],
+        creditState,
+        dateKey
+      );
     }
 
     console.log(`[odds] Daily credit usage on ${dateKey}: ${creditState.used} / ${DAILY_CREDIT_LIMIT}`);

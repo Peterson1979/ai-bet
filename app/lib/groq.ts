@@ -6,8 +6,7 @@ const MODEL = "openai/gpt-oss-120b";
 const NullableNumber = z.union([z.number().finite(), z.null()]);
 
 const PickSchema = z.object({
-  market: z.string().min(1),
-  prediction: z.string().min(1),
+  candidateId: z.string().min(1),
   reasoning: z.string().min(1),
   fairProbability: NullableNumber,
 });
@@ -24,12 +23,11 @@ const PREDICTION_JSON_SCHEMA = {
       items: {
         type: "object",
         properties: {
-          market: { type: "string" },
-          prediction: { type: "string" },
+          candidateId: { type: "string" },
           reasoning: { type: "string" },
           fairProbability: { type: ["number", "null"] },
         },
-        required: ["market", "prediction", "reasoning", "fairProbability"],
+        required: ["candidateId", "reasoning", "fairProbability"],
         additionalProperties: false,
       },
     },
@@ -160,8 +158,7 @@ async function callGroq(prompt: string, attempt: number): Promise<PickResult[] |
     }
 
     const results = validated.data.items.map((item) => ({
-      market: item.market.trim(),
-      prediction: item.prediction.trim(),
+      candidateId: item.candidateId.trim(),
       reasoning: item.reasoning.trim(),
       fairProbability: item.fairProbability,
     }));

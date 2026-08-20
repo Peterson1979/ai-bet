@@ -6,10 +6,11 @@ import { getBookmakerAffiliateUrl } from "@/app/lib/affiliates";
 import { calculateRiskTier } from "@/app/lib/sportsConfig";
 import {
   getDailyEvents,
-  getBestOddsForMarket,
-  getConsensusForMarket,
-  getPartnerOddsForMarket,
-  getAverageOddsForMarket,
+  buildMarketCandidates,
+  getBestOddsForCandidate,
+  getConsensusForCandidate,
+  getPartnerOddsForCandidate,
+  getAverageOddsForCandidate,
   decimalOddsToImpliedProbability,
   impliedProbabilityToDecimalOdds,
   calculateEstimatedValuePct,
@@ -99,31 +100,29 @@ function resolveFairProbability(params: {
   const impliedProbability = safeNumber(params.impliedProbability);
   const bookmakerCount = safeNumber(params.bookmakerCount) ?? 0;
 
-  if (aiFairProbability != null) {
-    return clamp(aiFairProbability, 1, 99);
-  }
+  // Market data is the anchor. AI may only make a small bounded adjustment;
+  // it must never be able to manufacture a large value edge by itself.
+  const marketAnchor = marketConsensus ?? impliedProbability;
+  if (marketAnchor == null) return null;
 
-  if (marketConsensus == null && impliedProbability == null) {
-    return null;
-  }
+  const boundedAnchor = clamp(marketAnchor, 1, 99);
+  if (aiFairProbability == null) return boundedAnchor;
 
-  if (marketConsensus != null && impliedProbability != null) {
-    const marketWeight =
-      bookmakerCount >= 20 ? 0.75 : bookmakerCount >= 10 ? 0.68 : 0.6;
-    const impliedWeight = 1 - marketWeight;
+  const maxAiDeviation =
+    bookmakerCount >= 10 ? 5 : bookmakerCount >= 6 ? 4 : 3;
+  const aiWeight = bookmakerCount >= 10 ? 0.2 : 0.15;
 
-    return clamp(
-      marketConsensus * marketWeight + impliedProbability * impliedWeight,
-      1,
-      99
-    );
-  }
+  const boundedAiProbability = clamp(
+    aiFairProbability,
+    boundedAnchor - maxAiDeviation,
+    boundedAnchor + maxAiDeviation
+  );
 
-  if (marketConsensus != null) {
-    return clamp(marketConsensus, 1, 99);
-  }
-
-  return impliedProbability != null ? clamp(impliedProbability, 1, 99) : null;
+  return clamp(
+    boundedAnchor * (1 - aiWeight) + boundedAiProbability * aiWeight,
+    1,
+    99
+  );
 }
 
 function resolveEstimatedValuePct(params: {
@@ -320,23 +319,31 @@ export async function GET(request: Request) {
 
       for (let i = 0; i < events.length; i++) {
         const event = events[i];
-        const ai = aiResults[i] ?? aiResults[0];
+        const ai = aiResults[i];
 
         if (!event || !ai) continue;
 
         const eventKey = `${event.id}-${event.homeTeam}-${event.awayTeam}`;
         if (seenEvents.has(eventKey)) continue;
+
+        const candidates = buildMarketCandidates(event);
+        const selectedCandidate = candidates.find(
+          (candidate) => candidate.id === ai.candidateId
+        );
+        if (!selectedCandidate) continue;
+
+        const bookmakerCount = selectedCandidate.bookmakerCount;
+        if (bookmakerCount < 3) continue;
+
         seenEvents.add(eventKey);
 
-        const selectedMarket = ai.market ?? "";
-        const selectedPrediction = ai.prediction ?? "";
+        const selectedMarket = selectedCandidate.market;
+        const selectedPrediction = selectedCandidate.prediction;
 
         const marketOdds = event.rawBookmakers
-          ? getBestOddsForMarket(
+          ? getBestOddsForCandidate(
               event.rawBookmakers,
-              selectedMarket,
-              event.homeTeam,
-              event.awayTeam
+              selectedCandidate
             )
           : {
               bestOdds: event.bestOdds ?? 0,
@@ -345,11 +352,9 @@ export async function GET(request: Request) {
             };
 
         const partnerOffer = event.rawBookmakers
-          ? getPartnerOddsForMarket(
+          ? getPartnerOddsForCandidate(
               event.rawBookmakers,
-              selectedMarket,
-              event.homeTeam,
-              event.awayTeam,
+              selectedCandidate,
               event.sport
             )
           : {
@@ -359,30 +364,32 @@ export async function GET(request: Request) {
             };
 
         const marketAverageOdds = event.rawBookmakers
-          ? getAverageOddsForMarket(
+          ? getAverageOddsForCandidate(
               event.rawBookmakers,
-              selectedMarket,
-              event.homeTeam,
-              event.awayTeam
+              selectedCandidate
             )
           : null;
 
         const marketConsensus = event.rawBookmakers
-          ? getConsensusForMarket(
+          ? getConsensusForCandidate(
               event.rawBookmakers,
-              selectedMarket,
-              event.homeTeam,
-              event.awayTeam
+              selectedCandidate
             )
           : event.consensusImpliedProb ?? null;
 
-        const marketBestOdds = safeNumber(marketOdds.bestOdds) ?? safeNumber(event.bestOdds);
-        const partnerOdds =
-          safeNumber(partnerOffer.odds) ??
-          marketBestOdds ??
-          null;
+        const marketBestOdds = event.rawBookmakers
+          ? safeNumber(marketOdds.bestOdds)
+          : safeNumber(marketOdds.bestOdds) ?? safeNumber(event.bestOdds);
 
-        if (partnerOdds == null || partnerOdds <= 1) {
+        const partnerOdds = event.rawBookmakers
+          ? safeNumber(partnerOffer.odds)
+          : safeNumber(partnerOffer.odds) ?? marketBestOdds ?? null;
+
+        if (
+          partnerOdds == null ||
+          partnerOdds <= 1 ||
+          (event.rawBookmakers && !partnerOffer.bookmaker)
+        ) {
           continue;
         }
 
@@ -411,7 +418,7 @@ export async function GET(request: Request) {
           aiFairProbability,
           marketConsensus,
           impliedProbability,
-          bookmakerCount: event.bookmakerCount ?? 0,
+          bookmakerCount,
         });
 
         const fairOdds =
@@ -429,6 +436,10 @@ export async function GET(request: Request) {
           partnerOdds,
         });
 
+        if (estimatedValuePct == null || estimatedValuePct <= 0) {
+          continue;
+        }
+
         const valueDiff = resolveValueDiff({
           fairProbability,
           impliedProbability,
@@ -436,7 +447,7 @@ export async function GET(request: Request) {
 
         const riskTier = deriveRiskTier({
           partnerOdds,
-          bookmakerCount: event.bookmakerCount ?? 0,
+          bookmakerCount,
           estimatedValuePct,
           bookmakerSpreadPct,
         });
@@ -445,7 +456,7 @@ export async function GET(request: Request) {
           estimatedValuePct,
           consensusImpliedProb: marketConsensus,
           partnerImpliedProbability: impliedProbability,
-          bookmakerCount: event.bookmakerCount ?? 0,
+          bookmakerCount,
           riskTier,
           partnerBookmaker,
         });
@@ -465,7 +476,7 @@ export async function GET(request: Request) {
           impliedProbability,
           consensusImpliedProb: marketConsensus,
           valueDiff,
-          bookmakerCount: event.bookmakerCount ?? 0,
+          bookmakerCount,
           bookmaker: partnerBookmaker,
           bookmakerUrl,
           ctaLabel: "View Offer",
