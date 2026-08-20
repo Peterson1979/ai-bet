@@ -6,11 +6,13 @@ import Image from "next/image";
 import { MatchCardData } from "../types/match";
 import { translations, Lang } from "@/app/lib/i18n";
 import { getSiteByBookmakerName } from "@/app/lib/affiliates";
+import { canRenderAffiliate } from "@/app/lib/compliance/engine";
 import { trackAffiliateClick } from "@/app/lib/analytics";
 
 type Props = {
   data: MatchCardData;
   lang?: Lang;
+  countryCode?: string;
 };
 
 const BET_TYPE_TO_KEY: Record<string, string> = {
@@ -151,7 +153,7 @@ function MarketTooltip({
   );
 }
 
-export default function MatchCard({ data, lang = "en" }: Props) {
+export default function MatchCard({ data, lang = "en", countryCode }: Props) {
   const t = translations[lang] ?? translations.en;
   const recommendationLabel = RECOMMENDATION_LABEL[lang] ?? RECOMMENDATION_LABEL.en;
 
@@ -200,14 +202,20 @@ export default function MatchCard({ data, lang = "en" }: Props) {
     data.bookmaker ||
     "Partner Sportsbook";
 
+  const affiliateSite = getSiteByBookmakerName(partnerName);
+  const canShowAffiliateCta = affiliateSite
+    ? canRenderAffiliate(affiliateSite.id, countryCode)
+    : false;
+
   const partnerLogoUrl = partnerOffer?.logoUrl || fallbackSite?.logoUrl;
   const partnerOdds =
     typeof partnerOffer?.odds === "number"
       ? partnerOffer.odds
       : data.partnerOdds ?? data.bestOdds;
 
-  const primaryCtaHref =
-    partnerOffer?.trackingUrl || data.bookmakerUrl || `/${lang}/betting`;
+  const primaryCtaHref = canShowAffiliateCta
+    ? partnerOffer?.trackingUrl || data.bookmakerUrl || null
+    : null;
 
   const primaryCtaLabel = partnerName
     ? `${t.viewOdds ?? "View odds"} — ${partnerName}`
@@ -352,8 +360,9 @@ export default function MatchCard({ data, lang = "en" }: Props) {
 
       {/* 6. Commercial Action Area */}
       <div className="pt-2 border-t border-white/5 flex flex-col gap-2">
-        <a
-          href={primaryCtaHref}
+        {primaryCtaHref && (
+          <a
+            href={primaryCtaHref}
           target="_blank"
           rel="noopener noreferrer sponsored"
           onClick={() => {
@@ -378,7 +387,8 @@ export default function MatchCard({ data, lang = "en" }: Props) {
             </span>
           )}
           <span>{primaryCtaLabel}</span>
-        </a>
+          </a>
+        )}
 
         <a
           href={bettingPageHref}

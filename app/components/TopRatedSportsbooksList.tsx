@@ -7,6 +7,7 @@ type Props = {
   bettingPageHref?: string;
   variant?: "footer" | "inline";
   showDisclosure?: boolean;
+  countryCode?: string;
 };
 
 export default function TopRatedSportsbooksList({
@@ -14,8 +15,9 @@ export default function TopRatedSportsbooksList({
   bettingPageHref,
   variant = "footer",
   showDisclosure = true,
+  countryCode,
 }: Props) {
-  const sites = getTopRatedList(3);
+  const sites = getTopRatedList(3, countryCode);
   const href = bettingPageHref ?? `/${lang}/betting`;
   const t = translations[lang] ?? translations.en;
 

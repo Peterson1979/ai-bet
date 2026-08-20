@@ -3,11 +3,14 @@ import { translations, Lang } from "@/app/lib/i18n";
 type Props = {
   lang?: Lang;
   bettingPageHref?: string;
+  countryCode?: string;
 };
 
-export default function StickyBottomCTA({ lang = "en", bettingPageHref }: Props) {
+export default function StickyBottomCTA({ lang = "en", bettingPageHref, countryCode }: Props) {
   const href = bettingPageHref ?? `/${lang}/betting`;
   const t = translations[lang] ?? translations.en;
+
+  if (!countryCode || countryCode.toUpperCase() === "HU") return null;
 
   return (
     <div

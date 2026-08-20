@@ -16,6 +16,7 @@ import StickyBottomCTA from "../components/StickyBottomCTA";
 import { HOMEPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import { sortSportBlocks } from "@/app/lib/sportsConfig";
 import SportSection from "@/app/components/SportSection";
+import { getRequestCountryCode } from "@/app/lib/requestCountry";
 
 export async function generateMetadata({
   params,
@@ -63,6 +64,7 @@ export default async function HomePage({
 }) {
   const { lang } = await params;
 
+  const countryCode = await getRequestCountryCode();
   const predictions: PredictionsData | null = await getPredictions();
 
   const t = translations[lang] ?? translations.en;
@@ -149,6 +151,7 @@ export default async function HomePage({
                   key={sportBlock.sport}
                   sportBlock={sportBlock}
                   lang={lang}
+                  countryCode={countryCode}
                   limit={HOMEPAGE_MATCH_LIMIT}
                   mobileLimit={2}
                   desktopColumns={3}
@@ -189,15 +192,15 @@ export default async function HomePage({
           </div>
 
           {/* FEATURED SPORTSBOOKS — Editor's Picks (Top 3) */}
-          <FeaturedSportsbooks lang={lang} />
+          <FeaturedSportsbooks lang={lang} countryCode={countryCode} />
 
           {/* AFFILIATE SLIDER — rotating partner logos */}
           <div className="my-8">
-            <AffiliateSlider lang={lang} showDisclosure={false} />
+            <AffiliateSlider lang={lang} countryCode={countryCode} showDisclosure={false} />
           </div>
 
           {/* 🏆 TOP RATED SPORTSBOOKS — footer felett */}
-          <TopRatedSportsbooksList lang={lang} variant="footer" showDisclosure={false} />
+          <TopRatedSportsbooksList lang={lang} countryCode={countryCode} variant="footer" showDisclosure={false} />
 
           <div className="mt-16">
             <Footer />
@@ -207,7 +210,7 @@ export default async function HomePage({
       </div>
 
       {/* Sticky bottom CTA — mobil only */}
-      <StickyBottomCTA lang={lang} />
+      <StickyBottomCTA lang={lang} countryCode={countryCode} />
     </main>
   );
 }

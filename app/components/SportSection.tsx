@@ -21,6 +21,7 @@ type SportSectionProps = {
   showViewAll?: boolean;
   idSuffix?: string;
   hideHeading?: boolean;
+  countryCode?: string;
 };
 
 const sportKeyMap: Record<string, keyof typeof translations.en.sports> = {
@@ -43,6 +44,7 @@ export default function SportSection({
   showViewAll = false,
   idSuffix = "",
   hideHeading = false,
+  countryCode,
 }: SportSectionProps) {
   const t = translations[lang] ?? translations.en;
   const activePicks = sportBlock.topPicks
@@ -102,7 +104,7 @@ export default function SportSection({
                   isHiddenOnMobile ? "hidden md:block" : ""
                 }`}
               >
-                <MatchCard data={uiData} lang={lang} />
+                <MatchCard data={uiData} lang={lang} countryCode={countryCode} />
               </div>
             );
           })}

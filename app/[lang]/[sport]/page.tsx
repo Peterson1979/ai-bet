@@ -12,6 +12,7 @@ import { getPredictions } from "@/app/lib/getPredictions";
 import { translations, Lang } from "@/app/lib/i18n";
 import { SPORTPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import { SPORT_EMOJIS } from "@/app/lib/sportsConfig";
+import { getRequestCountryCode } from "@/app/lib/requestCountry";
 
 import type { PredictionCard } from "@/app/types/prediction";
 import type { Metadata } from "next";
@@ -112,6 +113,7 @@ export default async function SportPage({
     notFound();
   }
 
+  const countryCode = await getRequestCountryCode();
   const predictions: PredictionsData | null = await getPredictions();
 
   const t = translations[lang] ?? translations.en;
@@ -195,16 +197,18 @@ export default async function SportPage({
               <SportSection
                 sportBlock={firstHalfBlock!}
                 lang={lang}
+                  countryCode={countryCode}
                 limit={HALF}
                 hideHeading={true}
               />
 
-              <TopRatedSportsbooksList lang={lang} variant="inline" showDisclosure={false} />
+              <TopRatedSportsbooksList lang={lang} countryCode={countryCode} variant="inline" showDisclosure={false} />
 
               {secondHalfBlock!.topPicks.length > 0 && (
                 <SportSection
                   sportBlock={secondHalfBlock!}
                   lang={lang}
+                  countryCode={countryCode}
                   limit={HALF}
                   hideHeading={true}
                 />
@@ -255,7 +259,7 @@ export default async function SportPage({
 
           {/* COMMERCIAL AFFILIATE SLIDER (POSITIONED AFTER FIRST-PARTY CONTENT) */}
           <div className="my-10">
-            <AffiliateSlider lang={lang} showDisclosure={true} />
+            <AffiliateSlider lang={lang} countryCode={countryCode} showDisclosure={true} />
           </div>
 
           <div className="mt-16">

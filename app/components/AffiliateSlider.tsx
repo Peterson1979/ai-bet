@@ -9,6 +9,7 @@ type Props = {
   className?: string;
   lang?: Lang;
   showDisclosure?: boolean;
+  countryCode?: string;
 };
 
 const AUTO_ADVANCE_INTERVAL_MS = 4500;
@@ -18,8 +19,9 @@ export default function AffiliateSlider({
   className = "",
   lang = "en",
   showDisclosure = false,
+  countryCode,
 }: Props) {
-  const sites = getSliderSites();
+  const sites = getSliderSites(countryCode);
   const t = translations[lang] ?? translations.en;
   const trackRef = useRef<HTMLDivElement>(null);
   const isHoveredRef = useRef(false);

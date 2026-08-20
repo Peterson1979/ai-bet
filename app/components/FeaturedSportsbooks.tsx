@@ -5,10 +5,11 @@ import { translations, Lang } from "@/app/lib/i18n";
 type Props = {
   lang?: Lang;
   bettingPageHref?: string;
+  countryCode?: string;
 };
 
-export default function FeaturedSportsbooks({ lang = "en", bettingPageHref }: Props) {
-  const sites = getFeaturedSites(3);
+export default function FeaturedSportsbooks({ lang = "en", bettingPageHref, countryCode }: Props) {
+  const sites = getFeaturedSites(3, countryCode);
   const href = bettingPageHref ?? `/${lang}/betting`;
   const t = translations[lang] ?? translations.en;
 

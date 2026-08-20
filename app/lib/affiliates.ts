@@ -1,6 +1,8 @@
 // app/lib/affiliates.ts
 // Strukturált affiliate rendszer tracking paraméterekkel
 
+import { canRenderAffiliate } from "./compliance/engine";
+
 export type AffiliateSource =
   | "sidebar"
   | "matchcard"
@@ -385,6 +387,10 @@ function isSiteEnabled(site: AffiliateSite): boolean {
   return site.enabled !== false;
 }
 
+function canDisplaySite(site: AffiliateSite, countryCode?: string): boolean {
+  return isSiteEnabled(site) && canRenderAffiliate(site.id, countryCode);
+}
+
 function supportsSport(site: AffiliateSite, sport: string): boolean {
   const normalizedSport = normalizeBookmakerName(sport);
 
@@ -445,16 +451,16 @@ export function buildAffiliateUrl(
   }
 }
 
-export function getSidebarSites() {
-  return AFFILIATE_SITES.filter(isSiteEnabled).map((site) => ({
+export function getSidebarSites(countryCode?: string) {
+  return AFFILIATE_SITES.filter((site) => canDisplaySite(site, countryCode)).map((site) => ({
     ...site,
     url: buildAffiliateUrl(site, "sidebar"),
   }));
 }
 
-export function getSliderSites() {
+export function getSliderSites(countryCode?: string) {
   return [...AFFILIATE_SITES]
-    .filter(isSiteEnabled)
+    .filter((site) => canDisplaySite(site, countryCode))
     .sort((a, b) => b.rating - a.rating)
     .map((site) => ({
       ...site,
@@ -462,9 +468,9 @@ export function getSliderSites() {
     }));
 }
 
-export function getFeaturedSites(count: number = 3) {
+export function getFeaturedSites(count: number = 3, countryCode?: string) {
   return [...AFFILIATE_SITES]
-    .filter(isSiteEnabled)
+    .filter((site) => canDisplaySite(site, countryCode))
     .sort((a, b) => b.rating - a.rating)
     .slice(0, count)
     .map((site) => ({
@@ -473,8 +479,8 @@ export function getFeaturedSites(count: number = 3) {
     }));
 }
 
-export function getTopRatedList(count: number = 3) {
-  return getFeaturedSites(count);
+export function getTopRatedList(count: number = 3, countryCode?: string) {
+  return getFeaturedSites(count, countryCode);
 }
 
 export function findAffiliateSiteByName(

@@ -120,3 +120,30 @@ export function getAffiliateEligibility(
   const record = getComplianceRecord(affiliateId);
   return evaluateAffiliateEligibility(record, countryCode, now);
 }
+
+/**
+ * Transitional affiliate presentation policy.
+ * Missing/invalid country fails closed.
+ * Sportsbook operators are blocked for Hungary.
+ * Explicit KNOWN_INELIGIBLE is always blocked.
+ * UNKNOWN outside Hungary remains temporarily visible.
+ */
+export function canRenderAffiliate(
+  affiliateId: string,
+  countryCode?: string,
+  now: Date = new Date()
+): boolean {
+  const country = typeof countryCode === "string" ? countryCode.trim().toUpperCase() : "";
+
+  if (!/^[A-Z]{2}$/.test(country)) return false;
+
+  const record = getComplianceRecord(affiliateId);
+  const affiliateKind = record.affiliateKind ?? "sportsbook_operator";
+
+  if (affiliateKind === "sportsbook_operator" && country === "HU") {
+    return false;
+  }
+
+  const eligibility = evaluateAffiliateEligibility(record, country, now);
+  return eligibility !== "KNOWN_INELIGIBLE";
+}
