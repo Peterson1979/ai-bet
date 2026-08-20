@@ -135,7 +135,7 @@ export function canRenderAffiliate(
 ): boolean {
   const country = typeof countryCode === "string" ? countryCode.trim().toUpperCase() : "";
 
-  if (!/^[A-Z]{2}$/.test(country)) return false;
+  if (!/^[A-Z]{2}$/.test(country)) return true;
 
   const record = getComplianceRecord(affiliateId);
   const affiliateKind = record.affiliateKind ?? "sportsbook_operator";

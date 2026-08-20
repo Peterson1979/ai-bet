@@ -10,7 +10,7 @@ export default function StickyBottomCTA({ lang = "en", bettingPageHref, countryC
   const href = bettingPageHref ?? `/${lang}/betting`;
   const t = translations[lang] ?? translations.en;
 
-  if (!countryCode || countryCode.toUpperCase() === "HU") return null;
+  if (countryCode?.toUpperCase() === "HU") return null;
 
   return (
     <div

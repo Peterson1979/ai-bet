@@ -12,7 +12,6 @@ import { getPredictions } from "@/app/lib/getPredictions";
 import { translations, Lang } from "@/app/lib/i18n";
 import { SPORTPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import { SPORT_EMOJIS } from "@/app/lib/sportsConfig";
-import { getRequestCountryCode } from "@/app/lib/requestCountry";
 
 import type { PredictionCard } from "@/app/types/prediction";
 import type { Metadata } from "next";
@@ -113,7 +112,7 @@ export default async function SportPage({
     notFound();
   }
 
-  const countryCode = await getRequestCountryCode();
+  const countryCode = lang === "hu" ? "HU" : undefined;
   const predictions: PredictionsData | null = await getPredictions();
 
   const t = translations[lang] ?? translations.en;

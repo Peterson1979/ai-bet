@@ -16,7 +16,6 @@ import StickyBottomCTA from "../components/StickyBottomCTA";
 import { HOMEPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import { sortSportBlocks } from "@/app/lib/sportsConfig";
 import SportSection from "@/app/components/SportSection";
-import { getRequestCountryCode } from "@/app/lib/requestCountry";
 
 export async function generateMetadata({
   params,
@@ -64,7 +63,7 @@ export default async function HomePage({
 }) {
   const { lang } = await params;
 
-  const countryCode = await getRequestCountryCode();
+  const countryCode = lang === "hu" ? "HU" : undefined;
   const predictions: PredictionsData | null = await getPredictions();
 
   const t = translations[lang] ?? translations.en;

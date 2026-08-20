@@ -4,7 +4,6 @@ import Header from "@/app/components/Header";
 import SimpleFooter from "@/app/components/SimpleFooter";
 import { translations, Lang, LANGS } from "@/app/lib/i18n";
 import type { Metadata } from "next";
-import { getRequestCountryCode } from "@/app/lib/requestCountry";
 
 export async function generateMetadata({
   params,
@@ -39,7 +38,7 @@ export default async function BettingPage({
 }) {
   const { lang } = await params;
   const t = translations[lang] ?? translations.en;
-  const countryCode = await getRequestCountryCode();
+  const countryCode = lang === "hu" ? "HU" : undefined;
   const sites = await Promise.resolve(getSidebarSites(countryCode));
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL || "https://www.matchsignal.pro";
