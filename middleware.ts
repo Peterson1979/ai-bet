@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { CONSENT_PATH_HEADER } from "@/app/lib/consentRoutes";
 
 const LANGS = ["en", "hu", "de", "fr", "es", "it", "pt", "ar", "zh", "ja", "hi"];
 
@@ -14,20 +15,19 @@ function detectLang(req: NextRequest): string {
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Ha már van nyelv az URL-ben, ne csinálj semmit
-  if (LANGS.some((l) => pathname.startsWith(`/${l}`))) {
-    return NextResponse.next();
-  }
-
-  // Csak a gyökér "/" route-ot irányítsuk át
   if (pathname === "/") {
     const lang = detectLang(req);
     return NextResponse.redirect(new URL(`/${lang}`, req.url));
   }
 
-  return NextResponse.next();
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set(CONSENT_PATH_HEADER, pathname);
+
+  return NextResponse.next({
+    request: { headers: requestHeaders },
+  });
 }
 
 export const config = {
-  matcher: ["/"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

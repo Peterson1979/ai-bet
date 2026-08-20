@@ -12,7 +12,7 @@ import {
   initConsentOrchestrator,
 } from "@/app/lib/consent";
 
-export default function CookieBanner() {
+export default function CookieBanner({ googleCmpEnabled = true }: { googleCmpEnabled?: boolean }) {
   const params = useParams();
   const lang = (params?.lang as Lang) || "en";
   const copy = PRIVACY_COPY[lang] ?? PRIVACY_COPY.en;
@@ -40,7 +40,7 @@ export default function CookieBanner() {
     };
 
     updateVisibility();
-    const cleanup = initConsentOrchestrator(updateVisibility);
+    const cleanup = initConsentOrchestrator(updateVisibility, { googleCmpEnabled });
 
     // Listen for manual request to reopen custom consent settings
     const handleOpen = () => {
@@ -57,7 +57,7 @@ export default function CookieBanner() {
       cleanup();
       window.removeEventListener("matchsignal_open_consent", handleOpen);
     };
-  }, []);
+  }, [googleCmpEnabled]);
 
   if (!visible) return null;
 

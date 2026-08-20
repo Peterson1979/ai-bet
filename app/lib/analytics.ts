@@ -1,12 +1,5 @@
 import { isAnalyticsAllowed } from "./consent";
 
-declare global {
-  interface Window {
-    dataLayer?: any[];
-    gtag?: (...args: any[]) => void;
-  }
-}
-
 export type AffiliateClickEventParams = {
   bookmaker_name: string;
   sport?: string;

@@ -8,7 +8,8 @@
     "lint": "eslint",
     "validate:affiliates": "npx tsx scripts/validate-affiliates.mjs",
     "validate:guides": "npx tsx scripts/validate-guides.mjs",
-    "validate:readiness": "node scripts/validate-adsense-readiness.mjs"
+    "validate:readiness": "node scripts/validate-adsense-readiness.mjs",
+    "validate:consent": "node scripts/validate-consent-readiness.mjs"
   },
   "dependencies": {
     "@sparticuz/chromium": "^149.0.0",
