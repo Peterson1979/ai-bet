@@ -92,6 +92,27 @@ function validateTargets(
     if (platform === "instagram" || platform === "facebook") {
       validateEnvReference(candidate, "accountIdEnv", path, errors);
       validateEnvReference(candidate, "accessTokenEnv", path, errors);
+      if (
+        candidate.expectedAccountId !== undefined &&
+        (typeof candidate.expectedAccountId !== "string" ||
+          !/^\d+$/.test(candidate.expectedAccountId))
+      ) {
+        errors.push({
+          path: `${path}.expectedAccountId`,
+          message: "must be a numeric provider account ID",
+        });
+      }
+      if (
+        platform === "instagram" &&
+        candidate.instagramApiMode !== undefined &&
+        candidate.instagramApiMode !== "facebook-login" &&
+        candidate.instagramApiMode !== "instagram-login"
+      ) {
+        errors.push({
+          path: `${path}.instagramApiMode`,
+          message: "must be facebook-login or instagram-login",
+        });
+      }
     } else if (platform === "youtube") {
       validateEnvReference(candidate, "accountIdEnv", path, errors);
       validateEnvReference(candidate, "clientIdEnv", path, errors);
@@ -186,7 +207,7 @@ function validatePlatformConfig(params: {
           path: `${targetPath}.targetId`,
           message: `unknown target ID: ${targetId}`,
         });
-      } else if (target.platform !== platform) {
+      } else if (target && target.platform !== platform) {
         errors.push({
           path: `${targetPath}.targetId`,
           message: `target ${targetId} belongs to ${target.platform}, not ${platform}`,

@@ -2,6 +2,7 @@ import type { SafeProviderError } from "./types";
 
 export const META_GRAPH_API_VERSION = "v25.0";
 export const META_GRAPH_BASE = `https://graph.facebook.com/${META_GRAPH_API_VERSION}`;
+export const INSTAGRAM_LOGIN_GRAPH_BASE = `https://graph.instagram.com/${META_GRAPH_API_VERSION}`;
 
 export type MetaProvider = "instagram" | "facebook";
 export type FetchLike = (

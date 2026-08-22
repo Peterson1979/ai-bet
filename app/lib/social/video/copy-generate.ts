@@ -21,7 +21,7 @@ export type VideoCopyGenerationOutcome = {
   repaired: boolean;
 };
 
-/** Normal generation is one AI call containing all seven destinations. A
+/** Normal generation is one AI call containing all four Meta destinations. A
  * single repair call is allowed only when deterministic validation rejects the
  * first response. There are no open-ended retries. */
 export async function generateVideoContentPackage(params: {

@@ -13,7 +13,11 @@ import type {
 } from "../app/lib/social/video/content-types";
 import { loadReadyVideoAssets } from "../app/lib/social/video/content-loader";
 import { VIDEO_MANIFEST } from "../app/lib/social/video/manifest";
-import { getVideoTargetContent } from "../app/lib/social/video/targets";
+import {
+  getVideoTargetContent,
+  resolveVideoTargets,
+  VIDEO_SOCIAL_TARGETS,
+} from "../app/lib/social/video/targets";
 import type { VideoAsset } from "../app/lib/social/video/types";
 
 const input: VideoContentInput = {
@@ -31,11 +35,7 @@ const instagramBodySecond =
 const facebookBodies = [
   "The fastest price is not automatically the most useful one without context. MatchSignal compares available odds from multiple sportsbooks, evaluates market-based probability, and presents a concise explanation of potential value. That gives you a clearer way to research the same selection across the market before making your own decision.",
   "Checking one bookmaker can leave useful pricing context out of view. MatchSignal brings sportsbook coverage together with market-average pricing, estimated fair probability, and a clear risk tier. You can spend less time moving between tabs and more time understanding why an available price may deserve closer analysis.",
-  "A wall of changing numbers can make odds comparison feel unnecessarily difficult. MatchSignal turns that problem into a cleaner research workflow by organizing available prices, highlighting potential value, and explaining the analysis in plain English. The result is a more informed view of the market without pretending any outcome is certain.",
-  "Small pricing differences are easier to evaluate when the important context sits together. MatchSignal combines available sportsbook odds with probability estimates, bookmaker coverage, and concise AI-assisted explanations. Use the comparison to identify a potentially stronger price faster while keeping the final decision and its risks in perspective.",
 ] as const;
-const youtubeBody =
-  "Small differences in available odds can affect the potential value of a selection, but scanning many changing price panels takes time. This video shows an AI scanning wave organizing that information into one clear comparison card. MatchSignal helps you compare sportsbook prices alongside market-based probability analysis, estimated fair probability, risk tiers, and concise explanations. It is a faster research workflow designed to add context to the numbers, not to predict the future or guarantee a result.";
 
 const validCopy: GeneratedVideoCopy = {
   id: "0818",
@@ -62,30 +62,6 @@ const validCopy: GeneratedVideoCopy = {
           targetId: "facebook-2",
           message: `${facebookBodies[1]}\n\nhttps://www.matchsignal.pro\n\n18+ | Responsible gambling | Odds can change and no outcome is guaranteed.`,
         },
-        {
-          targetId: "facebook-3",
-          message: `${facebookBodies[2]}\n\nhttps://www.matchsignal.pro\n\n18+ | Gamble responsibly | No prediction guarantees an outcome.`,
-        },
-        {
-          targetId: "facebook-4",
-          message: `${facebookBodies[3]}\n\nhttps://www.matchsignal.pro\n\n18+ | Responsible gambling | No guarantee of profit.`,
-        },
-      ],
-    },
-    youtube: {
-      targets: [
-        {
-          targetId: "youtube-main",
-          title: "Find Better Odds Faster with Smarter Comparison",
-          description: `${youtubeBody}\n\nhttps://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational purposes only; odds can change.`,
-          tags: [
-            "MatchSignal",
-            "odds comparison",
-            "sports analysis",
-            "available prices",
-            "responsible gambling",
-          ],
-        },
       ],
     },
   },
@@ -106,11 +82,11 @@ async function main() {
   assert.equal(validateVideoContentInput(input).valid, true);
   assert.equal(validateVideoContentInput({ ...input, topic: "" }).valid, false);
 
-  // 3-4. Exactly seven outputs with the exact destination IDs are required.
+  // 3-4. Exactly four Meta outputs with exact destination IDs are required.
   assert.equal(validateGeneratedVideoCopy("0818", validCopy).valid, true);
   const missingTarget = cloneCopy();
   missingTarget.platforms.facebook.targets.pop();
-  expectInvalid(missingTarget, "missing seventh target must fail");
+  expectInvalid(missingTarget, "missing fourth target must fail");
   const wrongTarget = cloneCopy();
   wrongTarget.platforms.instagram.targets[1].targetId = "instagram-other";
   expectInvalid(wrongTarget, "unknown target ID must fail");
@@ -146,7 +122,7 @@ async function main() {
     expectInvalid(banned, `${phrase} must fail`);
   }
 
-  // 10-13. Platform CTAs and YouTube's title limit are deterministic.
+  // Platform CTAs and disclaimers are deterministic.
   const noFacebookUrl = cloneCopy();
   noFacebookUrl.platforms.facebook.targets[0].message = noFacebookUrl.platforms.facebook.targets[0].message.replace(
     "https://www.matchsignal.pro",
@@ -167,36 +143,19 @@ async function main() {
   const noInstagramHashtags = cloneCopy();
   noInstagramHashtags.platforms.instagram.targets[0].caption = `${instagramBodyMain}\n\nLink in bio\n\n18+ | Gamble responsibly | Informational purposes only.`;
   expectInvalid(noInstagramHashtags, "Instagram hashtags are required");
-  const noYoutubeUrl = cloneCopy();
-  noYoutubeUrl.platforms.youtube.targets[0].description = noYoutubeUrl.platforms.youtube.targets[0].description.replace(
-    "https://www.matchsignal.pro",
-    "MatchSignal"
-  );
-  expectInvalid(noYoutubeUrl, "YouTube URL is required");
-  const longTitle = cloneCopy();
-  longTitle.platforms.youtube.targets[0].title = "x".repeat(101);
-  expectInvalid(longTitle, "YouTube title over 100 characters must fail");
-
   const facebookUrlDisclaimerOnly = cloneCopy();
-  facebookUrlDisclaimerOnly.platforms.facebook.targets[2].message =
+  facebookUrlDisclaimerOnly.platforms.facebook.targets[0].message =
     "https://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational purposes only.";
   expectInvalid(facebookUrlDisclaimerOnly, "Facebook URL and disclaimer only must fail");
 
   const shortFacebookBody = cloneCopy();
-  shortFacebookBody.platforms.facebook.targets[3].message =
+  shortFacebookBody.platforms.facebook.targets[1].message =
     "MatchSignal compares available odds so you can review prices.\n\nhttps://www.matchsignal.pro\n\n18+ | Responsible gambling | No guarantee of profit.";
   expectInvalid(shortFacebookBody, "Facebook substantive body below 220 characters must fail");
-
-  const shortYoutubeDescription = cloneCopy();
-  shortYoutubeDescription.platforms.youtube.targets[0].description =
-    "MatchSignal compares available odds with useful analysis.\n\nhttps://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational purposes only.";
-  expectInvalid(shortYoutubeDescription, "YouTube substantive description below 300 characters must fail");
 
   const contentEmpty = cloneCopy();
   contentEmpty.platforms.instagram.targets[0].caption = "";
   contentEmpty.platforms.facebook.targets[0].message = "";
-  contentEmpty.platforms.youtube.targets[0].description = "";
-  contentEmpty.platforms.youtube.targets[0].tags = [];
   expectInvalid(contentEmpty, "structurally shaped but content-empty copy must fail");
 
   // 14-15. Exact and obvious near-duplicates fail.
@@ -211,8 +170,8 @@ async function main() {
 
   // 16. Every destination requires responsible-gambling language.
   const noResponsible = cloneCopy();
-  noResponsible.platforms.facebook.targets[2].message = noResponsible.platforms.facebook.targets[2].message.replace(
-    "Gamble responsibly",
+  noResponsible.platforms.facebook.targets[1].message = noResponsible.platforms.facebook.targets[1].message.replace(
+    "Responsible gambling",
     "Be careful"
   );
   expectInvalid(noResponsible, "responsible-gambling text is required");
@@ -230,6 +189,20 @@ async function main() {
     ].every((target) => target.enabled === false),
     true
   );
+
+  // The checked-in 0818 package resolves exactly tomorrow's four Meta targets.
+  const tomorrow = VIDEO_MANIFEST.find((video) => video.id === "0818");
+  assert(tomorrow);
+  const resolved = resolveVideoTargets(tomorrow, VIDEO_SOCIAL_TARGETS);
+  assert.deepEqual(
+    resolved.instagram.map((target) => target.id),
+    ["instagram-main", "instagram-2"]
+  );
+  assert.deepEqual(
+    resolved.facebook.map((target) => target.id),
+    ["facebook-main", "facebook-2"]
+  );
+  assert.deepEqual(resolved.youtube, []);
   const invalidReady = structuredClone(contentPackage);
   invalidReady.status = "ready";
   assert.equal(validateVideoContentPackage(invalidReady).valid, false);
@@ -247,7 +220,7 @@ async function main() {
     ["0818"]
   );
 
-  // Normal generation is one call for all seven outputs; one repair is bounded.
+  // Normal generation is one call for all four Meta outputs; one repair is bounded.
   let generationCalls = 0;
   const generated = await generateVideoContentPackage({
     input,
@@ -268,7 +241,7 @@ async function main() {
       repairCalls += 1;
       if (repairCalls === 1) {
         const invalid = cloneCopy();
-        invalid.platforms.youtube.targets[0].title = "x".repeat(101);
+        invalid.platforms.facebook.targets[0].message = "too short";
         return invalid;
       }
       return cloneCopy();
@@ -292,7 +265,7 @@ async function main() {
   );
 
   console.log(
-    "Video social copy generator tests: PASS (26 requirements; no provider or Redis calls)"
+    "Video social copy generator tests: PASS (four Meta outputs; no provider or Redis calls)"
   );
 }
 

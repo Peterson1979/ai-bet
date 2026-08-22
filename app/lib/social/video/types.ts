@@ -7,6 +7,7 @@ export const VIDEO_SOCIAL_PLATFORMS = [
 export type VideoSocialPlatform = (typeof VIDEO_SOCIAL_PLATFORMS)[number];
 
 export type VideoSocialMode = "disabled" | "dry-run" | "live";
+export type InstagramApiMode = "facebook-login" | "instagram-login";
 
 type TargetVideoContent = {
   targetId: string;
@@ -59,6 +60,8 @@ export type SocialTarget = {
   clientIdEnv?: string;
   clientSecretEnv?: string;
   refreshTokenEnv?: string;
+  expectedAccountId?: string;
+  instagramApiMode?: InstagramApiMode;
 };
 
 export type ResolvedVideoTarget = SocialTarget;
@@ -99,8 +102,8 @@ export type VideoRunRecord = {
   runId: string;
   slot: string;
   videoId: string;
-  intent: "canary";
-  platform: "instagram" | "facebook";
+  intent: "canary" | "scheduled";
+  platform: "instagram" | "facebook" | "multi";
   targetIds: string[];
   status: VideoRunStatus;
   createdAt: string;

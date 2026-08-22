@@ -15,18 +15,13 @@ import {
 const ID_PATTERN = /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/;
 const MATCHSIGNAL_URL = "https://www.matchsignal.pro";
 const INSTAGRAM_LIMIT = 2_200;
-const YOUTUBE_TITLE_LIMIT = 100;
 const NEAR_DUPLICATE_THRESHOLD = 0.78;
 const INSTAGRAM_MIN_SUBSTANTIVE_LENGTH = 180;
 const FACEBOOK_MIN_SUBSTANTIVE_LENGTH = 220;
-const YOUTUBE_MIN_SUBSTANTIVE_LENGTH = 300;
 const MIN_HASHTAG_COUNT = 5;
-const MIN_YOUTUBE_TAG_COUNT = 5;
 
 const PRODUCT_BENEFIT_PATTERN =
   /\b(?:odds?|prices?|compare|comparison|analysis|probability|value|risk|bookmakers?|sportsbooks?|explanations?|selection|market|ai-assisted)\b/i;
-const RELEVANT_TAG_PATTERN =
-  /(?:matchsignal|sports?|bet(?:ting)?|odds?|prices?|comparison|analysis|analytics|probability|value|bookmaker|responsible|football|nba|nfl|hockey|tennis|mlb|mma|ai|tools?|guides?)/i;
 
 const PROHIBITED_CLAIMS = [
   /\breal[- ]time odds\b/i,
@@ -70,15 +65,6 @@ const GeneratedInstagramTargetSchema = z
 const GeneratedFacebookTargetSchema = z
   .object({ targetId: z.string(), message: z.string() })
   .strict();
-const GeneratedYouTubeTargetSchema = z
-  .object({
-    targetId: z.string(),
-    title: z.string(),
-    description: z.string(),
-    tags: z.array(z.string()),
-  })
-  .strict();
-
 export const GeneratedVideoCopySchema = z
   .object({
     id: z.string(),
@@ -89,9 +75,6 @@ export const GeneratedVideoCopySchema = z
           .strict(),
         facebook: z
           .object({ targets: z.array(GeneratedFacebookTargetSchema) })
-          .strict(),
-        youtube: z
-          .object({ targets: z.array(GeneratedYouTubeTargetSchema) })
           .strict(),
       })
       .strict(),
@@ -131,8 +114,8 @@ export const VIDEO_COPY_JSON_SCHEMA = {
           properties: {
             targets: {
               type: "array",
-              minItems: 4,
-              maxItems: 4,
+              minItems: VIDEO_COPY_TARGET_IDS.facebook.length,
+              maxItems: VIDEO_COPY_TARGET_IDS.facebook.length,
               items: {
                 type: "object",
                 properties: {
@@ -147,31 +130,8 @@ export const VIDEO_COPY_JSON_SCHEMA = {
           required: ["targets"],
           additionalProperties: false,
         },
-        youtube: {
-          type: "object",
-          properties: {
-            targets: {
-              type: "array",
-              minItems: 1,
-              maxItems: 1,
-              items: {
-                type: "object",
-                properties: {
-                  targetId: { type: "string", enum: [...VIDEO_COPY_TARGET_IDS.youtube] },
-                  title: { type: "string" },
-                  description: { type: "string" },
-                  tags: { type: "array", items: { type: "string" } },
-                },
-                required: ["targetId", "title", "description", "tags"],
-                additionalProperties: false,
-              },
-            },
-          },
-          required: ["targets"],
-          additionalProperties: false,
-        },
       },
-      required: ["instagram", "facebook", "youtube"],
+      required: ["instagram", "facebook"],
       additionalProperties: false,
     },
   },
@@ -193,7 +153,15 @@ const PackageSchema = z
           targets: z.array(GeneratedFacebookTargetSchema.extend({ enabled: z.boolean() })),
         }).strict(),
         youtube: z.object({
-          targets: z.array(GeneratedYouTubeTargetSchema.extend({ enabled: z.boolean() })),
+          targets: z.array(
+            z.object({
+              targetId: z.string(),
+              title: z.string(),
+              description: z.string(),
+              tags: z.array(z.string()).optional(),
+              enabled: z.boolean(),
+            }).strict()
+          ),
         }).strict(),
       })
       .strict(),
@@ -204,7 +172,11 @@ const PackageSchema = z
         generatedAt: z.string().datetime(),
         // Older draft packages remain parseable during an explicit regeneration;
         // only newly generated packages use the current prompt version.
-        promptVersion: z.enum(["matchsignal-video-copy-v1", VIDEO_COPY_PROMPT_VERSION]),
+        promptVersion: z.enum([
+          "matchsignal-video-copy-v1",
+          "matchsignal-video-copy-v2",
+          VIDEO_COPY_PROMPT_VERSION,
+        ]),
       })
       .strict(),
   })
@@ -392,12 +364,6 @@ export function validateGeneratedVideoCopy(
     "platforms.facebook.targets",
     errors
   );
-  validateTargetIds(
-    copy.platforms.youtube.targets.map((target) => target.targetId),
-    VIDEO_COPY_TARGET_IDS.youtube,
-    "platforms.youtube.targets",
-    errors
-  );
 
   copy.platforms.instagram.targets.forEach((target, index) => {
     const path = `platforms.instagram.targets[${index}].caption`;
@@ -448,52 +414,6 @@ export function validateGeneratedVideoCopy(
     errors
   );
 
-  const youtube = copy.platforms.youtube.targets[0];
-  if (youtube) {
-    if (!youtube.title.trim()) {
-      errors.push(issue("platforms.youtube.targets[0].title", "must not be empty"));
-    }
-    if (youtube.title.length > YOUTUBE_TITLE_LIMIT) {
-      errors.push(
-        issue(
-          "platforms.youtube.targets[0].title",
-          `must be at most ${YOUTUBE_TITLE_LIMIT} characters`
-        )
-      );
-    }
-    for (const prohibited of PROHIBITED_CLAIMS) {
-      if (prohibited.test(youtube.title)) {
-        errors.push(issue("platforms.youtube.targets[0].title", "contains a prohibited claim"));
-      }
-    }
-    validateText(
-      youtube.description,
-      "platforms.youtube.targets[0].description",
-      errors,
-      { website: true }
-    );
-    validateSubstantiveBody(
-      youtube.description,
-      "platforms.youtube.targets[0].description",
-      YOUTUBE_MIN_SUBSTANTIVE_LENGTH,
-      errors,
-      { website: true }
-    );
-    const tags = youtube.tags.map((tag) => tag.trim()).filter(Boolean);
-    const uniqueTags = new Set(tags.map((tag) => tag.toLowerCase()));
-    if (uniqueTags.size < MIN_YOUTUBE_TAG_COUNT) {
-      errors.push(
-        issue(
-          "platforms.youtube.targets[0].tags",
-          `must include at least ${MIN_YOUTUBE_TAG_COUNT} unique non-empty tags`
-        )
-      );
-    }
-    if (tags.some((tag) => !RELEVANT_TAG_PATTERN.test(tag))) {
-      errors.push(issue("platforms.youtube.targets[0].tags", "all tags must be product-relevant"));
-    }
-  }
-
   return result(errors);
 }
 
@@ -510,14 +430,6 @@ export function createRejectedVideoCopy(id: string): GeneratedVideoCopy {
       },
       facebook: {
         targets: VIDEO_COPY_TARGET_IDS.facebook.map((targetId) => ({ targetId, message: "" })),
-      },
-      youtube: {
-        targets: VIDEO_COPY_TARGET_IDS.youtube.map((targetId) => ({
-          targetId,
-          title: "",
-          description: "",
-          tags: [],
-        })),
       },
     },
   };
@@ -553,12 +465,7 @@ export function buildVideoContentPackage(params: {
           enabled: false,
         })),
       },
-      youtube: {
-        targets: params.copy.platforms.youtube.targets.map((target) => ({
-          ...target,
-          enabled: false,
-        })),
-      },
+      youtube: { targets: [] },
     },
     generation: {
       provider: VIDEO_COPY_PROVIDER,
@@ -602,16 +509,6 @@ export function validateVideoContentPackage(value: unknown): CopyValidationResul
             targetId,
             message,
           })),
-        },
-        youtube: {
-          targets: valuePackage.platforms.youtube.targets.map(
-            ({ targetId, title, description, tags }) => ({
-              targetId,
-              title,
-              description,
-              tags: tags ?? [],
-            })
-          ),
         },
       },
     };

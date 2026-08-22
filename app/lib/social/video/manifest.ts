@@ -84,32 +84,6 @@ Check the current odds  https://www.matchsignal.pro
 
 18+ | Gamble responsibly | Odds can change and no outcome is guaranteed`,
           },
-          {
-            targetId: "facebook-3",
-            enabled: false,
-            message: `Most bettors check odds at one bookmaker and stop there. But since every bookmaker calculates its own odds using its own models, the same match can have noticeably different pricing depending on where you look.
-
-MatchSignal was built to close that gap — it compares odds across multiple sportsbooks, evaluates market consensus, and highlights selections where the available price may offer value based on its probability analysis.
-
-Free, AI-assisted, and covering Football, NBA, NFL, Hockey, Tennis, MLB and MMA.
-
-See how your bookmaker's odds compare  https://www.matchsignal.pro
-
-18+ | Gamble responsibly | This is not a guarantee of profit`,
-          },
-          {
-            targetId: "facebook-4",
-            enabled: false,
-            message: `The odds on your screen are the output of a calculation — stats in, price out. But that calculation isn't universal. Different bookmakers, different models, different odds for the exact same match.
-
-That's the whole reason to compare before you commit. MatchSignal tracks odds from multiple sportsbooks, runs its own market-based probability analysis, and gives you a short AI explanation for every recommended selection, plus a risk tier so you know what you're looking at.
-
-Free to use, no registration required.
-
-Compare odds now  https://www.matchsignal.pro
-
-18+ | Gamble responsibly | For informational purposes only, not betting advice`,
-          },
         ],
       },
       youtube: {

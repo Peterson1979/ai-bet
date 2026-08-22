@@ -1,5 +1,6 @@
 import {
   META_GRAPH_BASE,
+  INSTAGRAM_LOGIN_GRAPH_BASE,
   ProviderPollingTimeoutError,
   requestMetaJson,
   SafeProviderRequestError,
@@ -87,6 +88,12 @@ export type InstagramReelPublishResult = {
   state: VideoTargetPublicationState;
 };
 
+export function getInstagramGraphBase(target: SocialTarget): string {
+  return target.instagramApiMode === "instagram-login"
+    ? INSTAGRAM_LOGIN_GRAPH_BASE
+    : META_GRAPH_BASE;
+}
+
 function contractError(operation: string, message: string) {
   return new SafeProviderRequestError({
     provider: "instagram",
@@ -155,6 +162,7 @@ export async function publishInstagramReel(
     INSTAGRAM_REEL_MAX_REQUEST_TIMEOUT_MS
   );
   const authorization = { Authorization: `Bearer ${accessToken}` };
+  const graphBase = getInstagramGraphBase(options.target);
 
   let state =
     options.resumeState ??
@@ -206,7 +214,7 @@ export async function publishInstagramReel(
       sleep,
       provider: "instagram",
       operation: "create_reel_container",
-      url: `${META_GRAPH_BASE}/${encodeURIComponent(accountId)}/media`,
+      url: `${graphBase}/${encodeURIComponent(accountId)}/media`,
       init: {
         method: "POST",
         headers: {
@@ -246,7 +254,7 @@ export async function publishInstagramReel(
           sleep,
           provider: "instagram",
           operation: "check_reel_container",
-          url: `${META_GRAPH_BASE}/${encodeURIComponent(
+          url: `${graphBase}/${encodeURIComponent(
             containerId
           )}?fields=status_code,status`,
           init: { method: "GET", headers: authorization },
@@ -321,7 +329,7 @@ export async function publishInstagramReel(
       sleep,
       provider: "instagram",
       operation: "publish_reel",
-      url: `${META_GRAPH_BASE}/${encodeURIComponent(accountId)}/media_publish`,
+      url: `${graphBase}/${encodeURIComponent(accountId)}/media_publish`,
       init: {
         method: "POST",
         headers: {

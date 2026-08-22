@@ -14,6 +14,7 @@ export type MetaVideoPreflightResult = {
   assetEnabled: boolean;
   destinationEnabled: boolean;
   accountIdPresent: boolean;
+  accountIdMatchesExpected: boolean;
   accessTokenPresent: boolean;
   sourceHttps: boolean;
   sourceCloudinaryVideo: boolean;
@@ -86,6 +87,11 @@ export function preflightMetaVideoTarget(params: {
     environment,
     target.accountIdEnv
   );
+  const configuredAccountId = target.accountIdEnv
+    ? environment[target.accountIdEnv]?.trim()
+    : undefined;
+  const accountIdMatchesExpected =
+    !target.expectedAccountId || configuredAccountId === target.expectedAccountId;
   const accessTokenPresent = configuredValuePresent(
     environment,
     target.accessTokenEnv
@@ -113,6 +119,9 @@ export function preflightMetaVideoTarget(params: {
     errors.push(`${target.platform} destination is disabled for target`);
   }
   if (!accountIdPresent) errors.push("account or Page ID is not configured");
+  if (accountIdPresent && !accountIdMatchesExpected) {
+    errors.push("configured account or Page ID does not match the target registry");
+  }
   if (!accessTokenPresent) errors.push("access token is not configured");
   if (!source.sourceHttps) errors.push("source URL must use HTTPS");
   if (!source.sourceCloudinaryVideo) {
@@ -134,6 +143,7 @@ export function preflightMetaVideoTarget(params: {
     assetEnabled: asset.enabled,
     destinationEnabled: targetContent?.enabled ?? false,
     accountIdPresent,
+    accountIdMatchesExpected,
     accessTokenPresent,
     ...source,
     copyUsable,

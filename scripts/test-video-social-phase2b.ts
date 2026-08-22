@@ -265,7 +265,7 @@ async function expectBlocked(
 }
 
 async function testStaticGates() {
-  // 1. Live mode alone and a generic route invocation cannot publish.
+  // 1. A generic authenticated live invocation enters only the scheduled runner.
   let routeProviderCalls = 0;
   const generic = await handleVideoSocialRun(
     new Request("https://unit.invalid/api/video-social-run", {
@@ -277,9 +277,13 @@ async function testStaticGates() {
         routeProviderCalls += 1;
         throw new Error("generic live route entered canary");
       },
+      runLiveScheduled: async () => ({
+        status: 200,
+        body: { ok: true, intent: "scheduled", providerCallsMade: false },
+      }),
     }
   );
-  assert.equal(generic.status, 501);
+  assert.equal(generic.status, 200);
   assert.equal(routeProviderCalls, 0);
   const notLive = await expectBlocked({
     env: { ...environment(), VIDEO_SOCIAL_MODE: "dry-run" },
@@ -425,6 +429,10 @@ async function testRouteAndCurrentManifestSafety() {
       runLiveCanary: async () => {
         liveCalls += 1;
         throw new Error("dry-run entered live orchestrator");
+      },
+      runLiveScheduled: async () => {
+        liveCalls += 1;
+        throw new Error("dry-run entered scheduled orchestrator");
       },
     }
   );

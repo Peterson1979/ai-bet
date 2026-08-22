@@ -3,10 +3,6 @@ import {
   parseVideoSocialMode,
   VIDEO_SOCIAL_COOLDOWN_MS,
 } from "@/app/lib/social/video/config";
-import {
-  VIDEO_SOCIAL_CANARY_AUTHORIZATION_ENV,
-  VIDEO_SOCIAL_CANARY_SOURCE_ENABLED,
-} from "@/app/lib/social/video/canary-gate";
 import { VIDEO_MANIFEST } from "@/app/lib/social/video/manifest";
 import {
   preflightMetaVideoTarget,
@@ -18,6 +14,10 @@ import {
   type LiveVideoSocialResult,
   type VideoSocialCanaryIntent,
 } from "@/app/lib/social/video/run-live";
+import {
+  runScheduledVideoSocial,
+  type ScheduledVideoSocialResult,
+} from "@/app/lib/social/video/run-scheduled";
 import { readVideoLastSuccessHistory } from "@/app/lib/social/video/state";
 import { VIDEO_SOCIAL_TARGETS } from "@/app/lib/social/video/targets";
 import type { VideoLastSuccessHistory } from "@/app/lib/social/video/types";
@@ -25,7 +25,7 @@ import { validateVideoSocialConfiguration } from "@/app/lib/social/video/validat
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-// Reserved for the bounded Meta polling workflow once the canary gate is opened.
+// Bounded Instagram/Facebook processing polls run in parallel per target.
 export const maxDuration = 300;
 
 function isAuthorized(
@@ -61,6 +61,7 @@ export type VideoSocialRouteDependencies = {
   runLiveCanary?: (
     intent: VideoSocialCanaryIntent
   ) => Promise<LiveVideoSocialResult>;
+  runLiveScheduled?: () => Promise<ScheduledVideoSocialResult>;
 };
 
 export async function handleVideoSocialRun(
@@ -118,20 +119,11 @@ export async function handleVideoSocialRun(
       return Response.json(result.body, { status: result.status });
     }
 
-    return Response.json(
-      {
-        ok: false,
-        mode: "live",
-        publisherAdaptersImplemented: true,
-        canaryAuthorizationRequired: true,
-        canaryExecutionEnabled: VIDEO_SOCIAL_CANARY_SOURCE_ENABLED,
-        canaryAuthorizationEnv: VIDEO_SOCIAL_CANARY_AUTHORIZATION_ENV,
-        error:
-          "video social live publishing requires an explicit canary request",
-        ...safety,
-      },
-      { status: 501 }
-    );
+    const runLiveScheduled =
+      dependencies.runLiveScheduled ??
+      (() => runScheduledVideoSocial({ environment }));
+    const result = await runLiveScheduled();
+    return Response.json(result.body, { status: result.status });
   }
 
   const validation = validateVideoSocialConfiguration(

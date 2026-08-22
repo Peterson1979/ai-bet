@@ -4,14 +4,13 @@ import type {
   YouTubeTargetVideoContent,
 } from "./types";
 
-export const VIDEO_COPY_PROMPT_VERSION = "matchsignal-video-copy-v2";
+export const VIDEO_COPY_PROMPT_VERSION = "matchsignal-video-copy-v3-meta-four";
 export const VIDEO_COPY_PROVIDER = "groq";
 export const VIDEO_COPY_MODEL = "openai/gpt-oss-120b";
 
 export const VIDEO_COPY_TARGET_IDS = {
   instagram: ["instagram-main", "instagram-2"],
-  facebook: ["facebook-main", "facebook-2", "facebook-3", "facebook-4"],
-  youtube: ["youtube-main"],
+  facebook: ["facebook-main", "facebook-2"],
 } as const;
 
 export type VideoContentInput = {
@@ -32,19 +31,11 @@ export type GeneratedFacebookCopy = {
   message: string;
 };
 
-export type GeneratedYouTubeCopy = {
-  targetId: string;
-  title: string;
-  description: string;
-  tags: string[];
-};
-
 export type GeneratedVideoCopy = {
   id: string;
   platforms: {
     instagram: { targets: GeneratedInstagramCopy[] };
     facebook: { targets: GeneratedFacebookCopy[] };
-    youtube: { targets: GeneratedYouTubeCopy[] };
   };
 };
 

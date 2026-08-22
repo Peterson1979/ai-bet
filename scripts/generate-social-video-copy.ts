@@ -65,9 +65,22 @@ async function main() {
     return;
   }
 
+  let logicalGenerationCalls = 0;
+  let groqHttpRequests = 0;
   const outcome = await generateVideoContentPackage({
     input,
-    generate: async (prompt) => (await generateVideoCopyWithGroq({ prompt })).copy,
+    generate: async (prompt) => {
+      logicalGenerationCalls += 1;
+      return (
+        await generateVideoCopyWithGroq({
+          prompt,
+          retryRateLimitOnce: logicalGenerationCalls === 1,
+          onRequest: () => {
+            groqHttpRequests += 1;
+          },
+        })
+      ).copy;
+    },
   });
   if (outcome.contentPackage.status === "rejected") {
     console.log(
@@ -76,9 +89,10 @@ async function main() {
         generationStatus: "rejected",
         model: outcome.contentPackage.generation.model,
         validation: "FAIL",
-        targetCount: 7,
+        targetCount: 4,
         generationCalls: outcome.generationCalls,
         repaired: outcome.repaired,
+        groqHttpRequests,
         outputPath,
         outputPreserved: true,
       })
@@ -92,8 +106,7 @@ async function main() {
 
   const targetCount =
     outcome.contentPackage.platforms.instagram.targets.length +
-    outcome.contentPackage.platforms.facebook.targets.length +
-    outcome.contentPackage.platforms.youtube.targets.length;
+    outcome.contentPackage.platforms.facebook.targets.length;
   console.log(
     JSON.stringify({
       id,
@@ -103,6 +116,7 @@ async function main() {
       targetCount,
       generationCalls: outcome.generationCalls,
       repaired: outcome.repaired,
+      groqHttpRequests,
       outputPath,
     })
   );

@@ -39,7 +39,8 @@ function target(targetId: string): SocialTarget {
 function environmentFor(targetValue: SocialTarget) {
   assert(targetValue.accountIdEnv);
   const environment: Record<string, string> = {
-    [targetValue.accountIdEnv]: `unit-${targetValue.id}-account`,
+    [targetValue.accountIdEnv]:
+      targetValue.expectedAccountId ?? `unit-${targetValue.id}-account`,
   };
   if (targetValue.accessTokenEnv) {
     environment[targetValue.accessTokenEnv] = `unit-${targetValue.id}-token`;
@@ -125,18 +126,14 @@ async function testFacebookCopies() {
   const targetIds = [
     "facebook-main",
     "facebook-2",
-    "facebook-3",
-    "facebook-4",
   ] as const;
   const expectedStarts: Record<(typeof targetIds)[number], string> = {
     "facebook-main": "Ever wonder how bookmakers actually come up with their odds?",
     "facebook-2": "Behind every set of odds is a model working through match data",
-    "facebook-3": "Most bettors check odds at one bookmaker and stop there.",
-    "facebook-4": "The odds on your screen are the output of a calculation",
   };
   const observedMessages = new Set<string>();
 
-  // 2. All four Page adapters map their own message to Meta description.
+  // 2. Both active Page adapters map their own message to Meta description.
   for (const targetId of targetIds) {
     const asset = cloneManifest()[0];
     enableOnly(asset, "facebook", targetId);
@@ -167,7 +164,7 @@ async function testFacebookCopies() {
     assert.equal(finishBody.has("message"), false);
     observedMessages.add(expected.message);
   }
-  assert.equal(observedMessages.size, 4);
+  assert.equal(observedMessages.size, 2);
 }
 
 function testResolutionAndValidation() {
@@ -180,6 +177,8 @@ function testResolutionAndValidation() {
       clientIdEnv: value.clientIdEnv,
       clientSecretEnv: value.clientSecretEnv,
       refreshTokenEnv: value.refreshTokenEnv,
+      expectedAccountId: value.expectedAccountId,
+      instagramApiMode: value.instagramApiMode,
     })),
     [
       {
@@ -189,6 +188,8 @@ function testResolutionAndValidation() {
         clientIdEnv: undefined,
         clientSecretEnv: undefined,
         refreshTokenEnv: undefined,
+        expectedAccountId: undefined,
+        instagramApiMode: "facebook-login",
       },
       {
         id: "instagram-2",
@@ -197,6 +198,8 @@ function testResolutionAndValidation() {
         clientIdEnv: undefined,
         clientSecretEnv: undefined,
         refreshTokenEnv: undefined,
+        expectedAccountId: "17841404627749143",
+        instagramApiMode: "instagram-login",
       },
       {
         id: "facebook-main",
@@ -205,6 +208,8 @@ function testResolutionAndValidation() {
         clientIdEnv: undefined,
         clientSecretEnv: undefined,
         refreshTokenEnv: undefined,
+        expectedAccountId: undefined,
+        instagramApiMode: undefined,
       },
       {
         id: "facebook-2",
@@ -213,22 +218,8 @@ function testResolutionAndValidation() {
         clientIdEnv: undefined,
         clientSecretEnv: undefined,
         refreshTokenEnv: undefined,
-      },
-      {
-        id: "facebook-3",
-        accountIdEnv: "FACEBOOK_PAGE_ID_3",
-        accessTokenEnv: "FACEBOOK_ACCESS_TOKEN_3",
-        clientIdEnv: undefined,
-        clientSecretEnv: undefined,
-        refreshTokenEnv: undefined,
-      },
-      {
-        id: "facebook-4",
-        accountIdEnv: "FACEBOOK_PAGE_ID_4",
-        accessTokenEnv: "FACEBOOK_ACCESS_TOKEN_4",
-        clientIdEnv: undefined,
-        clientSecretEnv: undefined,
-        refreshTokenEnv: undefined,
+        expectedAccountId: "226949230493910",
+        instagramApiMode: undefined,
       },
       {
         id: "youtube-main",
@@ -237,6 +228,8 @@ function testResolutionAndValidation() {
         clientIdEnv: "YOUTUBE_CLIENT_ID",
         clientSecretEnv: "YOUTUBE_CLIENT_SECRET",
         refreshTokenEnv: "YOUTUBE_REFRESH_TOKEN",
+        expectedAccountId: undefined,
+        instagramApiMode: undefined,
       },
     ]
   );

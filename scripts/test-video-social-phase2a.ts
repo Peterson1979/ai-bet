@@ -8,6 +8,7 @@ import {
 } from "../app/lib/social/video/canary-gate";
 import { diagnoseMetaVideoTarget } from "../app/lib/social/video/meta-readiness";
 import {
+  INSTAGRAM_LOGIN_GRAPH_BASE,
   META_GRAPH_BASE,
   ProviderPollingTimeoutError,
   SafeProviderRequestError,
@@ -97,6 +98,16 @@ const instagramTarget: SocialTarget = {
   enabled: true,
   accountIdEnv: "TEST_INSTAGRAM_ID",
   accessTokenEnv: "TEST_INSTAGRAM_TOKEN",
+  instagramApiMode: "facebook-login",
+};
+
+const instagramLoginTarget: SocialTarget = {
+  id: "instagram-2",
+  platform: "instagram",
+  enabled: true,
+  accountIdEnv: "TEST_INSTAGRAM_ID_2",
+  accessTokenEnv: "TEST_INSTAGRAM_TOKEN_2",
+  instagramApiMode: "instagram-login",
 };
 
 const facebookTarget: SocialTarget = {
@@ -108,10 +119,13 @@ const facebookTarget: SocialTarget = {
 };
 
 const TEST_INSTAGRAM_TOKEN = "unit-test-instagram-token-should-never-leak";
+const TEST_INSTAGRAM_TOKEN_2 = "unit-test-instagram-login-token-should-never-leak";
 const TEST_FACEBOOK_TOKEN = "unit-test-facebook-token-should-never-leak";
 const environment = {
   TEST_INSTAGRAM_ID: "ig-unit-account",
   TEST_INSTAGRAM_TOKEN,
+  TEST_INSTAGRAM_ID_2: "ig-unit-account-2",
+  TEST_INSTAGRAM_TOKEN_2,
   TEST_FACEBOOK_PAGE_ID: "fb-unit-page",
   TEST_FACEBOOK_TOKEN,
 };
@@ -176,6 +190,37 @@ async function testInstagramFlow() {
     mock.calls.slice(0, 3).some((call) => call.url.endsWith("/media_publish")),
     false
   );
+
+  // Target-specific API mode, credentials, and copy remain isolated.
+  const instagramLoginAsset = createAsset();
+  instagramLoginAsset.platforms.instagram.targets = [
+    { targetId: "instagram-2", enabled: true, caption: "LifeModeHQ exact caption" },
+  ];
+  const instagramLogin = createMockFetch([
+    { body: { id: "ig-login-container" } },
+    { body: { status_code: "FINISHED" } },
+    { body: { id: "ig-login-media" } },
+  ]);
+  await publishInstagramReel({
+    runId: "run-instagram-login",
+    asset: instagramLoginAsset,
+    target: instagramLoginTarget,
+    environment,
+    fetchFn: instagramLogin.fetchFn,
+    sleep: noSleep,
+    maxPollAttempts: 1,
+    pollIntervalMs: 0,
+  });
+  assert.equal(
+    instagramLogin.calls[0].url,
+    `${INSTAGRAM_LOGIN_GRAPH_BASE}/ig-unit-account-2/media`
+  );
+  assert.equal(
+    new Headers(instagramLogin.calls[0].init.headers).get("Authorization"),
+    `Bearer ${TEST_INSTAGRAM_TOKEN_2}`
+  );
+  assert.equal(formBody(instagramLogin.calls[0]).get("caption"), "LifeModeHQ exact caption");
+  assert.notEqual(formBody(instagramLogin.calls[0]).get("caption"), "Test Instagram caption");
 
   // 5. Provider processing failure never calls media_publish.
   const failed = createMockFetch([
@@ -597,21 +642,30 @@ async function testRouteSafety() {
     assert.equal(dryBody.publicationStateMutated, false);
     assert.equal(providerCalls, 0);
 
-    // 27-28. Live mode is fail-closed and requires explicit canary authorization.
+    // 27-28. Normal live mode delegates only to the injected scheduled runner.
+    let scheduledRuns = 0;
     const liveResponse = await handleVideoSocialRun(request, {
       environment: {
         CRON_SECRET: "route-test-secret",
         VIDEO_SOCIAL_MODE: "live",
       },
-      readHistory: async () => {
-        throw new Error("live mode must not read history");
+      runLiveScheduled: async () => {
+        scheduledRuns += 1;
+        return {
+          status: 200,
+          body: {
+            ok: true,
+            mode: "live",
+            providerCallsMade: false,
+            publicationStateMutated: false,
+          },
+        };
       },
     });
     const liveBody = await liveResponse.json();
-    assert.equal(liveResponse.status, 501);
-    assert.equal(liveBody.publisherAdaptersImplemented, true);
-    assert.equal(liveBody.canaryAuthorizationRequired, true);
+    assert.equal(liveResponse.status, 200);
     assert.equal(liveBody.providerCallsMade, false);
+    assert.equal(scheduledRuns, 1);
     assert.equal(providerCalls, 0);
 
     // 29. Disabled mode performs no provider or history work.

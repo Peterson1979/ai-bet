@@ -6,39 +6,17 @@ import {
 } from "./content-types";
 
 const MATCHSIGNAL_PERMANENT_CONTEXT = `
-MATCHSIGNAL FACTS
-MatchSignal is a free, AI-assisted sports betting analysis platform. It combines regularly refreshed odds from multiple sportsbooks with market-based probability analysis, bookmaker/market comparison, and AI-generated explanations. MatchSignal is not a sportsbook and does not accept bets.
+PRODUCT: MatchSignal is a free, no-registration AI-assisted sports betting analysis platform, not a sportsbook and does not accept bets. It compares regularly refreshed odds from multiple sportsbooks with market-based probability analysis and concise AI explanations. It may show selections/markets, partner odds, estimated value and fair probability, market averages, bookmaker coverage, and Low/Medium/High Risk tiers. A Value Signal estimates potential positive expected value; it never guarantees a win, profit, or outcome. Supported sports: Football, NBA, NFL, Hockey, Tennis, MLB, MMA. It also offers Betting Guides, free calculators/tools, and a Betting Glossary.
 
-Supported sports: Football, NBA, NFL, Hockey, Tennis, MLB, and MMA.
+OBJECTIVE: Drive qualified traffic to https://www.matchsignal.pro and exploration of its comparison/analysis; never include direct sportsbook affiliate URLs. Write English only.
 
-MatchSignal may show a recommended selection and betting market, available partner odds, estimated value, market-average pricing, estimated fair probability, bookmaker coverage, a Low/Medium/High Risk Tier, and a concise AI-generated explanation.
+COMPLIANCE: Never use "real-time odds", "real time odds", or "live odds". Never imply guaranteed win/profit/returns/outcome, risk-free betting, sure bet, certain winner, cannot lose, future knowledge, infallible AI, fixed odds, that MatchSignal is a bookmaker, or that bets are placed on MatchSignal. Use may, compare, estimate, analysis, potential value, available odds/prices. Every post needs a natural, varied disclaimer containing 18+, Gamble responsibly/Responsible gambling, and an informational/no-guarantee/odds-can-change qualifier.
 
-A Value Signal estimates that an available price may represent positive expected value based on MatchSignal's probability estimate. It is not a guarantee of profit, a guarantee of a winning bet, or certainty about an outcome.
+INSTAGRAM (${VIDEO_COPY_TARGET_IDS.instagram.join(", ")}): exactly two meaningfully distinct captions. Each needs a unique hook/structure, at least 180 substantive body characters excluding CTA/disclaimer/hashtags, a video-specific MatchSignal benefit, exact "Link in bio", its own disclaimer, at least five relevant English hashtags, and at most 2,200 total characters.
 
-MatchSignal also provides Betting Guides, free calculators/tools, and a Betting Glossary. No subscription or registration is required for the analysis.
+FACEBOOK (${VIDEO_COPY_TARGET_IDS.facebook.join(", ")}): exactly two meaningfully distinct, fully developed posts. Each needs at least 220 substantive body characters excluding URL/disclaimer, a unique video-specific angle, clear MatchSignal benefit, exact https://www.matchsignal.pro, and its own disclaimer. No fragments, placeholders, or URL/disclaimer-only copy.
 
-MARKETING OBJECTIVE
-The primary objective is qualified traffic to https://www.matchsignal.pro, helping interested users explore MatchSignal's odds comparison and analysis and indirectly improving conversion on sportsbook partner links found on MatchSignal. Do not include direct sportsbook affiliate URLs. Do not optimize primarily for views, likes, followers, or engagement for its own sake. Every CTA should direct users to MatchSignal.
-
-LANGUAGE AND CLAIM RULES
-Write only in English. Never use "real-time odds", "real time odds", or "live odds". Prefer "odds", "available odds", "prices", or "available prices".
-
-Never claim or imply: guaranteed win, guaranteed profit, guaranteed returns, risk-free betting, sure bet, certain winner, cannot lose, guaranteed outcome, knowledge of future outcomes, that MatchSignal is a bookmaker, that bets can be placed directly on MatchSignal, that odds never change, or that AI is infallible. Use compliant terms such as may, can help, compare, estimate, analysis, potential value, available price, and informational analysis.
-
-RESPONSIBLE GAMBLING
-Every destination must include natural responsible-gambling and informational language containing 18+ and Gamble responsibly (or Responsible gambling), plus a qualifier such as informational purposes only, no prediction guarantees an outcome, no guarantee of profit, or odds can change. Vary the seven disclaimers naturally; do not make them all identical.
-
-INSTAGRAM
-Return exactly two meaningfully distinct captions for ${VIDEO_COPY_TARGET_IDS.instagram.join(" and ")}. Each needs at least 180 characters of developed body copy before its separate CTA, disclaimer, and hashtag block; a different hook and structure; a clear MatchSignal benefit tied to the supplied topic/script; the exact phrase "Link in bio"; its own 18+/responsible/informational disclaimer; at least five relevant English hashtags; and no more than 2,200 total characters. Do not merely paraphrase one caption sentence-by-sentence into the other.
-
-FACEBOOK
-Return exactly four fully developed, meaningfully distinct posts for ${VIDEO_COPY_TARGET_IDS.facebook.join(", ")}. Each needs at least 220 characters of complete body prose excluding its URL and disclaimer, its own hook and angle based on the supplied video, a clear MatchSignal benefit, the exact URL https://www.matchsignal.pro, and its own 18+/responsible/informational disclaimer. Never return placeholder copy, fragments, or a URL/disclaimer-only post. Use differentiated explanatory, practical-benefit, problem/solution, and conversion-oriented angles when suitable.
-
-YOUTUBE
-Return one package for youtube-main. The non-clickbait title must relate directly to the video and be no more than 100 characters. The description needs at least 300 characters of developed topic/product prose excluding its URL and disclaimer, the exact URL https://www.matchsignal.pro, and an 18+/responsible/informational disclaimer. Return at least five relevant, non-misleading tags.
-
-TARGET OWNERSHIP
-Copy belongs only to its exact video + platform + target ID. Never provide shared platform copy or fallback copy. Return all seven destinations in one JSON response and follow the supplied schema exactly.
+OWNERSHIP: Copy belongs only to its exact video+platform+target. No shared or fallback copy. Return exactly these four Meta destinations in one schema-valid JSON object.
 `.trim();
 
 export function buildVideoCopyPrompt(params: {
@@ -63,7 +41,7 @@ VISUAL: ${params.input.visual}
 VOICEOVER: ${params.input.voiceover}
 SOURCE URL: ${params.input.sourceUrl ?? "not provided yet"}
 
-Generate all seven target-specific outputs now in one JSON object.${repair}`;
+Generate all four target-specific Meta outputs now in one JSON object.${repair}`;
 }
 
 export const VIDEO_COPY_SYSTEM_PROMPT =
