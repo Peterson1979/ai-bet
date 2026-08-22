@@ -4,7 +4,7 @@ import type {
   YouTubeTargetVideoContent,
 } from "./types";
 
-export const VIDEO_COPY_PROMPT_VERSION = "matchsignal-video-copy-v1";
+export const VIDEO_COPY_PROMPT_VERSION = "matchsignal-video-copy-v2";
 export const VIDEO_COPY_PROVIDER = "groq";
 export const VIDEO_COPY_MODEL = "openai/gpt-oss-120b";
 

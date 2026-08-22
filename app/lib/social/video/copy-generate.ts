@@ -48,7 +48,6 @@ export async function generateVideoContentPackage(params: {
     buildVideoCopyPrompt({
       input: params.input,
       repairIssues: firstValidation.errors,
-      previousOutput: firstRaw,
     })
   );
   const secondValidation = validateGeneratedVideoCopy(params.input.id, secondRaw);

@@ -29,13 +29,13 @@ RESPONSIBLE GAMBLING
 Every destination must include natural responsible-gambling and informational language containing 18+ and Gamble responsibly (or Responsible gambling), plus a qualifier such as informational purposes only, no prediction guarantees an outcome, no guarantee of profit, or odds can change. Vary the seven disclaimers naturally; do not make them all identical.
 
 INSTAGRAM
-Return exactly two meaningfully distinct captions for ${VIDEO_COPY_TARGET_IDS.instagram.join(" and ")}. Each must strongly relate to the supplied topic/script, use a different hook and structure, explain useful MatchSignal value, drive website visits, contain the exact phrase "Link in bio", include relevant English hashtags, and remain under 2,200 characters. Do not merely paraphrase one caption sentence-by-sentence into the other.
+Return exactly two meaningfully distinct captions for ${VIDEO_COPY_TARGET_IDS.instagram.join(" and ")}. Each needs at least 180 characters of developed body copy before its separate CTA, disclaimer, and hashtag block; a different hook and structure; a clear MatchSignal benefit tied to the supplied topic/script; the exact phrase "Link in bio"; its own 18+/responsible/informational disclaimer; at least five relevant English hashtags; and no more than 2,200 total characters. Do not merely paraphrase one caption sentence-by-sentence into the other.
 
 FACEBOOK
-Return exactly four meaningfully distinct posts for ${VIDEO_COPY_TARGET_IDS.facebook.join(", ")}. Give each its own hook and angle, base it on the supplied video, explain MatchSignal naturally, drive traffic, contain the exact URL https://www.matchsignal.pro, and include responsible/informational language. Aim for differentiated explanatory, practical-benefit, problem/solution, and concise conversion-oriented angles when suitable; do not output minor rewrites.
+Return exactly four fully developed, meaningfully distinct posts for ${VIDEO_COPY_TARGET_IDS.facebook.join(", ")}. Each needs at least 220 characters of complete body prose excluding its URL and disclaimer, its own hook and angle based on the supplied video, a clear MatchSignal benefit, the exact URL https://www.matchsignal.pro, and its own 18+/responsible/informational disclaimer. Never return placeholder copy, fragments, or a URL/disclaimer-only post. Use differentiated explanatory, practical-benefit, problem/solution, and conversion-oriented angles when suitable.
 
 YOUTUBE
-Return one package for youtube-main. The title must be compelling but not clickbait, directly related to the video, and no more than 100 characters. The description must explain the topic and relevant MatchSignal value, contain https://www.matchsignal.pro, and include responsible/informational language. Tags must be relevant and not misleading.
+Return one package for youtube-main. The non-clickbait title must relate directly to the video and be no more than 100 characters. The description needs at least 300 characters of developed topic/product prose excluding its URL and disclaimer, the exact URL https://www.matchsignal.pro, and an 18+/responsible/informational disclaimer. Return at least five relevant, non-misleading tags.
 
 TARGET OWNERSHIP
 Copy belongs only to its exact video + platform + target ID. Never provide shared platform copy or fallback copy. Return all seven destinations in one JSON response and follow the supplied schema exactly.
@@ -44,12 +44,11 @@ Copy belongs only to its exact video + platform + target ID. Never provide share
 export function buildVideoCopyPrompt(params: {
   input: VideoContentInput;
   repairIssues?: readonly CopyValidationIssue[];
-  previousOutput?: unknown;
 }): string {
   const repair = params.repairIssues?.length
     ? `\n\nREPAIR REQUEST\nThe prior output failed deterministic validation. Correct every issue while preserving exact target IDs and meaningful variation.\n${params.repairIssues
         .map((issue) => `- ${issue.path}: ${issue.message}`)
-        .join("\n")}\n\nPRIOR OUTPUT\n${JSON.stringify(params.previousOutput)}`
+        .join("\n")}`
     : "";
 
   return `${MATCHSIGNAL_PERMANENT_CONTEXT}

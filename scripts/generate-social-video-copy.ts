@@ -69,6 +69,23 @@ async function main() {
     input,
     generate: async (prompt) => (await generateVideoCopyWithGroq({ prompt })).copy,
   });
+  if (outcome.contentPackage.status === "rejected") {
+    console.log(
+      JSON.stringify({
+        id,
+        generationStatus: "rejected",
+        model: outcome.contentPackage.generation.model,
+        validation: "FAIL",
+        targetCount: 7,
+        generationCalls: outcome.generationCalls,
+        repaired: outcome.repaired,
+        outputPath,
+        outputPreserved: true,
+      })
+    );
+    process.exitCode = 1;
+    return;
+  }
   await fs.mkdir(OUTPUT_DIRECTORY, { recursive: true });
   await fs.writeFile(outputPath, `${JSON.stringify(outcome.contentPackage, null, 2)}\n`, "utf8");
   await updateStaticIndex();
@@ -89,7 +106,6 @@ async function main() {
       outputPath,
     })
   );
-  if (outcome.contentPackage.status === "rejected") process.exitCode = 1;
 }
 
 main().catch((error) => {

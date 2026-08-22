@@ -17,6 +17,16 @@ const MATCHSIGNAL_URL = "https://www.matchsignal.pro";
 const INSTAGRAM_LIMIT = 2_200;
 const YOUTUBE_TITLE_LIMIT = 100;
 const NEAR_DUPLICATE_THRESHOLD = 0.78;
+const INSTAGRAM_MIN_SUBSTANTIVE_LENGTH = 180;
+const FACEBOOK_MIN_SUBSTANTIVE_LENGTH = 220;
+const YOUTUBE_MIN_SUBSTANTIVE_LENGTH = 300;
+const MIN_HASHTAG_COUNT = 5;
+const MIN_YOUTUBE_TAG_COUNT = 5;
+
+const PRODUCT_BENEFIT_PATTERN =
+  /\b(?:odds?|prices?|compare|comparison|analysis|probability|value|risk|bookmakers?|sportsbooks?|explanations?|selection|market|ai-assisted)\b/i;
+const RELEVANT_TAG_PATTERN =
+  /(?:matchsignal|sports?|bet(?:ting)?|odds?|prices?|comparison|analysis|analytics|probability|value|bookmaker|responsible|football|nba|nfl|hockey|tennis|mlb|mma|ai|tools?|guides?)/i;
 
 const PROHIBITED_CLAIMS = [
   /\breal[- ]time odds\b/i,
@@ -192,7 +202,9 @@ const PackageSchema = z
         provider: z.literal(VIDEO_COPY_PROVIDER),
         model: z.string().min(1),
         generatedAt: z.string().datetime(),
-        promptVersion: z.literal(VIDEO_COPY_PROMPT_VERSION),
+        // Older draft packages remain parseable during an explicit regeneration;
+        // only newly generated packages use the current prompt version.
+        promptVersion: z.enum(["matchsignal-video-copy-v1", VIDEO_COPY_PROMPT_VERSION]),
       })
       .strict(),
   })
@@ -298,6 +310,45 @@ function validateText(
   }
 }
 
+function substantiveText(
+  value: string,
+  options: { instagram?: boolean; website?: boolean } = {}
+): string {
+  const disclaimerStart = value.search(/(?:🔞\s*)?18\s*\+/iu);
+  const beforeDisclaimer = disclaimerStart >= 0 ? value.slice(0, disclaimerStart) : value;
+  return beforeDisclaimer
+    .replace(options.instagram ? /link in bio/giu : /$^/gu, " ")
+    .replace(options.website ? /https:\/\/www\.matchsignal\.pro/giu : /$^/gu, " ")
+    .replace(/#[\p{L}\p{N}_]+/gu, " ")
+    .replace(/[\p{Extended_Pictographic}\uFE0F]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function validateSubstantiveBody(
+  value: string,
+  path: string,
+  minimumLength: number,
+  errors: CopyValidationIssue[],
+  options: { instagram?: boolean; website?: boolean } = {}
+) {
+  const body = substantiveText(value, options);
+  if (body.length < minimumLength) {
+    errors.push(
+      issue(
+        path,
+        `must contain at least ${minimumLength} substantive body characters excluding CTA, URL, disclaimer, and hashtags (found ${body.length})`
+      )
+    );
+  }
+  if (!/\bmatchsignal\b/i.test(body) || !PRODUCT_BENEFIT_PATTERN.test(body)) {
+    errors.push(issue(path, "must explain a MatchSignal product benefit relevant to the video"));
+  }
+  if (body && !/[.!?]["'’”)]?$/u.test(body)) {
+    errors.push(issue(path, "substantive body must end with a complete sentence"));
+  }
+}
+
 function validateDistinct(
   values: readonly { path: string; text: string }[],
   errors: CopyValidationIssue[]
@@ -351,6 +402,19 @@ export function validateGeneratedVideoCopy(
   copy.platforms.instagram.targets.forEach((target, index) => {
     const path = `platforms.instagram.targets[${index}].caption`;
     validateText(target.caption, path, errors, { instagram: true });
+    validateSubstantiveBody(
+      target.caption,
+      path,
+      INSTAGRAM_MIN_SUBSTANTIVE_LENGTH,
+      errors,
+      { instagram: true }
+    );
+    const hashtags = new Set(
+      target.caption.match(/#[\p{L}\p{N}_]+/gu)?.map((tag) => tag.toLowerCase()) ?? []
+    );
+    if (hashtags.size < MIN_HASHTAG_COUNT) {
+      errors.push(issue(path, `must include at least ${MIN_HASHTAG_COUNT} unique hashtags`));
+    }
     if (target.caption.length > INSTAGRAM_LIMIT) {
       errors.push(issue(path, `must be at most ${INSTAGRAM_LIMIT} characters`));
     }
@@ -363,11 +427,19 @@ export function validateGeneratedVideoCopy(
     errors
   );
 
-  copy.platforms.facebook.targets.forEach((target, index) =>
-    validateText(target.message, `platforms.facebook.targets[${index}].message`, errors, {
+  copy.platforms.facebook.targets.forEach((target, index) => {
+    const path = `platforms.facebook.targets[${index}].message`;
+    validateText(target.message, path, errors, {
       website: true,
-    })
-  );
+    });
+    validateSubstantiveBody(
+      target.message,
+      path,
+      FACEBOOK_MIN_SUBSTANTIVE_LENGTH,
+      errors,
+      { website: true }
+    );
+  });
   validateDistinct(
     copy.platforms.facebook.targets.map((target, index) => ({
       path: `platforms.facebook.targets[${index}].message`,
@@ -400,8 +472,25 @@ export function validateGeneratedVideoCopy(
       errors,
       { website: true }
     );
-    if (youtube.tags.some((tag) => !tag.trim())) {
-      errors.push(issue("platforms.youtube.targets[0].tags", "tags must not be empty"));
+    validateSubstantiveBody(
+      youtube.description,
+      "platforms.youtube.targets[0].description",
+      YOUTUBE_MIN_SUBSTANTIVE_LENGTH,
+      errors,
+      { website: true }
+    );
+    const tags = youtube.tags.map((tag) => tag.trim()).filter(Boolean);
+    const uniqueTags = new Set(tags.map((tag) => tag.toLowerCase()));
+    if (uniqueTags.size < MIN_YOUTUBE_TAG_COUNT) {
+      errors.push(
+        issue(
+          "platforms.youtube.targets[0].tags",
+          `must include at least ${MIN_YOUTUBE_TAG_COUNT} unique non-empty tags`
+        )
+      );
+    }
+    if (tags.some((tag) => !RELEVANT_TAG_PATTERN.test(tag))) {
+      errors.push(issue("platforms.youtube.targets[0].tags", "all tags must be product-relevant"));
     }
   }
 

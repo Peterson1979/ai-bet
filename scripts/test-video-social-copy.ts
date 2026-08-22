@@ -24,6 +24,19 @@ const input: VideoContentInput = {
   sourceUrl: null,
 };
 
+const instagramBodyMain =
+  "Small differences between available prices can matter when you are comparing a market. MatchSignal brings odds from multiple sportsbooks into one clear view, adds market-based probability analysis, and explains potential value so you can research the selection with useful context before deciding.";
+const instagramBodySecond =
+  "Racing between bookmaker tabs makes it harder to see how prices differ. MatchSignal organizes available odds, estimated fair probability, risk tiers, and concise AI-assisted explanations in one place so you can compare the market efficiently and understand what the numbers may mean.";
+const facebookBodies = [
+  "The fastest price is not automatically the most useful one without context. MatchSignal compares available odds from multiple sportsbooks, evaluates market-based probability, and presents a concise explanation of potential value. That gives you a clearer way to research the same selection across the market before making your own decision.",
+  "Checking one bookmaker can leave useful pricing context out of view. MatchSignal brings sportsbook coverage together with market-average pricing, estimated fair probability, and a clear risk tier. You can spend less time moving between tabs and more time understanding why an available price may deserve closer analysis.",
+  "A wall of changing numbers can make odds comparison feel unnecessarily difficult. MatchSignal turns that problem into a cleaner research workflow by organizing available prices, highlighting potential value, and explaining the analysis in plain English. The result is a more informed view of the market without pretending any outcome is certain.",
+  "Small pricing differences are easier to evaluate when the important context sits together. MatchSignal combines available sportsbook odds with probability estimates, bookmaker coverage, and concise AI-assisted explanations. Use the comparison to identify a potentially stronger price faster while keeping the final decision and its risks in perspective.",
+] as const;
+const youtubeBody =
+  "Small differences in available odds can affect the potential value of a selection, but scanning many changing price panels takes time. This video shows an AI scanning wave organizing that information into one clear comparison card. MatchSignal helps you compare sportsbook prices alongside market-based probability analysis, estimated fair probability, risk tiers, and concise explanations. It is a faster research workflow designed to add context to the numbers, not to predict the future or guarantee a result.";
+
 const validCopy: GeneratedVideoCopy = {
   id: "0818",
   platforms: {
@@ -31,13 +44,11 @@ const validCopy: GeneratedVideoCopy = {
       targets: [
         {
           targetId: "instagram-main",
-          caption:
-            "One screen can make comparison simpler. See how MatchSignal organizes available prices and analysis before you decide. Link in bio. 18+ | Gamble responsibly | Informational purposes only. #MatchSignal #OddsComparison",
+          caption: `${instagramBodyMain}\n\nLink in bio\n\n18+ | Gamble responsibly | Informational purposes only.\n\n#MatchSignal #OddsComparison #SportsAnalysis #BettingTools #ResponsibleGambling`,
         },
         {
           targetId: "instagram-2",
-          caption:
-            "Stop racing between bookmaker tabs. Explore potential value with clear market context and AI-assisted explanations from MatchSignal. Link in bio. 18+ | Responsible gambling | Odds can change; no prediction guarantees an outcome. #SportsAnalytics #BetSmart",
+          caption: `${instagramBodySecond}\n\nLink in bio\n\n18+ | Responsible gambling | Odds can change; no prediction guarantees an outcome.\n\n#SportsAnalytics #AvailableOdds #ValueAnalysis #MatchSignalPro #GambleResponsibly`,
         },
       ],
     },
@@ -45,23 +56,19 @@ const validCopy: GeneratedVideoCopy = {
       targets: [
         {
           targetId: "facebook-main",
-          message:
-            "Small price differences can matter. MatchSignal helps you compare available odds and understand the analysis behind a selection. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only.",
+          message: `${facebookBodies[0]}\n\nhttps://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational analysis only.`,
         },
         {
           targetId: "facebook-2",
-          message:
-            "Spend less time checking separate bookmaker pages. Review market comparisons and concise explanations at https://www.matchsignal.pro. 18+ | Responsible gambling | Odds can change and no outcome is guaranteed.",
+          message: `${facebookBodies[1]}\n\nhttps://www.matchsignal.pro\n\n18+ | Responsible gambling | Odds can change and no outcome is guaranteed.`,
         },
         {
           targetId: "facebook-3",
-          message:
-            "Too many prices, too little clarity? MatchSignal turns bookmaker coverage into a cleaner comparison with estimated fair probability. Visit https://www.matchsignal.pro. 18+ | Gamble responsibly | No prediction guarantees an outcome.",
+          message: `${facebookBodies[2]}\n\nhttps://www.matchsignal.pro\n\n18+ | Gamble responsibly | No prediction guarantees an outcome.`,
         },
         {
           targetId: "facebook-4",
-          message:
-            "Find the available price that fits your research faster. Start with free AI-assisted analysis at https://www.matchsignal.pro. 18+ | Responsible gambling | No guarantee of profit.",
+          message: `${facebookBodies[3]}\n\nhttps://www.matchsignal.pro\n\n18+ | Responsible gambling | No guarantee of profit.`,
         },
       ],
     },
@@ -70,9 +77,14 @@ const validCopy: GeneratedVideoCopy = {
         {
           targetId: "youtube-main",
           title: "Find Better Odds Faster with Smarter Comparison",
-          description:
-            "See why small differences in available prices can matter and how MatchSignal helps compare sportsbook odds with market-based analysis. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational purposes only; odds can change.",
-          tags: ["MatchSignal", "odds comparison", "sports analysis"],
+          description: `${youtubeBody}\n\nhttps://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational purposes only; odds can change.`,
+          tags: [
+            "MatchSignal",
+            "odds comparison",
+            "sports analysis",
+            "available prices",
+            "responsible gambling",
+          ],
         },
       ],
     },
@@ -147,6 +159,14 @@ async function main() {
     "Visit us"
   );
   expectInvalid(noInstagramCta, "Instagram Link in bio is required");
+
+  const noInstagramDisclaimer = cloneCopy();
+  noInstagramDisclaimer.platforms.instagram.targets[1].caption = `${instagramBodySecond}\n\nLink in bio\n\n#SportsAnalytics #AvailableOdds #ValueAnalysis #MatchSignalPro #GambleResponsibly`;
+  expectInvalid(noInstagramDisclaimer, "Instagram disclaimer is required");
+
+  const noInstagramHashtags = cloneCopy();
+  noInstagramHashtags.platforms.instagram.targets[0].caption = `${instagramBodyMain}\n\nLink in bio\n\n18+ | Gamble responsibly | Informational purposes only.`;
+  expectInvalid(noInstagramHashtags, "Instagram hashtags are required");
   const noYoutubeUrl = cloneCopy();
   noYoutubeUrl.platforms.youtube.targets[0].description = noYoutubeUrl.platforms.youtube.targets[0].description.replace(
     "https://www.matchsignal.pro",
@@ -156,6 +176,28 @@ async function main() {
   const longTitle = cloneCopy();
   longTitle.platforms.youtube.targets[0].title = "x".repeat(101);
   expectInvalid(longTitle, "YouTube title over 100 characters must fail");
+
+  const facebookUrlDisclaimerOnly = cloneCopy();
+  facebookUrlDisclaimerOnly.platforms.facebook.targets[2].message =
+    "https://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational purposes only.";
+  expectInvalid(facebookUrlDisclaimerOnly, "Facebook URL and disclaimer only must fail");
+
+  const shortFacebookBody = cloneCopy();
+  shortFacebookBody.platforms.facebook.targets[3].message =
+    "MatchSignal compares available odds so you can review prices.\n\nhttps://www.matchsignal.pro\n\n18+ | Responsible gambling | No guarantee of profit.";
+  expectInvalid(shortFacebookBody, "Facebook substantive body below 220 characters must fail");
+
+  const shortYoutubeDescription = cloneCopy();
+  shortYoutubeDescription.platforms.youtube.targets[0].description =
+    "MatchSignal compares available odds with useful analysis.\n\nhttps://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational purposes only.";
+  expectInvalid(shortYoutubeDescription, "YouTube substantive description below 300 characters must fail");
+
+  const contentEmpty = cloneCopy();
+  contentEmpty.platforms.instagram.targets[0].caption = "";
+  contentEmpty.platforms.facebook.targets[0].message = "";
+  contentEmpty.platforms.youtube.targets[0].description = "";
+  contentEmpty.platforms.youtube.targets[0].tags = [];
+  expectInvalid(contentEmpty, "structurally shaped but content-empty copy must fail");
 
   // 14-15. Exact and obvious near-duplicates fail.
   const duplicate = cloneCopy();
@@ -250,7 +292,7 @@ async function main() {
   );
 
   console.log(
-    "Video social copy generator tests: PASS (20 requirements; no provider or Redis calls)"
+    "Video social copy generator tests: PASS (26 requirements; no provider or Redis calls)"
   );
 }
 
