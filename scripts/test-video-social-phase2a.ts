@@ -787,12 +787,11 @@ function testClosedCanaryGate() {
     existingPublicationState: null,
   });
 
-  assert.equal(VIDEO_SOCIAL_CANARY_SOURCE_ENABLED, false);
-  assert.equal(gate.allowed, false);
-  assert.equal(gate.checks.sourceEnabled, false);
+  assert.equal(VIDEO_SOCIAL_CANARY_SOURCE_ENABLED, true);
+  assert.equal(gate.allowed, true);
+  assert.equal(gate.checks.sourceEnabled, true);
   assert.equal(
     Object.entries(gate.checks)
-      .filter(([key]) => key !== "sourceEnabled")
       .every(([, passed]) => passed),
     true
   );

@@ -263,7 +263,7 @@ function testResolutionAndValidation() {
   assert.equal(getVideoTargetContent(missingExact, "instagram", "instagram-2"), undefined);
   assert.deepEqual(
     resolveTargetsForPlatform(missingExact, "instagram", VIDEO_SOCIAL_TARGETS),
-    []
+    [target("instagram-main")]
   );
   const instagram2 = target("instagram-2");
   assert.equal(
@@ -409,18 +409,18 @@ async function testCanaryExactCopyAndSafety() {
   assert.equal(receivedCaption, post1.caption);
   assert.notEqual(receivedCaption, post2.caption);
 
-  // 11. The real checked-in 0817 remains completely non-publishable.
-  assert.equal(
+  // 11. The temporary canary enables only instagram-main.
+  assert.deepEqual(
     [
       ...VIDEO_MANIFEST[0].platforms.instagram.targets,
       ...VIDEO_MANIFEST[0].platforms.facebook.targets,
       ...VIDEO_MANIFEST[0].platforms.youtube.targets,
-    ].every((destination) => destination.enabled === false),
-    true
+    ].filter((destination) => destination.enabled).map((destination) => destination.targetId),
+    ["instagram-main"]
   );
   assert.deepEqual(
     resolveTargetsForPlatform(VIDEO_MANIFEST[0], "instagram", VIDEO_SOCIAL_TARGETS),
-    []
+    [target("instagram-main")]
   );
   assert.deepEqual(
     resolveTargetsForPlatform(VIDEO_MANIFEST[0], "facebook", VIDEO_SOCIAL_TARGETS),
