@@ -11,7 +11,7 @@ export const VIDEO_MANIFEST = [
         targets: [
           {
             targetId: "instagram-main",
-            enabled: false,
+            enabled: true,
             caption: `Ever wondered what actually happens before a bookmaker sets a price?
 
 Behind every number you see, there's a machine crunching stats, player data, and market movements — turning raw information into the odds you bet on.
