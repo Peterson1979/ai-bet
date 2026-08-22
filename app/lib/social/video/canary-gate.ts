@@ -15,7 +15,7 @@ export type MetaCanaryPlatform = "instagram" | "facebook";
  * A later, explicitly authorized canary must deliberately change this one
  * source-level switch. Environment configuration alone cannot open the gate.
  */
-export const VIDEO_SOCIAL_CANARY_SOURCE_ENABLED = true;
+export const VIDEO_SOCIAL_CANARY_SOURCE_ENABLED = false;
 export const VIDEO_SOCIAL_CANARY_ASSET_ID = "0817";
 export const VIDEO_SOCIAL_CANARY_AUTHORIZATION_ENV = "VIDEO_SOCIAL_CANARY";
 

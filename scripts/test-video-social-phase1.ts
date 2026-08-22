@@ -54,7 +54,7 @@ assert.deepEqual(
   Object.values(VIDEO_MANIFEST[0].platforms).flatMap((platform) =>
     platform.targets.map((target) => target.enabled)
   ),
-  [true, false, false, false, false, false, false]
+  [false, false, false, false, false, false, false]
 );
 
 // 2. Duplicate video IDs are rejected.
