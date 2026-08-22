@@ -1,5 +1,3 @@
-import { timingSafeEqual } from "node:crypto";
-
 import {
   buildDryRunPublicationPlan,
   parseVideoSocialMode,
@@ -30,46 +28,20 @@ export const dynamic = "force-dynamic";
 // Reserved for the bounded Meta polling workflow once the canary gate is opened.
 export const maxDuration = 300;
 
-const VIDEO_SOCIAL_CANARY_REQUEST_SECRET_ENV =
-  "VIDEO_SOCIAL_CANARY_REQUEST_SECRET";
-const VIDEO_SOCIAL_CANARY_REQUEST_SECRET_HEADER =
-  "x-video-social-canary-secret";
-
-function secretsMatch(candidate: string | null, expected: string | undefined) {
-  if (!candidate || !expected) return false;
-  const candidateBytes = Buffer.from(candidate);
-  const expectedBytes = Buffer.from(expected);
-  return (
-    candidateBytes.length === expectedBytes.length &&
-    timingSafeEqual(candidateBytes, expectedBytes)
-  );
-}
-
 function isAuthorized(
   request: Request,
   environment: EnvironmentSource
 ): boolean {
   const cronSecret = environment.CRON_SECRET;
+  if (!cronSecret) return false;
+
   const authorization = request.headers.get("authorization");
   const cronHeader = request.headers.get("x-cron-secret");
   const bearerToken = authorization?.startsWith("Bearer ")
     ? authorization.slice("Bearer ".length)
     : null;
 
-  if (
-    cronSecret &&
-    (bearerToken === cronSecret || cronHeader === cronSecret)
-  ) {
-    return true;
-  }
-
-  const url = new URL(request.url);
-  if (url.searchParams.get("intent") !== "canary") return false;
-
-  return secretsMatch(
-    request.headers.get(VIDEO_SOCIAL_CANARY_REQUEST_SECRET_HEADER),
-    environment[VIDEO_SOCIAL_CANARY_REQUEST_SECRET_ENV]
-  );
+  return bearerToken === cronSecret || cronHeader === cronSecret;
 }
 
 function safeIsoTimestamp(timestamp: number | null): string | null {
