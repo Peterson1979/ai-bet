@@ -234,7 +234,7 @@ export default function MatchCard({ data, lang = "en", countryCode }: Props) {
   const estimatedValueLabel = formatPercent(data.estimatedValuePct, true);
   const consensusLabel = formatPercent(data.consensusImpliedProb);
 
-  const bettingPageHref = `/${lang}/betting`;
+  const bettingPageHref = `/${lang}/betting#sportsbook-offers`;
 
   return (
     <article className="relative overflow-hidden rounded-2xl border border-cyan-400/30 bg-gradient-to-b from-[#0B132B]/90 via-[#0A1020]/95 to-[#060B14] p-5 shadow-xl transition-all duration-300 hover:border-cyan-400/60 hover:shadow-2xl">
