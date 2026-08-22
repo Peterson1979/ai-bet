@@ -10,7 +10,12 @@
     "validate:guides": "npx tsx scripts/validate-guides.mjs",
     "validate:readiness": "node scripts/validate-adsense-readiness.mjs",
     "validate:consent": "node scripts/validate-consent-readiness.mjs",
-    "validate:prediction-affiliate": "npx tsx scripts/test-prediction-affiliate-decoupling.tsx"
+    "validate:prediction-affiliate": "npx tsx scripts/test-prediction-affiliate-decoupling.tsx",
+    "validate:video-social": "npx tsx scripts/test-video-social-phase1.ts",
+    "validate:video-social-phase2a": "npx tsx scripts/test-video-social-phase2a.ts",
+    "validate:video-social-phase2b": "npx tsx scripts/test-video-social-phase2b.ts",
+    "validate:video-social-target-copy": "npx tsx scripts/test-video-social-target-copy.ts",
+    "diagnose:video-social-meta": "npx tsx scripts/diagnose-video-social-meta.ts"
   },
   "dependencies": {
     "@sparticuz/chromium": "^149.0.0",
