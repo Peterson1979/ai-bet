@@ -41,7 +41,10 @@ async function updateStaticIndex() {
 }
 
 async function main() {
-  loadEnvConfig(process.cwd());
+  // This is an explicit local preparation command, so use Next.js development
+  // env precedence (.env.local) instead of an intentionally blank production
+  // override. Values stay in process memory and are never written or printed.
+  loadEnvConfig(process.cwd(), true);
   const id = readIdArgument(process.argv.slice(2));
   const inputPath = path.join(INPUT_DIRECTORY, `${id}.json`);
   const outputPath = path.join(OUTPUT_DIRECTORY, `${id}.json`);

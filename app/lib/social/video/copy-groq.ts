@@ -35,7 +35,9 @@ export async function generateVideoCopyWithGroq(params: {
         body: JSON.stringify({
           model: VIDEO_COPY_MODEL,
           temperature: 0.7,
-          max_completion_tokens: 8_000,
+          // Keep the full prompt + completion comfortably below Groq's base
+          // 8K TPM envelope while retaining room for seven concise outputs.
+          max_completion_tokens: 2_500,
           reasoning_effort: "low",
           response_format: {
             type: "json_schema",

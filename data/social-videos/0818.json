@@ -1,0 +1,76 @@
+{
+  "id": "0818",
+  "status": "draft",
+  "source": {
+    "id": "0818",
+    "topic": "Find Better Odds Faster",
+    "visual": "A runner sprints through a futuristic tunnel lined with dozens of rapidly changing odds panels. Just before the windows become overwhelming, an AI scanning wave races ahead, identifies the strongest available price, and pulls it into a clean comparison card on the runner’s phone.",
+    "voiceover": "“Small differences in odds can matter. Find and compare available prices faster at MatchSignal.pro.”",
+    "sourceUrl": null
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🏁 Sprint ahead of the odds crowd! Our AI scans dozens of price panels in a flash, delivering the strongest available odds straight to your phone. Small edge, big impact. Ready to find better odds faster? 🌐 Link in bio\n\n🔞 18+ | Gamble responsibly – informational purposes only, no guarantee of profit.\n\n#SportsBetting #OddsComparison #AIAnalytics #BetSmart #MatchSignal #BettingTools #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⚡️ Tired of endless odds scrolling? MatchSignal pulls the top price into one clean card, so you can compare and decide in seconds. Unlock the advantage before the next game kicks off. 🌐 Link in bio\n\n🔞 18+ | Responsible gambling – informational only, no guarantee of outcome.\n\n#BettingGuide #ValueSignal #SportsAnalytics #BettingCommunity #MatchSignalPro #GambleResponsibly",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🏃‍♂️ Ever feel like you’re chasing odds that keep slipping away? MatchSignal’s AI scans the market in seconds, pulling the strongest available price into one clean card on your phone. Small differences can add up – get the edge you need. 👉 https://www.matchsignal.pro\n\n🔞 18+ | Gamble responsibly – informational purposes only, no guarantee of profit.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🔎 Want to compare odds without endless scrolling? MatchSignal aggregates refreshed odds from multiple sportsbooks and highlights potential value in a single view. Faster insight means more time to decide. Explore now: https://www.matchsignal.pro\n\n🔞 18+ | Gamble responsibly – no prediction guarantees, odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-3",
+          "message": "⚡️ Problem: Too many odds panels, not enough clarity. Solution: MatchSignal’s AI‑assisted platform delivers a concise comparison card with estimated fair probability and risk tier. See the difference for yourself at https://www.matchsignal.pro\n\n🔞 18+ | Responsible gambling – informational only, no guarantee of outcome.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-4",
+          "message": "🚀 Quick conversion: Spot the best price, compare instantly, and decide smarter. No registration, no subscription – just free, AI‑enhanced analysis. Start finding better odds now: https://www.matchsignal.pro\n\n🔞 18+ | Gamble responsibly – no guarantee of winning, odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Find Better Odds Faster with AI‑Powered Comparison",
+          "description": "In this video we show how MatchSignal’s AI quickly scans multiple sportsbooks, identifies the strongest available price, and presents it in a clean comparison card. Small odds differences can matter, and faster insight helps you make smarter decisions. Visit https://www.matchsignal.pro for free, AI‑assisted odds analysis.\n\n🔞 18+ | Responsible gambling – informational purposes only, no guarantee of profit, odds can change.",
+          "tags": [
+            "sports betting",
+            "odds comparison",
+            "AI betting tools",
+            "value betting",
+            "MatchSignal",
+            "betting analysis",
+            "responsible gambling"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-08-22T15:55:39.581Z",
+    "promptVersion": "matchsignal-video-copy-v1"
+  }
+}
