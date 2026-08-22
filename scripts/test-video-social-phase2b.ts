@@ -313,8 +313,8 @@ async function testStaticGates() {
     ],
   });
 
-  // 8. The temporary, explicitly authorized source-level canary switch is open.
-  assert.equal(VIDEO_SOCIAL_CANARY_SOURCE_ENABLED, true);
+  // 8. The real production source-level switch is closed.
+  assert.equal(VIDEO_SOCIAL_CANARY_SOURCE_ENABLED, false);
   const closed = await expectBlocked({ sourceEnabled: false });
   assert.equal(closed.memory.lockCalls, 0);
 
@@ -449,25 +449,24 @@ async function testRouteAndCurrentManifestSafety() {
   assert.equal(canaryRoute.status, 403);
   assert.equal(liveCalls, 1);
 
-  // 25. The actual 0817 manifest exposes only the authorized Instagram target.
+  // 25. The actual 0817 manifest remains non-publishable in every platform.
   const actual = VIDEO_MANIFEST.find((asset) => asset.id === "0817")!;
   assert.equal(actual.enabled, true);
-  assert.deepEqual(
+  assert.equal(
     [
       ...actual.platforms.instagram.targets,
       ...actual.platforms.facebook.targets,
       ...actual.platforms.youtube.targets,
     ]
-      .filter((destination) => destination.enabled)
-      .map((destination) => destination.targetId),
-    ["instagram-main"]
+      .every((destination) => destination.enabled === false),
+    true
   );
   const actualPreflight = preflightMetaVideoTarget({
     asset: actual,
     target: instagramTarget,
     environment: environment(),
   });
-  assert.equal(actualPreflight.valid, true);
+  assert.equal(actualPreflight.valid, false);
 }
 
 async function main() {
