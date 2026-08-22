@@ -15,6 +15,8 @@
     "validate:video-social-phase2a": "npx tsx scripts/test-video-social-phase2a.ts",
     "validate:video-social-phase2b": "npx tsx scripts/test-video-social-phase2b.ts",
     "validate:video-social-target-copy": "npx tsx scripts/test-video-social-target-copy.ts",
+    "validate:video-social-copy": "npx tsx scripts/test-video-social-copy.ts",
+    "social-video:generate": "npx tsx scripts/generate-social-video-copy.ts",
     "diagnose:video-social-meta": "npx tsx scripts/diagnose-video-social-meta.ts"
   },
   "dependencies": {

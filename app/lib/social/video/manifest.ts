@@ -1,3 +1,4 @@
+import { loadReadyVideoAssets } from "./content-loader";
 import type { VideoAsset } from "./types";
 
 export const VIDEO_MANIFEST = [
@@ -139,4 +140,5 @@ No subscription. No registration. Just clearer odds comparison.
       },
     },
   },
+  ...loadReadyVideoAssets(),
 ] satisfies VideoAsset[];
