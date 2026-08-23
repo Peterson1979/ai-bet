@@ -93,14 +93,27 @@ async function main() {
       platform: options.target.platform,
       targetId: options.target.id,
     });
+    const reconciledWithoutMedia = options.target.id === "instagram-main";
     const published = advanceTargetPublicationState(pending, {
       status: "published",
-      providerMediaId: `media-${options.target.id}`,
+      providerContainerId: `container-${options.target.id}`,
+      providerMediaId: reconciledWithoutMedia
+        ? null
+        : `media-${options.target.id}`,
+      reconciliation: reconciledWithoutMedia
+        ? {
+            operation: "instagram_container_status",
+            providerStatus: "PUBLISHED",
+            checkedAt: new Date(now).toISOString(),
+            statusChecks: 1,
+            recentMediaLookup: "not_attempted",
+          }
+        : null,
       publishedAt: new Date(now).toISOString(),
     });
     await options.onProgress?.(published);
     return options.target.platform === "instagram"
-      ? { containerId: `container-${options.target.id}`, mediaId: `media-${options.target.id}`, resumed: Boolean(options.resumeState), state: published }
+      ? { containerId: `container-${options.target.id}`, mediaId: reconciledWithoutMedia ? null : `media-${options.target.id}`, resumed: Boolean(options.resumeState), state: published }
       : { videoId: `media-${options.target.id}`, resumed: Boolean(options.resumeState), state: published };
   };
 

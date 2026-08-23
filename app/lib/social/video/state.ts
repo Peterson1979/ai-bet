@@ -89,6 +89,7 @@ export function createPendingTargetPublicationState(params: {
     providerMediaId: null,
     postId: null,
     publishedAt: null,
+    reconciliation: null,
     error: null,
     createdAt: now,
     updatedAt: now,
@@ -107,6 +108,7 @@ export function advanceTargetPublicationState(
     providerMediaId?: string | null;
     postId?: string | null;
     publishedAt?: string | null;
+    reconciliation?: VideoTargetPublicationState["reconciliation"];
     error?: SafeProviderError | null;
     updatedAt?: string;
   }
@@ -124,6 +126,18 @@ export function advanceTargetPublicationState(
   };
 }
 
+export function hasConfirmedProviderPublication(
+  state: VideoTargetPublicationState
+): boolean {
+  if (state.status !== "published") return false;
+  if (state.providerMediaId || state.postId) return true;
+  return Boolean(
+    state.platform === "instagram" &&
+      state.providerContainerId &&
+      state.reconciliation?.providerStatus === "PUBLISHED"
+  );
+}
+
 export function getProviderReconciliationDecision(
   state: VideoTargetPublicationState | null | undefined
 ): ProviderReconciliationDecision {
@@ -132,7 +146,8 @@ export function getProviderReconciliationDecision(
   if (state.status === "publishing") {
     // Facebook's provider video ID can be polled without repeating finish.
     // Instagram media_publish has no idempotency key, so its outcome is
-    // deliberately treated as ambiguous until a separate reconciliation exists.
+    // deliberately treated as ambiguous and may only resume through GET-only
+    // container reconciliation.
     if (
       state.platform === "facebook" &&
       (state.providerUploadId || state.providerMediaId || state.providerResourceId)

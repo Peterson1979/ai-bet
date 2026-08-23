@@ -10,6 +10,7 @@ import {
   advanceTargetPublicationState,
   createPendingTargetPublicationState,
   getProviderReconciliationDecision,
+  hasConfirmedProviderPublication,
   getTargetPublicationState,
   getVideoRun,
   readVideoLastSuccessHistory,
@@ -97,6 +98,7 @@ function summary(state: VideoTargetPublicationState) {
     providerUploadId: state.providerUploadId ?? null,
     providerMediaId: state.providerMediaId ?? null,
     publishedAt: state.publishedAt ?? null,
+    reconciliation: state.reconciliation ?? null,
     error: state.error ?? null,
   };
 }
@@ -237,8 +239,8 @@ export async function runScheduledVideoSocial(
           ? await (dependencies.publishInstagram ?? publishInstagramReel)({ runId: run!.runId, asset: asset!, target, resumeState: latest, environment, onProgress })
           : await (dependencies.publishFacebook ?? publishFacebookReel)({ runId: run!.runId, asset: asset!, target, resumeState: latest, environment, onProgress });
         latest = published.state;
-        if (latest.status !== "published" || !latest.providerMediaId) {
-          throw new TypeError("Meta publisher returned without a published provider ID");
+        if (!hasConfirmedProviderPublication(latest)) {
+          throw new TypeError("Meta publisher returned without confirmed publication");
         }
         await savePublicationState(latest);
         const timestamp = latest.publishedAt ? Date.parse(latest.publishedAt) : nowMs;

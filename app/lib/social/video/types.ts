@@ -129,6 +129,22 @@ export type SafeProviderError = {
   retryable: boolean;
 };
 
+export type InstagramContainerStatus =
+  | "PUBLISHED"
+  | "FINISHED"
+  | "IN_PROGRESS"
+  | "ERROR"
+  | "EXPIRED"
+  | "UNKNOWN";
+
+export type InstagramPublicationReconciliation = {
+  operation: "instagram_container_status";
+  providerStatus: InstagramContainerStatus;
+  checkedAt: string;
+  statusChecks: number;
+  recentMediaLookup?: "matched" | "not_found" | "failed" | "not_attempted";
+};
+
 export type VideoTargetPublicationState = {
   runId: string;
   videoId: string;
@@ -144,6 +160,7 @@ export type VideoTargetPublicationState = {
   providerMediaId?: string | null;
   postId?: string | null;
   publishedAt?: string | null;
+  reconciliation?: InstagramPublicationReconciliation | null;
   error?: SafeProviderError | null;
   createdAt: string;
   updatedAt: string;

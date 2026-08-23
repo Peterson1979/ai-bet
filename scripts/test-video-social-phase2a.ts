@@ -36,6 +36,7 @@ import type {
 type RecordedCall = { url: string; init: RequestInit };
 type MockReply =
   | { body: unknown; status?: number }
+  | { error: Error }
   | ((call: RecordedCall) => { body: unknown; status?: number });
 
 function createMockFetch(replies: MockReply[]) {
@@ -48,6 +49,7 @@ function createMockFetch(replies: MockReply[]) {
     calls.push(call);
     const next = replies.shift();
     if (!next) throw new Error("unexpected mocked provider request");
+    if (typeof next !== "function" && "error" in next) throw next.error;
     const reply = typeof next === "function" ? next(call) : next;
     return new Response(JSON.stringify(reply.body), {
       status: reply.status ?? 200,
@@ -317,6 +319,238 @@ async function testInstagramFlow() {
         assert.equal(error.details.subcode, 463);
       }
     }
+  );
+}
+
+async function testInstagramAmbiguousPublishReconciliation() {
+  let ambiguousResume = createPendingTargetPublicationState({
+    runId: "run-ig-ambiguous-resume",
+    videoId: "0817-test",
+    platform: "instagram",
+    targetId: "instagram-main",
+  });
+  ambiguousResume = advanceTargetPublicationState(ambiguousResume, {
+    status: "publishing",
+    attempts: 3,
+    providerResourceId: "ig-ambiguous-resume-container",
+    providerContainerId: "ig-ambiguous-resume-container",
+  });
+  const resumed = createMockFetch([{ body: { status_code: "PUBLISHED" } }]);
+  const resumedResult = await publishInstagramReel({
+    runId: "run-ig-ambiguous-resume",
+    asset: createAsset(),
+    target: instagramTarget,
+    environment,
+    resumeState: ambiguousResume,
+    fetchFn: resumed.fetchFn,
+    sleep: noSleep,
+    reconciliationMaxPollAttempts: 1,
+    pollIntervalMs: 0,
+  });
+  assert.equal(resumedResult.state.status, "published");
+  assert.equal(resumed.calls.length, 1);
+  assert.equal(resumed.calls[0].init.method, "GET");
+  assert.equal(
+    resumed.calls.some((call) => call.url.endsWith("/media_publish")),
+    false
+  );
+
+  const published = createMockFetch([
+    { body: { id: "ig-timeout-published-container" } },
+    { body: { status_code: "FINISHED" } },
+    { error: new Error("mocked media_publish transport timeout") },
+    { body: { status_code: "PUBLISHED" } },
+  ]);
+  const publishedProgress: VideoTargetPublicationState[] = [];
+  const publishedResult = await publishInstagramReel({
+    runId: "run-ig-timeout-published",
+    asset: createAsset(),
+    target: instagramTarget,
+    environment,
+    fetchFn: published.fetchFn,
+    sleep: noSleep,
+    maxPollAttempts: 1,
+    reconciliationMaxPollAttempts: 2,
+    pollIntervalMs: 0,
+    onProgress: (state) => {
+      publishedProgress.push(structuredClone(state));
+    },
+  });
+  assert.equal(publishedResult.state.status, "published");
+  assert.equal(publishedResult.mediaId, null);
+  assert.equal(
+    publishedResult.state.reconciliation?.providerStatus,
+    "PUBLISHED"
+  );
+  assert.equal(
+    published.calls.filter((call) => call.url.endsWith("/media_publish")).length,
+    1
+  );
+  assert.equal(published.calls[3].init.method, "GET");
+  assert.equal(
+    published.calls[3].url,
+    `${META_GRAPH_BASE}/ig-timeout-published-container?fields=status_code,status`
+  );
+  assert.equal(publishedProgress.at(-1)?.status, "published");
+
+  const finished = createMockFetch([
+    { body: { id: "ig-timeout-finished-container" } },
+    { body: { status_code: "FINISHED" } },
+    { error: new Error("mocked media_publish transport timeout") },
+    { body: { status_code: "FINISHED" } },
+  ]);
+  const finishedProgress: VideoTargetPublicationState[] = [];
+  await expectRejects(
+    publishInstagramReel({
+      runId: "run-ig-timeout-finished",
+      asset: createAsset(),
+      target: instagramTarget,
+      environment,
+      fetchFn: finished.fetchFn,
+      sleep: noSleep,
+      maxPollAttempts: 1,
+      reconciliationMaxPollAttempts: 2,
+      pollIntervalMs: 0,
+      onProgress: (state) => {
+        finishedProgress.push(structuredClone(state));
+      },
+    }),
+    (error) => {
+      assert.equal(error instanceof SafeProviderRequestError, true);
+      if (error instanceof SafeProviderRequestError) {
+        assert.equal(error.details.operation, "reconcile_publication");
+      }
+    }
+  );
+  assert.equal(
+    finished.calls.filter((call) => call.url.endsWith("/media_publish")).length,
+    1
+  );
+  assert.equal(finishedProgress.at(-1)?.status, "publishing");
+  assert.equal(
+    finishedProgress.at(-1)?.reconciliation?.providerStatus,
+    "FINISHED"
+  );
+
+  const inProgress = createMockFetch([
+    { body: { id: "ig-timeout-progress-container" } },
+    { body: { status_code: "FINISHED" } },
+    { error: new Error("mocked media_publish transport timeout") },
+    { body: { status_code: "IN_PROGRESS" } },
+    { body: { status_code: "IN_PROGRESS" } },
+  ]);
+  const inProgressStates: VideoTargetPublicationState[] = [];
+  await expectRejects(
+    publishInstagramReel({
+      runId: "run-ig-timeout-progress",
+      asset: createAsset(),
+      target: instagramTarget,
+      environment,
+      fetchFn: inProgress.fetchFn,
+      sleep: noSleep,
+      maxPollAttempts: 1,
+      reconciliationMaxPollAttempts: 2,
+      pollIntervalMs: 0,
+      onProgress: (state) => {
+        inProgressStates.push(structuredClone(state));
+      },
+    }),
+    (error) => assert.equal(error instanceof SafeProviderRequestError, true)
+  );
+  assert.equal(inProgress.calls.length, 5);
+  assert.equal(
+    inProgress.calls.filter((call) => call.url.endsWith("/media_publish")).length,
+    1
+  );
+  assert.equal(
+    inProgressStates.at(-1)?.reconciliation?.providerStatus,
+    "IN_PROGRESS"
+  );
+  assert.equal(inProgressStates.at(-1)?.status, "publishing");
+
+  for (const terminalStatus of ["ERROR", "EXPIRED"] as const) {
+    const terminal = createMockFetch([
+      { body: { id: `ig-timeout-${terminalStatus.toLowerCase()}-container` } },
+      { body: { status_code: "FINISHED" } },
+      { error: new Error("mocked media_publish transport timeout") },
+      { body: { status_code: terminalStatus } },
+    ]);
+    const terminalStates: VideoTargetPublicationState[] = [];
+    await expectRejects(
+      publishInstagramReel({
+        runId: `run-ig-timeout-${terminalStatus.toLowerCase()}`,
+        asset: createAsset(),
+        target: instagramTarget,
+        environment,
+        fetchFn: terminal.fetchFn,
+        sleep: noSleep,
+        maxPollAttempts: 1,
+        reconciliationMaxPollAttempts: 2,
+        pollIntervalMs: 0,
+        onProgress: (state) => {
+          terminalStates.push(structuredClone(state));
+        },
+      }),
+      (error) => assert.equal(error instanceof SafeProviderRequestError, true)
+    );
+    assert.equal(
+      terminal.calls.filter((call) => call.url.endsWith("/media_publish")).length,
+      1
+    );
+    assert.equal(
+      terminalStates.at(-1)?.reconciliation?.providerStatus,
+      terminalStatus
+    );
+    assert.equal(terminalStates.at(-1)?.status, "publishing");
+  }
+
+  const instagramLoginAsset = createAsset();
+  instagramLoginAsset.platforms.instagram.targets = [
+    {
+      targetId: "instagram-2",
+      enabled: true,
+      caption: "instagram-2 timeout reconciliation copy",
+    },
+  ];
+  const instagramLogin = createMockFetch([
+    { body: { id: "ig-login-timeout-container" } },
+    { body: { status_code: "FINISHED" } },
+    { error: new Error("mocked media_publish transport timeout") },
+    { body: { status_code: "PUBLISHED" } },
+  ]);
+  await publishInstagramReel({
+    runId: "run-ig-login-timeout-published",
+    asset: instagramLoginAsset,
+    target: instagramLoginTarget,
+    environment,
+    fetchFn: instagramLogin.fetchFn,
+    sleep: noSleep,
+    maxPollAttempts: 1,
+    reconciliationMaxPollAttempts: 1,
+    pollIntervalMs: 0,
+  });
+  assert.equal(
+    instagramLogin.calls.every((call) =>
+      call.url.startsWith(`${INSTAGRAM_LOGIN_GRAPH_BASE}/`)
+    ),
+    true
+  );
+  assert.equal(
+    new Headers(instagramLogin.calls[3].init.headers).get("Authorization"),
+    `Bearer ${TEST_INSTAGRAM_TOKEN_2}`
+  );
+  assert.notEqual(
+    new Headers(instagramLogin.calls[3].init.headers).get("Authorization"),
+    `Bearer ${TEST_INSTAGRAM_TOKEN}`
+  );
+  assert.equal(
+    formBody(instagramLogin.calls[0]).get("caption"),
+    "instagram-2 timeout reconciliation copy"
+  );
+  assert.equal(
+    instagramLogin.calls.filter((call) => call.url.endsWith("/media_publish"))
+      .length,
+    1
   );
 }
 
@@ -854,6 +1088,7 @@ function testClosedCanaryGate() {
 
 async function main() {
   await testInstagramFlow();
+  await testInstagramAmbiguousPublishReconciliation();
   await testFacebookFlow();
   testPreflight();
   await testRouteSafety();
@@ -861,7 +1096,7 @@ async function main() {
   await testReadOnlyMetaDiagnostics();
   testClosedCanaryGate();
   console.log(
-    "Video social Phase 2A/spec-alignment tests: PASS (42 cases; provider requests fully mocked)"
+    "Video social Phase 2A/spec-alignment tests: PASS (50 cases; provider requests fully mocked)"
   );
 }
 

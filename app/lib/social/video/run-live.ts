@@ -27,6 +27,7 @@ import {
   advanceTargetPublicationState,
   createPendingTargetPublicationState,
   getProviderReconciliationDecision,
+  hasConfirmedProviderPublication,
   getTargetPublicationState,
   getVideoRun,
   recordSuccessfulTargetUse,
@@ -147,6 +148,7 @@ function safePublicationSummary(state: VideoTargetPublicationState) {
     providerMediaId: state.providerMediaId ?? null,
     postId: state.postId ?? null,
     publishedAt: state.publishedAt ?? null,
+    reconciliation: state.reconciliation ?? null,
     error: state.error ?? null,
   };
 }
@@ -377,7 +379,7 @@ export async function runLiveVideoSocialCanary(
           });
 
     latestState = result.state;
-    if (latestState.status !== "published" || !latestState.providerMediaId) {
+    if (!hasConfirmedProviderPublication(latestState)) {
       throw new TypeError("Meta publisher returned without a persisted published result");
     }
     await savePublicationState(latestState);

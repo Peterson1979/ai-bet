@@ -22,6 +22,7 @@ import {
 } from "./state";
 import { getVideoTargetContent } from "./targets";
 import type {
+  InstagramContainerStatus,
   ProviderProgressHook,
   SocialTarget,
   VideoAsset,
@@ -43,7 +44,9 @@ type InstagramPublishResponse = { id?: string };
  */
 export const INSTAGRAM_REEL_DEFAULT_MAX_POLL_ATTEMPTS = 4;
 export const INSTAGRAM_REEL_DEFAULT_POLL_INTERVAL_MS = 60_000;
+export const INSTAGRAM_REEL_DEFAULT_RECONCILIATION_POLL_ATTEMPTS = 2;
 const INSTAGRAM_REEL_MAX_POLL_ATTEMPTS = 4;
+const INSTAGRAM_REEL_MAX_RECONCILIATION_POLL_ATTEMPTS = 5;
 const INSTAGRAM_REEL_MAX_POLL_INTERVAL_MS = 60_000;
 const INSTAGRAM_REEL_MAX_REQUEST_TIMEOUT_MS = 10_000;
 
@@ -78,12 +81,13 @@ export type InstagramReelPublisherOptions = {
   onProgress?: ProviderProgressHook;
   maxPollAttempts?: number;
   pollIntervalMs?: number;
+  reconciliationMaxPollAttempts?: number;
   requestTimeoutMs?: number;
 };
 
 export type InstagramReelPublishResult = {
   containerId: string;
-  mediaId: string;
+  mediaId: string | null;
   resumed: boolean;
   state: VideoTargetPublicationState;
 };
@@ -100,6 +104,28 @@ function contractError(operation: string, message: string) {
     operation,
     message,
     retryable: false,
+  });
+}
+
+function normalizeContainerStatus(
+  response: InstagramStatusResponse
+): InstagramContainerStatus {
+  const status = (response.status_code ?? "UNKNOWN").toUpperCase();
+  return status === "PUBLISHED" ||
+    status === "FINISHED" ||
+    status === "IN_PROGRESS" ||
+    status === "ERROR" ||
+    status === "EXPIRED"
+    ? status
+    : "UNKNOWN";
+}
+
+function reconciliationError(status: InstagramContainerStatus) {
+  return new SafeProviderRequestError({
+    provider: "instagram",
+    operation: "reconcile_publication",
+    message: `Instagram container reconciliation returned ${status}`,
+    retryable: status === "IN_PROGRESS" || status === "FINISHED",
   });
 }
 
@@ -151,6 +177,11 @@ export async function publishInstagramReel(
     INSTAGRAM_REEL_DEFAULT_MAX_POLL_ATTEMPTS,
     INSTAGRAM_REEL_MAX_POLL_ATTEMPTS
   );
+  const reconciliationMaxPollAttempts = boundedInteger(
+    options.reconciliationMaxPollAttempts,
+    INSTAGRAM_REEL_DEFAULT_RECONCILIATION_POLL_ATTEMPTS,
+    INSTAGRAM_REEL_MAX_RECONCILIATION_POLL_ATTEMPTS
+  );
   const pollIntervalMs = boundedDelay(
     options.pollIntervalMs,
     INSTAGRAM_REEL_DEFAULT_POLL_INTERVAL_MS,
@@ -174,25 +205,6 @@ export async function publishInstagramReel(
     });
   if (options.resumeState) validateResumeIdentity(state, options);
 
-  const reconciliation = getProviderReconciliationDecision(state);
-  if (reconciliation === "already_published") {
-    const mediaId = state.providerMediaId ?? state.postId;
-    const containerId = state.providerContainerId ?? state.providerResourceId;
-    if (!mediaId || !containerId) {
-      throw contractError(
-        "reconcile_publication",
-        "published Instagram state is missing provider IDs"
-      );
-    }
-    return { containerId, mediaId, resumed: true, state };
-  }
-  if (reconciliation === "reconcile_ambiguous_publish") {
-    throw contractError(
-      "reconcile_publication",
-      "Instagram publish outcome is ambiguous; reconcile before retrying"
-    );
-  }
-
   const emit = async (
     update: Parameters<typeof advanceTargetPublicationState>[1]
   ) => {
@@ -202,6 +214,128 @@ export async function publishInstagramReel(
 
   let containerId = state.providerContainerId ?? state.providerResourceId ?? null;
   const resumed = Boolean(containerId);
+
+  const reconcileSubmittedPublication = async (): Promise<InstagramReelPublishResult> => {
+    if (!containerId) {
+      throw contractError(
+        "reconcile_publication",
+        "ambiguous Instagram publish state is missing its container ID"
+      );
+    }
+
+    for (
+      let checkAttempt = 1;
+      checkAttempt <= reconciliationMaxPollAttempts;
+      checkAttempt++
+    ) {
+      if (checkAttempt > 1 && pollIntervalMs > 0) await sleep(pollIntervalMs);
+
+      let statusCode: InstagramContainerStatus;
+      try {
+        const status = await requestMetaJson<InstagramStatusResponse>({
+          fetchFn,
+          sleep,
+          provider: "instagram",
+          operation: "reconcile_reel_publication",
+          url: `${graphBase}/${encodeURIComponent(
+            containerId
+          )}?fields=status_code,status`,
+          init: { method: "GET", headers: authorization },
+          secrets: [accessToken],
+          timeoutMs: requestTimeoutMs,
+          maxAttempts: 1,
+        });
+        statusCode = normalizeContainerStatus(status);
+      } catch (error) {
+        const safeError = toSafeProviderError(
+          error,
+          "instagram",
+          "reconcile_reel_publication",
+          [accessToken]
+        );
+        await emit({
+          status: "publishing",
+          attempts: state.attempts + 1,
+          reconciliation: {
+            operation: "instagram_container_status",
+            providerStatus: "UNKNOWN",
+            checkedAt: new Date().toISOString(),
+            statusChecks: checkAttempt,
+            recentMediaLookup: "not_attempted",
+          },
+          error: safeError,
+        });
+        throw error;
+      }
+
+      const checkedAt = new Date().toISOString();
+      const reconciliation = {
+        operation: "instagram_container_status" as const,
+        providerStatus: statusCode,
+        checkedAt,
+        statusChecks: checkAttempt,
+        recentMediaLookup: "not_attempted" as const,
+      };
+      if (statusCode === "PUBLISHED") {
+        const publishedAt = state.publishedAt ?? checkedAt;
+        await emit({
+          status: "published",
+          attempts: state.attempts + 1,
+          publishedAt,
+          reconciliation,
+          error: null,
+        });
+        return {
+          containerId,
+          mediaId: state.providerMediaId ?? state.postId ?? null,
+          resumed: true,
+          state,
+        };
+      }
+
+      if (
+        statusCode === "IN_PROGRESS" &&
+        checkAttempt < reconciliationMaxPollAttempts
+      ) {
+        await emit({
+          status: "publishing",
+          attempts: state.attempts + 1,
+          reconciliation,
+          error: null,
+        });
+        continue;
+      }
+
+      const error = reconciliationError(statusCode);
+      await emit({
+        status: "publishing",
+        attempts: state.attempts + 1,
+        reconciliation,
+        error: error.details,
+      });
+      throw error;
+    }
+
+    throw reconciliationError("UNKNOWN");
+  };
+
+  const reconciliation = getProviderReconciliationDecision(state);
+  if (reconciliation === "already_published") {
+    const mediaId = state.providerMediaId ?? state.postId;
+    if (
+      !containerId ||
+      (!mediaId && state.reconciliation?.providerStatus !== "PUBLISHED")
+    ) {
+      throw contractError(
+        "reconcile_publication",
+        "published Instagram state is missing provider IDs"
+      );
+    }
+    return { containerId, mediaId: mediaId ?? null, resumed: true, state };
+  }
+  if (reconciliation === "reconcile_ambiguous_publish") {
+    return reconcileSubmittedPublication();
+  }
 
   if (!containerId) {
     const body = new URLSearchParams({
@@ -361,6 +495,9 @@ export async function publishInstagramReel(
       accessToken,
     ]);
     await emit({ status: "publishing", error: safeError });
+    if (safeError.httpStatus === undefined) {
+      return reconcileSubmittedPublication();
+    }
     throw error;
   }
 }
