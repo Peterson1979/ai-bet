@@ -32,6 +32,20 @@ import { validateVideoSocialConfiguration } from "./validate";
 type MetaPlatform = "instagram" | "facebook";
 type MetaTarget = SocialTarget & { platform: MetaPlatform };
 
+export type ScheduledVideoSocialFailureLog = {
+  event: "video_social_target_failure";
+  runId: string;
+  contentId: string;
+  targetId: string;
+  platform: MetaPlatform;
+  apiOperation: string;
+  providerHttpStatus: number | null;
+  metaErrorCode: string | number | null;
+  metaErrorSubcode: string | number | null;
+  sanitizedMetaMessage: string;
+  resultingTargetState: VideoTargetPublicationState["status"] | "not_created";
+};
+
 export type ScheduledVideoSocialDependencies = {
   manifest?: readonly VideoAsset[];
   targets?: readonly SocialTarget[];
@@ -56,6 +70,7 @@ export type ScheduledVideoSocialDependencies = {
   recordGlobalSuccess?: (videoId: string, successfulAtMs: number) => Promise<unknown>;
   publishInstagram?: typeof publishInstagramReel;
   publishFacebook?: typeof publishFacebookReel;
+  logFailure?: (record: ScheduledVideoSocialFailureLog) => void;
 };
 
 export type ScheduledVideoSocialResult = {
@@ -92,6 +107,10 @@ export async function runScheduledVideoSocial(
   const environment = dependencies.environment ?? process.env;
   const manifest = dependencies.manifest ?? VIDEO_MANIFEST;
   const targets = dependencies.targets ?? VIDEO_SOCIAL_TARGETS;
+  const logFailure =
+    dependencies.logFailure ??
+    ((record: ScheduledVideoSocialFailureLog) =>
+      console.error(JSON.stringify(record)));
   const mode = parseVideoSocialMode(environment.VIDEO_SOCIAL_MODE);
   if (!mode.valid || mode.mode !== "live") {
     return { status: 503, body: { ok: false, mode: "live", error: "VIDEO_SOCIAL_MODE must be live", providerCallsMade: false } };
@@ -165,6 +184,21 @@ export async function runScheduledVideoSocial(
     .map((target) => preflightMetaVideoTarget({ asset: asset!, target, environment }))
     .filter((result) => !result.valid);
   if (invalidPreflight.length) {
+    for (const result of invalidPreflight) {
+      logFailure({
+        event: "video_social_target_failure",
+        runId: run.runId,
+        contentId: asset.id,
+        targetId: result.targetId,
+        platform: result.platform,
+        apiOperation: "preflight",
+        providerHttpStatus: null,
+        metaErrorCode: null,
+        metaErrorSubcode: null,
+        sanitizedMetaMessage: result.errors.join("; "),
+        resultingTargetState: "not_created",
+      });
+    }
     return { status: 503, body: { ok: false, mode: "live", intent: "scheduled", error: "scheduled Meta target preflight failed", preflight: invalidPreflight, providerCallsMade: false } };
   }
 
@@ -217,6 +251,20 @@ export async function runScheduledVideoSocial(
           latest = advanceTargetPublicationState(latest, { status: "failed", error: safeError, updatedAt: nowIso });
           await savePublicationState(latest);
         }
+        const resultingError = latest.error ?? safeError;
+        logFailure({
+          event: "video_social_target_failure",
+          runId: run!.runId,
+          contentId: asset!.id,
+          targetId: target.id,
+          platform: target.platform,
+          apiOperation: resultingError.operation,
+          providerHttpStatus: resultingError.httpStatus ?? null,
+          metaErrorCode: resultingError.code ?? null,
+          metaErrorSubcode: resultingError.subcode ?? null,
+          sanitizedMetaMessage: resultingError.message,
+          resultingTargetState: latest.status,
+        });
         return { ok: false as const, state: latest, providerCalled: true };
       }
     })

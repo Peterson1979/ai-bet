@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   runScheduledVideoSocial,
   type ScheduledVideoSocialDependencies,
+  type ScheduledVideoSocialFailureLog,
 } from "../app/lib/social/video/run-scheduled";
 import type { publishFacebookReel } from "../app/lib/social/video/publish-facebook-reel";
 import type { publishInstagramReel } from "../app/lib/social/video/publish-instagram-reel";
@@ -66,6 +67,7 @@ async function main() {
   const exactCopy = new Map<string, string>();
   const targetHistory = new Set<string>();
   const globalHistory: string[] = [];
+  const failureLogs: ScheduledVideoSocialFailureLog[] = [];
   let failInstagram2 = true;
 
   const publish = async (options: {
@@ -117,6 +119,7 @@ async function main() {
     recordGlobalSuccess: async (videoId: string) => { globalHistory.push(videoId); },
     publishInstagram: publish as typeof publishInstagramReel,
     publishFacebook: publish as typeof publishFacebookReel,
+    logFailure: (record) => failureLogs.push(record),
   };
 
   const first = await runScheduledVideoSocial(dependencies);
@@ -125,6 +128,21 @@ async function main() {
   assert.deepEqual(new Set(providerCalls), new Set(["instagram-main", "instagram-2", "facebook-main", "facebook-2"]));
   assert.equal(targetHistory.size, 3);
   assert.deepEqual(globalHistory, ["0818"]);
+  assert.deepEqual(failureLogs, [
+    {
+      event: "video_social_target_failure",
+      runId: "video-scheduled:2026-08-23:0818",
+      contentId: "0818",
+      targetId: "instagram-2",
+      platform: "instagram",
+      apiOperation: "publish_reel",
+      providerHttpStatus: null,
+      metaErrorCode: null,
+      metaErrorSubcode: null,
+      sanitizedMetaMessage: "mocked transient failure",
+      resultingTargetState: "failed",
+    },
+  ]);
 
   now = Date.parse("2026-08-24T10:00:00.000Z");
   const second = await runScheduledVideoSocial(dependencies);
@@ -140,7 +158,33 @@ async function main() {
     ["facebook-2", "facebook-2-copy"],
   ]));
 
-  console.log("Video social scheduled multi-target tests: PASS (four targets, retry/resume, no provider network or Redis)");
+  let preflightRun: VideoRunRecord | null = null;
+  const providerCallsBeforePreflight = providerCalls.length;
+  const preflightResult = await runScheduledVideoSocial({
+    ...dependencies,
+    environment: { ...environment, IG2_TOKEN: "" },
+    getRun: async () => preflightRun,
+    saveRun: async (run) => {
+      preflightRun = structuredClone(run);
+    },
+  });
+  assert.equal(preflightResult.status, 503);
+  assert.equal(providerCalls.length, providerCallsBeforePreflight);
+  assert.deepEqual(failureLogs.at(-1), {
+    event: "video_social_target_failure",
+    runId: "video-scheduled:2026-08-24:0818",
+    contentId: "0818",
+    targetId: "instagram-2",
+    platform: "instagram",
+    apiOperation: "preflight",
+    providerHttpStatus: null,
+    metaErrorCode: null,
+    metaErrorSubcode: null,
+    sanitizedMetaMessage: "access token is not configured",
+    resultingTargetState: "not_created",
+  });
+
+  console.log("Video social scheduled multi-target tests: PASS (four targets, retry/resume, sanitized failure logs, no provider network or Redis)");
 }
 
 main().catch((error) => {
