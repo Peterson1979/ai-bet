@@ -1,0 +1,17 @@
+{
+  "id": "0825",
+  "status": "ready",
+  "source": { "id": "0825", "topic": "FAVORITE â‰  VALUE", "visual": "A giant glowing FAVORITE label dominates the screen. It shrinks as available odds and estimated probability appear beside it. A Value Signal calculation becomes the new focus.", "voiceover": "The most likely winner isn't automatically the best value. Price and probability must work together. Explore potential Value Signals at MatchSignal.pro.", "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1787495939/0825.mp4" },
+  "platforms": {
+    "instagram": { "targets": [
+      { "targetId": "instagram-main", "enabled": true, "caption": "Being the favorite describes likelihood, not automatically value. MatchSignal places available odds beside estimated probability so you can examine how price and probability relate in the market. Use the Value Signal as context for your own research, not as a promise about an outcome. Link in bio. 18+ | Gamble responsibly. Informational analysis only; odds can change. #MatchSignal #ValueSignals #SportsAnalytics #OddsComparison #ResponsibleGambling" },
+      { "targetId": "instagram-2", "enabled": true, "caption": "A favorite can still be priced without the value you expect. MatchSignal helps compare market price with estimated probability, giving you another lens for evaluating a selection and its context. Review the numbers carefully and remember that analysis cannot predict every result. Link in bio. 18+ | Gamble responsibly. No prediction guarantees an outcome. #MatchSignal #ValueBetting #BettingStrategy #SportsData #BetSmart" }
+    ] },
+    "facebook": { "targets": [
+      { "targetId": "facebook-main", "enabled": true, "message": "The most likely winner is not automatically the best value. MatchSignal compares available market pricing with estimated probability, then presents that relationship as a Value Signal for clearer sports analysis. A favorite label alone does not explain whether the price fits the probability, so review both before making a decision. Learn more at https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed." },
+      { "targetId": "facebook-2", "enabled": true, "message": "Favorite and value are different ideas. MatchSignal gives you market odds, estimated probability, and a Value Signal so you can consider the price in context instead of focusing only on the likely winner. The information is designed to support research and does not eliminate uncertainty from sport. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Odds can change and no prediction guarantees an outcome." }
+    ] },
+    "youtube": { "targets": [] }
+  },
+  "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
+}

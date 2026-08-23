@@ -1,0 +1,17 @@
+{
+  "id": "0828",
+  "status": "ready",
+  "source": { "id": "0828", "topic": "LOW RISK â‰  SAFE BET", "visual": "A green LOW Risk badge appears. Just as a large SAFE? label begins to form, it is crossed out. LOW, MEDIUM and HIGH badges then appear together beside probability and odds data.", "voiceover": "A Low Risk Tier never means a guaranteed bet. It provides context for the analysis. Review risk before every decision at MatchSignal.pro.", "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1787495941/0828.mp4" },
+  "platforms": {
+    "instagram": { "targets": [
+      { "targetId": "instagram-main", "enabled": true, "caption": "A Low Risk Tier is a label for analysis, not a promise of safety. MatchSignal shows Low, Medium, and High context beside odds and probability so you can review the information with a clearer perspective. Risk labels do not remove uncertainty from sport. Link in bio. 18+ | Gamble responsibly. Informational analysis only; no outcome is guaranteed. #MatchSignal #RiskAnalysis #SportsAnalytics #ResponsibleGambling #BetSmart" },
+      { "targetId": "instagram-2", "enabled": true, "caption": "Low risk does not mean safe or certain. MatchSignal places risk tiers alongside probability and market odds to help you understand the analysis before every decision. Treat the label as context, keep expectations realistic, and never confuse it with a guarantee. Link in bio. 18+ | Gamble responsibly. Odds can change and no prediction guarantees an outcome. #MatchSignal #BettingStrategy #SportsData #RiskManagement #ResponsibleGambling" }
+    ] },
+    "facebook": { "targets": [
+      { "targetId": "facebook-main", "enabled": true, "message": "A Low Risk Tier is an analytical label, not a guarantee that a bet is safe. MatchSignal shows Low, Medium, and High context alongside odds and estimated probability, helping you review the information before making a decision. Risk context can improve understanding, but uncertainty remains. Learn more at https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed." },
+      { "targetId": "facebook-2", "enabled": true, "message": "Low risk should never be read as certain or safe. MatchSignal combines risk tiers with market odds and probability so you can consider the complete analytical context rather than one badge. Use the information carefully and remember that no label can remove the uncertainty of sport. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Odds can change and no prediction guarantees an outcome." }
+    ] },
+    "youtube": { "targets": [] }
+  },
+  "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
+}

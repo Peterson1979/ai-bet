@@ -1,0 +1,17 @@
+{
+  "id": "0826",
+  "status": "ready",
+  "source": { "id": "0826", "topic": "HIGHER PRICE? NOT SO FAST.", "visual": "Large glowing sports market price figures appear dramatically on screen and initially attract attention. A clean analytical scanner activates and places the figures beside an estimated probability indicator. The dramatic numbers then transform into a clear, neutral price-versus-probability comparison displayed on a sophisticated MatchSignal-style sports analytics interface. The presentation must be educational and analytical rather than promotional. Focus on understanding sports market data and the relationship between price and estimated probability.", "voiceover": "A higher market price doesn't automatically mean better value. Context comes from comparing price with estimated probability. Explore sports market analysis at MatchSignal.pro.", "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1787495923/0826.mp4" },
+  "platforms": {
+    "instagram": { "targets": [
+      { "targetId": "instagram-main", "enabled": true, "caption": "A higher market price can look attractive, but price alone does not establish value. MatchSignal puts the figure beside estimated probability to make the comparison easier to examine and keeps the presentation analytical. Use that context to understand the market before deciding. Link in bio. 18+ | Gamble responsibly. Informational analysis only; odds can change. #MatchSignal #MarketAnalysis #OddsComparison #SportsData #ResponsibleGambling" },
+      { "targetId": "instagram-2", "enabled": true, "caption": "Big numbers need context. MatchSignal compares a sportsbook price with estimated probability so you can explore the relationship instead of treating a higher quote as an automatic advantage. Review the data neutrally and remember that every sports result remains uncertain. Link in bio. 18+ | Gamble responsibly. No prediction guarantees an outcome. #MatchSignal #SportsAnalytics #ValueBetting #Probability #BetSmart" }
+    ] },
+    "facebook": { "targets": [
+      { "targetId": "facebook-main", "enabled": true, "message": "A higher market price does not automatically mean better value. MatchSignal presents available pricing beside estimated probability, creating a neutral comparison that helps explain the relationship between the two figures. The goal is better sports market context, not a promise about any result. Review the analysis at https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; odds can change." },
+      { "targetId": "facebook-2", "enabled": true, "message": "A dramatic price can attract attention before the surrounding data is considered. MatchSignal pairs market pricing with estimated probability so you can study the difference in context and keep the analysis evidence-based. Higher is not automatically better, and uncertainty remains part of every sport. Visit https://www.matchsignal.pro. 18+ | Gamble responsibly | No prediction guarantees an outcome." }
+    ] },
+    "youtube": { "targets": [] }
+  },
+  "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
+}

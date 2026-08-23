@@ -1,0 +1,17 @@
+{
+  "id": "0827",
+  "status": "ready",
+  "source": { "id": "0827", "topic": "YOU'RE LOOKING AT ONE PRICE.", "visual": "One sportsbook price fills the entire screen. The camera rapidly pulls backward, revealing many additional prices surrounding it. MatchSignal calculates market-average pricing across the available bookmakers.", "voiceover": "One sportsbook shows one price. MatchSignal compares equivalent markets across multiple bookmakers to give you broader context. Explore MatchSignal.pro free.", "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1787495942/0827.mp4" },
+  "platforms": {
+    "instagram": { "targets": [
+      { "targetId": "instagram-main", "enabled": true, "caption": "One sportsbook price is only one part of the picture. MatchSignal compares equivalent markets across multiple bookmakers and adds market-average context, helping you see where a quoted price sits among the available options. Broader information can improve analysis without removing uncertainty. Link in bio. 18+ | Gamble responsibly. Informational analysis only; odds can change. #MatchSignal #OddsComparison #MarketAverage #SportsAnalytics #ResponsibleGambling" },
+      { "targetId": "instagram-2", "enabled": true, "caption": "When one price fills the screen, it is easy to miss the rest of the market. MatchSignal gathers comparable bookmaker prices and calculates broader context so you can examine the benchmark before deciding. Compare the data, then keep expectations realistic. Link in bio. 18+ | Gamble responsibly. No prediction guarantees an outcome. #MatchSignal #SportsBetting #MarketAnalysis #ValueBetting #BetSmart" }
+    ] },
+    "facebook": { "targets": [
+      { "targetId": "facebook-main", "enabled": true, "message": "One sportsbook shows one price, but comparable markets may be available elsewhere. MatchSignal compares equivalent prices across multiple bookmakers and adds market-average context, helping you understand where the original quote sits in the wider market. More information supports analysis but cannot guarantee a result. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; odds can change." },
+      { "targetId": "facebook-2", "enabled": true, "message": "A single quoted price can hide useful market context. MatchSignal brings together comparable bookmaker prices and calculates an average benchmark, allowing you to review whether the original figure is above or below the wider market. Use the data for research and remember that outcomes remain uncertain. Visit https://www.matchsignal.pro. 18+ | Gamble responsibly | No prediction guarantees an outcome." }
+    ] },
+    "youtube": { "targets": [] }
+  },
+  "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
+}
