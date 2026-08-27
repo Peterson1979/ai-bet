@@ -18,7 +18,7 @@ export const VIDEO_SOCIAL_TARGETS = [
   {
     id: "instagram-2",
     platform: "instagram",
-    enabled: true,
+    enabled: false,
     accountIdEnv: "INSTAGRAM_BUSINESS_ID_2",
     accessTokenEnv: "INSTAGRAM_ACCESS_TOKEN_2",
     expectedAccountId: "17841404627749143",
@@ -34,7 +34,7 @@ export const VIDEO_SOCIAL_TARGETS = [
   {
     id: "facebook-2",
     platform: "facebook",
-    enabled: true,
+    enabled: false,
     accountIdEnv: "FACEBOOK_PAGE_ID_2",
     accessTokenEnv: "FACEBOOK_ACCESS_TOKEN_2",
     expectedAccountId: "226949230493910",
