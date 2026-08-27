@@ -19,7 +19,7 @@
         {
           "targetId": "instagram-2",
           "caption": "🚀 Faster odds, smarter choices. The runner races through a tunnel of numbers while MatchSignal’s AI pulls the top price into a clean card—so you can act before the market shifts. No sign‑up needed, just clear data at your fingertips. Link in bio. 18+ | Gamble responsibly. MatchSignal provides analysis, not guarantees. Odds can change. #BettingStrategy #ValueBetting #SportsAnalytics #BettingCommunity #FreeTools",
-          "enabled": true
+          "enabled": false
         }
       ]
     },
@@ -33,7 +33,7 @@
         {
           "targetId": "facebook-2",
           "message": "Imagine a runner sprinting through a tunnel of flashing odds, and an AI wave pulling the strongest available price into your hand. That’s MatchSignal’s approach: compare regularly refreshed odds across multiple sportsbooks and highlight selections that may offer potential value. Use our free calculators and guides to sharpen your strategy, all without signing up. Dive in at https://www.matchsignal.pro and start making smarter, faster decisions. 18+ | Gamble responsibly. MatchSignal provides analysis, not guarantees. Odds can change.",
-          "enabled": true
+          "enabled": false
         }
       ]
     },
