@@ -43,6 +43,7 @@ export type ScheduledVideoSocialFailureLog = {
   providerHttpStatus: number | null;
   metaErrorCode: string | number | null;
   metaErrorSubcode: string | number | null;
+  metaErrorType: string | null;
   sanitizedMetaMessage: string;
   resultingTargetState: VideoTargetPublicationState["status"] | "not_created";
 };
@@ -197,6 +198,7 @@ export async function runScheduledVideoSocial(
         providerHttpStatus: null,
         metaErrorCode: null,
         metaErrorSubcode: null,
+        metaErrorType: null,
         sanitizedMetaMessage: result.errors.join("; "),
         resultingTargetState: "not_created",
       });
@@ -249,22 +251,25 @@ export async function runScheduledVideoSocial(
       } catch (error) {
         const token = target.accessTokenEnv ? environment[target.accessTokenEnv] ?? "" : "";
         const safeError: SafeProviderError = toSafeProviderError(error, target.platform, "publish_reel", [token]);
-        if (!latest.error && getProviderReconciliationDecision(latest) !== "reconcile_ambiguous_publish") {
-          latest = advanceTargetPublicationState(latest, { status: "failed", error: safeError, updatedAt: nowIso });
-          await savePublicationState(latest);
-        }
-        const resultingError = latest.error ?? safeError;
+        const reconciliation = getProviderReconciliationDecision(latest);
+        latest = advanceTargetPublicationState(latest, {
+          status: reconciliation === "reconcile_ambiguous_publish" ? latest.status : "failed",
+          error: safeError,
+          updatedAt: nowIso,
+        });
+        await savePublicationState(latest);
         logFailure({
           event: "video_social_target_failure",
           runId: run!.runId,
           contentId: asset!.id,
           targetId: target.id,
           platform: target.platform,
-          apiOperation: resultingError.operation,
-          providerHttpStatus: resultingError.httpStatus ?? null,
-          metaErrorCode: resultingError.code ?? null,
-          metaErrorSubcode: resultingError.subcode ?? null,
-          sanitizedMetaMessage: resultingError.message,
+          apiOperation: safeError.operation,
+          providerHttpStatus: safeError.httpStatus ?? null,
+          metaErrorCode: safeError.code ?? null,
+          metaErrorSubcode: safeError.subcode ?? null,
+          metaErrorType: safeError.type ?? null,
+          sanitizedMetaMessage: safeError.message,
           resultingTargetState: latest.status,
         });
         return { ok: false as const, state: latest, providerCalled: true };

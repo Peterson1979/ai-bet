@@ -296,6 +296,7 @@ async function testInstagramFlow() {
           message: `bad token ${TEST_INSTAGRAM_TOKEN}`,
           code: 190,
           error_subcode: 463,
+          type: "OAuthException",
         },
       },
     },
@@ -317,6 +318,7 @@ async function testInstagramFlow() {
       if (error instanceof SafeProviderRequestError) {
         assert.equal(error.details.code, 190);
         assert.equal(error.details.subcode, 463);
+        assert.equal(error.details.type, "OAuthException");
       }
     }
   );

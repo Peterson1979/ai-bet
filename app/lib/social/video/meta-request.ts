@@ -85,6 +85,9 @@ function normalizeProviderPayload(params: {
       typeof errorValue.error_subcode === "number")
       ? { subcode: errorValue.error_subcode }
       : {}),
+    ...(errorValue && typeof errorValue.type === "string"
+      ? { type: errorValue.type }
+      : {}),
     retryable: httpStatus === 429 || httpStatus >= 500,
   };
 }

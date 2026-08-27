@@ -126,6 +126,7 @@ export type SafeProviderError = {
   httpStatus?: number;
   code?: string | number;
   subcode?: string | number;
+  type?: string;
   retryable: boolean;
 };
 

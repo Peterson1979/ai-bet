@@ -7,6 +7,7 @@ import {
 } from "../app/lib/social/video/run-scheduled";
 import type { publishFacebookReel } from "../app/lib/social/video/publish-facebook-reel";
 import type { publishInstagramReel } from "../app/lib/social/video/publish-instagram-reel";
+import { SafeProviderRequestError } from "../app/lib/social/video/meta-request";
 import {
   advanceTargetPublicationState,
   createPendingTargetPublicationState,
@@ -152,6 +153,7 @@ async function main() {
       providerHttpStatus: null,
       metaErrorCode: null,
       metaErrorSubcode: null,
+      metaErrorType: null,
       sanitizedMetaMessage: "mocked transient failure",
       resultingTargetState: "failed",
     },
@@ -171,6 +173,87 @@ async function main() {
     ["facebook-2", "facebook-2-copy"],
   ]));
 
+  const staleFacebookState = advanceTargetPublicationState(
+    states.get("video-scheduled:2026-08-23:0818:facebook:facebook-2")!,
+    {
+      status: "failed",
+      providerResourceId: null,
+      providerUploadId: null,
+      providerUploadUrl: null,
+      providerMediaId: null,
+      postId: null,
+      publishedAt: null,
+      error: {
+        provider: "facebook",
+        operation: "start_reel_upload",
+        message: "stale credential failure",
+        httpStatus: 401,
+        code: 190,
+        subcode: 463,
+        type: "OAuthException",
+        retryable: false,
+      },
+    }
+  );
+  states.set(
+    "video-scheduled:2026-08-23:0818:facebook:facebook-2",
+    staleFacebookState
+  );
+  const completedRun = activeRun as VideoRunRecord | null;
+  assert(completedRun);
+  activeRun = {
+    ...completedRun,
+    status: "partially_published",
+  };
+  now = Date.parse("2026-08-25T10:00:00.000Z");
+  const callsBeforeStaleErrorRetry = providerCalls.length;
+  const staleErrorRetry = await runScheduledVideoSocial({
+    ...dependencies,
+    publishFacebook: async (options) => {
+      providerCalls.push(options.target.id);
+      throw new SafeProviderRequestError({
+        provider: "facebook",
+        operation: "start_reel_upload",
+        message: "current credential failure",
+        httpStatus: 400,
+        code: 100,
+        subcode: 33,
+        type: "GraphMethodException",
+        retryable: false,
+      });
+    },
+  });
+  assert.equal(staleErrorRetry.status, 207);
+  assert.deepEqual(providerCalls.slice(callsBeforeStaleErrorRetry), ["facebook-2"]);
+  assert.deepEqual(
+    states.get("video-scheduled:2026-08-23:0818:facebook:facebook-2")?.error,
+    {
+      provider: "facebook",
+      operation: "start_reel_upload",
+      message: "current credential failure",
+      httpStatus: 400,
+      code: 100,
+      subcode: 33,
+      type: "GraphMethodException",
+      retryable: false,
+    }
+  );
+  assert.deepEqual(failureLogs.at(-1), {
+    event: "video_social_target_failure",
+    runId: "video-scheduled:2026-08-23:0818",
+    contentId: "0818",
+    targetId: "facebook-2",
+    platform: "facebook",
+    apiOperation: "start_reel_upload",
+    providerHttpStatus: 400,
+    metaErrorCode: 100,
+    metaErrorSubcode: 33,
+    metaErrorType: "GraphMethodException",
+    sanitizedMetaMessage: "current credential failure",
+    resultingTargetState: "failed",
+  });
+
+  now = Date.parse("2026-08-24T10:00:00.000Z");
   let preflightRun: VideoRunRecord | null = null;
   const providerCallsBeforePreflight = providerCalls.length;
   const preflightResult = await runScheduledVideoSocial({
@@ -193,6 +276,7 @@ async function main() {
     providerHttpStatus: null,
     metaErrorCode: null,
     metaErrorSubcode: null,
+    metaErrorType: null,
     sanitizedMetaMessage: "access token is not configured",
     resultingTargetState: "not_created",
   });
