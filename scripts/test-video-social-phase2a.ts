@@ -400,21 +400,75 @@ async function testInstagramAmbiguousPublishReconciliation() {
     { body: { status_code: "FINISHED" } },
     { error: new Error("mocked media_publish transport timeout") },
     { body: { status_code: "FINISHED" } },
+    {
+      body: {
+        data: [
+          {
+            id: "ig-timeout-finished-media",
+            caption: "Test Instagram caption",
+            timestamp: new Date().toISOString(),
+            media_type: "VIDEO",
+            media_product_type: "REELS",
+          },
+        ],
+      },
+    },
   ]);
   const finishedProgress: VideoTargetPublicationState[] = [];
+  const finishedResult = await publishInstagramReel({
+    runId: "run-ig-timeout-finished",
+    asset: createAsset(),
+    target: instagramTarget,
+    environment,
+    fetchFn: finished.fetchFn,
+    sleep: noSleep,
+    maxPollAttempts: 1,
+    reconciliationMaxPollAttempts: 2,
+    pollIntervalMs: 0,
+    onProgress: (state) => {
+      finishedProgress.push(structuredClone(state));
+    },
+  });
+  assert.equal(finishedResult.state.status, "published");
+  assert.equal(finishedResult.mediaId, "ig-timeout-finished-media");
+  assert.equal(finishedResult.state.providerMediaId, "ig-timeout-finished-media");
+  assert.equal(finishedResult.state.postId, "ig-timeout-finished-media");
+  assert.equal(
+    finished.calls.filter((call) => call.url.endsWith("/media_publish")).length,
+    1
+  );
+  assert.equal(
+    finished.calls.slice(3).every((call) => call.init.method === "GET"),
+    true
+  );
+  assert.equal(finishedProgress.at(-1)?.status, "published");
+  assert.equal(
+    finishedProgress.at(-1)?.reconciliation?.providerStatus,
+    "FINISHED"
+  );
+  assert.equal(
+    finishedProgress.at(-1)?.reconciliation?.recentMediaLookup,
+    "matched"
+  );
+
+  const finishedNotFound = createMockFetch([
+    { body: { status_code: "FINISHED" } },
+    { body: { data: [] } },
+  ]);
+  const finishedNotFoundStates: VideoTargetPublicationState[] = [];
   await expectRejects(
     publishInstagramReel({
-      runId: "run-ig-timeout-finished",
+      runId: "run-ig-ambiguous-resume",
       asset: createAsset(),
       target: instagramTarget,
       environment,
-      fetchFn: finished.fetchFn,
+      resumeState: ambiguousResume,
+      fetchFn: finishedNotFound.fetchFn,
       sleep: noSleep,
-      maxPollAttempts: 1,
-      reconciliationMaxPollAttempts: 2,
+      reconciliationMaxPollAttempts: 1,
       pollIntervalMs: 0,
       onProgress: (state) => {
-        finishedProgress.push(structuredClone(state));
+        finishedNotFoundStates.push(structuredClone(state));
       },
     }),
     (error) => {
@@ -425,13 +479,13 @@ async function testInstagramAmbiguousPublishReconciliation() {
     }
   );
   assert.equal(
-    finished.calls.filter((call) => call.url.endsWith("/media_publish")).length,
-    1
+    finishedNotFound.calls.every((call) => call.init.method === "GET"),
+    true
   );
-  assert.equal(finishedProgress.at(-1)?.status, "publishing");
+  assert.equal(finishedNotFoundStates.at(-1)?.status, "publishing");
   assert.equal(
-    finishedProgress.at(-1)?.reconciliation?.providerStatus,
-    "FINISHED"
+    finishedNotFoundStates.at(-1)?.reconciliation?.recentMediaLookup,
+    "not_found"
   );
 
   const inProgress = createMockFetch([

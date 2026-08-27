@@ -35,6 +35,15 @@ type InstagramStatusResponse = {
   status?: string;
 };
 type InstagramPublishResponse = { id?: string };
+type InstagramRecentMediaResponse = {
+  data?: Array<{
+    id?: string;
+    caption?: string;
+    timestamp?: string;
+    media_type?: string;
+    media_product_type?: string;
+  }>;
+};
 
 /**
  * Meta recommends checking an Instagram container about once per minute for no
@@ -49,6 +58,8 @@ const INSTAGRAM_REEL_MAX_POLL_ATTEMPTS = 4;
 const INSTAGRAM_REEL_MAX_RECONCILIATION_POLL_ATTEMPTS = 5;
 const INSTAGRAM_REEL_MAX_POLL_INTERVAL_MS = 60_000;
 const INSTAGRAM_REEL_MAX_REQUEST_TIMEOUT_MS = 10_000;
+const INSTAGRAM_REEL_RECENT_MEDIA_LIMIT = 25;
+const INSTAGRAM_REEL_RECONCILIATION_CLOCK_SKEW_MS = 5 * 60 * 1000;
 
 function boundedInteger(
   value: number | undefined,
@@ -127,6 +138,34 @@ function reconciliationError(status: InstagramContainerStatus) {
     message: `Instagram container reconciliation returned ${status}`,
     retryable: status === "IN_PROGRESS" || status === "FINISHED",
   });
+}
+
+function findMatchingRecentReel(
+  response: InstagramRecentMediaResponse,
+  caption: string,
+  createdAt: string
+) {
+  const createdAtMs = Date.parse(createdAt);
+  const earliestMatchMs = Number.isFinite(createdAtMs)
+    ? createdAtMs - INSTAGRAM_REEL_RECONCILIATION_CLOCK_SKEW_MS
+    : Number.POSITIVE_INFINITY;
+
+  return (response.data ?? [])
+    .flatMap((media) => {
+      const timestampMs = media.timestamp ? Date.parse(media.timestamp) : NaN;
+      const isReel =
+        (!media.media_type || media.media_type.toUpperCase() === "VIDEO") &&
+        (!media.media_product_type ||
+          media.media_product_type.toUpperCase() === "REELS");
+      return media.id &&
+        media.caption?.trim() === caption.trim() &&
+        Number.isFinite(timestampMs) &&
+        timestampMs >= earliestMatchMs &&
+        isReel
+        ? [{ id: media.id, timestamp: media.timestamp!, timestampMs }]
+        : [];
+    })
+    .sort((left, right) => right.timestampMs - left.timestampMs)[0];
 }
 
 function validateResumeIdentity(
@@ -291,6 +330,86 @@ export async function publishInstagramReel(
           resumed: true,
           state,
         };
+      }
+
+      if (statusCode === "FINISHED") {
+        const recentMediaUrl = new URL(
+          `${graphBase}/${encodeURIComponent(accountId)}/media`
+        );
+        recentMediaUrl.searchParams.set(
+          "fields",
+          "id,caption,timestamp,media_type,media_product_type"
+        );
+        recentMediaUrl.searchParams.set(
+          "limit",
+          String(INSTAGRAM_REEL_RECENT_MEDIA_LIMIT)
+        );
+
+        let recentMedia: InstagramRecentMediaResponse;
+        try {
+          recentMedia = await requestMetaJson<InstagramRecentMediaResponse>({
+            fetchFn,
+            sleep,
+            provider: "instagram",
+            operation: "reconcile_recent_media",
+            url: recentMediaUrl.toString(),
+            init: { method: "GET", headers: authorization },
+            secrets: [accessToken],
+            timeoutMs: requestTimeoutMs,
+            maxAttempts: 1,
+          });
+        } catch (error) {
+          const safeError = toSafeProviderError(
+            error,
+            "instagram",
+            "reconcile_recent_media",
+            [accessToken]
+          );
+          await emit({
+            status: "publishing",
+            attempts: state.attempts + 1,
+            reconciliation: {
+              ...reconciliation,
+              recentMediaLookup: "failed",
+            },
+            error: safeError,
+          });
+          throw error;
+        }
+
+        const matchedMedia = findMatchingRecentReel(
+          recentMedia,
+          targetContent.caption,
+          state.createdAt
+        );
+        const recentMediaLookup = matchedMedia ? "matched" : "not_found";
+        const reconciled = { ...reconciliation, recentMediaLookup } as const;
+        if (matchedMedia) {
+          await emit({
+            status: "published",
+            attempts: state.attempts + 1,
+            providerMediaId: matchedMedia.id,
+            postId: matchedMedia.id,
+            publishedAt: matchedMedia.timestamp,
+            reconciliation: reconciled,
+            error: null,
+          });
+          return {
+            containerId,
+            mediaId: matchedMedia.id,
+            resumed: true,
+            state,
+          };
+        }
+
+        const error = reconciliationError(statusCode);
+        await emit({
+          status: "publishing",
+          attempts: state.attempts + 1,
+          reconciliation: reconciled,
+          error: error.details,
+        });
+        throw error;
       }
 
       if (
