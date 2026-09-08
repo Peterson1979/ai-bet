@@ -5,7 +5,10 @@ import {
   getOddsRegionMultiplier,
   calculateOddsCreditCost,
   getDailyEvents,
+  mapOddsApiSportToCanonical,
+  CANONICAL_SPORTS,
 } from "../app/lib/odds";
+import { SPORT_CONFIG, DEFAULT_CONFIG } from "../app/lib/sportsConfig";
 
 async function runTests() {
   console.log("=== MatchSignal Daily-Run & Budget Reconciliation Regression Tests ===");
@@ -465,6 +468,72 @@ async function runTests() {
     assert.equal(refundedAmount, 2, "Early reconciliation must have refunded the 2 uncharged credits before JSON failure");
 
     console.log("  ✓ Test G passed: Early header reconciliation protects against stale reservations from JSON/mapping failures.");
+  }
+
+  // -----------------------------------------------------------------------------
+  // Test H: Dynamic Odds API Catalog Mapping & Canonical 7 Sports Preservation
+  // -----------------------------------------------------------------------------
+  console.log("\n[Test H] Dynamic Odds API catalog mapping & canonical 7 sports...");
+  {
+    assert.deepEqual(
+      [...CANONICAL_SPORTS],
+      ["Football", "NBA", "NFL", "Hockey", "Tennis", "MLB", "MMA"],
+      "Canonical sports must exactly match the 7 supported MatchSignal sports"
+    );
+
+    // Test active non-outright mapping across all 7 sports
+    const testSamples = [
+      { key: "soccer_uefa_champs_league", group: "Soccer", title: "UEFA Champions League", active: true, has_outrights: false, expectedLabel: "Football", expectedPriority: 1 },
+      { key: "soccer_france_ligue_one", group: "Soccer", title: "Ligue 1 - France", active: true, has_outrights: false, expectedLabel: "Football", expectedPriority: 1 },
+      { key: "soccer_uefa_nations_league", group: "Soccer", title: "UEFA Nations League", active: true, has_outrights: false, expectedLabel: "Football", expectedPriority: 1 },
+      { key: "basketball_nba", group: "Basketball", title: "NBA", active: true, has_outrights: false, expectedLabel: "NBA", expectedPriority: 1 },
+      { key: "basketball_wnba", group: "Basketball", title: "WNBA", active: true, has_outrights: false, expectedLabel: "NBA", expectedPriority: 2 },
+      { key: "americanfootball_nfl", group: "American Football", title: "NFL", active: true, has_outrights: false, expectedLabel: "NFL", expectedPriority: 1 },
+      { key: "americanfootball_ncaaf", group: "American Football", title: "NCAAF", active: true, has_outrights: false, expectedLabel: "NFL", expectedPriority: 2 },
+      { key: "icehockey_nhl", group: "Ice Hockey", title: "NHL", active: true, has_outrights: false, expectedLabel: "Hockey", expectedPriority: 1 },
+      { key: "tennis_atp_us_open", group: "Tennis", title: "ATP US Open", active: true, has_outrights: false, expectedLabel: "Tennis", expectedPriority: 1 },
+      { key: "tennis_wta_san_diego", group: "Tennis", title: "WTA San Diego", active: true, has_outrights: false, expectedLabel: "Tennis", expectedPriority: 2 },
+      { key: "baseball_mlb", group: "Baseball", title: "MLB", active: true, has_outrights: false, expectedLabel: "MLB", expectedPriority: 1 },
+      { key: "mma_mixed_martial_arts", group: "Mixed Martial Arts", title: "MMA", active: true, has_outrights: false, expectedLabel: "MMA", expectedPriority: 1 },
+      { key: "boxing_boxing", group: "Boxing", title: "Boxing", active: true, has_outrights: false, expectedLabel: "MMA", expectedPriority: 2 },
+    ];
+
+    for (const sample of testSamples) {
+      const mapped = mapOddsApiSportToCanonical(sample);
+      assert.ok(mapped, `Sport ${sample.key} must map to a canonical sport`);
+      assert.equal(mapped.label, sample.expectedLabel, `Sport ${sample.key} must map to ${sample.expectedLabel}`);
+      assert.equal(mapped.priority, sample.expectedPriority, `Sport ${sample.key} priority mismatch`);
+    }
+
+    // Inactive or outright sports must be filtered out (return null)
+    const inactiveSample = { key: "soccer_epl", group: "Soccer", title: "EPL", active: false, has_outrights: false };
+    assert.equal(mapOddsApiSportToCanonical(inactiveSample), null, "Inactive sports must return null");
+
+    const outrightSample = { key: "soccer_epl_winner", group: "Soccer", title: "EPL Winner", active: true, has_outrights: true };
+    assert.equal(mapOddsApiSportToCanonical(outrightSample), null, "Outright markets must return null");
+
+    const unmappedSample = { key: "cricket_ipl", group: "Cricket", title: "IPL", active: true, has_outrights: false };
+    assert.equal(mapOddsApiSportToCanonical(unmappedSample), null, "Unrelated sports outside canonical 7 must return null");
+
+    console.log("  ✓ Test H passed: Dynamic catalog mapping accurately translates Odds API competitions to canonical categories.");
+  }
+
+  // -----------------------------------------------------------------------------
+  // Test I: 72-hour Event Horizon Configuration
+  // -----------------------------------------------------------------------------
+  console.log("\n[Test I] 72-hour event horizon configuration...");
+  {
+    for (const sport of CANONICAL_SPORTS) {
+      const config = SPORT_CONFIG[sport];
+      assert.ok(config, `SPORT_CONFIG must define config for ${sport}`);
+      assert.equal(
+        config.maxHoursAhead,
+        72,
+        `${sport} maxHoursAhead must be 72 hours`
+      );
+    }
+    assert.equal(DEFAULT_CONFIG.maxHoursAhead, 72, "DEFAULT_CONFIG maxHoursAhead must be 72 hours");
+    console.log("  ✓ Test I passed: 72-hour event horizon verified across all canonical sports.");
   }
 
   console.log("\n==================================================");

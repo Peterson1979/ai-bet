@@ -141,47 +141,186 @@ export async function getPersistentDailyCreditsUsed(dateKey: string): Promise<nu
   }
 }
 
-const WATCHED_SPORTS = [
-  { key: "soccer_fifa_world_cup", label: "Football", league: "FIFA World Cup", priority: 1 },
-  { key: "soccer_uefa_champs_league_qualification", label: "Football", league: "Champions League Qualification", priority: 1 },
+export async function resetPersistentDailyCredits(dateKey: string): Promise<void> {
+  const redis = getRedisClient();
+  if (!redis) return;
+  try {
+    const key = `${REDIS_CREDIT_KEY_PREFIX}${dateKey}`;
+    await redis.del(key);
+    console.log(`[odds] Persistent credit counter reset for ${dateKey}`);
+  } catch (err) {
+    console.warn("[odds] Could not reset daily credit in Redis:", err);
+  }
+}
+
+export type WatchedSport = {
+  key: string;
+  label: string;
+  league: string;
+  priority: number;
+};
+
+export const CANONICAL_SPORTS = [
+  "Football",
+  "NBA",
+  "NFL",
+  "Hockey",
+  "Tennis",
+  "MLB",
+  "MMA",
+] as const;
+
+export function mapOddsApiSportToCanonical(sport: {
+  key: string;
+  group?: string;
+  title?: string;
+  active?: boolean;
+  has_outrights?: boolean;
+}): WatchedSport | null {
+  if (sport.active === false || sport.has_outrights === true) return null;
+
+  const key = String(sport.key || "").toLowerCase();
+  const group = String(sport.group || "").toLowerCase();
+  const title = String(sport.title || sport.key || "");
+
+  // 1. Football / Soccer
+  if (group === "soccer" || key.startsWith("soccer_")) {
+    let priority = 3;
+    if (
+      key.includes("uefa_champs_league") ||
+      key.includes("epl") ||
+      key.includes("spain_la_liga") ||
+      key.includes("germany_bundesliga") ||
+      key.includes("italy_serie_a") ||
+      key.includes("france_ligue") ||
+      key.includes("world_cup") ||
+      key.includes("uefa_nations_league") ||
+      key.includes("euro_championship")
+    ) {
+      priority = 1;
+    } else if (
+      key.includes("europa_league") ||
+      key.includes("conference_league") ||
+      key.includes("copa_libertadores") ||
+      key.includes("fa_cup") ||
+      key.includes("efl_cup")
+    ) {
+      priority = 2;
+    } else if (
+      key.includes("mls") ||
+      key.includes("netherlands_eredivisie") ||
+      key.includes("brazil_campeonato") ||
+      key.includes("mexico_ligamx") ||
+      key.includes("portugal_primeira_liga") ||
+      key.includes("turkey_super_league") ||
+      key.includes("efl_champ")
+    ) {
+      priority = 3;
+    } else {
+      priority = 4;
+    }
+    return { key: sport.key, label: "Football", league: title, priority };
+  }
+
+  // 2. Basketball / NBA
+  if (group === "basketball" || key.startsWith("basketball_")) {
+    let priority = 2;
+    if (key === "basketball_nba") priority = 1;
+    else if (key === "basketball_euroleague" || key === "basketball_wnba") priority = 2;
+    else priority = 3;
+    return { key: sport.key, label: "NBA", league: title, priority };
+  }
+
+  // 3. American Football / NFL
+  if (group === "american football" || key.startsWith("americanfootball_")) {
+    let priority = 2;
+    if (key === "americanfootball_nfl") priority = 1;
+    else if (key === "americanfootball_ncaaf") priority = 2;
+    else priority = 3;
+    return { key: sport.key, label: "NFL", league: title, priority };
+  }
+
+  // 4. Ice Hockey / Hockey
+  if (group === "ice hockey" || key.startsWith("icehockey_")) {
+    let priority = 2;
+    if (key === "icehockey_nhl") priority = 1;
+    else priority = 2;
+    return { key: sport.key, label: "Hockey", league: title, priority };
+  }
+
+  // 5. Tennis
+  if (group === "tennis" || key.startsWith("tennis_")) {
+    let priority = 2;
+    if (
+      key.includes("wimbledon") ||
+      key.includes("us_open") ||
+      key.includes("french_open") ||
+      key.includes("australian_open")
+    ) {
+      priority = 1;
+    } else if (key.startsWith("tennis_atp") || key.startsWith("tennis_wta")) {
+      priority = 2;
+    } else {
+      priority = 3;
+    }
+    return { key: sport.key, label: "Tennis", league: title, priority };
+  }
+
+  // 6. Baseball / MLB
+  if (group === "baseball" || key.startsWith("baseball_")) {
+    let priority = 2;
+    if (key === "baseball_mlb") priority = 1;
+    else priority = 2;
+    return { key: sport.key, label: "MLB", league: title, priority };
+  }
+
+  // 7. MMA / Boxing
+  if (
+    group === "mixed martial arts" ||
+    group === "boxing" ||
+    key.startsWith("mma_") ||
+    key.startsWith("boxing_")
+  ) {
+    let priority = 2;
+    if (key.includes("mixed_martial_arts") || key.includes("ufc")) priority = 1;
+    else priority = 2;
+    return { key: sport.key, label: "MMA", league: title, priority };
+  }
+
+  return null;
+}
+
+export const DEFAULT_WATCHED_SPORTS: WatchedSport[] = [
   { key: "soccer_uefa_champs_league", label: "Football", league: "Champions League", priority: 1 },
   { key: "soccer_uefa_europa_league", label: "Football", league: "Europa League", priority: 2 },
-  { key: "soccer_uefa_conference_league", label: "Football", league: "Conference League", priority: 2 },
+  { key: "soccer_uefa_europa_conference_league", label: "Football", league: "Conference League", priority: 2 },
+  { key: "soccer_uefa_nations_league", label: "Football", league: "UEFA Nations League", priority: 1 },
   { key: "soccer_epl", label: "Football", league: "Premier League", priority: 1 },
   { key: "soccer_spain_la_liga", label: "Football", league: "La Liga", priority: 1 },
   { key: "soccer_germany_bundesliga", label: "Football", league: "Bundesliga", priority: 1 },
   { key: "soccer_italy_serie_a", label: "Football", league: "Serie A", priority: 1 },
-  { key: "soccer_france_ligue_1", label: "Football", league: "Ligue 1", priority: 1 },
+  { key: "soccer_france_ligue_one", label: "Football", league: "Ligue 1", priority: 1 },
   { key: "soccer_netherlands_eredivisie", label: "Football", league: "Eredivisie", priority: 3 },
   { key: "soccer_usa_mls", label: "Football", league: "MLS", priority: 3 },
   { key: "soccer_brazil_campeonato", label: "Football", league: "Brazil Série A", priority: 3 },
   { key: "soccer_conmebol_copa_libertadores", label: "Football", league: "Copa Libertadores", priority: 2 },
   { key: "soccer_mexico_ligamx", label: "Football", league: "Liga MX", priority: 3 },
-  { key: "soccer_club_friendlies", label: "Football", league: "Club Friendlies", priority: 4 },
   { key: "basketball_nba", label: "NBA", league: "NBA", priority: 1 },
   { key: "basketball_euroleague", label: "NBA", league: "EuroLeague", priority: 2 },
+  { key: "basketball_wnba", label: "NBA", league: "WNBA", priority: 2 },
   { key: "americanfootball_nfl", label: "NFL", league: "NFL", priority: 1 },
   { key: "americanfootball_ncaaf", label: "NFL", league: "NCAAF", priority: 3 },
   { key: "icehockey_nhl", label: "Hockey", league: "NHL", priority: 1 },
-  { key: "tennis_atp_wimbledon", label: "Tennis", league: "Wimbledon", priority: 1 },
+  { key: "icehockey_liiga", label: "Hockey", league: "Liiga", priority: 2 },
+  { key: "icehockey_sweden_hockey_league", label: "Hockey", league: "SHL", priority: 2 },
   { key: "tennis_atp_us_open", label: "Tennis", league: "US Open", priority: 1 },
-  { key: "tennis_atp_australian_open", label: "Tennis", league: "Australian Open", priority: 1 },
-  { key: "tennis_atp_french_open", label: "Tennis", league: "Roland Garros", priority: 1 },
-  { key: "tennis_wta_wimbledon", label: "Tennis", league: "WTA Wimbledon", priority: 1 },
   { key: "tennis_wta_us_open", label: "Tennis", league: "WTA US Open", priority: 1 },
-  { key: "tennis_wta_french_open", label: "Tennis", league: "WTA Roland Garros", priority: 1 },
-  { key: "tennis_atp_miami_open", label: "Tennis", league: "Miami Open", priority: 2 },
-  { key: "tennis_atp_madrid_open", label: "Tennis", league: "Madrid Open", priority: 2 },
-  { key: "tennis_atp_rome", label: "Tennis", league: "Rome Masters", priority: 2 },
-  { key: "tennis_atp_canadian_open", label: "Tennis", league: "Canadian Open", priority: 2 },
-  { key: "tennis_atp_cincinnati_open", label: "Tennis", league: "Cincinnati Open", priority: 2 },
-  { key: "tennis_wta_miami_open", label: "Tennis", league: "WTA Miami Open", priority: 2 },
-  { key: "tennis_wta_madrid_open", label: "Tennis", league: "WTA Madrid Open", priority: 2 },
-  { key: "tennis_wta_queens_club_champ", label: "Tennis", league: "WTA Queen's Club", priority: 2 },
   { key: "baseball_mlb", label: "MLB", league: "MLB", priority: 1 },
+  { key: "baseball_kbo", label: "MLB", league: "KBO", priority: 2 },
+  { key: "baseball_npb", label: "MLB", league: "NPB", priority: 2 },
   { key: "mma_mixed_martial_arts", label: "MMA", league: "MMA", priority: 1 },
   { key: "boxing_boxing", label: "MMA", league: "Boxing", priority: 2 },
-] as const;
+];
 
 const MARKET_KEY_MAP: Record<string, string> = {
   "home win": "h2h",
@@ -1126,7 +1265,7 @@ async function fetchOddsWithRetry(
 }
 
 type FeaturedMarketPlanItem = {
-  sport: (typeof WATCHED_SPORTS)[number];
+  sport: WatchedSport;
   marketKeys: string[];
 };
 
@@ -1149,7 +1288,7 @@ function getFeaturedMarketPreference(sportLabel: string): string[] {
 }
 
 function buildFeaturedMarketPlan(
-  availableSports: Array<(typeof WATCHED_SPORTS)[number]>,
+  availableSports: WatchedSport[],
   creditBudget: number,
   regions: string = DEFAULT_ODDS_REGIONS
 ): FeaturedMarketPlanItem[] {
@@ -1160,7 +1299,7 @@ function buildFeaturedMarketPlan(
   const plannedKeys = new Set<string>();
   let cost = 0;
 
-  const addSport = (sport: (typeof WATCHED_SPORTS)[number]): boolean => {
+  const addSport = (sport: WatchedSport): boolean => {
     if (plannedKeys.has(sport.key) || cost + marketUnitCost > creditBudget) return false;
     plan.push({ sport, marketKeys: ["h2h"] });
     plannedKeys.add(sport.key);
@@ -1408,9 +1547,9 @@ async function hasUpcomingEventsForSport(
 }
 
 function balanceSportsByPriority(
-  activeWatchedSports: Array<(typeof WATCHED_SPORTS)[number]>
-): Array<(typeof WATCHED_SPORTS)[number]> {
-  const groups = new Map<string, Array<(typeof WATCHED_SPORTS)[number]>>();
+  activeWatchedSports: WatchedSport[]
+): WatchedSport[] {
+  const groups = new Map<string, WatchedSport[]>();
   for (const item of activeWatchedSports) {
     if (!groups.has(item.label)) groups.set(item.label, []);
     groups.get(item.label)!.push(item);
@@ -1420,7 +1559,7 @@ function balanceSportsByPriority(
     list.sort((a, b) => a.priority - b.priority);
   }
 
-  const balanced: Array<(typeof WATCHED_SPORTS)[number]> = [];
+  const balanced: WatchedSport[] = [];
   let added = true;
   let round = 0;
   while (added) {
@@ -1686,7 +1825,7 @@ export type DailySportEvents = {
 };
 
 export async function getDailyEvents(): Promise<DailySportEvents[]> {
-  const uniqueLabels = [...new Set(WATCHED_SPORTS.map((s) => s.label))];
+  const uniqueLabels = [...CANONICAL_SPORTS];
 
   if (!API_KEY || IS_BUILD) {
     return uniqueLabels.map((label) => ({ sport: label, events: [], fetchFailed: false }));
@@ -1710,33 +1849,42 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
   }
 
   try {
+    let activeWatched: WatchedSport[] = [];
+
     const activeSportsRes = await fetch(
       `https://api.the-odds-api.com/v4/sports/?apiKey=${API_KEY}&all=false`,
       { cache: "no-store" }
     );
 
-    if (!activeSportsRes.ok) {
-      console.error(`[odds] active sports fetch failed: ${activeSportsRes.status}`);
-      return uniqueLabels.map((label) => ({
-        sport: label,
-        events: [],
-        fetchFailed: true,
-        error: `Failed to fetch active sports from The Odds API (HTTP ${activeSportsRes.status})`,
-      }));
+    if (activeSportsRes.ok) {
+      const activeSports: Array<{
+        key: string;
+        group?: string;
+        title?: string;
+        active?: boolean;
+        has_outrights?: boolean;
+      }> = await activeSportsRes.json();
+
+      if (Array.isArray(activeSports)) {
+        for (const sport of activeSports) {
+          const mapped = mapOddsApiSportToCanonical(sport);
+          if (mapped) {
+            activeWatched.push(mapped);
+          }
+        }
+      }
+    } else {
+      console.warn(
+        `[odds] Dynamic active sports fetch returned HTTP ${activeSportsRes.status}, falling back to default list.`
+      );
     }
 
-    const activeSports: { key: string; active: boolean; has_outrights: boolean }[] =
-      await activeSportsRes.json();
+    if (activeWatched.length === 0) {
+      activeWatched = [...DEFAULT_WATCHED_SPORTS];
+    }
 
-    const activeKeys = new Set<string>(
-      activeSports
-        .filter((sport) => sport.active && !sport.has_outrights)
-        .map((sport) => sport.key)
-    );
-
-    const activeWatched = WATCHED_SPORTS.filter((sport) => activeKeys.has(sport.key));
     const balancedActiveWatched = balanceSportsByPriority(activeWatched);
-    const sportsToFetch: Array<(typeof WATCHED_SPORTS)[number]> = [];
+    const sportsToFetch: WatchedSport[] = [];
 
     for (const sport of balancedActiveWatched) {
       if (sportsToFetch.length * regionUnitCost >= remainingCredits) break;

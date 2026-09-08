@@ -16,6 +16,7 @@ import {
   getPartnerOddsForCandidate,
   getAverageOddsForCandidate,
   buildWhySignalSummary,
+  resetPersistentDailyCredits,
 } from "@/app/lib/odds";
 
 export const runtime = "nodejs";
@@ -158,6 +159,14 @@ export async function GET(request: Request) {
 
   const url = new URL(request.url);
   const force = url.searchParams.get("force") === "1";
+  const resetCredits =
+    url.searchParams.get("resetCredits") === "1" ||
+    url.searchParams.get("reset_credits") === "1";
+
+  if (resetCredits) {
+    console.log(`[daily-run] resetCredits parameter detected for ${today}`);
+    await resetPersistentDailyCredits(today);
+  }
 
   let cached: any = null;
 
