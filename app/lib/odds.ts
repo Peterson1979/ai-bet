@@ -7,8 +7,13 @@ import {
   normalizeBookmakerName,
 } from "./affiliates";
 
-const API_KEY = process.env.ODDS_API_KEY;
-const IS_BUILD = process.env.NODE_ENV === "production" && !process.env.VERCEL_ENV;
+function getOddsApiKey(): string | undefined {
+  return process.env.ODDS_API_KEY;
+}
+
+function isBuildPhase(): boolean {
+  return process.env.NODE_ENV === "production" && !process.env.VERCEL_ENV;
+}
 
 const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 10;
@@ -1405,7 +1410,8 @@ async function enrichEventWithAdditionalMarkets(
   dateKey: string,
   regions: string = DEFAULT_ODDS_REGIONS
 ): Promise<void> {
-  if (!API_KEY || IS_BUILD || !event.sourceSportKey || requestedMarketKeys.length === 0) return;
+  const apiKey = getOddsApiKey();
+  if (!apiKey || isBuildPhase() || !event.sourceSportKey || requestedMarketKeys.length === 0) return;
 
   const regionMultiplier = getOddsRegionMultiplier(regions);
   const availableCredits = DAILY_CREDIT_LIMIT - creditState.used;
@@ -1425,7 +1431,7 @@ async function enrichEventWithAdditionalMarkets(
 
   const url =
     `https://api.the-odds-api.com/v4/sports/${event.sourceSportKey}/events/${event.id}/odds` +
-    `?apiKey=${API_KEY}` +
+    `?apiKey=${apiKey}` +
     `&regions=${regions}` +
     `&markets=${marketKeys.join(",")}` +
     `&oddsFormat=decimal`;
@@ -1510,7 +1516,8 @@ async function hasUpcomingEventsForSport(
   sportKey: string,
   sportLabel: string
 ): Promise<boolean | null> {
-  if (!API_KEY || IS_BUILD) return null;
+  const apiKey = getOddsApiKey();
+  if (!apiKey || isBuildPhase()) return null;
 
   const cached = eventDiscoveryCache.get(sportKey);
   if (cached && Date.now() - cached.timestamp < EVENT_DISCOVERY_CACHE_TTL_MS) {
@@ -1526,7 +1533,7 @@ async function hasUpcomingEventsForSport(
   try {
     const url =
       `https://api.the-odds-api.com/v4/sports/${sportKey}/events/` +
-      `?apiKey=${API_KEY}` +
+      `?apiKey=${apiKey}` +
       `&commenceTimeFrom=${encodeURIComponent(commenceTimeFrom)}` +
       `&commenceTimeTo=${encodeURIComponent(commenceTimeTo)}`;
 
@@ -1584,7 +1591,8 @@ async function fetchSportEvents(
   dateKey: string,
   regions: string = DEFAULT_ODDS_REGIONS
 ): Promise<{ events: OddsEvent[]; failed: boolean; error?: string }> {
-  if (!API_KEY || IS_BUILD) return { events: [], failed: false };
+  const apiKey = getOddsApiKey();
+  if (!apiKey || isBuildPhase()) return { events: [], failed: false };
 
   const requestedMarkets = marketKeys.length > 0 ? marketKeys : ["h2h"];
   const regionMultiplier = getOddsRegionMultiplier(regions);
@@ -1631,7 +1639,7 @@ async function fetchSportEvents(
   try {
     const url =
       `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/` +
-      `?apiKey=${API_KEY}` +
+      `?apiKey=${apiKey}` +
       `&regions=${regions}` +
       `&markets=${markets}` +
       `&oddsFormat=decimal` +
@@ -1826,8 +1834,9 @@ export type DailySportEvents = {
 
 export async function getDailyEvents(): Promise<DailySportEvents[]> {
   const uniqueLabels = [...CANONICAL_SPORTS];
+  const apiKey = getOddsApiKey();
 
-  if (!API_KEY || IS_BUILD) {
+  if (!apiKey || isBuildPhase()) {
     return uniqueLabels.map((label) => ({ sport: label, events: [], fetchFailed: false }));
   }
 
@@ -1852,7 +1861,7 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
     let activeWatched: WatchedSport[] = [];
 
     const activeSportsRes = await fetch(
-      `https://api.the-odds-api.com/v4/sports/?apiKey=${API_KEY}&all=false`,
+      `https://api.the-odds-api.com/v4/sports/?apiKey=${apiKey}&all=false`,
       { cache: "no-store" }
     );
 
