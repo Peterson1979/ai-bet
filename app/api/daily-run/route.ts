@@ -143,10 +143,17 @@ function resolveValueDiff(params: {
 }
 
 export async function GET(request: Request) {
-  const cronSecret = process.env.CRON_SECRET;
-  const authHeader = request.headers.get("authorization");
+  const configuredSecret = (process.env.CRON_SECRET || "").trim();
+  const authHeader = (request.headers.get("authorization") || "").trim();
+  const xCronSecret = (request.headers.get("x-cron-secret") || "").trim();
 
-  if (!cronSecret || authHeader !== `Bearer ${cronSecret}`) {
+  const isAuthorized =
+    Boolean(configuredSecret) &&
+    (authHeader === `Bearer ${configuredSecret}` ||
+      authHeader === configuredSecret ||
+      xCronSecret === configuredSecret);
+
+  if (!isAuthorized) {
     return Response.json(
       { ok: false, error: "unauthorized" },
       { status: 401 }
