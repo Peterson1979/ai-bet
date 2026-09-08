@@ -1,21 +1,19 @@
 import { GUIDES_LABEL } from "@/app/lib/localizedUiCopy";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
-import MatchCard from "../components/MatchCard";
 import Footer from "../components/Footer";
 import { getPredictions } from "../lib/getPredictions";
 import { translations, Lang, LANGS } from "@/app/lib/i18n";
-import type { SportType } from "../types/match";
 import type { PredictionCard } from "@/app/types/prediction";
-import { toMatchCardData } from "@/app/lib/domain/matchMapper";
 import type { Metadata } from "next";
 import AffiliateSlider from "../components/AffiliateSlider";
 import FeaturedSportsbooks from "../components/FeaturedSportsbooks";
-import PartnerSportsbooksList from "../components/PartnerSportsbooksList";
 import StickyBottomCTA from "../components/StickyBottomCTA";
 import { HOMEPAGE_MATCH_LIMIT } from "@/app/lib/displayConfig";
 import { sortSportBlocks } from "@/app/lib/sportsConfig";
 import SportSection from "@/app/components/SportSection";
+
+export const revalidate = 300; // 5-minute ISR revalidation for fresh prediction data
 
 export async function generateMetadata({
   params,
@@ -88,7 +86,7 @@ export default async function HomePage({
     { id: "mma", label: t.sports.mma },
   ];
 
-  // Dinamikus sorrend: azok a sportágak elöl, amikben ma van jövőbeli esemény
+  // Dynamic order: sports with active upcoming matches appear first
   const orderedSports = predictions?.sports
     ? sortSportBlocks(predictions.sports)
     : [];
@@ -119,7 +117,7 @@ export default async function HomePage({
 
           <Hero lang={lang} />
 
-          {/* SPORT NAV */}
+          {/* SPORT NAVIGATION */}
           <div className="-mt-12 mb-14 flex flex-wrap justify-center gap-3 relative z-20">
             {sportLinks.map((s) => (
               <a 
@@ -133,7 +131,7 @@ export default async function HomePage({
             ))}
           </div>
 
-          {/* TOP PICKS — sportágankénti blokkok, dinamikus sorrendben */}
+          {/* TOP PICKS / PREDICTION SECTION */}
           <div className="mt-4">
             <section id="top-picks" className="mb-16 scroll-mt-28">
               <div className="mb-6 flex flex-col items-center">
@@ -170,9 +168,11 @@ export default async function HomePage({
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <a
-                      href={`/${lang}/guides`}
-                      className="px-5 py-2.5 rounded-xl border border-cyan-400/40 bg-cyan-500/10 text-cyan-300 text-sm font-bold hover:bg-cyan-500/20 transition"
-                    >{GUIDES_LABEL[lang] ?? GUIDES_LABEL.en}</a>
+                    href={`/${lang}/guides`}
+                    className="px-5 py-2.5 rounded-xl border border-cyan-400/40 bg-cyan-500/10 text-cyan-300 text-sm font-bold hover:bg-cyan-500/20 transition"
+                  >
+                    {GUIDES_LABEL[lang] ?? GUIDES_LABEL.en}
+                  </a>
                   <a
                     href={`/${lang}/tools`}
                     className="px-5 py-2.5 rounded-xl border border-cyan-400/40 bg-cyan-500/10 text-cyan-300 text-sm font-bold hover:bg-cyan-500/20 transition"
@@ -190,25 +190,24 @@ export default async function HomePage({
             )}
           </div>
 
-          {/* Featured sportsbook partners */}
-          <FeaturedSportsbooks lang={lang} countryCode={countryCode} />
+          {/* CURATED FEATURED SPORTSBOOK PARTNERS (DISCIPLINED COMMERCIAL PRESENTATION) */}
+          <div className="mt-8">
+            <FeaturedSportsbooks lang={lang} countryCode={countryCode} />
+          </div>
 
-          {/* AFFILIATE SLIDER — rotating partner logos */}
-          <div className="my-8">
+          {/* PARTNER LOGO MARQUEE */}
+          <div className="my-6">
             <AffiliateSlider lang={lang} countryCode={countryCode} showDisclosure={false} />
           </div>
 
-          {/* Partner sportsbook list */}
-          <PartnerSportsbooksList lang={lang} countryCode={countryCode} variant="footer" showDisclosure={false} />
-
-          <div className="mt-16">
+          <div className="mt-14">
             <Footer />
           </div>
 
         </div>
       </div>
 
-      {/* Sticky bottom CTA — mobil only */}
+      {/* Sticky bottom CTA — mobile only */}
       <StickyBottomCTA lang={lang} countryCode={countryCode} />
     </main>
   );

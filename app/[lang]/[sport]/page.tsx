@@ -16,6 +16,8 @@ import { SPORT_EMOJIS } from "@/app/lib/sportsConfig";
 import type { PredictionCard } from "@/app/types/prediction";
 import type { Metadata } from "next";
 
+export const revalidate = 300; // 5-minute ISR revalidation for fresh prediction data
+
 const SPORT_KEY_MAP: Record<
   string,
   "football" | "nba" | "nfl" | "hockey" | "tennis" | "mlb" | "mma"
@@ -196,7 +198,7 @@ export default async function SportPage({
               <SportSection
                 sportBlock={firstHalfBlock!}
                 lang={lang}
-                  countryCode={countryCode}
+                countryCode={countryCode}
                 limit={HALF}
                 hideHeading={true}
               />

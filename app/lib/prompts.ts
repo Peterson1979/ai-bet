@@ -18,7 +18,7 @@ export function buildPredictionPrompt(events: OddsEvent[]): string {
           ? candidates
               .map(
                 (candidate) =>
-                  `  - ${candidate.id} | market ${candidate.market} | selection ${candidate.prediction} | ${candidate.bookmakerCount} bookmakers | consensus ${formatPercent(candidate.consensusImpliedProb)}`
+                  `  - ${candidate.id} | market: ${candidate.market} | selection: ${candidate.prediction} | depth: ${candidate.bookmakerCount} books | consensus: ${formatPercent(candidate.consensusImpliedProb)}`
               )
               .join("\n")
           : "  - NONE";
@@ -29,19 +29,21 @@ ${candidateText}`;
     })
     .join("\n\n");
 
-  return `Analyze these ${count} ${sport} events.
+  return `Analyze these ${count} ${sport} events using the provided market candidate data.
 
 For EACH event, in the SAME ORDER:
 - choose candidateId EXACTLY from that event's CANDIDATES list;
 - never invent, alter, abbreviate, or copy a candidateId from another event;
 - if the event has no eligible candidate, return candidateId exactly as NONE;
-- write a concise 1-2 sentence reasoning, maximum 40 words;
-- start the reasoning with matchup context;
+- write a concise 1-2 sentence analytical reasoning (maximum 35 words);
+- ground the reasoning strictly in the market selection, matchup structure, and consensus probability;
 - estimate fairProbability from 1 to 99 for the selected candidate, or use null if it cannot be justified responsibly.
 
-Do not invent injuries, records, statistics, lineup news, home/away advantages, or unavailable facts.
-Do not mention exact odds, numeric confidence scores, guaranteed profit, or promotional claims.
-Market information may support the analysis but must not dominate it.
+Strict data integrity rules:
+- Do NOT invent or assume unprovided facts such as player injuries, squad strength, recent form, pitching rotations, weather, or news.
+- Do NOT use generic clichés like "strong squad", "recent form", "clear favorite", or "attacking style".
+- Do NOT mention exact numeric odds or promise winning results.
+- Focus strictly on the statistical balance indicated by the market candidate and consensus level.
 
 EVENTS:
 ${eventText}
