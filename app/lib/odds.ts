@@ -1291,11 +1291,15 @@ async function enrichEventWithAdditionalMarkets(
     `&markets=${marketKeys.join(",")}` +
     `&oddsFormat=decimal`;
 
+  let response: Response | null = null;
+  let reconciledToKnownCharge = false;
+
   try {
-    const { response } = await fetchOddsWithRetry(
+    const res = await fetchOddsWithRetry(
       url,
       `${event.sourceSportKey}:${event.id}:additional`
     );
+    response = res.response;
 
     if (!response) {
       creditState.used = await refundPersistentDailyCredit(dateKey, requestedCredits);
@@ -1303,19 +1307,29 @@ async function enrichEventWithAdditionalMarkets(
     }
 
     const lastChargedHeader = response.headers.get("x-requests-last");
-    const lastCharged =
+    const parsedHeader =
       lastChargedHeader === null ? null : Number(lastChargedHeader);
+    const isKnownCharge =
+      parsedHeader !== null && Number.isFinite(parsedHeader) && parsedHeader >= 0;
+    const lastCharged = isKnownCharge ? parsedHeader : null;
+
+    if (lastCharged !== null) {
+      const actualCharged = Math.min(requestedCredits, lastCharged);
+      const refundAmount = requestedCredits - actualCharged;
+      if (refundAmount > 0) {
+        creditState.used = await refundPersistentDailyCredit(dateKey, refundAmount);
+      }
+      reconciledToKnownCharge = true;
+    }
 
     if (!response.ok) {
-      const actualCharged =
-        lastCharged !== null && Number.isFinite(lastCharged) && lastCharged >= 0
-          ? Math.min(requestedCredits, lastCharged)
-          : requestedCredits;
-      if (actualCharged < requestedCredits) {
-        creditState.used = await refundPersistentDailyCredit(
-          dateKey,
-          requestedCredits - actualCharged
-        );
+      if (
+        !reconciledToKnownCharge &&
+        (response.status === 401 ||
+          response.status === 422 ||
+          response.status === 429)
+      ) {
+        creditState.used = await refundPersistentDailyCredit(dateKey, requestedCredits);
       }
       const errorBody = await response.text().catch(() => "");
       console.warn(
@@ -1326,16 +1340,12 @@ async function enrichEventWithAdditionalMarkets(
     }
 
     const data = await response.json();
-    const actualCharged =
-      lastCharged !== null && Number.isFinite(lastCharged) && lastCharged >= 0
-        ? Math.min(requestedCredits, lastCharged)
-        : requestedCredits;
 
-    if (actualCharged < requestedCredits) {
-      creditState.used = await refundPersistentDailyCredit(
-        dateKey,
-        requestedCredits - actualCharged
-      );
+    if (
+      !reconciledToKnownCharge &&
+      (!data || !Array.isArray(data.bookmakers) || data.bookmakers.length === 0)
+    ) {
+      creditState.used = await refundPersistentDailyCredit(dateKey, requestedCredits);
     }
 
     if (Array.isArray(data?.bookmakers)) {
@@ -1346,9 +1356,12 @@ async function enrichEventWithAdditionalMarkets(
     }
 
     console.log(
-      `[odds] Additional markets for ${event.id}: requested=${marketKeys.join(",")} charged=${actualCharged}`
+      `[odds] Additional markets for ${event.id}: requested=${marketKeys.join(",")} charged=${isKnownCharge ? lastCharged : requestedCredits}`
     );
   } catch (error) {
+    if (!response) {
+      creditState.used = await refundPersistentDailyCredit(dateKey, requestedCredits);
+    }
     // Keep the reservation on uncertain failures: the upstream request may already have been charged.
     console.warn(`[odds] Additional market enrichment error for ${event.id}:`, error);
   }
@@ -1442,8 +1455,14 @@ async function fetchSportEvents(
   if (cached) return { events: cached, failed: false };
 
   if (creditState.used + requestedCredits > DAILY_CREDIT_LIMIT) {
-    console.warn(`[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping: ${sportKey}`);
-    return { events: [], failed: false };
+    console.warn(
+      `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping: ${sportKey}`
+    );
+    return {
+      events: [],
+      failed: true,
+      error: `Daily credit budget limit reached for ${sportKey}`,
+    };
   }
 
   const reservation = await reservePersistentDailyCredit(dateKey, requestedCredits);
@@ -1452,7 +1471,11 @@ async function fetchSportEvents(
       `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached in Redis, skipping: ${sportKey}`
     );
     creditState.used = DAILY_CREDIT_LIMIT;
-    return { events: [], failed: false };
+    return {
+      events: [],
+      failed: true,
+      error: `Daily credit budget limit reached in Redis for ${sportKey}`,
+    };
   }
   creditState.used = reservation.currentTotal;
 
@@ -1462,6 +1485,9 @@ async function fetchSportEvents(
   const commenceTimeTo = new Date(
     Date.now() + config.maxHoursAhead * 60 * 60 * 1000
   ).toISOString().replace(/\.\d{3}Z$/, "Z");
+
+  let response: Response | null = null;
+  let reconciledToKnownCharge = false;
 
   try {
     const url =
@@ -1473,7 +1499,8 @@ async function fetchSportEvents(
       `&commenceTimeFrom=${encodeURIComponent(commenceTimeFrom)}` +
       `&commenceTimeTo=${encodeURIComponent(commenceTimeTo)}`;
 
-    const { response } = await fetchOddsWithRetry(url, sportKey);
+    const res = await fetchOddsWithRetry(url, sportKey);
+    response = res.response;
 
     if (!response) {
       const reconciled = await refundPersistentDailyCredit(dateKey, requestedCredits);
@@ -1483,11 +1510,29 @@ async function fetchSportEvents(
     }
 
     const lastChargedHeader = response.headers.get("x-requests-last");
-    const lastCharged =
+    const parsedHeader =
       lastChargedHeader === null ? null : Number(lastChargedHeader);
+    const isKnownCharge =
+      parsedHeader !== null && Number.isFinite(parsedHeader) && parsedHeader >= 0;
+    const lastCharged = isKnownCharge ? parsedHeader : null;
+
+    if (lastCharged !== null) {
+      const actualCharged = Math.min(requestedCredits, lastCharged);
+      const refundAmount = requestedCredits - actualCharged;
+      if (refundAmount > 0) {
+        const reconciled = await refundPersistentDailyCredit(dateKey, refundAmount);
+        creditState.used = reconciled;
+      }
+      reconciledToKnownCharge = true;
+    }
 
     if (!response.ok) {
-      if (lastCharged === 0 || response.status === 422 || response.status === 429) {
+      if (
+        !reconciledToKnownCharge &&
+        (response.status === 401 ||
+          response.status === 422 ||
+          response.status === 429)
+      ) {
         const reconciled = await refundPersistentDailyCredit(dateKey, requestedCredits);
         creditState.used = reconciled;
       }
@@ -1499,18 +1544,8 @@ async function fetchSportEvents(
 
     const data = await response.json();
 
-    const actualCharged =
-      lastCharged !== null && Number.isFinite(lastCharged) && lastCharged >= 0
-        ? Math.min(requestedCredits, lastCharged)
-        : Array.isArray(data) && data.length === 0
-          ? 0
-          : requestedCredits;
-
-    if (actualCharged < requestedCredits) {
-      const reconciled = await refundPersistentDailyCredit(
-        dateKey,
-        requestedCredits - actualCharged
-      );
+    if (!reconciledToKnownCharge && Array.isArray(data) && data.length === 0) {
+      const reconciled = await refundPersistentDailyCredit(dateKey, requestedCredits);
       creditState.used = reconciled;
     }
 
@@ -1630,6 +1665,10 @@ async function fetchSportEvents(
     setCache(cacheKey, events);
     return { events, failed: false };
   } catch (error) {
+    if (!response) {
+      const reconciled = await refundPersistentDailyCredit(dateKey, requestedCredits);
+      creditState.used = reconciled;
+    }
     console.error(`[odds] fetchSportEvents error (${sportKey}):`, error);
     return {
       events: [],
@@ -1655,12 +1694,19 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
 
   const dateKey = getUtcDateKey();
   const persistentUsed = await getPersistentDailyCreditsUsed(dateKey);
+  const regionUnitCost = getOddsRegionMultiplier(DEFAULT_ODDS_REGIONS);
+  const remainingCredits = Math.max(0, DAILY_CREDIT_LIMIT - persistentUsed);
 
-  if (persistentUsed >= DAILY_CREDIT_LIMIT) {
+  if (remainingCredits < regionUnitCost) {
     console.warn(
-      `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) already reached for ${dateKey} (used: ${persistentUsed}). Skipping upstream charged calls.`
+      `[odds] Daily credit budget exhausted for ${dateKey} (used: ${persistentUsed}/${DAILY_CREDIT_LIMIT}, remaining: ${remainingCredits} < ${regionUnitCost} unit cost). Skipping upstream calls.`
     );
-    return uniqueLabels.map((label) => ({ sport: label, events: [], fetchFailed: false }));
+    return uniqueLabels.map((label) => ({
+      sport: label,
+      events: [],
+      fetchFailed: true,
+      error: `Daily credit budget exhausted (${persistentUsed}/${DAILY_CREDIT_LIMIT})`,
+    }));
   }
 
   try {
@@ -1690,11 +1736,10 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
 
     const activeWatched = WATCHED_SPORTS.filter((sport) => activeKeys.has(sport.key));
     const balancedActiveWatched = balanceSportsByPriority(activeWatched);
-    const remainingCredits = Math.max(0, DAILY_CREDIT_LIMIT - persistentUsed);
     const sportsToFetch: Array<(typeof WATCHED_SPORTS)[number]> = [];
 
     for (const sport of balancedActiveWatched) {
-      if (sportsToFetch.length >= remainingCredits) break;
+      if (sportsToFetch.length * regionUnitCost >= remainingCredits) break;
 
       const hasUpcomingEvents = await hasUpcomingEventsForSport(sport.key, sport.label);
       if (hasUpcomingEvents === false) {
@@ -1712,7 +1757,6 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
     );
 
     const activeLabelCount = new Set(sportsToFetch.map((sport) => sport.label)).size;
-    const regionUnitCost = getOddsRegionMultiplier(DEFAULT_ODDS_REGIONS);
     const maximumSpecialReserve =
       ((sportsToFetch.some((sport) => sport.label === "Football") ? 2 : 0) +
         (sportsToFetch.some((sport) => sport.label === "Tennis") ? 1 : 0)) *
@@ -1727,6 +1771,18 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
       marketPlan.map((item) => `${item.sport.key}=[${item.marketKeys.join(",")}]`).join(" | ")
     );
 
+    if (sportsToFetch.length > 0 && marketPlan.length === 0) {
+      console.warn(
+        `[odds] Market plan empty despite ${sportsToFetch.length} candidate sports with ${remainingCredits} credits remaining.`
+      );
+      return uniqueLabels.map((label) => ({
+        sport: label,
+        events: [],
+        fetchFailed: true,
+        error: `Daily credit budget insufficient for market plan (${persistentUsed}/${DAILY_CREDIT_LIMIT})`,
+      }));
+    }
+
     const creditState = { used: persistentUsed };
     const eventsByLabel = new Map<string, OddsEvent[]>();
     const failedByLabel = new Map<string, string>();
@@ -1738,6 +1794,12 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
         console.warn(
           `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping remaining sports.`
         );
+        if (!eventsByLabel.has(sport.label)) {
+          failedByLabel.set(
+            sport.label,
+            `Daily credit budget limit reached before fetching ${sport.key}`
+          );
+        }
         break;
       }
 

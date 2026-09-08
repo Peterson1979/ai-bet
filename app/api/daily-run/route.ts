@@ -434,22 +434,27 @@ export async function GET(request: Request) {
       });
     }
 
+    const totalNewPicks = result.sports.reduce(
+      (sum, s) => sum + (s.topPicks?.length ?? 0),
+      0
+    );
+    const cachedTotalPicks = Array.isArray(cached?.sports)
+      ? cached.sports.reduce(
+          (sum: number, s: any) => sum + (s.topPicks?.length ?? 0),
+          0
+        )
+      : 0;
+
     const newFailedCount = countFailedSports(result.sports);
     const newHealthyCount = result.sports.length - newFailedCount;
 
     let shouldStore = false;
     let preserveReason: string | null = null;
 
-    if (newFailedCount === 0) {
-      // CASE A: 0 failures in new run -> STORE NEW
-      shouldStore = true;
-    } else if (!cached) {
-      // CASE B: Failures present and no existing today's cache
-      if (newHealthyCount > 0) {
-        // At least one sport completed healthily -> STORE PARTIAL
-        shouldStore = true;
-      } else {
-        // All attempted sports failed -> FAIL WITHOUT STORE
+    if (!cached) {
+      // CASE B: First run (no prior today's cache in Redis)
+      if (newFailedCount === result.sports.length) {
+        // All attempted sports failed (budget exhausted or API failure) -> FAIL WITHOUT STORE
         console.error(
           "[daily-run] Initial generation completely failed on all sports. Not writing error shell to Redis."
         );
@@ -462,17 +467,48 @@ export async function GET(request: Request) {
               attemptedSports: result.sports.length,
               failedSports: newFailedCount,
               healthySports: newHealthyCount,
+              totalPicks: totalNewPicks,
             },
           },
           { status: 500 }
         );
+      } else if (newFailedCount > 0 && totalNewPicks === 0) {
+        // Degraded first run with partial failures and 0 picks -> FAIL WITHOUT STORE to allow retry
+        console.error(
+          "[daily-run] Initial generation partially failed and produced zero picks. Not caching degraded empty result."
+        );
+        return Response.json(
+          {
+            success: false,
+            stored: false,
+            error: "Initial generation degraded with zero picks.",
+            health: {
+              attemptedSports: result.sports.length,
+              failedSports: newFailedCount,
+              healthySports: newHealthyCount,
+              totalPicks: totalNewPicks,
+            },
+          },
+          { status: 500 }
+        );
+      } else {
+        // Either 0 failures (full healthy run or legitimate off-season 0 events) OR partial run with >0 picks
+        shouldStore = true;
       }
     } else {
-      // CASE C: Failures present and existing today's cache exists
+      // CASE C: Existing today's cache present in Redis
       const cachedFailedCount = countFailedSports(cached.sports);
 
-      if (newFailedCount < cachedFailedCount) {
-        // New run is demonstrably healthier than existing cache -> STORE NEW
+      if (totalNewPicks === 0 && cachedTotalPicks > 0) {
+        // ZERO-PICK CACHE OVERWRITE PROTECTION:
+        // Never overwrite a healthy cache with zero picks caused by budget exhaustion, fetch failure, or empty market plan
+        shouldStore = false;
+        preserveReason = "zero_picks_generated_preserved_existing_cache";
+      } else if (newFailedCount === 0) {
+        // New run is 100% healthy
+        shouldStore = true;
+      } else if (newFailedCount < cachedFailedCount && totalNewPicks >= cachedTotalPicks) {
+        // New run is demonstrably healthier than existing cache
         shouldStore = true;
       } else {
         // New run is as degraded or more degraded than existing cache -> PRESERVE OLD
@@ -488,7 +524,10 @@ export async function GET(request: Request) {
         {
           newFailedSports: newFailedCount,
           cachedFailedSports: cachedFailedCount,
+          newTotalPicks: totalNewPicks,
+          cachedTotalPicks,
           attemptedSports: result.sports.length,
+          reason: preserveReason,
         }
       );
 
@@ -501,6 +540,8 @@ export async function GET(request: Request) {
         health: {
           newFailedSports: newFailedCount,
           cachedFailedSports: cachedFailedCount,
+          newTotalPicks: totalNewPicks,
+          cachedTotalPicks,
           attemptedSports: result.sports.length,
         },
         socialRun: {
