@@ -1,7 +1,11 @@
 // app/lib/odds.ts
 import { Redis } from "@upstash/redis";
 import { SPORT_CONFIG, DEFAULT_CONFIG } from "./sportsConfig";
-import { AFFILIATE_SITES } from "./affiliates";
+import {
+  AFFILIATE_SITES,
+  type AffiliateSite,
+  normalizeBookmakerName,
+} from "./affiliates";
 
 const API_KEY = process.env.ODDS_API_KEY;
 const IS_BUILD = process.env.NODE_ENV === "production" && !process.env.VERCEL_ENV;
@@ -10,6 +14,23 @@ const cache = new Map<string, { data: OddsEvent[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 10;
 
 export const DAILY_CREDIT_LIMIT = 15;
+export const DEFAULT_ODDS_REGIONS = "eu,us";
+
+export function getOddsRegionMultiplier(regions: string = DEFAULT_ODDS_REGIONS): number {
+  const count = regions
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean).length;
+  return count > 0 ? count : 1;
+}
+
+export function calculateOddsCreditCost(
+  marketCount: number,
+  regions: string = DEFAULT_ODDS_REGIONS
+): number {
+  return marketCount * getOddsRegionMultiplier(regions);
+}
+
 const REDIS_CREDIT_KEY_PREFIX = "odds:credits:";
 const REDIS_CREDIT_TTL_SECONDS = 36 * 3600; // 36 hours
 const ODDS_MAX_RETRIES = 3;
@@ -279,8 +300,8 @@ function getRetryAfterMs(response: Response): number | null {
   return null;
 }
 
-function normalizeName(value: string): string {
-  return value.toLowerCase().replace(/\s+/g, "").replace(/[^a-z0-9]/g, "");
+function normalizeName(value: string | null | undefined): string {
+  return normalizeBookmakerName(value);
 }
 
 function round1(value?: number | null): number | null {
@@ -297,22 +318,40 @@ function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
-function getAffiliateCandidatesForSport(sportLabel: string) {
-  const sportNorm = normalizeName(sportLabel);
+function getAffiliateCandidatesForSport(sportLabel: string): AffiliateSite[] {
+  const sportNorm = normalizeBookmakerName(sportLabel);
 
-  return AFFILIATE_SITES.filter((site) =>
-    (site.sports ?? []).some((s) => {
-      const norm = normalizeName(s);
-      return (
-        norm === sportNorm ||
-        norm.includes(sportNorm) ||
-        sportNorm.includes(norm) ||
-        (sportNorm === "mlb" && norm.includes("baseball")) ||
-        (sportNorm === "mma" && norm.includes("mma")) ||
-        (sportNorm === "mma" && norm.includes("boxing"))
-      );
-    })
+  return AFFILIATE_SITES.filter(
+    (site) =>
+      site.enabled !== false &&
+      (site.sports ?? []).some((s) => {
+        const norm = normalizeBookmakerName(s);
+        return (
+          norm === sportNorm ||
+          norm.includes(sportNorm) ||
+          sportNorm.includes(norm) ||
+          (sportNorm === "mlb" && norm.includes("baseball")) ||
+          (sportNorm === "mma" && norm.includes("mma")) ||
+          (sportNorm === "mma" && norm.includes("boxing"))
+        );
+      })
   );
+}
+
+function buildPartnerLookupMap(affiliateCandidates: AffiliateSite[]): Map<string, AffiliateSite> {
+  const partnerMap = new Map<string, AffiliateSite>();
+  for (const site of affiliateCandidates) {
+    if (site.enabled === false) continue;
+    const keys = [site.id, site.name, ...(site.aliases ?? [])];
+    for (const rawKey of keys) {
+      if (!rawKey) continue;
+      const normalized = normalizeBookmakerName(rawKey);
+      if (normalized && !partnerMap.has(normalized)) {
+        partnerMap.set(normalized, site);
+      }
+    }
+  }
+  return partnerMap;
 }
 
 function getBookmakerRank(bookmakerTitle?: string | null): number {
@@ -639,15 +678,18 @@ export function getPartnerOddsForCandidate(
   sportLabel: string
 ): { odds: number | null; bookmaker: string | null; rating: number | null } {
   const affiliateCandidates = getAffiliateCandidatesForSport(sportLabel);
-  const partnerMap = new Map(
-    affiliateCandidates.map((site) => [normalizeName(site.name), site] as const)
-  );
+  const partnerMap = buildPartnerLookupMap(affiliateCandidates);
   let bestOdds: number | null = null;
   let bestBookmaker: string | null = null;
   let bestRating: number | null = null;
 
   for (const bookmaker of rawBookmakers ?? []) {
-    const matchedPartner = partnerMap.get(normalizeName(bookmaker.title || ""));
+    const titleNorm = typeof bookmaker.title === "string" ? normalizeName(bookmaker.title) : "";
+    const keyNorm = typeof bookmaker.key === "string" ? normalizeName(bookmaker.key) : "";
+    const matchedPartner =
+      (titleNorm ? partnerMap.get(titleNorm) : undefined) ??
+      (keyNorm ? partnerMap.get(keyNorm) : undefined);
+
     if (!matchedPartner) continue;
     const price = safeFiniteNumber(findCandidateOutcome(bookmaker, candidate)?.price);
     if (price === null || price <= 1) continue;
@@ -677,16 +719,19 @@ export function getPartnerOddsForMarket(
     return { odds: null, bookmaker: null, rating: null };
   }
 
-  const partnerMap = new Map(
-    affiliateCandidates.map((site) => [normalizeName(site.name), site] as const)
-  );
+  const partnerMap = buildPartnerLookupMap(affiliateCandidates);
 
   let bestOdds: number | null = null;
   let bestBookmaker: string | null = null;
   let bestRating: number | null = null;
 
   for (const bookmaker of rawBookmakers || []) {
-    const matchedPartner = partnerMap.get(normalizeName(bookmaker.title || ""));
+    const titleNorm = typeof bookmaker.title === "string" ? normalizeName(bookmaker.title) : "";
+    const keyNorm = typeof bookmaker.key === "string" ? normalizeName(bookmaker.key) : "";
+    const matchedPartner =
+      (titleNorm ? partnerMap.get(titleNorm) : undefined) ??
+      (keyNorm ? partnerMap.get(keyNorm) : undefined);
+
     if (!matchedPartner) continue;
 
     const odds = extractOutcomeOddsForMarket(bookmaker, marketType, homeTeam, awayTeam);
@@ -707,11 +752,10 @@ export function getPartnerOddsForMarket(
     };
   }
 
-  const fallback = [...affiliateCandidates].sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0))[0];
   return {
     odds: null,
-    bookmaker: fallback?.name ?? null,
-    rating: round1(fallback?.rating ?? null),
+    bookmaker: null,
+    rating: null,
   };
 }
 
@@ -1106,19 +1150,21 @@ function getFeaturedMarketPreference(sportLabel: string): string[] {
 
 function buildFeaturedMarketPlan(
   availableSports: Array<(typeof WATCHED_SPORTS)[number]>,
-  creditBudget: number
+  creditBudget: number,
+  regions: string = DEFAULT_ODDS_REGIONS
 ): FeaturedMarketPlanItem[] {
-  if (creditBudget <= 0 || availableSports.length === 0) return [];
+  const marketUnitCost = getOddsRegionMultiplier(regions);
+  if (creditBudget < marketUnitCost || availableSports.length === 0) return [];
 
   const plan: FeaturedMarketPlanItem[] = [];
   const plannedKeys = new Set<string>();
   let cost = 0;
 
   const addSport = (sport: (typeof WATCHED_SPORTS)[number]): boolean => {
-    if (plannedKeys.has(sport.key) || cost >= creditBudget) return false;
+    if (plannedKeys.has(sport.key) || cost + marketUnitCost > creditBudget) return false;
     plan.push({ sport, marketKeys: ["h2h"] });
     plannedKeys.add(sport.key);
-    cost += 1;
+    cost += marketUnitCost;
     return true;
   };
 
@@ -1126,14 +1172,14 @@ function buildFeaturedMarketPlan(
   const seenLabels = new Set<string>();
   for (const sport of availableSports) {
     if (seenLabels.has(sport.label)) continue;
-    if (cost >= creditBudget) break;
+    if (cost + marketUnitCost > creditBudget) break;
     if (addSport(sport)) seenLabels.add(sport.label);
   }
 
   // Phase 2: Football and Tennis are fragmented across many competition keys.
   // Give each a second active competition when budget allows.
   for (const label of ["Football", "Tennis"]) {
-    if (cost >= creditBudget) break;
+    if (cost + marketUnitCost > creditBudget) break;
     const extra = availableSports.find(
       (sport) => sport.label === label && !plannedKeys.has(sport.key)
     );
@@ -1142,30 +1188,30 @@ function buildFeaturedMarketPlan(
 
   // Phase 3: add totals to primary sport entries before adding handicaps.
   for (const item of plan) {
-    if (cost >= creditBudget) break;
+    if (cost + marketUnitCost > creditBudget) break;
     const preference = getFeaturedMarketPreference(item.sport.label);
     if (preference.includes("totals") && !item.marketKeys.includes("totals")) {
       item.marketKeys.push("totals");
-      cost += 1;
+      cost += marketUnitCost;
     }
   }
 
   // Phase 4: use any remaining budget for spreads / handicaps.
   const spreadPriority = ["Tennis", "NBA", "NFL", "MLB", "Hockey"];
   for (const label of spreadPriority) {
-    if (cost >= creditBudget) break;
+    if (cost + marketUnitCost > creditBudget) break;
     const item = plan.find((entry) => entry.sport.label === label);
     if (!item) continue;
     const preference = getFeaturedMarketPreference(label);
     if (preference.includes("spreads") && !item.marketKeys.includes("spreads")) {
       item.marketKeys.push("spreads");
-      cost += 1;
+      cost += marketUnitCost;
     }
   }
 
   // Phase 5: if credits still remain, add more active competition keys with h2h.
   for (const sport of availableSports) {
-    if (cost >= creditBudget) break;
+    if (cost + marketUnitCost > creditBudget) break;
     addSport(sport);
   }
 
@@ -1217,15 +1263,18 @@ async function enrichEventWithAdditionalMarkets(
   event: OddsEvent,
   requestedMarketKeys: string[],
   creditState: { used: number },
-  dateKey: string
+  dateKey: string,
+  regions: string = DEFAULT_ODDS_REGIONS
 ): Promise<void> {
   if (!API_KEY || IS_BUILD || !event.sourceSportKey || requestedMarketKeys.length === 0) return;
 
+  const regionMultiplier = getOddsRegionMultiplier(regions);
   const availableCredits = DAILY_CREDIT_LIMIT - creditState.used;
-  if (availableCredits <= 0) return;
+  const maxMarketsAllowed = Math.floor(availableCredits / regionMultiplier);
+  if (maxMarketsAllowed <= 0) return;
 
-  const marketKeys = requestedMarketKeys.slice(0, availableCredits);
-  const requestedCredits = marketKeys.length;
+  const marketKeys = requestedMarketKeys.slice(0, maxMarketsAllowed);
+  const requestedCredits = marketKeys.length * regionMultiplier;
   if (requestedCredits <= 0) return;
 
   const reservation = await reservePersistentDailyCredit(dateKey, requestedCredits);
@@ -1238,7 +1287,7 @@ async function enrichEventWithAdditionalMarkets(
   const url =
     `https://api.the-odds-api.com/v4/sports/${event.sourceSportKey}/events/${event.id}/odds` +
     `?apiKey=${API_KEY}` +
-    `&regions=eu` +
+    `&regions=${regions}` +
     `&markets=${marketKeys.join(",")}` +
     `&oddsFormat=decimal`;
 
@@ -1380,13 +1429,15 @@ async function fetchSportEvents(
   leagueLabel: string,
   marketKeys: string[],
   creditState: { used: number },
-  dateKey: string
+  dateKey: string,
+  regions: string = DEFAULT_ODDS_REGIONS
 ): Promise<{ events: OddsEvent[]; failed: boolean; error?: string }> {
   if (!API_KEY || IS_BUILD) return { events: [], failed: false };
 
   const requestedMarkets = marketKeys.length > 0 ? marketKeys : ["h2h"];
-  const requestedCredits = requestedMarkets.length;
-  const cacheKey = `${sportKey}:${requestedMarkets.join(",")}`;
+  const regionMultiplier = getOddsRegionMultiplier(regions);
+  const requestedCredits = requestedMarkets.length * regionMultiplier;
+  const cacheKey = `${sportKey}:${requestedMarkets.join(",")}:${regions}`;
   const cached = getCache(cacheKey);
   if (cached) return { events: cached, failed: false };
 
@@ -1416,7 +1467,7 @@ async function fetchSportEvents(
     const url =
       `https://api.the-odds-api.com/v4/sports/${sportKey}/odds/` +
       `?apiKey=${API_KEY}` +
-      `&regions=eu` +
+      `&regions=${regions}` +
       `&markets=${markets}` +
       `&oddsFormat=decimal` +
       `&commenceTimeFrom=${encodeURIComponent(commenceTimeFrom)}` +
@@ -1661,14 +1712,16 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
     );
 
     const activeLabelCount = new Set(sportsToFetch.map((sport) => sport.label)).size;
+    const regionUnitCost = getOddsRegionMultiplier(DEFAULT_ODDS_REGIONS);
     const maximumSpecialReserve =
-      (sportsToFetch.some((sport) => sport.label === "Football") ? 2 : 0) +
-      (sportsToFetch.some((sport) => sport.label === "Tennis") ? 1 : 0);
-    const coverageSurplus = Math.max(0, remainingCredits - activeLabelCount);
+      ((sportsToFetch.some((sport) => sport.label === "Football") ? 2 : 0) +
+        (sportsToFetch.some((sport) => sport.label === "Tennis") ? 1 : 0)) *
+      regionUnitCost;
+    const coverageSurplus = Math.max(0, remainingCredits - activeLabelCount * regionUnitCost);
     const specialMarketReserve = Math.min(maximumSpecialReserve, coverageSurplus);
     const featuredCreditBudget = Math.max(0, remainingCredits - specialMarketReserve);
 
-    const marketPlan = buildFeaturedMarketPlan(sportsToFetch, featuredCreditBudget);
+    const marketPlan = buildFeaturedMarketPlan(sportsToFetch, featuredCreditBudget, DEFAULT_ODDS_REGIONS);
     console.log(
       "[odds] Featured market plan:",
       marketPlan.map((item) => `${item.sport.key}=[${item.marketKeys.join(",")}]`).join(" | ")
@@ -1680,7 +1733,8 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
 
     for (const planItem of marketPlan) {
       const sport = planItem.sport;
-      if (creditState.used + planItem.marketKeys.length > DAILY_CREDIT_LIMIT) {
+      const planItemCost = calculateOddsCreditCost(planItem.marketKeys.length, DEFAULT_ODDS_REGIONS);
+      if (creditState.used + planItemCost > DAILY_CREDIT_LIMIT) {
         console.warn(
           `[odds] Daily credit budget (${DAILY_CREDIT_LIMIT}) reached, skipping remaining sports.`
         );
@@ -1693,7 +1747,8 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
         sport.league,
         planItem.marketKeys,
         creditState,
-        dateKey
+        dateKey,
+        DEFAULT_ODDS_REGIONS
       );
 
       if (failed) {
@@ -1715,7 +1770,8 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
         target,
         ["double_chance", "draw_no_bet"],
         creditState,
-        dateKey
+        dateKey,
+        DEFAULT_ODDS_REGIONS
       );
     }
 
@@ -1726,7 +1782,8 @@ export async function getDailyEvents(): Promise<DailySportEvents[]> {
         target,
         ["h2h_s1"],
         creditState,
-        dateKey
+        dateKey,
+        DEFAULT_ODDS_REGIONS
       );
     }
 

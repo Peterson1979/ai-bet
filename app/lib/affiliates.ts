@@ -32,7 +32,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://record.betonlineaffiliates.ag/_6DV8-IUj_sbYJMJFEJBL7mNd7ZgqdRLk/1/",
     logoUrl: "/logos/affiliates/betonline.png",
-    aliases: ["betonline", "bet online", "betonline.ag"],
+    aliases: ["betonline", "bet online", "betonline.ag", "betonlineag"],
     sports: [
       "Football",
       "NBA",
@@ -97,7 +97,7 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
     baseUrl:
       "https://record.webpartners.co/_BhuVJrZ91xv2Bt63Rqn6jGNd7ZgqdRLk/1/",
     logoUrl: "/logos/affiliates/mybookie.png",
-    aliases: ["mybookie", "my bookie", "mybookie.ag"],
+    aliases: ["mybookie", "my bookie", "mybookie.ag", "mybookieag"],
     sports: [
       "Football",
       "NBA",
@@ -375,7 +375,8 @@ export const AFFILIATE_SITES: AffiliateSite[] = [
 // HELPERS
 // ======================
 
-function normalizeBookmakerName(value: string): string {
+export function normalizeBookmakerName(value: string | null | undefined): string {
+  if (!value || typeof value !== "string") return "";
   return value
     .toLowerCase()
     .trim()
@@ -400,7 +401,8 @@ function supportsSport(site: AffiliateSite, sport: string): boolean {
     return (
       normalizedItem === normalizedSport ||
       normalizedItem.includes(normalizedSport) ||
-      normalizedSport.includes(normalizedItem) ||
+      sport.toLowerCase().includes(item.toLowerCase()) ||
+      item.toLowerCase().includes(sport.toLowerCase()) ||
       (normalizedSport === "mlb" && normalizedItem.includes("baseball")) ||
       (normalizedSport === "mma" && normalizedItem.includes("mma")) ||
       (normalizedSport === "mma" && normalizedItem.includes("boxing"))
@@ -484,9 +486,11 @@ export function getPartnerList(count: number = 3, countryCode?: string) {
 }
 
 export function findAffiliateSiteByName(
-  bookmakerName: string
+  bookmakerName: string | null | undefined
 ): AffiliateSite | undefined {
+  if (!bookmakerName || typeof bookmakerName !== "string") return undefined;
   const normalized = normalizeBookmakerName(bookmakerName);
+  if (!normalized) return undefined;
 
   return AFFILIATE_SITES.filter(isSiteEnabled).find((site) => {
     const candidates = [site.id, site.name, ...(site.aliases ?? [])].map(
@@ -498,14 +502,14 @@ export function findAffiliateSiteByName(
 }
 
 export function getExactBookmakerAffiliateUrl(
-  bookmakerName: string
+  bookmakerName: string | null | undefined
 ): string | null {
   const match = findAffiliateSiteByName(bookmakerName);
   return match ? buildAffiliateUrl(match, "matchcard") : null;
 }
 
 export function getSiteByBookmakerName(
-  bookmakerName: string
+  bookmakerName: string | null | undefined
 ): AffiliateSite | undefined {
   return findAffiliateSiteByName(bookmakerName);
 }
