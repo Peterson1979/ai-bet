@@ -24,7 +24,7 @@ const en: LegalLocaleContent = {
   "privacy-policy": doc(
     "Privacy Policy",
     "How MatchSignal processes personal data, including contact messages, analytics, advertising and affiliate interactions.",
-    ["This notice explains how MatchSignal processes personal data and how you can exercise your rights under the General Data Protection Regulation (GDPR). Forray Gyöngyi determines the purposes and means of the processing described here and is the data controller."],
+    ["This notice explains how MatchSignal processes personal data and how you can exercise your rights under the General Data Protection Regulation (GDPR). Oberhauser Péter Zoltán determines the purposes and means of the processing described here and is the data controller."],
     [
       { heading: "Data we process", bullets: ["Consent preference data stored in your browser, including the analytics choice and timestamp.", "Contact-form data: name, email address, message and anti-abuse fields; the server also uses the requesting IP address for short-lived rate limiting.", "With consent, GA4 device, browser, referral, page-view and usage data, plus coarse location derived by Google.", "Advertising and consent signals that Google may process when AdSense or a Google consent service is available.", "Affiliate-click event data sent to GA4 only with analytics consent: partner name, sport, market and placement; full tracking URLs and personal details are not sent in that event.", "Technical request, security and server-log data processed by the hosting infrastructure." ] },
       { heading: "Purposes and legal bases", table: { headers: ["Purpose", "Data", "Legal basis"], rows: [
@@ -103,7 +103,7 @@ const en: LegalLocaleContent = {
     { heading: "Your responsibility", paragraphs: ["Nothing on MatchSignal is financial, investment, legal or professional gambling advice. Decide independently, use only affordable stakes and accept that the whole stake may be lost."] },
   ], { showOperator: true, updated }),
   "legal-notice": doc("Legal Notice", "Operator, registry, contact and hosting information for MatchSignal.", ["Website: MatchSignal · https://www.matchsignal.pro. MatchSignal is an informational sports-analysis website and is not a sportsbook, gambling operator or payment provider."], [
-    { heading: "Operator and responsibility", paragraphs: ["Forray Gyöngyi is both the website maintainer / technical operator and the commercial / affiliate activity operator. She is the data controller where MatchSignal determines the purposes and means of personal-data processing."] },
+    { heading: "Operator and responsibility", paragraphs: ["Oberhauser Péter Zoltán is both the website maintainer / technical operator and the commercial / affiliate activity operator. She is the data controller where MatchSignal determines the purposes and means of personal-data processing."] },
     { heading: "Registry", paragraphs: ["The relevant registry system is the Hungarian Individual Entrepreneurs Registry, operated by the Hungarian National Tax and Customs Administration (NAV). No chamber number or telephone number is stated because none has been supplied or verified."] },
     { heading: "Hosting", paragraphs: ["The verified deployment stack uses Vercel, Inc. for website hosting and delivery infrastructure."] },
     { heading: "Contacts", bullets: ["General: contact@matchsignal.pro", "Legal and formal notices: legal@matchsignal.pro", "Privacy and data rights: privacy@matchsignal.pro"] },

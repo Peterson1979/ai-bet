@@ -57,7 +57,7 @@ const hu = build({
   updated: "Utolsó frissítés: 2026. augusztus 20.",
   privacy: {
     title: "Adatvédelmi tájékoztató", description: "A MatchSignal személyesadat-kezelése, ideértve a kapcsolatfelvételt, analitikát, hirdetést és affiliate interakciókat.",
-    intro: "Ez a tájékoztató bemutatja, hogyan kezeli a MatchSignal a személyes adatokat a GDPR szerint. Forray Gyöngyi határozza meg az itt leírt adatkezelések célját és eszközeit, ezért adatkezelő.",
+    intro: "Ez a tájékoztató bemutatja, hogyan kezeli a MatchSignal a személyes adatokat a GDPR szerint. Oberhauser Péter Zoltán határozza meg az itt leírt adatkezelések célját és eszközeit, ezért adatkezelő.",
     sections: [
       ["Kezelt adatok", "A hozzájárulási beállítást és időbélyegét a böngésző tárolja. A kapcsolatfelvételi űrlap nevet, e-mail-címet, üzenetet és visszaélés-megelőzési mezőket kezel; az IP-cím rövid idejű korlátozásra szolgál. Hozzájárulással a GA4 eszköz-, böngésző-, hivatkozó-, oldalmegtekintési és használati adatokat, valamint durva helyadatot kezelhet. A Google hirdetési és hozzájárulási jeleket is kezelhet. A tárhely technikai kérés-, biztonsági és szervernapló-adatokat dolgozhat fel."],
       ["Célok és jogalapok", "A szükséges működés és biztonság jogalapja a jogos érdek (GDPR 6. cikk (1) f)). A kapcsolatfelvétel megválaszolása a kért szerződéskötést megelőző lépés (6. cikk (1) b)) vagy jogos érdek. A GA4 mérés és a hozzájárulást igénylő Google-hirdetés jogalapja a hozzájárulás (6. cikk (1) a)). Az affiliate céloldali hozzárendelés jogos kereskedelmi érdekeken és a partner feltételein alapul; a MatchSignal GA4 kattintásmérése csak analitikai hozzájárulással történik."],
@@ -127,7 +127,7 @@ const hu = build({
     ["Saját felelősség", "A tartalom nem pénzügyi, befektetési, jogi vagy szakmai fogadási tanács. Csak megfizethető téttel, önállóan döntsön, a teljes veszteség lehetőségével."],
   ]},
   notice: { title: "Jogi nyilatkozat / Impresszum", description: "A MatchSignal üzemeltetői, nyilvántartási, kapcsolati és tárhelyadatai.", intro: "Weboldal: MatchSignal · https://www.matchsignal.pro. A MatchSignal tájékoztató sportelemző oldal, nem fogadóiroda, szerencsejáték- vagy fizetési szolgáltató.", sections: [
-    ["Üzemeltető és felelősség", "Forray Gyöngyi a weboldal karbantartója és technikai üzemeltetője, a kereskedelmi és affiliate tevékenység üzemeltetője, valamint adatkezelő, ahol a MatchSignal határozza meg az adatkezelés célját."],
+    ["Üzemeltető és felelősség", "Oberhauser Péter Zoltán a weboldal karbantartója és technikai üzemeltetője, a kereskedelmi és affiliate tevékenység üzemeltetője, valamint adatkezelő, ahol a MatchSignal határozza meg az adatkezelés célját."],
     ["Nyilvántartás", "Az Egyéni Vállalkozók Nyilvántartását a Nemzeti Adó- és Vámhivatal (NAV) működteti. Kamarai számot vagy telefonszámot nem közlünk, mert ilyet nem adtak meg és nem igazoltak."],
     ["Tárhely", "Az igazolt telepítési környezetben a Vercel, Inc. nyújtja a webtárhelyet és kézbesítési infrastruktúrát."],
     ["Kapcsolat", "Általános: contact@matchsignal.pro. Jogi: legal@matchsignal.pro. Adatvédelem: privacy@matchsignal.pro."],
@@ -136,7 +136,7 @@ const hu = build({
 
 const de = build({
   updated: "Zuletzt aktualisiert: 20. August 2026",
-  privacy: { title: "Datenschutzerklärung", description: "Verarbeitung personenbezogener Daten durch MatchSignal, einschließlich Kontakt, Analyse, Werbung und Affiliate-Interaktionen.", intro: "Diese Erklärung beschreibt die Verarbeitung nach der DSGVO. Forray Gyöngyi bestimmt die Zwecke und Mittel der hier beschriebenen Verarbeitungen und ist Verantwortliche.", sections: [
+  privacy: { title: "Datenschutzerklärung", description: "Verarbeitung personenbezogener Daten durch MatchSignal, einschließlich Kontakt, Analyse, Werbung und Affiliate-Interaktionen.", intro: "Diese Erklärung beschreibt die Verarbeitung nach der DSGVO. Oberhauser Péter Zoltán bestimmt die Zwecke und Mittel der hier beschriebenen Verarbeitungen und ist Verantwortliche.", sections: [
     ["Verarbeitete Daten", "Verarbeitet werden die im Browser gespeicherte Einwilligungswahl samt Zeitstempel; bei Kontakt Name, E-Mail, Nachricht und Missbrauchsschutzfelder sowie die IP-Adresse für eine kurzzeitige Begrenzung; mit Einwilligung GA4-Geräte-, Browser-, Verweis-, Seitenaufruf-, Nutzungs- und grobe Standortdaten; gegebenenfalls Google-Werbe- und Einwilligungssignale; außerdem technische Anfrage-, Sicherheits- und Serverprotokolldaten der Hosting-Infrastruktur."],
     ["Zwecke und Rechtsgrundlagen", "Erforderlicher Betrieb und Sicherheit beruhen auf berechtigten Interessen (Art. 6 Abs. 1 lit. f DSGVO). Kontaktantworten beruhen gegebenenfalls auf vorvertraglichen Schritten (lit. b), sonst auf berechtigtem Interesse. GA4 und einwilligungspflichtige Google-Werbung beruhen auf Einwilligung (lit. a). Zielseitige Affiliate-Zuordnung richtet sich nach Partnerbedingungen und berechtigtem Geschäftsinteresse; MatchSignal misst Klicks in GA4 nur mit Analyse-Einwilligung."],
     ["Notwendiger Browserspeicher", "matchsignal_consent im localStorage enthält die Analysewahl, einen im MatchSignal-Fallback stets falschen Werbewert und einen Zeitstempel. Er bleibt bis zur Änderung oder Löschung der Websitedaten. Die Sprache stammt aus der URL und wird derzeit nicht separat gespeichert."],
@@ -198,7 +198,7 @@ const de = build({
     ["Eigene Verantwortung", "Keine Finanz-, Anlage-, Rechts- oder professionelle Wettberatung. Entscheiden Sie unabhängig, nur mit tragbaren Einsätzen und der Möglichkeit des Totalverlusts."],
   ]},
   notice: { title: "Impressum / Rechtliche Hinweise", description: "Betreiber-, Register-, Kontakt- und Hostingangaben für MatchSignal.", intro: "Website: MatchSignal · https://www.matchsignal.pro. MatchSignal ist eine Informationsseite für Sportanalysen und kein Buchmacher, Glücksspiel- oder Zahlungsanbieter.", sections: [
-    ["Betreiberin", "Forray Gyöngyi ist Website-Betreiberin und technisch Verantwortliche, Betreiberin der kommerziellen/Affiliate-Tätigkeit sowie Verantwortliche, wo MatchSignal Zwecke der Datenverarbeitung bestimmt."],
+    ["Betreiberin", "Oberhauser Péter Zoltán ist Website-Betreiberin und technisch Verantwortliche, Betreiberin der kommerziellen/Affiliate-Tätigkeit sowie Verantwortliche, wo MatchSignal Zwecke der Datenverarbeitung bestimmt."],
     ["Register", "Das ungarische Einzelunternehmerregister wird von der ungarischen Nationalen Steuer- und Zollverwaltung (NAV) geführt. Kammernummer und Telefon werden mangels verifizierter Angaben nicht erfunden."],
     ["Hosting", "Der verifizierte Deployment-Stack nutzt Vercel, Inc. für Hosting und Auslieferungsinfrastruktur."],
     ["Kontakt", "Allgemein: contact@matchsignal.pro. Rechtlich: legal@matchsignal.pro. Datenschutz: privacy@matchsignal.pro."],
@@ -207,7 +207,7 @@ const de = build({
 
 const fr = build({
   updated: "Dernière mise à jour : 20 août 2026",
-  privacy: { title: "Politique de confidentialité", description: "Traitement des données personnelles par MatchSignal : contact, analyse, publicité et affiliation.", intro: "Cette notice explique le traitement au titre du RGPD. Forray Gyöngyi détermine les finalités et moyens décrits ici et agit comme responsable du traitement.", sections: [
+  privacy: { title: "Politique de confidentialité", description: "Traitement des données personnelles par MatchSignal : contact, analyse, publicité et affiliation.", intro: "Cette notice explique le traitement au titre du RGPD. Oberhauser Péter Zoltán détermine les finalités et moyens décrits ici et agit comme responsable du traitement.", sections: [
     ["Données traitées", "Sont traités le choix de consentement et son horodatage dans le navigateur ; pour le contact, le nom, l'e-mail, le message, les champs anti-abus et l'adresse IP pour une limitation brève ; avec consentement, les données GA4 d'appareil, navigateur, provenance, pages, usage et localisation approximative ; les signaux publicitaires/de consentement Google lorsqu'ils sont disponibles ; et les requêtes techniques, données de sécurité et journaux du service d'hébergement."],
     ["Finalités et bases juridiques", "Le fonctionnement nécessaire et la sécurité reposent sur l'intérêt légitime (art. 6(1)(f) RGPD). La réponse à un contact repose, selon le cas, sur des mesures précontractuelles (art. 6(1)(b)) ou l'intérêt légitime. GA4 et la publicité Google soumise à consentement reposent sur celui-ci (art. 6(1)(a)). L'attribution d'affiliation à destination dépend des conditions du partenaire et d'intérêts commerciaux légitimes ; MatchSignal ne mesure le clic dans GA4 qu'avec consentement analytique."],
     ["Stockage nécessaire", "matchsignal_consent dans localStorage contient le choix analytique, une valeur publicitaire toujours fausse dans le mécanisme de secours MatchSignal, et un horodatage. Il reste jusqu'à modification ou suppression des données du site. La langue vient de l'URL et n'est pas stockée séparément."],
@@ -269,7 +269,7 @@ const fr = build({
     ["Votre responsabilité", "Aucun conseil financier, d'investissement, juridique ou professionnel. Décidez seul, avec mises abordables et risque de perte totale."],
   ]},
   notice: { title: "Mentions légales", description: "Exploitante, registre, contacts et hébergement de MatchSignal.", intro: "Site : MatchSignal · https://www.matchsignal.pro. MatchSignal est un site informatif d'analyse sportive, pas un bookmaker, opérateur de jeu ou prestataire de paiement.", sections: [
-    ["Exploitante", "Forray Gyöngyi assure maintenance et exploitation technique, activité commerciale/affiliation, et agit comme responsable lorsque MatchSignal détermine les finalités."],
+    ["Exploitante", "Oberhauser Péter Zoltán assure maintenance et exploitation technique, activité commerciale/affiliation, et agit comme responsable lorsque MatchSignal détermine les finalités."],
     ["Registre", "Le Registre hongrois des entrepreneurs individuels est exploité par l'Administration nationale des impôts et douanes (NAV). Aucun numéro de chambre ou téléphone n'est inventé faute de vérification."],
     ["Hébergement", "La pile vérifiée utilise Vercel, Inc. pour l'hébergement et la diffusion."],
     ["Contacts", "Général : contact@matchsignal.pro. Juridique : legal@matchsignal.pro. Vie privée : privacy@matchsignal.pro."],
@@ -278,7 +278,7 @@ const fr = build({
 
 const es = build({
   updated: "Última actualización: 20 de agosto de 2026",
-  privacy: { title: "Política de privacidad", description: "Tratamiento de datos personales por MatchSignal: contacto, analítica, publicidad y afiliación.", intro: "Este aviso explica el tratamiento conforme al RGPD. Forray Gyöngyi determina los fines y medios aquí descritos y es la responsable del tratamiento.", sections: [
+  privacy: { title: "Política de privacidad", description: "Tratamiento de datos personales por MatchSignal: contacto, analítica, publicidad y afiliación.", intro: "Este aviso explica el tratamiento conforme al RGPD. Oberhauser Péter Zoltán determina los fines y medios aquí descritos y es la responsable del tratamiento.", sections: [
     ["Datos tratados", "Se tratan la preferencia de consentimiento y su marca temporal en el navegador; en contacto, nombre, email, mensaje, campos antiabuso e IP para un límite breve; con consentimiento, datos GA4 de dispositivo, navegador, referencia, páginas, uso y ubicación aproximada; señales publicitarias/de consentimiento de Google cuando estén disponibles; y solicitudes técnicas, seguridad y registros del alojamiento."],
     ["Fines y bases jurídicas", "El funcionamiento necesario y la seguridad se basan en interés legítimo (art. 6.1.f RGPD). Responder contactos se basa, según el caso, en medidas precontractuales (art. 6.1.b) o interés legítimo. GA4 y la publicidad Google que requiere permiso se basan en consentimiento (art. 6.1.a). La atribución afiliada en destino depende de condiciones del socio e interés comercial legítimo; MatchSignal mide clics en GA4 solo con consentimiento analítico."],
     ["Almacenamiento necesario", "matchsignal_consent en localStorage contiene la opción analítica, un valor publicitario siempre falso en el respaldo de MatchSignal y una marca temporal. Persiste hasta cambiarse o borrar datos del sitio. El idioma viene de la URL y no se guarda aparte."],
@@ -340,7 +340,7 @@ const es = build({
     ["Responsabilidad", "No es asesoramiento financiero, de inversión, jurídico ni profesional. Decida solo, con importes asequibles y riesgo de pérdida total."],
   ]},
   notice: { title: "Aviso legal", description: "Operadora, registro, contactos y alojamiento de MatchSignal.", intro: "Sitio: MatchSignal · https://www.matchsignal.pro. Es un sitio informativo de análisis deportivo, no casa de apuestas, operador de juego ni pagos.", sections: [
-    ["Operadora", "Forray Gyöngyi mantiene y opera técnicamente el sitio, opera la actividad comercial/afiliada y es responsable cuando MatchSignal determina fines del tratamiento."],
+    ["Operadora", "Oberhauser Péter Zoltán mantiene y opera técnicamente el sitio, opera la actividad comercial/afiliada y es responsable cuando MatchSignal determina fines del tratamiento."],
     ["Registro", "El Registro húngaro de Empresarios Individuales lo opera la Administración Nacional de Impuestos y Aduanas (NAV). No se inventan número de cámara ni teléfono no verificados."],
     ["Alojamiento", "La pila verificada usa Vercel, Inc. para alojamiento y entrega."],
     ["Contactos", "General: contact@matchsignal.pro. Legal: legal@matchsignal.pro. Privacidad: privacy@matchsignal.pro."],
@@ -349,7 +349,7 @@ const es = build({
 
 const it = build({
   updated: "Ultimo aggiornamento: 20 agosto 2026",
-  privacy: { title: "Informativa sulla privacy", description: "Trattamento dei dati personali da parte di MatchSignal: contatti, analisi, pubblicità e affiliazione.", intro: "Questa informativa descrive il trattamento ai sensi del GDPR. Forray Gyöngyi determina finalità e mezzi qui descritti ed è titolare del trattamento.", sections: [
+  privacy: { title: "Informativa sulla privacy", description: "Trattamento dei dati personali da parte di MatchSignal: contatti, analisi, pubblicità e affiliazione.", intro: "Questa informativa descrive il trattamento ai sensi del GDPR. Oberhauser Péter Zoltán determina finalità e mezzi qui descritti ed è titolare del trattamento.", sections: [
     ["Dati trattati", "Sono trattati la scelta di consenso e la sua data nel browser; nel contatto nome, e-mail, messaggio, campi antiabuso e IP per una breve limitazione; con consenso dati GA4 su dispositivo, browser, provenienza, pagine, utilizzo e posizione approssimativa; segnali pubblicitari/di consenso Google quando disponibili; richieste tecniche, sicurezza e log dell'hosting."],
     ["Finalità e basi giuridiche", "Funzionamento necessario e sicurezza si basano sul legittimo interesse (art. 6(1)(f) GDPR). La risposta ai contatti si basa, secondo il caso, su misure precontrattuali (art. 6(1)(b)) o interesse legittimo. GA4 e pubblicità Google soggetta a consenso si basano sul consenso (art. 6(1)(a)). L'attribuzione affiliata a destinazione segue termini del partner e interessi commerciali legittimi; MatchSignal misura il clic in GA4 solo con consenso analitico."],
     ["Archiviazione necessaria", "matchsignal_consent in localStorage contiene la scelta analitica, un valore pubblicitario sempre falso nel fallback MatchSignal e la data. Resta fino a modifica o cancellazione dei dati del sito. La lingua deriva dall'URL e non viene memorizzata separatamente."],
@@ -411,7 +411,7 @@ const it = build({
     ["Responsabilità", "Non è consulenza finanziaria, d'investimento, legale o professionale. Decidere autonomamente, con somme sostenibili e rischio di perdita totale."],
   ]},
   notice: { title: "Note legali", description: "Titolare, registro, contatti e hosting MatchSignal.", intro: "Sito: MatchSignal · https://www.matchsignal.pro. È un sito informativo di analisi sportiva, non bookmaker, operatore di gioco o pagamenti.", sections: [
-    ["Titolare", "Forray Gyöngyi mantiene e gestisce tecnicamente il sito, gestisce attività commerciale/affiliata ed è titolare quando MatchSignal determina le finalità."],
+    ["Titolare", "Oberhauser Péter Zoltán mantiene e gestisce tecnicamente il sitio, gestisce attività commerciale/affiliata ed è titolare quando MatchSignal determina le finalità."],
     ["Registro", "Il Registro ungherese degli imprenditori individuali è gestito dall'Amministrazione nazionale fiscale e doganale (NAV). Non si inventano numero camerale o telefono non verificati."],
     ["Hosting", "Lo stack verificato usa Vercel, Inc. per hosting e distribuzione."],
     ["Contatti", "Generale: contact@matchsignal.pro. Legale: legal@matchsignal.pro. Privacy: privacy@matchsignal.pro."],
@@ -420,7 +420,7 @@ const it = build({
 
 const pt = build({
   updated: "Última atualização: 20 de agosto de 2026",
-  privacy: { title: "Política de privacidade", description: "Tratamento de dados pessoais pelo MatchSignal: contacto, análises, publicidade e afiliação.", intro: "Este aviso explica o tratamento ao abrigo do RGPD. Forray Gyöngyi determina as finalidades e os meios aqui descritos e é responsável pelo tratamento.", sections: [
+  privacy: { title: "Política de privacidade", description: "Tratamento de dados pessoais pelo MatchSignal: contacto, análises, publicidade e afiliação.", intro: "Este aviso explica o tratamento ao abrigo do RGPD. Oberhauser Péter Zoltán determina as finalidades e os meios aqui descritos e é responsável pelo tratamento.", sections: [
     ["Dados tratados", "São tratados a preferência de consentimento e data no navegador; no contacto, nome, e-mail, mensagem, campos antiabuso e IP para limitação breve; com consentimento, dados GA4 de dispositivo, navegador, referência, páginas, utilização e localização aproximada; sinais publicitários/de consentimento Google quando disponíveis; e pedidos técnicos, segurança e registos do alojamento."],
     ["Finalidades e bases legais", "Operação necessária e segurança baseiam-se em interesse legítimo (art. 6(1)(f) RGPD). Responder ao contacto baseia-se, conforme o caso, em medidas pré-contratuais (art. 6(1)(b)) ou interesse legítimo. GA4 e publicidade Google sujeita a permissão baseiam-se no consentimento (art. 6(1)(a)). A atribuição afiliada no destino depende dos termos do parceiro e de interesse comercial legítimo; o MatchSignal mede cliques no GA4 apenas com consentimento analítico."],
     ["Armazenamento necessário", "matchsignal_consent no localStorage contém a opção analítica, um valor publicitário sempre falso no fallback MatchSignal e uma data. Persiste até alteração ou limpeza dos dados do site. O idioma vem do URL e não é guardado separadamente."],
@@ -482,7 +482,7 @@ const pt = build({
     ["Responsabilidade", "Não é aconselhamento financeiro, investimento, jurídico ou profissional. Decida autonomamente, com valores acessíveis e risco de perda total."],
   ]},
   notice: { title: "Aviso legal", description: "Operadora, registo, contactos e alojamento MatchSignal.", intro: "Site: MatchSignal · https://www.matchsignal.pro. É um site informativo de análise desportiva, não casa de apostas, operador de jogo ou pagamentos.", sections: [
-    ["Operadora", "Forray Gyöngyi mantém e opera tecnicamente o site, gere atividade comercial/afiliada e é responsável quando MatchSignal determina finalidades."],
+    ["Operadora", "Oberhauser Péter Zoltán mantém e opera tecnicamente o site, gere atividade comercial/afiliada e é responsável quando MatchSignal determina finalidades."],
     ["Registo", "O Registo húngaro de Empresários Individuais é operado pela Administração Nacional Tributária e Aduaneira (NAV). Não se inventam número de câmara ou telefone não verificados."],
     ["Alojamento", "A pilha verificada usa Vercel, Inc. para alojamento e entrega."],
     ["Contactos", "Geral: contact@matchsignal.pro. Legal: legal@matchsignal.pro. Privacidade: privacy@matchsignal.pro."],
@@ -491,7 +491,7 @@ const pt = build({
 
 const ar = build({
   updated: "آخر تحديث: 20 أغسطس 2026",
-  privacy: { title: "سياسة الخصوصية", description: "معالجة MatchSignal للبيانات الشخصية في الاتصال والتحليلات والإعلانات والإحالة.", intro: "يشرح هذا الإشعار المعالجة بموجب اللائحة العامة لحماية البيانات. تحدد Forray Gyöngyi الأغراض والوسائل الموضحة هنا، ولذلك فهي المتحكمة بالبيانات.", sections: [
+  privacy: { title: "سياسة الخصوصية", description: "معالجة MatchSignal للبيانات الشخصية في الاتصال والتحليلات والإعلانات والإحالة.", intro: "يشرح هذا الإشعار المعالجة بموجب اللائحة العامة لحماية البيانات. تحدد Oberhauser Péter Zoltán الأغراض والوسائل الموضحة هنا، ولذلك فهي المتحكمة بالبيانات.", sections: [
     ["البيانات المعالجة", "نعالج اختيار الموافقة وطابعه الزمني في المتصفح؛ وفي نموذج الاتصال الاسم والبريد والرسالة وحقول مكافحة الإساءة وعنوان IP للحد القصير؛ وبالموافقة قد يعالج GA4 بيانات الجهاز والمتصفح والإحالة والصفحات والاستخدام والموقع التقريبي؛ وقد تعالج Google إشارات الإعلانات والموافقة عند توافرها؛ كما تعالج بنية الاستضافة بيانات الطلبات التقنية والأمان وسجلات الخادم."],
     ["الأغراض والأسس القانونية", "يعتمد التشغيل الضروري والأمان على المصلحة المشروعة (المادة 6(1)(f)). ويعتمد الرد على الاتصال، بحسب الحالة، على خطوات ما قبل التعاقد (6(1)(b)) أو المصلحة المشروعة. ويعتمد GA4 وإعلانات Google التي تتطلب إذنًا على الموافقة (6(1)(a)). يخضع إسناد الإحالة لدى الوجهة لشروط الشريك والمصلحة التجارية المشروعة؛ ولا يقيس MatchSignal النقر في GA4 إلا بموافقة التحليلات."],
     ["التخزين الضروري", "يحتوي matchsignal_consent في localStorage على اختيار التحليلات وقيمة إعلانات تبقى false في واجهة MatchSignal الاحتياطية وطابع زمني. يبقى حتى تغييره أو مسح بيانات الموقع. تأتي اللغة من URL ولا يخزنها MatchSignal منفصلة."],
@@ -553,7 +553,7 @@ const ar = build({
     ["مسؤوليتك", "ليست نصيحة مالية أو استثمارية أو قانونية أو مهنية. قرر باستقلال وبمبالغ ميسورة مع احتمال الخسارة الكاملة."],
   ]},
   notice: { title: "إشعار قانوني", description: "المشغّلة والسجل والاتصالات والاستضافة لدى MatchSignal.", intro: "الموقع: MatchSignal · https://www.matchsignal.pro. هو موقع معلومات وتحليل رياضي، وليس موقع مراهنات أو مشغل قمار أو دفع.", sections: [
-    ["المشغّلة", "Forray Gyöngyi تصون الموقع وتشغله تقنيًا، وتدير النشاط التجاري والإحالة، وتكون المتحكمة عندما تحدد MatchSignal أغراض المعالجة."],
+    ["المشغّلة", "Oberhauser Péter Zoltán تصون الموقع وتشغله تقنيًا، وتدير النشاط التجاري والإحالة، وتكون المتحكمة عندما تحدد MatchSignal أغراض المعالجة."],
     ["السجل", "تدير الإدارة الوطنية المجرية للضرائب والجمارك (NAV) سجل رواد الأعمال الأفراد. لا نخترع رقم غرفة أو هاتف غير موثق."],
     ["الاستضافة", "تستخدم البنية الموثقة Vercel, Inc. للاستضافة والتسليم."],
     ["الاتصالات", "عام: contact@matchsignal.pro. قانوني: legal@matchsignal.pro. خصوصية: privacy@matchsignal.pro."],
@@ -562,7 +562,7 @@ const ar = build({
 
 const zh = build({
   updated: "最后更新：2026年8月20日",
-  privacy: { title: "隐私政策", description: "MatchSignal 对联系、分析、广告及联盟互动中的个人数据处理说明。", intro: "本说明依据 GDPR 解释数据处理。Forray Gyöngyi 决定本文所述处理的目的与方式，因此担任数据控制者。", sections: [
+  privacy: { title: "隐私政策", description: "MatchSignal 对联系、分析、广告及联盟互动中的个人数据处理说明。", intro: "本说明依据 GDPR 解释数据处理。Oberhauser Péter Zoltán 决定本文所述处理的目的与方式，因此担任数据控制者。", sections: [
     ["处理的数据", "我们处理浏览器中的同意选择及时间戳；联系表单中的姓名、邮箱、消息、反滥用字段及用于短期限流的 IP；经同意后，GA4 可处理设备、浏览器、来源、页面、使用情况及粗略位置数据；Google 可在可用时处理广告与同意信号；托管基础设施还处理技术请求、安全及服务器日志数据。"],
     ["目的与法律依据", "必要运行与安全基于合法利益（GDPR 第6(1)(f)条）。回复联系请求视情况基于合同前措施（第6(1)(b)条）或合法利益。GA4 及需许可的 Google 广告基于同意（第6(1)(a)条）。目标网站的联盟归因依其条款及合法商业利益；MatchSignal 仅在分析同意后通过 GA4 记录点击。"],
     ["必要浏览器存储", "localStorage 中的 matchsignal_consent 保存分析选择、在 MatchSignal 备用界面中始终为 false 的广告值及时间戳，直至更改或清除网站数据。语言来自 URL，目前不另行存储。"],
@@ -624,7 +624,7 @@ const zh = build({
     ["您的责任", "内容不是财务、投资、法律或专业博彩建议。请独立决定，仅使用可承受金额并接受全损风险。"],
   ]},
   notice: { title: "法律声明", description: "MatchSignal 运营者、登记、联系方式及托管信息。", intro: "网站：MatchSignal · https://www.matchsignal.pro。MatchSignal 是体育分析信息网站，不是博彩公司、赌博或支付运营商。", sections: [
-    ["运营者", "Forray Gyöngyi 负责网站维护和技术运营、商业/联盟活动，并在 MatchSignal 决定处理目的时担任数据控制者。"],
+    ["运营者", "Oberhauser Péter Zoltán 负责网站维护和技术运营、商业/联盟活动，并在 MatchSignal 决定处理目的时担任数据控制者。"],
     ["登记", "匈牙利个体经营者登记册由匈牙利国家税务和海关管理局（NAV）运营。未提供或核实的商会编号、电话不会被虚构。"],
     ["托管", "经核实的部署栈使用 Vercel, Inc. 提供托管与交付。"],
     ["联系方式", "一般：contact@matchsignal.pro。法律：legal@matchsignal.pro。隐私：privacy@matchsignal.pro。"],
@@ -633,7 +633,7 @@ const zh = build({
 
 const ja = build({
   updated: "最終更新日：2026年8月20日",
-  privacy: { title: "プライバシーポリシー", description: "連絡、分析、広告、アフィリエイトにおける MatchSignal の個人データ処理。", intro: "本通知は GDPR に基づく処理を説明します。Forray Gyöngyi はここに記載する処理の目的と手段を決定するデータ管理者です。", sections: [
+  privacy: { title: "プライバシーポリシー", description: "連絡、分析、広告、アフィリエイトにおける MatchSignal の個人データ処理。", intro: "本通知は GDPR に基づく処理を説明します。Oberhauser Péter Zoltán はここに記載する処理の目的と手段を決定するデータ管理者です。", sections: [
     ["処理するデータ", "ブラウザに保存される同意選択と時刻、問い合わせ時の氏名・メール・本文・不正対策項目および短時間のレート制限に用いる IP、同意後の GA4 の端末・ブラウザ・参照元・ページ・利用状況・概略位置、利用可能な Google 広告/同意シグナル、ホスティングの技術リクエスト・セキュリティ・サーバーログを処理します。"],
     ["目的と法的根拠", "必要な運営と安全は正当な利益（GDPR 6(1)(f)）に基づきます。問い合わせ対応は状況により契約前措置（6(1)(b)）または正当な利益、GA4 と同意を要する Google 広告は同意（6(1)(a)）に基づきます。遷移先のアフィリエイト帰属は提携先条件と正当な商業利益に従い、MatchSignal の GA4 クリック計測は分析同意時のみです。"],
     ["必要なブラウザ保存", "localStorage の matchsignal_consent は分析選択、MatchSignal 予備画面で常に false の広告値、時刻を保持し、変更またはサイトデータ消去まで残ります。言語は URL から取得し、別途保存しません。"],
@@ -695,7 +695,7 @@ const ja = build({
     ["自己責任", "金融、投資、法務、専門的賭博助言ではありません。無理のない金額で独立判断し、全損を受け入れてください。"],
   ]},
   notice: { title: "法的表示", description: "MatchSignal の運営者、登録、連絡先、ホスティング。", intro: "サイト：MatchSignal · https://www.matchsignal.pro。スポーツ分析情報サイトで、ブックメーカー、賭博、決済事業者ではありません。", sections: [
-    ["運営者", "Forray Gyöngyi はサイト保守・技術運営、商業/アフィリエイト活動を行い、MatchSignal が処理目的を決める場合のデータ管理者です。"],
+    ["運営者", "Oberhauser Péter Zoltán はサイト保守・技術運営、商業/アフィリエイト活動を行い、MatchSignal が処理目的を決める場合のデータ管理者です。"],
     ["登録", "ハンガリー個人事業主登録簿はハンガリー国税関税庁（NAV）が運営します。未提供・未確認の商工会番号や電話は記載しません。"],
     ["ホスティング", "確認済み構成は Vercel, Inc. をホスティングと配信に使用します。"],
     ["連絡先", "一般：contact@matchsignal.pro。法務：legal@matchsignal.pro。プライバシー：privacy@matchsignal.pro。"],
@@ -704,7 +704,7 @@ const ja = build({
 
 const hi = build({
   updated: "अंतिम अपडेट: 20 अगस्त 2026",
-  privacy: { title: "गोपनीयता नीति", description: "संपर्क, एनालिटिक्स, विज्ञापन और एफिलिएट संवाद में MatchSignal द्वारा व्यक्तिगत डेटा प्रसंस्करण।", intro: "यह सूचना GDPR के अंतर्गत प्रसंस्करण समझाती है। Forray Gyöngyi यहाँ वर्णित उद्देश्य और साधन तय करती हैं और डेटा नियंत्रक हैं।", sections: [
+  privacy: { title: "गोपनीयता नीति", description: "संपर्क, एनालिटिक्स, विज्ञापन और एफिलिएट संवाद में MatchSignal द्वारा व्यक्तिगत डेटा प्रसंस्करण।", intro: "यह सूचना GDPR के अंतर्गत प्रसंस्करण समझाती है। Oberhauser Péter Zoltán यहाँ वर्णित उद्देश्य और साधन तय करती हैं और डेटा नियंत्रक हैं।", sections: [
     ["प्रसंस्कृत डेटा", "ब्राउज़र में सहमति विकल्प व समय; संपर्क में नाम, ईमेल, संदेश, दुरुपयोग-रोधी फ़ील्ड और थोड़े समय की दर-सीमा हेतु IP; सहमति पर GA4 के डिवाइस, ब्राउज़र, रेफ़रल, पेज, उपयोग और मोटे स्थान डेटा; उपलब्ध Google विज्ञापन/सहमति संकेत; तथा होस्टिंग के तकनीकी अनुरोध, सुरक्षा और सर्वर लॉग डेटा संसाधित होते हैं।"],
     ["उद्देश्य और कानूनी आधार", "आवश्यक संचालन व सुरक्षा वैध हित (GDPR Art. 6(1)(f)) पर हैं। संपर्क उत्तर परिस्थिति अनुसार पूर्व-संविदात्मक कदम (6(1)(b)) या वैध हित पर है। GA4 और सहमति-आवश्यक Google विज्ञापन सहमति (6(1)(a)) पर हैं। गंतव्य एफिलिएट एट्रिब्यूशन भागीदार शर्तों/वैध व्यावसायिक हित पर है; MatchSignal GA4 क्लिक केवल एनालिटिक्स सहमति पर मापता है।"],
     ["आवश्यक ब्राउज़र स्टोरेज", "localStorage में matchsignal_consent एनालिटिक्स विकल्प, MatchSignal fallback में हमेशा false विज्ञापन मान और समय रखता है। यह बदलने या साइट डेटा साफ़ करने तक रहता है। भाषा URL से आती है और अलग संग्रहीत नहीं होती।"],
@@ -766,7 +766,7 @@ const hi = build({
     ["आपकी जिम्मेदारी", "यह financial, investment, legal या professional betting advice नहीं। independent decision, affordable amounts और total-loss risk स्वीकारें।"],
   ]},
   notice: { title: "कानूनी सूचना", description: "MatchSignal operator, registry, contacts और hosting।", intro: "Website: MatchSignal · https://www.matchsignal.pro। यह sports-analysis information site है, sportsbook, gambling operator या payment provider नहीं।", sections: [
-    ["Operator", "Forray Gyöngyi website maintenance/technical operation, commercial/affiliate activity चलाती हैं और जहाँ MatchSignal processing purposes तय करता है वहाँ data controller हैं।"],
+    ["Operator", "Oberhauser Péter Zoltán website maintenance/technical operation, commercial/affiliate activity चलाती हैं और जहाँ MatchSignal processing purposes तय करता है वहाँ data controller हैं।"],
     ["Registry", "Hungarian Individual Entrepreneurs Registry को Hungarian National Tax and Customs Administration (NAV) चलाता है। असत्यापित chamber number या phone नहीं बनाया जाता।"],
     ["Hosting", "Verified stack hosting/delivery हेतु Vercel, Inc. उपयोग करता है।"],
     ["Contacts", "General: contact@matchsignal.pro। Legal: legal@matchsignal.pro। Privacy: privacy@matchsignal.pro।"],

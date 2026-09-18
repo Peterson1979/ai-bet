@@ -4,7 +4,7 @@ import { getCookieSettingsLabel, getLegalDocument, getOperatorLabels } from "@/a
 import type { LegalSlug } from "@/app/lib/legal/types";
 
 const OPERATOR = {
-  name: "Forray Gyöngyi",
+  name: "Oberhauser Péter Zoltán",
   address: "7633 Pécs, Esztergár Lajos utca 9/B, Hungary",
   tax: "74264166-1-22",
   registration: "57756666",
