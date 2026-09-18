@@ -77,8 +77,7 @@ export default function ContactForm({ lang }: { lang: Lang }) {
               <div className="space-y-4 text-sm text-slate-300 leading-relaxed">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-wider text-slate-400">Data Controller / Operator</div>
-                  <div className="font-semibold text-white mt-0.5">Oberhauser Péter Zoltán (MatchSignal Operator)</div>
-                  <div className="text-xs text-slate-400">Budapest, Hungary (European Union)</div>
+                  <div className="font-semibold text-white mt-0.5">MatchSignal</div>
                 </div>
 
                 <div className="border-t border-cyan-400/10 pt-3">

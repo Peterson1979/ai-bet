@@ -1,34 +1,7 @@
 import ManageCookieButton from "@/app/components/ManageCookieButton";
 import type { Lang } from "@/app/lib/i18n";
-import { getCookieSettingsLabel, getLegalDocument, getOperatorLabels } from "@/app/lib/legal/content";
+import { getCookieSettingsLabel, getLegalDocument } from "@/app/lib/legal/content";
 import type { LegalSlug } from "@/app/lib/legal/types";
-
-const OPERATOR = {
-  name: "Oberhauser Péter Zoltán",
-  address: "7633 Pécs, Esztergár Lajos utca 9/B, Hungary",
-  tax: "74264166-1-22",
-  registration: "57756666",
-  contacts: "contact@matchsignal.pro · legal@matchsignal.pro · privacy@matchsignal.pro",
-} as const;
-
-function OperatorBlock({ lang }: { lang: Lang }) {
-  const labels = getOperatorLabels(lang);
-  return (
-    <section className="mt-10 rounded-2xl border border-cyan-400/20 bg-[#0B1220] p-5 md:p-6">
-      <h2 className="text-2xl font-bold text-white">{labels.heading}</h2>
-      <dl className="mt-4 grid gap-3 text-sm text-slate-300 sm:grid-cols-[minmax(170px,auto)_1fr]">
-        <dt className="font-semibold text-white">{labels.name}</dt><dd>{OPERATOR.name}</dd>
-        <dt className="font-semibold text-white">{labels.status}</dt><dd>{labels.statusValue}</dd>
-        <dt className="font-semibold text-white">{labels.address}</dt><dd>{OPERATOR.address}</dd>
-        <dt className="font-semibold text-white">{labels.tax}</dt><dd>{OPERATOR.tax}</dd>
-        <dt className="font-semibold text-white">{labels.registration}</dt><dd>{OPERATOR.registration}</dd>
-        <dt className="font-semibold text-white">{labels.registry}</dt><dd>{labels.registryValue}</dd>
-        <dt className="font-semibold text-white">{labels.roles}</dt><dd>{labels.rolesValue}</dd>
-        <dt className="font-semibold text-white">{labels.contact}</dt><dd>{OPERATOR.contacts}</dd>
-      </dl>
-    </section>
-  );
-}
 
 export default function LegalPage({ lang, slug }: { lang: Lang; slug: LegalSlug }) {
   const document = getLegalDocument(lang, slug);
@@ -73,7 +46,6 @@ export default function LegalPage({ lang, slug }: { lang: Lang; slug: LegalSlug 
       ))}
 
       {document.showCookieSettings && <div className="mt-8"><ManageCookieButton label={getCookieSettingsLabel(lang)} /></div>}
-      {document.showOperator && <OperatorBlock lang={lang} />}
 
       <p className="mt-10 text-sm text-slate-400">{document.updated}</p>
     </article>

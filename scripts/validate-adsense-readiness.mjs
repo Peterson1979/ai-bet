@@ -48,7 +48,8 @@ assert(!/redirect\(["']\/en\/(?:legal|about)/.test(activeUi), "English-only lega
 assert(!/news/i.test(sitemap), "Sitemap source contains news");
 assert(sitemap.includes("LEGAL_SLUGS") && legalTypes.includes('"legal-notice"'), "Legal Notice is not included through the sitemap legal loop");
 const legalRenderer = read("app/components/legal/LegalPage.tsx");
-assert(`${legalContent}\n${legalRenderer}`.includes("Oberhauser Péter Zoltán") && legalRenderer.includes("74264166-1-22") && legalRenderer.includes("57756666"), "Required operator data missing");
+assert(legalContent.includes("MatchSignal") && localizedLegal.includes("MatchSignal"), "MatchSignal site identity missing in legal content");
+assert(!/Oberhauser|Forray|74264166|57756666|7633\s*P[eé]cs|Eszterg[aá]r/i.test(`${legalContent}\n${localizedLegal}\n${legalRenderer}`), "Obsolete operator personal or tax information remains");
 
 for (const file of ["app/[lang]/page.tsx", "app/[lang]/[sport]/page.tsx", "app/[lang]/betting/page.tsx", "app/[lang]/tools/ToolsClient.tsx", "app/[lang]/betting-glossary/page.tsx"]) {
   assert(read(file).includes('lang === "hu" ? "HU" : undefined'), `Hungarian locale affiliate suppression missing in ${file}`);
