@@ -1,4 +1,4 @@
-import type { SafeProviderError } from "./types";
+import type { SafeProviderError, VideoSocialPlatform } from "./types";
 
 export const META_GRAPH_API_VERSION = "v25.0";
 export const META_GRAPH_BASE = `https://graph.facebook.com/${META_GRAPH_API_VERSION}`;
@@ -94,7 +94,7 @@ function normalizeProviderPayload(params: {
 
 export function toSafeProviderError(
   error: unknown,
-  provider: MetaProvider,
+  provider: VideoSocialPlatform,
   operation: string,
   secrets: readonly string[] = []
 ): SafeProviderError {

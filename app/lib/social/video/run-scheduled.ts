@@ -1,9 +1,17 @@
-import { VIDEO_SOCIAL_COOLDOWN_MS, parseVideoSocialMode } from "./config";
+import {
+  VIDEO_SOCIAL_COOLDOWN_MS,
+  parseVideoSocialMode,
+  parseYouTubePrivacyStatus,
+} from "./config";
 import { VIDEO_MANIFEST } from "./manifest";
 import { toSafeProviderError } from "./meta-request";
-import { preflightMetaVideoTarget, type EnvironmentSource } from "./preflight";
+import {
+  preflightSocialVideoTarget,
+  type EnvironmentSource,
+} from "./preflight";
 import { publishFacebookReel } from "./publish-facebook-reel";
 import { publishInstagramReel } from "./publish-instagram-reel";
+import { publishYouTubeVideo } from "./publish-youtube-video";
 import { selectLeastRecentlyUsedVideo } from "./select-video";
 import {
   acquireVideoSocialLock,
@@ -26,19 +34,17 @@ import type {
   VideoAsset,
   VideoLastSuccessHistory,
   VideoRunRecord,
+  VideoSocialPlatform,
   VideoTargetPublicationState,
 } from "./types";
 import { validateVideoSocialConfiguration } from "./validate";
-
-type MetaPlatform = "instagram" | "facebook";
-type MetaTarget = SocialTarget & { platform: MetaPlatform };
 
 export type ScheduledVideoSocialFailureLog = {
   event: "video_social_target_failure";
   runId: string;
   contentId: string;
   targetId: string;
-  platform: MetaPlatform;
+  platform: VideoSocialPlatform;
   apiOperation: string;
   providerHttpStatus: number | null;
   metaErrorCode: string | number | null;
@@ -59,12 +65,12 @@ export type ScheduledVideoSocialDependencies = {
   saveRun?: (record: VideoRunRecord) => Promise<unknown>;
   getPublicationState?: (
     runId: string,
-    platform: MetaPlatform,
+    platform: any,
     targetId: string
   ) => Promise<VideoTargetPublicationState | null>;
   savePublicationState?: (state: VideoTargetPublicationState) => Promise<unknown>;
   recordTargetSuccess?: (
-    platform: MetaPlatform,
+    platform: any,
     targetId: string,
     videoId: string,
     successfulAtMs: number
@@ -72,6 +78,7 @@ export type ScheduledVideoSocialDependencies = {
   recordGlobalSuccess?: (videoId: string, successfulAtMs: number) => Promise<unknown>;
   publishInstagram?: typeof publishInstagramReel;
   publishFacebook?: typeof publishFacebookReel;
+  publishYouTube?: typeof publishYouTubeVideo;
   logFailure?: (record: ScheduledVideoSocialFailureLog) => void;
 };
 
@@ -82,12 +89,16 @@ export type ScheduledVideoSocialResult = {
 
 const ACTIVE_RUN_SLOT = "scheduled:active";
 
-function metaTargetsForAsset(
+function allTargetsForAsset(
   asset: VideoAsset,
   targets: readonly SocialTarget[]
-): MetaTarget[] {
+): SocialTarget[] {
   const resolved = resolveVideoTargets(asset, targets);
-  return [...resolved.instagram, ...resolved.facebook] as MetaTarget[];
+  return [
+    ...resolved.instagram,
+    ...resolved.facebook,
+    ...resolved.youtube,
+  ];
 }
 
 function summary(state: VideoTargetPublicationState) {
@@ -98,6 +109,7 @@ function summary(state: VideoTargetPublicationState) {
     providerContainerId: state.providerContainerId ?? null,
     providerUploadId: state.providerUploadId ?? null,
     providerMediaId: state.providerMediaId ?? null,
+    postId: state.postId ?? null,
     publishedAt: state.publishedAt ?? null,
     reconciliation: state.reconciliation ?? null,
     error: state.error ?? null,
@@ -116,12 +128,44 @@ export async function runScheduledVideoSocial(
       console.error(JSON.stringify(record)));
   const mode = parseVideoSocialMode(environment.VIDEO_SOCIAL_MODE);
   if (!mode.valid || mode.mode !== "live") {
-    return { status: 503, body: { ok: false, mode: "live", error: "VIDEO_SOCIAL_MODE must be live", providerCallsMade: false } };
+    return {
+      status: 503,
+      body: {
+        ok: false,
+        mode: "live",
+        error: "VIDEO_SOCIAL_MODE must be live",
+        providerCallsMade: false,
+      },
+    };
   }
 
   const validation = validateVideoSocialConfiguration(manifest, targets);
   if (!validation.valid) {
-    return { status: 500, body: { ok: false, mode: "live", error: "video social configuration is invalid", providerCallsMade: false } };
+    return {
+      status: 500,
+      body: {
+        ok: false,
+        mode: "live",
+        error: "video social configuration is invalid",
+        providerCallsMade: false,
+      },
+    };
+  }
+
+  const privacyConfig = parseYouTubePrivacyStatus(
+    environment.YOUTUBE_PRIVACY_STATUS,
+    "public"
+  );
+  if (!privacyConfig.valid) {
+    return {
+      status: 500,
+      body: {
+        ok: false,
+        mode: "live",
+        error: privacyConfig.error,
+        providerCallsMade: false,
+      },
+    };
   }
 
   const nowMs = dependencies.now?.() ?? Date.now();
@@ -130,42 +174,75 @@ export async function runScheduledVideoSocial(
   const acquireLock = dependencies.acquireLock ?? acquireVideoSocialLock;
   const lockOwner = `video-scheduled:${day}`;
   if (!(await acquireLock(lockSlot, lockOwner))) {
-    return { status: 409, body: { ok: false, mode: "live", intent: "scheduled", error: "scheduled video social run is already locked", providerCallsMade: false } };
+    return {
+      status: 409,
+      body: {
+        ok: false,
+        mode: "live",
+        intent: "scheduled",
+        error: "scheduled video social run is already locked",
+        providerCallsMade: false,
+      },
+    };
   }
 
   const getRun = dependencies.getRun ?? getVideoRun;
   const saveRun = dependencies.saveRun ?? saveVideoRun;
   let run = await getRun(ACTIVE_RUN_SLOT);
   let asset: VideoAsset | undefined;
-  let selectedTargets: MetaTarget[] = [];
+  let selectedTargets: SocialTarget[] = [];
 
   if (run && run.intent === "scheduled" && run.status !== "published") {
     asset = manifest.find((candidate) => candidate.id === run!.videoId);
     if (asset) {
-      const enabled = new Map(metaTargetsForAsset(asset, targets).map((target) => [target.id, target]));
+      const enabled = new Map(
+        allTargetsForAsset(asset, targets).map((target) => [target.id, target])
+      );
       selectedTargets = run.targetIds.flatMap((targetId) => {
         const target = enabled.get(targetId);
         return target ? [target] : [];
       });
     }
     if (!asset || selectedTargets.length !== run.targetIds.length) {
-      return { status: 409, body: { ok: false, mode: "live", intent: "scheduled", error: "incomplete scheduled run no longer matches enabled targets", providerCallsMade: false } };
+      return {
+        status: 409,
+        body: {
+          ok: false,
+          mode: "live",
+          intent: "scheduled",
+          error: "incomplete scheduled run no longer matches enabled targets",
+          providerCallsMade: false,
+        },
+      };
     }
   } else {
     const eligibleManifest = manifest.filter(
-      (candidate) => candidate.enabled && metaTargetsForAsset(candidate, targets).length > 0
+      (candidate) =>
+        candidate.enabled && allTargetsForAsset(candidate, targets).length > 0
     );
-    const readHistory = dependencies.readHistory ?? readVideoLastSuccessHistory;
-    const history = await readHistory(eligibleManifest.map((candidate) => candidate.id));
+    const readHistory =
+      dependencies.readHistory ?? readVideoLastSuccessHistory;
+    const history = await readHistory(
+      eligibleManifest.map((candidate) => candidate.id)
+    );
     const selection = selectLeastRecentlyUsedVideo(eligibleManifest, history, {
       nowMs,
       cooldownMs: VIDEO_SOCIAL_COOLDOWN_MS,
     });
     if (selection.status !== "selected") {
-      return { status: 200, body: { ok: true, mode: "live", intent: "scheduled", selection: selection.status, providerCallsMade: false } };
+      return {
+        status: 200,
+        body: {
+          ok: true,
+          mode: "live",
+          intent: "scheduled",
+          selection: selection.status,
+          providerCallsMade: false,
+        },
+      };
     }
     asset = selection.asset;
-    selectedTargets = metaTargetsForAsset(asset, targets);
+    selectedTargets = allTargetsForAsset(asset, targets);
     const runId = `video-scheduled:${day}:${asset.id}`;
     const nowIso = new Date(nowMs).toISOString();
     run = {
@@ -184,7 +261,9 @@ export async function runScheduledVideoSocial(
 
   // Re-run fail-closed credential/copy preflight on both new runs and resumes.
   const invalidPreflight = selectedTargets
-    .map((target) => preflightMetaVideoTarget({ asset: asset!, target, environment }))
+    .map((target) =>
+      preflightSocialVideoTarget({ asset: asset!, target, environment })
+    )
     .filter((result) => !result.valid);
   if (invalidPreflight.length) {
     for (const result of invalidPreflight) {
@@ -203,22 +282,46 @@ export async function runScheduledVideoSocial(
         resultingTargetState: "not_created",
       });
     }
-    return { status: 503, body: { ok: false, mode: "live", intent: "scheduled", error: "scheduled Meta target preflight failed", preflight: invalidPreflight, providerCallsMade: false } };
+    return {
+      status: 503,
+      body: {
+        ok: false,
+        mode: "live",
+        intent: "scheduled",
+        error: "scheduled target preflight failed",
+        preflight: invalidPreflight,
+        providerCallsMade: false,
+      },
+    };
   }
 
-  const getPublicationState = dependencies.getPublicationState ?? getTargetPublicationState;
-  const savePublicationState = dependencies.savePublicationState ?? saveTargetPublicationState;
-  const recordTargetSuccess = dependencies.recordTargetSuccess ?? recordSuccessfulTargetUse;
+  const getPublicationState =
+    dependencies.getPublicationState ?? getTargetPublicationState;
+  const savePublicationState =
+    dependencies.savePublicationState ?? saveTargetPublicationState;
+  const recordTargetSuccess =
+    dependencies.recordTargetSuccess ?? recordSuccessfulTargetUse;
   const nowIso = new Date(nowMs).toISOString();
   run = { ...run, status: "publishing", updatedAt: nowIso };
   await saveRun(run);
 
   const results = await Promise.all(
     selectedTargets.map(async (target) => {
-      let state = await getPublicationState(run!.runId, target.platform, target.id);
+      let state = await getPublicationState(
+        run!.runId,
+        target.platform,
+        target.id
+      );
       if (state?.status === "published") {
-        const timestamp = state.publishedAt ? Date.parse(state.publishedAt) : nowMs;
-        await recordTargetSuccess(target.platform, target.id, asset!.id, Number.isFinite(timestamp) ? timestamp : nowMs);
+        const timestamp = state.publishedAt
+          ? Date.parse(state.publishedAt)
+          : nowMs;
+        await recordTargetSuccess(
+          target.platform,
+          target.id,
+          asset!.id,
+          Number.isFinite(timestamp) ? timestamp : nowMs
+        );
         return { ok: true as const, state, providerCalled: false };
       }
       if (!state) {
@@ -237,23 +340,78 @@ export async function runScheduledVideoSocial(
         await savePublicationState(next);
       };
       try {
-        const published = target.platform === "instagram"
-          ? await (dependencies.publishInstagram ?? publishInstagramReel)({ runId: run!.runId, asset: asset!, target, resumeState: latest, environment, onProgress })
-          : await (dependencies.publishFacebook ?? publishFacebookReel)({ runId: run!.runId, asset: asset!, target, resumeState: latest, environment, onProgress });
+        const published =
+          target.platform === "instagram"
+            ? await (dependencies.publishInstagram ?? publishInstagramReel)({
+                runId: run!.runId,
+                asset: asset!,
+                target,
+                resumeState: latest,
+                environment,
+                onProgress,
+              })
+            : target.platform === "facebook"
+              ? await (dependencies.publishFacebook ?? publishFacebookReel)({
+                  runId: run!.runId,
+                  asset: asset!,
+                  target,
+                  resumeState: latest,
+                  environment,
+                  onProgress,
+                })
+              : await (dependencies.publishYouTube ?? publishYouTubeVideo)({
+                  runId: run!.runId,
+                  asset: asset!,
+                  target,
+                  resumeState: latest,
+                  environment,
+                  privacyStatus: privacyConfig.status,
+                  onProgress,
+                });
+
         latest = published.state;
         if (!hasConfirmedProviderPublication(latest)) {
-          throw new TypeError("Meta publisher returned without confirmed publication");
+          throw new TypeError(
+            `${target.platform} publisher returned without confirmed publication`
+          );
         }
         await savePublicationState(latest);
-        const timestamp = latest.publishedAt ? Date.parse(latest.publishedAt) : nowMs;
-        await recordTargetSuccess(target.platform, target.id, asset!.id, Number.isFinite(timestamp) ? timestamp : nowMs);
+        const timestamp = latest.publishedAt
+          ? Date.parse(latest.publishedAt)
+          : nowMs;
+        await recordTargetSuccess(
+          target.platform,
+          target.id,
+          asset!.id,
+          Number.isFinite(timestamp) ? timestamp : nowMs
+        );
         return { ok: true as const, state: latest, providerCalled: true };
       } catch (error) {
-        const token = target.accessTokenEnv ? environment[target.accessTokenEnv] ?? "" : "";
-        const safeError: SafeProviderError = toSafeProviderError(error, target.platform, "publish_reel", [token]);
+        const secrets: string[] = [];
+        if (target.accessTokenEnv && environment[target.accessTokenEnv]) {
+          secrets.push(environment[target.accessTokenEnv]!);
+        }
+        if (target.clientSecretEnv && environment[target.clientSecretEnv]) {
+          secrets.push(environment[target.clientSecretEnv]!);
+        }
+        if (target.refreshTokenEnv && environment[target.refreshTokenEnv]) {
+          secrets.push(environment[target.refreshTokenEnv]!);
+        }
+
+        const operation =
+          target.platform === "youtube" ? "publish_video" : "publish_reel";
+        const safeError: SafeProviderError = toSafeProviderError(
+          error,
+          target.platform,
+          operation,
+          secrets
+        );
         const reconciliation = getProviderReconciliationDecision(latest);
         latest = advanceTargetPublicationState(latest, {
-          status: reconciliation === "reconcile_ambiguous_publish" ? latest.status : "failed",
+          status:
+            reconciliation === "reconcile_ambiguous_publish"
+              ? latest.status
+              : "failed",
           error: safeError,
           updatedAt: nowIso,
         });
@@ -280,21 +438,36 @@ export async function runScheduledVideoSocial(
   const successful = results.filter((result) => result.ok);
   if (successful.length > 0) {
     const timestamps = successful.map((result) => {
-      const parsed = result.state.publishedAt ? Date.parse(result.state.publishedAt) : nowMs;
+      const parsed = result.state.publishedAt
+        ? Date.parse(result.state.publishedAt)
+        : nowMs;
       return Number.isFinite(parsed) ? parsed : nowMs;
     });
-    await (dependencies.recordGlobalSuccess ?? recordSuccessfulVideoUse)(asset.id, Math.max(...timestamps));
+    await (dependencies.recordGlobalSuccess ?? recordSuccessfulVideoUse)(
+      asset.id,
+      Math.max(...timestamps)
+    );
   }
-  const status = successful.length === results.length
-    ? "published"
-    : successful.length > 0
-      ? "partially_published"
-      : "failed";
-  run = { ...run, status, updatedAt: new Date(dependencies.now?.() ?? Date.now()).toISOString() };
+  const status =
+    successful.length === results.length
+      ? "published"
+      : successful.length > 0
+        ? "partially_published"
+        : "failed";
+  run = {
+    ...run,
+    status,
+    updatedAt: new Date(dependencies.now?.() ?? Date.now()).toISOString(),
+  };
   await saveRun(run);
 
   return {
-    status: status === "published" ? 200 : status === "partially_published" ? 207 : 502,
+    status:
+      status === "published"
+        ? 200
+        : status === "partially_published"
+          ? 207
+          : 502,
     body: {
       ok: status === "published",
       mode: "live",

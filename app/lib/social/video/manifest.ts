@@ -101,14 +101,27 @@ MatchSignal is a free, AI-assisted platform that pulls odds from multiple sports
 
 No subscription. No registration. Just clearer odds comparison.
 
- Link in bio
+Compare the odds for yourself: https://www.matchsignal.pro
 
-18+ | Gamble responsibly | MatchSignal provides informational analysis only. Odds can change and no prediction guarantees an outcome or profit.
-
-.
-.
-#MatchSignal, SportsBetting, Odds, OddsComparison, BettingTips, ValueBetting, BettingAnalysis, AIBetting, SportsAnalytics, BettingStrategy, FootballBetting, NBABetting, BettingCommunity, SmartBetting, BettingGuide, ResponsibleGambling`,
-            tags: [],
+18+ | Gamble responsibly | MatchSignal provides informational analysis only. Odds can change and no prediction guarantees an outcome or profit.`,
+            tags: [
+              "MatchSignal",
+              "SportsBetting",
+              "Odds",
+              "OddsComparison",
+              "BettingTips",
+              "ValueBetting",
+              "BettingAnalysis",
+              "AIBetting",
+              "SportsAnalytics",
+              "BettingStrategy",
+              "FootballBetting",
+              "NBABetting",
+              "BettingCommunity",
+              "SmartBetting",
+              "BettingGuide",
+              "ResponsibleGambling",
+            ],
           },
         ],
       },

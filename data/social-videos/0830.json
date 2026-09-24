@@ -11,7 +11,25 @@
       { "targetId": "facebook-main", "enabled": true, "message": "Sportsbook odds can be expressed as an implied probability, while MatchSignal also estimates a fair probability for comparison. Viewing the two figures together helps explain how available pricing relates to potential value and gives sports analysis more context. It is information for review, not a prediction guarantee. Learn more at https://www.matchsignal.pro. 18+ | Gamble responsibly | Odds can change and no outcome is guaranteed." },
       { "targetId": "facebook-2", "enabled": false, "message": "The question is not only what price is available, but how it compares with estimated probability. MatchSignal places implied probability from sportsbook odds beside an estimated fair probability, making the difference easier to examine. Use that comparison as one analytical input and keep expectations realistic. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; no prediction guarantees an outcome." }
     ] },
-    "youtube": { "targets": [] }
+    "youtube": { "targets": [
+      {
+        "targetId": "youtube-main",
+        "enabled": false,
+        "title": "Implied Odds vs Fair Probability: Finding True Market Value",
+        "description": "Sportsbook odds can be expressed as an implied probability, while MatchSignal also estimates a fair probability for comparison. Viewing the two figures together helps explain how available pricing relates to potential value and gives sports analysis more context. It is information for review, not a prediction guarantee.\n\nExplore fair probability models: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | Odds can change and no outcome is guaranteed.",
+        "tags": [
+          "MatchSignal",
+          "Probability",
+          "OddsComparison",
+          "SportsAnalytics",
+          "ValueSignals",
+          "SportsData",
+          "BettingAnalysis",
+          "BetSmart",
+          "ResponsibleGambling"
+        ]
+      }
+    ] }
   },
   "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
 }

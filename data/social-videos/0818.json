@@ -38,7 +38,25 @@
       ]
     },
     "youtube": {
-      "targets": []
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Find Better Odds Faster with AI-Assisted Sports Analytics",
+          "description": "Ever felt the rush of spotting a better price just before the action starts? With MatchSignal's AI-assisted comparison, you can review available odds from multiple sportsbooks in one place and see the strongest available price on one clean card. No registration, no betting on our site—just clear, data-backed insight to help you decide faster.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides analysis, not guarantees. Odds can change.",
+          "tags": [
+            "MatchSignal",
+            "SportsBetting",
+            "OddsComparison",
+            "BettingTips",
+            "SportsAnalytics",
+            "ValueBetting",
+            "AIAnalytics",
+            "BetSmart",
+            "ResponsibleGambling"
+          ]
+        }
+      ]
     }
   },
   "generation": {

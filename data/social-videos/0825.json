@@ -11,7 +11,25 @@
       { "targetId": "facebook-main", "enabled": true, "message": "The most likely winner is not automatically the best value. MatchSignal compares available market pricing with estimated probability, then presents that relationship as a Value Signal for clearer sports analysis. A favorite label alone does not explain whether the price fits the probability, so review both before making a decision. Learn more at https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed." },
       { "targetId": "facebook-2", "enabled": false, "message": "Favorite and value are different ideas. MatchSignal gives you market odds, estimated probability, and a Value Signal so you can consider the price in context instead of focusing only on the likely winner. The information is designed to support research and does not eliminate uncertainty from sport. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Odds can change and no prediction guarantees an outcome." }
     ] },
-    "youtube": { "targets": [] }
+    "youtube": { "targets": [
+      {
+        "targetId": "youtube-main",
+        "enabled": false,
+        "title": "Favorite vs Value: Why the Most Likely Winner Isn't Always the Best Bet",
+        "description": "The most likely winner is not automatically the best value. MatchSignal compares available market pricing with estimated probability, then presents that relationship as a Value Signal for clearer sports analysis. A favorite label alone does not explain whether the price fits the probability, so review both before making a decision.\n\nExplore Value Signals: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed.",
+        "tags": [
+          "MatchSignal",
+          "ValueSignals",
+          "SportsAnalytics",
+          "OddsComparison",
+          "ValueBetting",
+          "BettingStrategy",
+          "SportsData",
+          "BetSmart",
+          "ResponsibleGambling"
+        ]
+      }
+    ] }
   },
   "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
 }

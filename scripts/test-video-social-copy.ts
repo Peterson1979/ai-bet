@@ -190,19 +190,51 @@ async function main() {
     true
   );
 
-  // The checked-in 0818 package resolves exactly tomorrow's four Meta targets.
+  // The checked-in 0818 package resolves only currently active targets in VIDEO_SOCIAL_TARGETS.
   const tomorrow = VIDEO_MANIFEST.find((video) => video.id === "0818");
   assert(tomorrow);
   const resolved = resolveVideoTargets(tomorrow, VIDEO_SOCIAL_TARGETS);
   assert.deepEqual(
     resolved.instagram.map((target) => target.id),
-    ["instagram-main", "instagram-2"]
+    ["instagram-main"]
   );
   assert.deepEqual(
     resolved.facebook.map((target) => target.id),
-    ["facebook-main", "facebook-2"]
+    ["facebook-main"]
   );
   assert.deepEqual(resolved.youtube, []);
+
+  // When secondary and youtube targets are enabled in a test fixture, all destinations resolve.
+  const allEnabledTargets = VIDEO_SOCIAL_TARGETS.map((t) => ({ ...t, enabled: true }));
+  const allResolved = resolveVideoTargets(
+    {
+      ...tomorrow,
+      platforms: {
+        instagram: {
+          targets: tomorrow.platforms.instagram.targets.map((t) => ({ ...t, enabled: true })),
+        },
+        facebook: {
+          targets: tomorrow.platforms.facebook.targets.map((t) => ({ ...t, enabled: true })),
+        },
+        youtube: {
+          targets: tomorrow.platforms.youtube.targets.map((t) => ({ ...t, enabled: true })),
+        },
+      },
+    },
+    allEnabledTargets
+  );
+  assert.deepEqual(
+    allResolved.instagram.map((target) => target.id),
+    ["instagram-main", "instagram-2"]
+  );
+  assert.deepEqual(
+    allResolved.facebook.map((target) => target.id),
+    ["facebook-main", "facebook-2"]
+  );
+  assert.deepEqual(
+    allResolved.youtube.map((target) => target.id),
+    ["youtube-main"]
+  );
   const invalidReady = structuredClone(contentPackage);
   invalidReady.status = "ready";
   assert.equal(validateVideoContentPackage(invalidReady).valid, false);

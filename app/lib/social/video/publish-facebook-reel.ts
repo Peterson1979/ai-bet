@@ -59,6 +59,7 @@ export type FacebookReelPublisherOptions = {
   maxPollAttempts?: number;
   pollIntervalMs?: number;
   requestTimeoutMs?: number;
+  allowDisabled?: boolean;
 };
 
 export type FacebookReelPublishResult = {
@@ -137,6 +138,7 @@ export async function publishFacebookReel(
     asset: options.asset,
     target: options.target,
     environment,
+    allowDisabled: options.allowDisabled,
   });
   assertMetaVideoPreflight(preflight);
   const targetContent = getVideoTargetContent(

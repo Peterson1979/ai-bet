@@ -39,8 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-.env.local"env.local" 
-".env.local" 
-".env" 
-env.local
-.env*.local
+
+# credentials and tokens
+*.token.json
+*.tokens.json
+.youtube-token*
+*client_secret*.json
+*credentials*.json

@@ -103,7 +103,7 @@ export type VideoRunRecord = {
   slot: string;
   videoId: string;
   intent: "canary" | "scheduled";
-  platform: "instagram" | "facebook" | "multi";
+  platform: VideoSocialPlatform | "multi";
   targetIds: string[];
   status: VideoRunStatus;
   createdAt: string;
@@ -120,7 +120,7 @@ export type VideoTargetPublicationStatus =
   | "failed";
 
 export type SafeProviderError = {
-  provider: "instagram" | "facebook";
+  provider: VideoSocialPlatform;
   operation: string;
   message: string;
   httpStatus?: number;

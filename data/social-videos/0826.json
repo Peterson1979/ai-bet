@@ -11,7 +11,25 @@
       { "targetId": "facebook-main", "enabled": true, "message": "A higher market price does not automatically mean better value. MatchSignal presents available pricing beside estimated probability, creating a neutral comparison that helps explain the relationship between the two figures. The goal is better sports market context, not a promise about any result. Review the analysis at https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; odds can change." },
       { "targetId": "facebook-2", "enabled": false, "message": "A dramatic price can attract attention before the surrounding data is considered. MatchSignal pairs market pricing with estimated probability so you can study the difference in context and keep the analysis evidence-based. Higher is not automatically better, and uncertainty remains part of every sport. Visit https://www.matchsignal.pro. 18+ | Gamble responsibly | No prediction guarantees an outcome." }
     ] },
-    "youtube": { "targets": [] }
+    "youtube": { "targets": [
+      {
+        "targetId": "youtube-main",
+        "enabled": false,
+        "title": "Higher Odds vs Probability: How to Evaluate Betting Value",
+        "description": "A higher market price does not automatically mean better value. MatchSignal presents available pricing beside estimated probability, creating a neutral comparison that helps explain the relationship between the two figures. The goal is better sports market context, not a promise about any result.\n\nReview the analysis: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational analysis only; odds can change.",
+        "tags": [
+          "MatchSignal",
+          "MarketAnalysis",
+          "OddsComparison",
+          "SportsData",
+          "SportsAnalytics",
+          "ValueBetting",
+          "Probability",
+          "BetSmart",
+          "ResponsibleGambling"
+        ]
+      }
+    ] }
   },
   "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
 }

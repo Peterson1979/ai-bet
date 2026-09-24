@@ -6,6 +6,7 @@ import {
 import { VIDEO_MANIFEST } from "@/app/lib/social/video/manifest";
 import {
   preflightMetaVideoTarget,
+  preflightSocialVideoTarget,
   type EnvironmentSource,
 } from "@/app/lib/social/video/preflight";
 import { selectLeastRecentlyUsedVideo } from "@/app/lib/social/video/select-video";
@@ -194,6 +195,13 @@ export async function handleVideoSocialRun(
         environment,
       })
     );
+    const targetPreflights = VIDEO_SOCIAL_TARGETS.map((target) =>
+      preflightSocialVideoTarget({
+        asset: selection.asset,
+        target,
+        environment,
+      })
+    );
 
     return Response.json({
       ok: true,
@@ -212,6 +220,7 @@ export async function handleVideoSocialRun(
       resolvedTargetIds: plan.resolvedTargetIds,
       targetContent: plan.targetContent,
       metaPreflight,
+      targetPreflights,
       validation,
       ...safety,
     });

@@ -110,6 +110,7 @@ async function testInstagramCopies() {
       sleep: async () => undefined,
       maxPollAttempts: 1,
       pollIntervalMs: 0,
+      allowDisabled: true,
     });
     const requestBody = new URLSearchParams(String(mock.calls[0].init.body));
     assert.equal(requestBody.get("caption"), expected.caption);
@@ -158,6 +159,7 @@ async function testFacebookCopies() {
       sleep: async () => undefined,
       maxPollAttempts: 1,
       pollIntervalMs: 0,
+      allowDisabled: true,
     });
     const finishBody = new URLSearchParams(String(mock.calls[2].init.body));
     assert.equal(finishBody.get("description"), expected.message);
@@ -313,8 +315,14 @@ function testResolutionAndValidation() {
   // Missing runtime credentials do not invalidate metadata, but do fail preflight.
   const enabledSecondary = cloneManifest()[0];
   enableOnly(enabledSecondary, "instagram", "instagram-2");
+  const secondaryEnabledTargets = VIDEO_SOCIAL_TARGETS.map((t) =>
+    t.id === "instagram-2" ? { ...t, enabled: true } : t
+  );
   assert.equal(
-    validateVideoSocialConfiguration([enabledSecondary], VIDEO_SOCIAL_TARGETS).valid,
+    validateVideoSocialConfiguration(
+      [enabledSecondary],
+      secondaryEnabledTargets
+    ).valid,
     true
   );
   assert.equal(

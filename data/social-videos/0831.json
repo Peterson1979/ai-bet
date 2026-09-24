@@ -11,7 +11,25 @@
       { "targetId": "facebook-main", "enabled": true, "message": "A prediction without context tells you very little. MatchSignal shows the data behind each eligible pick, including available odds, estimated probability, value and risk context, plus a short AI-generated explanation. That makes the reasoning easier to review without presenting any result as certain. See the analysis at https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed." },
       { "targetId": "facebook-2", "enabled": false, "message": "Ask why before focusing on a prediction. MatchSignal combines market pricing, probability, Value Signals, risk context, and a short explanation so you can examine the reasoning behind an eligible selection. The information is designed to support better research, not to promise a winner or remove uncertainty. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Odds can change and no prediction guarantees an outcome." }
     ] },
-    "youtube": { "targets": [] }
+    "youtube": { "targets": [
+      {
+        "targetId": "youtube-main",
+        "enabled": false,
+        "title": "The First Question to Ask Before Following Any Sports Betting Pick",
+        "description": "A prediction without context tells you very little. MatchSignal shows the data behind each eligible pick, including available odds, estimated probability, value and risk context, plus a short AI-generated explanation. That makes the reasoning easier to review without presenting any result as certain.\n\nSee the AI analysis behind every pick: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed.",
+        "tags": [
+          "MatchSignal",
+          "SportsAnalytics",
+          "AIAnalysis",
+          "BettingTips",
+          "SportsData",
+          "ValueBetting",
+          "BettingAnalysis",
+          "BetSmart",
+          "ResponsibleGambling"
+        ]
+      }
+    ] }
   },
   "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
 }

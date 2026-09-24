@@ -1,15 +1,18 @@
 import { getProviderReconciliationDecision } from "./state";
-import type { MetaVideoPreflightResult } from "./preflight";
+import type { SocialVideoPreflightResult } from "./preflight";
 import type {
   SocialTarget,
   VideoAsset,
   VideoRunRecord,
   VideoSocialMode,
+  VideoSocialPlatform,
   VideoTargetPublicationState,
 } from "./types";
 import { getVideoTargetContent } from "./targets";
 
-export type MetaCanaryPlatform = "instagram" | "facebook";
+export type CanaryPlatform = VideoSocialPlatform;
+/** Backward-compatible alias */
+export type MetaCanaryPlatform = CanaryPlatform;
 
 /**
  * A later, explicitly authorized canary must deliberately change this one
@@ -20,7 +23,7 @@ export const VIDEO_SOCIAL_CANARY_ASSET_ID = "0817";
 export const VIDEO_SOCIAL_CANARY_AUTHORIZATION_ENV = "VIDEO_SOCIAL_CANARY";
 
 export function expectedCanaryAuthorization(params: {
-  platform: MetaCanaryPlatform;
+  platform: CanaryPlatform;
   targetId: string;
 }): string {
   return `${params.platform}:${VIDEO_SOCIAL_CANARY_ASSET_ID}:${params.targetId}`;
@@ -60,12 +63,12 @@ export function evaluateVideoSocialCanaryGate(params: {
   requestIntent: string | undefined;
   authorizationValue: string | undefined;
   requestedAssetId: string;
-  requestedPlatform: MetaCanaryPlatform;
+  requestedPlatform: CanaryPlatform;
   requestedTargetId: string;
   asset: VideoAsset;
   target: SocialTarget;
   resolvedTargets: readonly SocialTarget[];
-  staticPreflight: MetaVideoPreflightResult;
+  staticPreflight: SocialVideoPreflightResult;
   redisLockAcquired: boolean;
   expectedRunId: string;
   expectedSlot: string;
@@ -77,10 +80,11 @@ export function evaluateVideoSocialCanaryGate(params: {
   const reconciliation = getProviderReconciliationDecision(state);
   const sourceEnabled =
     params.sourceEnabled ?? VIDEO_SOCIAL_CANARY_SOURCE_ENABLED;
-  const targetContent =
-    params.requestedPlatform === "instagram"
-      ? getVideoTargetContent(params.asset, "instagram", params.requestedTargetId)
-      : getVideoTargetContent(params.asset, "facebook", params.requestedTargetId);
+  const targetContent = getVideoTargetContent(
+    params.asset,
+    params.requestedPlatform,
+    params.requestedTargetId
+  );
   const stateIdentityMatches =
     !state ||
     (state.runId === params.expectedRunId &&
@@ -134,11 +138,11 @@ export function evaluateVideoSocialCanaryGate(params: {
     explicitRequestIntent: "an explicit canary request is required",
     explicitAuthorization: "exact canary authorization is missing",
     exactAsset: "canary asset must be exactly 0817",
-    exactPlatform: "requested platform must match the Meta target and preflight",
+    exactPlatform: "requested platform must match the target and preflight",
     exactTarget: "requested target must match the resolved target and preflight",
     singleResolvedTarget: "exactly one resolved target is required",
     assetAndPlatformEnabled: "asset and selected platform must be explicitly enabled",
-    staticPreflightPassed: "static Meta preflight must pass",
+    staticPreflightPassed: "static target preflight must pass",
     redisLockAcquired: "the Redis canary lock was not acquired",
     redisRunIdentityMatches: "the Redis run does not match this canary request",
     redisReconciliationChecked: "Redis reconciliation state must be checked",

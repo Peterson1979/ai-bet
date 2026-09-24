@@ -69,6 +69,15 @@ export function getVideoTargetContent(
   asset: VideoAsset,
   platform: VideoSocialPlatform,
   targetId: string
+):
+  | VideoAsset["platforms"]["instagram"]["targets"][number]
+  | VideoAsset["platforms"]["facebook"]["targets"][number]
+  | VideoAsset["platforms"]["youtube"]["targets"][number]
+  | undefined;
+export function getVideoTargetContent(
+  asset: VideoAsset,
+  platform: VideoSocialPlatform,
+  targetId: string
 ) {
   return asset.platforms[platform].targets.find(
     (content) => content.targetId === targetId

@@ -18,7 +18,13 @@
     "validate:video-social-copy": "npx tsx scripts/test-video-social-copy.ts",
     "validate:video-social-scheduled": "npx tsx scripts/test-video-social-scheduled.ts",
     "social-video:generate": "npx tsx scripts/generate-social-video-copy.ts",
-    "diagnose:video-social-meta": "npx tsx scripts/diagnose-video-social-meta.ts"
+    "diagnose:video-social-meta": "npx tsx scripts/diagnose-video-social-meta.ts",
+    "youtube:auth": "npx tsx scripts/authorize-youtube.ts",
+    "youtube:verify": "npx tsx scripts/verify-youtube-auth.ts",
+    "youtube:test-upload": "npx tsx scripts/test-youtube-upload.ts",
+    "validate:youtube-auth": "npx tsx scripts/test-youtube-auth.ts",
+    "validate:youtube-publishing": "npx tsx scripts/test-youtube-publishing.ts",
+    "validate:youtube": "npx tsx scripts/test-youtube-auth.ts && npx tsx scripts/test-youtube-publishing.ts"
   },
   "dependencies": {
     "@sparticuz/chromium": "^149.0.0",

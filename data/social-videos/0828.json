@@ -11,7 +11,24 @@
       { "targetId": "facebook-main", "enabled": true, "message": "A Low Risk Tier is an analytical label, not a guarantee that a bet is safe. MatchSignal shows Low, Medium, and High context alongside odds and estimated probability, helping you review the information before making a decision. Risk context can improve understanding, but uncertainty remains. Learn more at https://www.matchsignal.pro. 18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed." },
       { "targetId": "facebook-2", "enabled": false, "message": "Low risk should never be read as certain or safe. MatchSignal combines risk tiers with market odds and probability so you can consider the complete analytical context rather than one badge. Use the information carefully and remember that no label can remove the uncertainty of sport. Explore https://www.matchsignal.pro. 18+ | Gamble responsibly | Odds can change and no prediction guarantees an outcome." }
     ] },
-    "youtube": { "targets": [] }
+    "youtube": { "targets": [
+      {
+        "targetId": "youtube-main",
+        "enabled": false,
+        "title": "Low Risk vs Safe Bet: Understanding Risk Tiers in Sports Betting",
+        "description": "A Low Risk Tier is an analytical label, not a guarantee that a bet is safe. MatchSignal shows Low, Medium, and High context alongside odds and estimated probability, helping you review the information before making a decision. Risk context can improve understanding, but uncertainty remains.\n\nLearn more about risk tiers: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | Informational analysis only; no outcome is guaranteed.",
+        "tags": [
+          "MatchSignal",
+          "RiskAnalysis",
+          "SportsAnalytics",
+          "RiskManagement",
+          "BettingStrategy",
+          "SportsData",
+          "BetSmart",
+          "ResponsibleGambling"
+        ]
+      }
+    ] }
   },
   "generation": { "provider": "groq", "model": "openai/gpt-oss-120b", "generatedAt": "2026-08-23T12:00:00.000Z", "promptVersion": "matchsignal-video-copy-v3-meta-four" }
 }

@@ -94,6 +94,7 @@ export type InstagramReelPublisherOptions = {
   pollIntervalMs?: number;
   reconciliationMaxPollAttempts?: number;
   requestTimeoutMs?: number;
+  allowDisabled?: boolean;
 };
 
 export type InstagramReelPublishResult = {
@@ -194,6 +195,7 @@ export async function publishInstagramReel(
     asset: options.asset,
     target: options.target,
     environment,
+    allowDisabled: options.allowDisabled,
   });
   assertMetaVideoPreflight(preflight);
   const targetContent = getVideoTargetContent(
