@@ -1,0 +1,74 @@
+{
+  "id": "28",
+  "status": "ready",
+  "source": {
+    "id": "28",
+    "topic": "STOP GUESSING. START COMPARING.",
+    "visual": "A sports fan watching a match sees scattered market signals transform into a MatchSignal interface with best tracked odds, market average, fair probability, risk tier and AI analysis.",
+    "voiceover": "“Instead of relying on one number, compare the market and understand the context. Explore MatchSignal free at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242585/matchsignal-videos/28.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔎 STOP GUESSING. START COMPARING. 🎥 Watch how a chaotic flood of market signals transforms into a clean MatchSignal interface, showing the top odds, market average, fair probability, and a clear risk tier. The AI‑powered commentary gives you the context you need to decide, not just a single number. Best of all, it’s free and requires no registration. 👉 Link in bio to explore MatchSignal.pro and unlock smarter betting insights. \n\n#SportsBetting #BettingAnalysis #AIInsights #BetSmart #FreeTool #Football #NBA #NFL #Hockey #Tennis #MLB #MMA #GambleResponsibly #18Plus #BettingCommunity\n\n⚠️ 18+ only. Gamble responsibly. MatchSignal provides analysis and estimates potential value – it does not guarantee wins, profit, or outcomes. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⚡️ FROM CHAOS TO CLARITY – see how MatchSignal turns scattered odds into a single, easy‑to‑read dashboard with market averages, fair probability, and risk tier ratings. The AI explanation breaks down why a pick may hold positive expected value, giving you context before you place a wager. No sign‑up, no cost – just clear comparison. 👉 Link in bio to start using MatchSignal.pro today. \n\n#BettingTips #SportsAnalytics #AIAnalysis #BettingTools #FreeBetting #NFL #NBA #Football #Hockey #Tennis #MLB #MMA #ResponsibleGambling #18Plus #BettingStrategy\n\n⚠️ 18+ only. Gamble responsibly. MatchSignal offers analysis and estimated value – no guarantee of win or profit. Odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "📊 Stop guessing and start comparing! Our new video shows how a scattered sea of market signals can be turned into a clear MatchSignal dashboard – you’ll see the best‑tracked odds, market averages, fair probability, and a risk tier rating all in one place. The AI‑driven analysis adds concise context so you can make smarter decisions, not just follow a single number. Dive into the free, no‑registration tool at https://www.matchsignal.pro and see the difference for yourself. \n\n⚠️ 18+ only. Gamble responsibly. MatchSignal provides analysis and estimates potential value – it does not guarantee wins, profits, or outcomes. Odds can change and betting involves risk.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🚀 Elevate your sports betting game with MatchSignal’s AI‑assisted comparison. In this short clip, watch how the platform pulls refreshed odds from multiple sportsbooks, calculates market‑based probabilities, and displays a clear risk tier (Low, Medium, High). The concise AI explanation helps you understand why a selection might have positive expected value, without ever promising a win. Try the free tool at https://www.matchsignal.pro and explore football, NBA, NFL, and more. \n\n⚠️ 18+ only. Gamble responsibly. MatchSignal offers analysis and estimated value – no guarantee of profit or outcome. Odds may vary; betting always carries risk.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Stop Guessing Start Comparing: Sports Odds & Probability Analysis",
+          "description": "📊 Stop guessing and start comparing! Our new video shows how a scattered sea of market signals can be turned into a clear MatchSignal dashboard – you’ll see the best‑tracked odds, market averages, fair probability, and a risk tier rating all in one place. The AI‑driven analysis adds concise context so you can make smarter decisions, not just follow a single number. Dive into the free, no‑registration tool at https://www.matchsignal.pro and see the difference for yourself.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "FreeTool",
+            "Football",
+            "NBA",
+            "NFL"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:37:01.774Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

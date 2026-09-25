@@ -13,6 +13,56 @@ export type GroqVideoCopyResult = {
   model: string;
 };
 
+async function parseGroqErrorDetails(response: Response): Promise<string> {
+  const status = response.status;
+  let bodyText = "";
+  try {
+    bodyText = await response.text();
+  } catch {
+    return `HTTP ${status}`;
+  }
+
+  try {
+    const errorJson = JSON.parse(bodyText);
+    if (errorJson && typeof errorJson === "object") {
+      const err = (errorJson as Record<string, unknown>).error;
+      if (err && typeof err === "object") {
+        const message = (err as Record<string, unknown>).message;
+        const type = (err as Record<string, unknown>).type;
+        const code = (err as Record<string, unknown>).code;
+        const details: string[] = [];
+        if (typeof message === "string" && message) details.push(message);
+        if (typeof type === "string" && type) details.push(`type: ${type}`);
+        if (typeof code === "string" && code) details.push(`code: ${code}`);
+        if (details.length > 0) return `HTTP ${status}: ${details.join(" | ")}`;
+      }
+    }
+  } catch {
+    // Non-JSON body, fallback to truncated text snippet
+  }
+
+  const cleanSnippet = bodyText.replace(/[\r\n]+/g, " ").trim().slice(0, 300);
+  return `HTTP ${status}${cleanSnippet ? `: ${cleanSnippet}` : ""}`;
+}
+
+function getRateLimitHeaderSummary(headers: Headers): string {
+  const headerKeys = [
+    "retry-after",
+    "x-ratelimit-reset-tokens",
+    "x-ratelimit-reset-requests",
+    "x-ratelimit-remaining-tokens",
+    "x-ratelimit-remaining-requests",
+    "x-ratelimit-limit-tokens",
+    "x-ratelimit-limit-requests",
+  ];
+  const items: string[] = [];
+  for (const key of headerKeys) {
+    const val = headers.get(key);
+    if (val) items.push(`${key}: ${val}`);
+  }
+  return items.length > 0 ? ` [headers: ${items.join(", ")}]` : "";
+}
+
 export async function generateVideoCopyWithGroq(params: {
   prompt: string;
   apiKey?: string;
@@ -79,7 +129,9 @@ export async function generateVideoCopyWithGroq(params: {
       }
 
       if (!response.ok) {
-        throw new Error(`Groq video-copy request failed with HTTP ${response.status}`);
+        const errorDetails = await parseGroqErrorDetails(response);
+        const headerSummary = getRateLimitHeaderSummary(response.headers);
+        throw new Error(`Groq video-copy request failed with ${errorDetails}${headerSummary}`);
       }
       const payload = (await response.json()) as {
         choices?: Array<{ message?: { content?: string } }>;

@@ -1,0 +1,71 @@
+{
+  "id": "7",
+  "status": "ready",
+  "source": {
+    "id": "7",
+    "topic": "YOUR SPORTS. ONE DASHBOARD.",
+    "visual": "Football, basketball, American football, hockey puck, tennis ball, baseball and MMA glove race toward the center. Each transforms into its respective MatchSignal analysis card.",
+    "voiceover": "“Football, NBA, NFL, Hockey, Tennis, MLB and MMA — one consistent analysis workflow. Explore all seven sports free at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242469/matchsignal-videos/7.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "⚡️ One dashboard, seven sports! Watch football, NBA, NFL, hockey, tennis, MLB and MMA race into clear MatchSignal analysis cards. Get AI‑driven probability estimates, market averages and risk tiers—all for free. Dive deeper with guides and calculators, but remember the signals are estimates, not guarantees, and odds can change. Link in bio. 18+ | Gamble responsibly. #SportsBetting #BettingAnalysis #AIInsights #FreeTools #MatchSignal",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚀 All your favorite sports, one powerful workflow. The video shows each sport turning into a concise MatchSignal card with odds comparison, value signals and risk levels. Use the platform to explore without registration, but keep in mind it’s informational, not a promise of profit, and odds may vary. Link in bio. 18+ | Gamble responsibly. #BettingGuide #OddsComparison #SportsAnalytics #FreeBettingTools #ResponsibleGambling",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Discover all seven major sports in one place with MatchSignal’s AI‑assisted analysis dashboard. The video shows football, NBA, NFL, hockey, tennis, MLB and MMA data turning into clear, concise cards that compare refreshed odds, estimate fair probabilities and flag potential value. Use the free tools and guides to deepen your understanding, but remember outcomes are never guaranteed and odds can change. Visit https://www.matchsignal.pro to explore the platform. 18+ only. Gamble responsibly. This is informational only – no guarantee of profit or win.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Ready for a unified view of sports betting insights? MatchSignal’s free platform lets you compare multiple sportsbooks, see market averages and risk tiers, and get AI‑generated explanations for football, NBA, NFL, hockey, tennis, MLB and MMA. The video highlights how each sport’s data transforms into an easy‑to‑read analysis card, helping you spot potential value without any registration. Remember, the analysis is an estimate, not a promise, and odds may shift. Check it out at https://www.matchsignal.pro. 18+ only. Gamble responsibly. No guarantee of results.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Your Sports One Dashboard: Sports Odds & Probability Analysis",
+          "description": "Discover all seven major sports in one place with MatchSignal’s AI‑assisted analysis dashboard. The video shows football, NBA, NFL, hockey, tennis, MLB and MMA data turning into clear, concise cards that compare refreshed odds, estimate fair probabilities and flag potential value. Use the free tools and guides to deepen your understanding, but remember outcomes are never guaranteed and odds can change. Visit https://www.matchsignal.pro to explore the platform.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "FreeTools"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:27:03.524Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

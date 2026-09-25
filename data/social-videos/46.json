@@ -1,0 +1,69 @@
+{
+  "id": "46",
+  "status": "ready",
+  "source": {
+    "id": "46",
+    "topic": "VALUE DOESN’T MEAN WINNER.",
+    "visual": "A blue Value Signal appears beside available odds and estimated probability. A “GUARANTEED WIN” label tries to attach itself but is immediately rejected.",
+    "voiceover": "“A Value Signal means the available price may be favorable relative to estimated probability. It never guarantees a win. Learn more at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242670/matchsignal-videos/46.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🛡️ A Value Signal indicates that an available price may be favorable relative to calculated probability—it never promises certainty or winning results. In sports betting, every wager carries uncertainty. MatchSignal provides transparent odds comparison, value estimation, and risk tiers to keep your research disciplined. 🎯\n\n#SportsBetting #ValueNotCertainty #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #RiskAwareness #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "💡 Never confuse positive mathematical value with certainty. Even high-value bets can lose. MatchSignal helps you understand price advantages, fair probability, and relative risk tiers so you can approach sports research with realistic expectations. 📊\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #RealisticBetting #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🛡️ Finding a Value Signal means the available sportsbook odds may exceed the estimated statistical probability—it does not mean the selection is a certainty. MatchSignal helps you navigate sports betting with analytical rigor, realistic expectations, and transparent risk assessments. Learn more about value at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Understand the true meaning of value in sports analytics. MatchSignal compares bookmaker prices against fair probability models to identify pricing advantages while always stressing that outcomes remain uncertain. Explore disciplined analysis at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Value Doesn't Mean Winner: Sports Odds & Probability Analysis",
+          "description": "A Value Signal means the available price may be favorable relative to estimated probability. It never guarantees a win. Learn more about market value with MatchSignal.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "ValueBetting",
+            "BettingTips",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "ExpectedValue",
+            "RiskManagement"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

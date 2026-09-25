@@ -1,0 +1,73 @@
+{
+  "id": "8",
+  "status": "ready",
+  "source": {
+    "id": "8",
+    "topic": "WINNER? WRONG FIRST QUESTION.",
+    "visual": "A huge “WHO WINS?” headline fills the screen. The camera crashes through it, revealing deeper layers labelled PRICE, PROBABILITY, VALUE and RISK.",
+    "voiceover": "“A good betting decision involves more than predicting a winner. Price, probability, value and risk matter too. Explore them at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242474/matchsignal-videos/8.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🚀 Hooked on the thrill of picking a winner? The video reveals why that’s just the tip of the iceberg. Dive into the four layers—PRICE, PROBABILITY, VALUE, and RISK—that shape a smarter bet. MatchSignal’s AI pulls together refreshed odds from many sportsbooks, shows market averages, and flags potential value signals so you can assess risk before you act. Ready to level up? Watch the clip, explore the data, and start making decisions backed by analysis. Link in bio.\n\n#BettingAnalysis #SportsBetting #AIInsights #ValueSignal #ResponsibleGaming #GamblingAwareness #SportsData\n\n⚠️ 18+ only. Gamble responsibly. This content is for informational purposes; it does not guarantee any outcome and odds may change.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 Curious how pros see beyond the headline “Who Wins?”? Our latest video peels back the layers—PRICE, PROBABILITY, VALUE, RISK—to show what truly matters. MatchSignal’s free platform compares odds across sportsbooks, calculates fair probabilities and highlights where a value signal could exist, all with clear AI explanations. No registration needed, just insight. Check it out and see the difference data can make. Link in bio.\n\n#BettingStrategy #SportsAnalytics #AI #ValueBetting #RiskManagement #GambleResponsibly #18Plus\n\n⚠️ 18+ only. Gamble responsibly. Information only—no guarantee of profit, and odds are subject to change.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Think betting is just about picking a winner? Think again. Our latest video breaks down the four pillars of a smart wager—price, probability, value, and risk. MatchSignal’s AI‑driven analysis pulls together the latest odds from multiple sportsbooks, shows you the market average and highlights where a potential value signal appears. Use the insights to weigh risk levels and make more informed choices, not guesses. Dive deeper at https://www.matchsignal.pro and see how the data can sharpen your strategy. \n\n⚠️ 18+ only. Gamble responsibly. No guaranteed wins—outcomes can vary and odds may change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Ever wonder why the “winner” label isn’t enough? Our new video reveals how price, probability, value and risk each play a role in a solid betting decision. MatchSignal compares refreshed odds across sportsbooks, calculates fair probabilities and flags low‑, medium‑, or high‑risk tiers so you can spot potential value signals without the guesswork. Explore the full analysis tools, calculators and guides at https://www.matchsignal.pro and upgrade your approach today. \n\n⚠️ 18+ only. Gamble responsibly. This is informational only—no guarantee of profit or outcome, and odds can shift.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Winner? Wrong First Question: Sports Odds & Probability Analysis",
+          "description": "Think betting is just about picking a winner? Think again. Our latest video breaks down the four pillars of a smart wager—price, probability, value, and risk. MatchSignal’s AI‑driven analysis pulls together the latest odds from multiple sportsbooks, shows you the market average and highlights where a potential value signal appears. Use the insights to weigh risk levels and make more informed choices, not guesses. Dive deeper at https://www.matchsignal.pro and see how the data can sharpen your strategy.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "BettingAnalysis",
+            "SportsBetting",
+            "AIInsights",
+            "ValueSignal",
+            "ResponsibleGaming",
+            "GamblingAwareness"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:27:20.491Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

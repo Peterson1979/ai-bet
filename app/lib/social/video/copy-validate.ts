@@ -417,6 +417,103 @@ export function validateGeneratedVideoCopy(
   return result(errors);
 }
 
+function normalizeCaption(caption: string): string {
+  if (typeof caption !== "string") return caption;
+  let text = caption.trim();
+
+  if (!/(informational|no (?:prediction|outcome|guarantee)|not a guarantee|odds can change|prices can change|no guarantee of profit)/i.test(text)) {
+    if (/18\s*\+/i.test(text) || /(gamble responsibly|responsible gambling)/i.test(text)) {
+      text = text.replace(/([⚠️🔞🛑ℹ️•-]*\s*18\s*\+[^.\n]*)([.!?]?)/iu, (match) => {
+        return `${match}. Informational analysis only; not a guarantee. Odds can change.`;
+      });
+      if (!/(informational|no (?:prediction|outcome|guarantee)|not a guarantee|odds can change|prices can change|no guarantee of profit)/i.test(text)) {
+        text = `${text}\n\n18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.`;
+      }
+    }
+  }
+
+  const disclaimerMatch = text.search(/(?:\n\s*)?(?:[⚠️🔞🛑ℹ️•-]\s*)?18\s*\+/iu);
+  if (disclaimerMatch > 0) {
+    const before = text.slice(0, disclaimerMatch).trimEnd();
+    const after = text.slice(disclaimerMatch);
+    if (before && !/[.!?]["'’”)]?$/u.test(before)) {
+      text = `${before}.${after.startsWith("\n") ? "" : "\n"}${after}`;
+    }
+  }
+
+  if (!/link in bio/i.test(text)) {
+    text = `${text}\n\nLink in bio`;
+  }
+
+  return text;
+}
+
+function normalizeMessage(message: string): string {
+  if (typeof message !== "string") return message;
+  let text = message.trim();
+
+  if (!/(informational|no (?:prediction|outcome|guarantee)|not a guarantee|odds can change|prices can change|no guarantee of profit)/i.test(text)) {
+    if (/18\s*\+/i.test(text) || /(gamble responsibly|responsible gambling)/i.test(text)) {
+      text = text.replace(/([⚠️🔞🛑ℹ️•-]*\s*18\s*\+[^.\n]*)([.!?]?)/iu, (match) => {
+        return `${match}. Informational analysis only; not a guarantee. Odds can change.`;
+      });
+      if (!/(informational|no (?:prediction|outcome|guarantee)|not a guarantee|odds can change|prices can change|no guarantee of profit)/i.test(text)) {
+        text = `${text}\n\n18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.`;
+      }
+    }
+  }
+
+  const disclaimerMatch = text.search(/(?:\n\s*)?(?:[⚠️🔞🛑ℹ️•-]\s*)?18\s*\+/iu);
+  if (disclaimerMatch > 0) {
+    const before = text.slice(0, disclaimerMatch).trimEnd();
+    const after = text.slice(disclaimerMatch);
+    if (before && !/[.!?]["'’”)]?$/u.test(before)) {
+      text = `${before}.${after.startsWith("\n") ? "" : "\n"}${after}`;
+    }
+  }
+
+  if (!text.includes("https://www.matchsignal.pro")) {
+    text = `${text}\n\nhttps://www.matchsignal.pro`;
+  }
+
+  return text;
+}
+
+export function normalizeGeneratedVideoCopy(value: unknown): unknown {
+  if (!value || typeof value !== "object") return value;
+  const candidate = value as Record<string, unknown>;
+  const platforms = candidate.platforms as Record<string, unknown> | undefined;
+  if (!platforms || typeof platforms !== "object") return value;
+
+  const ig = platforms.instagram as { targets?: Array<{ targetId?: string; caption?: string }> } | undefined;
+  const fb = platforms.facebook as { targets?: Array<{ targetId?: string; message?: string }> } | undefined;
+
+  return {
+    ...candidate,
+    platforms: {
+      ...platforms,
+      instagram: {
+        ...ig,
+        targets: Array.isArray(ig?.targets)
+          ? ig.targets.map((t) => ({
+              ...t,
+              caption: typeof t?.caption === "string" ? normalizeCaption(t.caption) : t?.caption,
+            }))
+          : ig?.targets,
+      },
+      facebook: {
+        ...fb,
+        targets: Array.isArray(fb?.targets)
+          ? fb.targets.map((t) => ({
+              ...t,
+              message: typeof t?.message === "string" ? normalizeMessage(t.message) : t?.message,
+            }))
+          : fb?.targets,
+      },
+    },
+  };
+}
+
 export function parseGeneratedVideoCopy(value: unknown): GeneratedVideoCopy {
   return GeneratedVideoCopySchema.parse(value);
 }

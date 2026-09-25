@@ -46,3 +46,8 @@ next-env.d.ts
 .youtube-token*
 *client_secret*.json
 *credentials*.json
+
+# local video batches and temporary tools
+social-video-new/
+scripts/temp-*
+

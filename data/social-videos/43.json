@@ -1,0 +1,69 @@
+{
+  "id": "43",
+  "status": "ready",
+  "source": {
+    "id": "43",
+    "topic": "SEE THE DIFFERENCE.",
+    "visual": "Two smartphones show the same market at slightly different prices. The screens expand into a three-dimensional comparison revealing best tracked odds, market average, fair probability and risk tier.",
+    "voiceover": "“Small price differences can matter. Compare equivalent market prices and see the wider context with MatchSignal.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242657/matchsignal-videos/43.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "📱 Even small price differences between sportsbooks add up significantly over a season. MatchSignal puts equivalent market prices side-by-side, revealing market averages, fair probability, and risk tiers so you can see the difference before you decide. 💡\n\n#SportsBetting #SeeTheDifference #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #OddsMatters #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 Spot the difference between average sportsbook pricing and standout market opportunities. MatchSignal analyzes bookmaker lines and highlights where prices offer estimated value relative to probability. Upgrade your sports analysis today. 🎯\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #PriceComparison #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "📱 A slight difference in odds might seem minor on a single bet, but across a season, it significantly impacts overall performance. MatchSignal compares odds across sportsbooks, computes market averages, and evaluates fair probability to highlight genuine pricing differences. See the difference at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Compare before you place any sports wager. MatchSignal highlights the gap between varying sportsbook prices, providing clear risk classifications and AI-generated explanations for every fixture across major leagues. Check market differences for free at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "See the Difference: Sports Odds & Probability Analysis",
+          "description": "Small price differences can matter. Compare equivalent market prices and see the wider context with MatchSignal.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "PriceDifferences",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "MarketGaps"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

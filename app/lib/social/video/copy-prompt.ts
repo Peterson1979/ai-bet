@@ -6,7 +6,7 @@ import {
 } from "./content-types";
 
 const MATCHSIGNAL_PERMANENT_CONTEXT = `
-PRODUCT: MatchSignal is a free, no-registration AI-assisted sports betting analysis platform, not a sportsbook and does not accept bets. It compares regularly refreshed odds from multiple sportsbooks with market-based probability analysis and concise AI explanations. It may show selections/markets, partner odds, estimated value and fair probability, market averages, bookmaker coverage, and Low/Medium/High Risk tiers. A Value Signal estimates potential positive expected value; it never guarantees a win, profit, or outcome. Supported sports: Football, NBA, NFL, Hockey, Tennis, MLB, MMA. It also offers Betting Guides, free calculators/tools, and a Betting Glossary.
+PRODUCT: MatchSignal is a free, no-registration AI-assisted sports betting analysis platform (not a sportsbook; does not accept bets). It compares regularly refreshed market odds with probability analysis and concise AI explanations (selections, partner odds, estimated value, fair probability, market averages, Risk tiers). A Value Signal estimates potential positive expected value; it never guarantees a win, profit, or outcome.
 
 OBJECTIVE: Drive qualified traffic to https://www.matchsignal.pro and exploration of its comparison/analysis; never include direct sportsbook affiliate URLs. Write English only.
 
@@ -39,7 +39,6 @@ ID: ${params.input.id}
 TOPIC: ${params.input.topic}
 VISUAL: ${params.input.visual}
 VOICEOVER: ${params.input.voiceover}
-SOURCE URL: ${params.input.sourceUrl ?? "not provided yet"}
 
 Generate all four target-specific Meta outputs now in one JSON object.${repair}`;
 }

@@ -1,0 +1,69 @@
+{
+  "id": "51",
+  "status": "ready",
+  "source": {
+    "id": "51",
+    "topic": "WHAT DO ODDS ACTUALLY SAY?",
+    "visual": "Decimal odds float toward the camera and transform into implied probability percentages. Several bookmaker prices convert simultaneously before aligning on one clean market comparison.",
+    "voiceover": "“Betting odds represent more than potential returns — they imply probability. MatchSignal helps put those numbers into context. Learn free at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242698/matchsignal-videos/51.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "📖 Betting odds aren't just potential payout numbers—they represent implied probability. MatchSignal converts complex bookmaker odds into clear percentage probabilities, market averages, and risk tiers so you can see what the market is truly implying. 💡\n\n#SportsBetting #ImpliedProbability #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #BettingEducation #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 Learn to read what sportsbook odds are actually telling you. MatchSignal translates decimal and moneyline odds into implied probability percentages and compares lines across sportsbooks for transparent sports research. 📊\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #OddsDecoded #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "📖 Every decimal or moneyline price reflects an underlying implied probability set by sportsbooks. MatchSignal decodes these numbers, converting them into intuitive probability percentages and benchmarking them against market averages. Master the language of odds at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Understand what betting odds actually say. MatchSignal provides educational tools and side-by-side odds comparisons, revealing the implied probability behind every sportsbook line across major leagues. Explore for free at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "What Do Odds Actually Say?: Sports Odds & Probability Analysis",
+          "description": "Betting odds represent more than potential returns—they imply probability. MatchSignal helps put those numbers into clear market context.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "ImpliedProbability",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "OddsEducation"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

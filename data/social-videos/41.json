@@ -1,0 +1,69 @@
+{
+  "id": "41",
+  "status": "ready",
+  "source": {
+    "id": "41",
+    "topic": "WHICH PRICE TELLS THE STORY?",
+    "visual": "Three identical footballs appear with different market prices. The prices merge into a MatchSignal comparison showing best tracked odds, market average and fair probability.",
+    "voiceover": "“Different prices can tell different parts of the story. Compare them with the wider market on MatchSignal.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242649/matchsignal-videos/41.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "⚽ When different bookmakers offer different odds for the same event, which price tells the real story? MatchSignal compares sportsbooks side-by-side, calculating the market average and fair probability so you know exactly how the numbers line up. 📊\n\n#SportsBetting #WhichPrice #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #MarketConsensus #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 Never assume all sportsbooks see a game the same way. MatchSignal benchmarks multiple bookmaker prices against calculated probability models and risk tiers, giving you an unbiased view of market consensus. Compare and make informed choices. 🎯\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BookmakerOdds #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "⚽ When three sportsbooks offer three different odds for the same fixture, which one represents true value? MatchSignal compares multi-bookmaker prices to identify the market average, fair probability, and best tracked odds. Discover market consensus before deciding. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🔍 Never settle for the first betting line you see. MatchSignal gathers odds from top sportsbooks and pairs them with mathematical probability models to help you find the most favorable market conditions across all sports. Check the differences at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Which Price Tells the Story?: Sports Odds & Probability Analysis",
+          "description": "Different prices can tell different parts of the story. Compare them with the wider market on MatchSignal.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "PriceDiscrepancy",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "MarketAverage"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "32",
+  "status": "ready",
+  "source": {
+    "id": "32",
+    "topic": "PRICE VS. PROBABILITY.",
+    "visual": "Two glowing elements labelled Price and Probability collide and transform into MatchSignal analytics showing market average, fair probability, estimated value and risk tier.",
+    "voiceover": "“Price and probability tell different parts of the story. MatchSignal puts them into market context.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242617/matchsignal-videos/32.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "⚖️ Price and probability tell two completely different parts of the betting story. The price shows your potential return, but probability estimates the actual likelihood of the event. MatchSignal connects both sides by calculating fair probability, estimated value, and market-average pricing for smarter sports analysis. 📊\n\n#SportsBetting #PriceVsProbability #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #BettingMath #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🎯 A longshot price or a heavy favorite means nothing without knowing the estimated probability behind it. MatchSignal balances sportsbook odds against statistical probability models to reveal potential value and relative risk on every matchup. Make well-calibrated sports decisions. 💡\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #ProbabilityMatters #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "⚖️ Understanding the relationship between price and probability is essential for disciplined sports betting research. MatchSignal evaluates bookmaker odds against mathematical probabilities to help you spot where market pricing diverges from statistical expectations. Explore balanced market analytics at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "📊 Don't confuse high odds with good value. MatchSignal benchmarks sportsbook prices against calculated probabilities and market averages, offering transparent AI explanations across major sports leagues. Learn how price and probability work together with MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Price vs. Probability: Sports Odds & Probability Analysis",
+          "description": "Price and probability tell different parts of the story. MatchSignal puts them into market context to help you evaluate odds and potential value effectively.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "PriceVsProbability",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "ExpectedValue"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

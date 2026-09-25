@@ -1,0 +1,69 @@
+{
+  "id": "47",
+  "status": "ready",
+  "source": {
+    "id": "47",
+    "topic": "AI NEEDS GOOD DATA.",
+    "visual": "A fictional AI system receives streams of sports-market prices, market averages and probability signals, which transform into a MatchSignal interface with AI analysis.",
+    "voiceover": "“AI analysis is more useful when it works with real market context. MatchSignal combines market data with AI analysis.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242674/matchsignal-videos/47.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🤖 AI analysis is only as good as the market data that powers it. MatchSignal grounds its AI explanations in validated sportsbook odds, market-average comparisons, and mathematical probability models—giving you reliable, context-rich sports insights. 💡\n\n#SportsBetting #AINeedsData #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #AIBetting #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⚡ Don't rely on generic AI predictions that ignore live betting markets. MatchSignal connects artificial intelligence with real-world sportsbook pricing, fair probability calculations, and structured risk tiers across major sports leagues. Discover data-driven AI today. 📈\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #GroundedAI #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🤖 Artificial intelligence without real-world market context produces noisy, unreliable predictions. MatchSignal pairs machine learning analysis with validated sportsbook data, market-average comparisons, and mathematical probability models to deliver clear, actionable insights. See how data powers our AI at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Experience AI-assisted sports analysis built on solid data foundations. MatchSignal ingests multi-bookmaker odds and market signals to deliver concise, grounded explanations for today's top matchups. Explore our data-driven cards at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "AI Needs Good Data: Sports Odds & Probability Analysis",
+          "description": "AI analysis is more useful when it works with real market context. MatchSignal combines validated market data with AI-assisted analysis.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "AIData",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "ArtificialIntelligence"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "53",
+  "status": "ready",
+  "source": {
+    "id": "53",
+    "topic": "HOW MUCH OF THE MARKET ARE YOU SEEING?",
+    "visual": "One bookmaker icon lights up inside a huge dark stadium. Then several additional bookmaker data sources illuminate until a much broader market picture appears. A “BOOKMAKERS TRACKED” metric locks onto the MatchCard.",
+    "voiceover": "“More market coverage gives better pricing context. MatchSignal shows how many bookmakers contribute to an analysis. Check today’s market at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242711/matchsignal-videos/53.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🏟️ Looking at a single bookmaker gives you a narrow sliver of the market. MatchSignal aggregates data from multiple leading sportsbooks to deliver wider market coverage, accurate price averages, and transparent fair probability models. See the whole stadium of data. 🔍\n\n#SportsBetting #MarketCoverage #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #BroadCoverage #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🌐 Expand your market vision with MatchSignal. By tracking multiple sportsbook data sources simultaneously, MatchSignal provides deeper pricing context, bookmaker count tracking, and structured risk tiers for informed sports research. 📈\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BookmakersTracked #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🏟️ How much of the betting market do you actually see when checking a single app? MatchSignal tracks multiple leading bookmakers simultaneously, providing transparent coverage metrics, market averages, and estimated probability. Expand your market coverage at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🌐 Wider market coverage leads to better sports decisions. MatchSignal gathers multi-bookmaker data into unified analysis cards complete with risk assessments and concise AI breakdowns across top leagues. Explore broader market data at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "How Much of the Market Are You Seeing?: Sports Odds & Probability Analysis",
+          "description": "More market coverage gives better pricing context. MatchSignal shows how many bookmakers contribute to an analysis. Check today's market coverage.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "MarketCoverage",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "BookmakersTracked"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

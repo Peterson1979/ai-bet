@@ -1,0 +1,69 @@
+{
+  "id": "21",
+  "status": "ready",
+  "source": {
+    "id": "21",
+    "topic": "WHAT DOES THE MARKET SAY?",
+    "visual": "A football stadium transforms into a flowing network of market signals, which converge into MatchSignal showing market average, best tracked odds, fair probability and risk tier.",
+    "voiceover": "“Before focusing on one price, look at the market around it. MatchSignal brings the key signals together in one place.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242551/matchsignal-videos/21.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "📊 What does the market say about today’s football action? MatchSignal turns a sea of odds into a single, easy‑to‑read dashboard – market average, best tracked price, fair probability and a clear risk tier. Watch the video, tap “Link in bio” and see how AI‑assisted analysis can give you a sharper edge. \n\n🔗 Link in bio\n\n⚠️ 18+ only. Gamble responsibly. This is informational analysis; it does not guarantee profit and odds may shift.\n\n#FootballBetting #SportsAnalytics #BettingTools #ValueBetting #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "💡 Before you lock in a price, look at the whole market. MatchSignal aggregates odds from multiple sportsbooks, shows the market average, the top‑tracked odds and a fair‑probability estimate, then tags each pick with Low, Medium or High risk. Press play, then hit “Link in bio” to explore the platform for free. \n\n🔗 Link in bio\n\n⚠️ 18+ only. Gamble responsibly. No guaranteed outcomes – odds can change and betting always carries risk.\n\n#BettingInsights #SportsBetting #AIAnalysis #ValueSignal #BetResponsibly",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🚀 Want to see what the market really thinks before you pick a football pick? MatchSignal aggregates the latest odds from multiple sportsbooks, shows the market average, the best‑tracked price and a fair‑probability estimate, all with a clear risk‑tier label. Use the AI‑driven summary to understand why a signal appears “High Value” and decide if it fits your strategy. Explore the tool at https://www.matchsignal.pro and start comparing odds in seconds. \n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and outcomes are never certain.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🔎 Curious about the hidden signals behind today’s football odds? MatchSignal pulls refreshed odds from dozens of bookmakers, calculates a market‑based probability and highlights the most promising value tier. The concise AI explanation tells you why a selection may offer positive expected value without promising a win. Check it out now at https://www.matchsignal.pro and get a smarter view of the market. \n\n⚠️ 18+ only. Gamble responsibly. No guarantee of success – odds fluctuate and betting involves risk.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "What Does the Market Say?: Sports Odds & Probability Analysis",
+          "description": "🚀 Want to see what the market really thinks before you pick a football pick? MatchSignal aggregates the latest odds from multiple sportsbooks, shows the market average, the best‑tracked price and a fair‑probability estimate, all with a clear risk‑tier label. Use the AI‑driven summary to understand why a signal appears “High Value” and decide if it fits your strategy. Explore the tool at https://www.matchsignal.pro and start comparing odds in seconds.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "FootballBetting",
+            "BettingTools"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:33:00.826Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

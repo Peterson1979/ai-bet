@@ -1,0 +1,70 @@
+{
+  "id": "29",
+  "status": "ready",
+  "source": {
+    "id": "29",
+    "topic": "WHAT IF THE PRICE ISN’T THE POINT?",
+    "visual": "A runner at a stadium starting line transforms into a three-dimensional market containing comparable prices, market average and probability before resolving into MatchSignal analytics.",
+    "voiceover": "“A price means more when you understand the market behind it. MatchSignal puts the key context together.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242599/matchsignal-videos/29.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "💡 What if the price isn’t the point? Watch as a runner becomes a 3‑D market, showing comparable odds, the market average and probability before MatchSignal adds AI‑driven context. Seeing the whole picture helps you gauge potential value, but it’s not a win guarantee – odds can shift at any time. Ready to explore? Link in bio. \n\n⚠️ 18+ only. Gamble responsibly. This post is informational; no guarantee of profit or outcome. #SportsBetting #BettingAnalysis #AIInsights #ValueBetting #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚀 A price means more when you understand the market behind it. Our latest clip turns a starter’s line into a three‑dimensional odds landscape, comparing prices and probabilities, then lets MatchSignal’s AI explain the context. Use the insight to spot potential value, knowing it’s not a guarantee and odds may change. Link in bio. \n\n⚠️ 18+ only. Gamble responsibly. Informational content only; no promise of winnings. #BettingTips #OddsComparison #AIAnalytics #SportsData #GambleResponsibly",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why the price alone doesn’t tell the whole story? Our latest video shows a runner turning into a 3‑D market, revealing comparable odds, the market average and underlying probabilities before MatchSignal’s AI breaks it down. By seeing the context, you can spot potential value and make more informed decisions – but remember, outcomes are never guaranteed and odds may shift. Explore the analysis at https://www.matchsignal.pro. \n\n⚠️ 18+ only. Gamble responsibly. This is informational content; no guarantee of profit or win. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "What if the price isn’t the point? Our new video visualizes a runner morphing into a market landscape, comparing prices across sportsbooks, showing the average line and the probability behind each selection. MatchSignal then adds concise AI insight, helping you understand potential value without promising any result. Dive deeper at https://www.matchsignal.pro and see the full context before you place a wager. \n\n⚠️ 18+ only. Gamble responsibly. This is informational; no guarantee of success. Odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "What If the Price Isn’t the Point?: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why the price alone doesn’t tell the whole story? Our latest video shows a runner turning into a 3‑D market, revealing comparable odds, the market average and underlying probabilities before MatchSignal’s AI breaks it down. By seeing the context, you can spot potential value and make more informed decisions – but remember, outcomes are never guaranteed and odds may shift. Explore the analysis at https://www.matchsignal.pro.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:37:23.068Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

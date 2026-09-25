@@ -1,0 +1,70 @@
+{
+  "id": "26",
+  "status": "ready",
+  "source": {
+    "id": "26",
+    "topic": "VALUE NEEDS CONTEXT.",
+    "visual": "A glowing market price balances against fair probability and market average before becoming a MatchSignal analytical dashboard.",
+    "voiceover": "“A price alone doesn't tell the whole story. MatchSignal adds market and probability context to the numbers.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242575/matchsignal-videos/26.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔍 Hooked on the numbers? A single price can be deceptive. In our newest clip, the glowing market price meets fair probability and the average market line, then flips to a MatchSignal dashboard that adds AI‑powered context. See how the extra layers help you spot potential value before you even think about placing a wager. 🎯\n\n💡 Want deeper insight? Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit – odds may shift and outcomes are uncertain.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚀 Ready to see beyond the headline odds? Our video shows a market price balancing against fair probability and the overall market average, then transforms into a MatchSignal analytical dashboard that explains the context. This extra data can highlight where the odds might offer positive expected value, but remember it’s an estimate, not a promise. 🎥\n\n🔗 Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. This content is for informational purposes only – we do not guarantee any specific result.\n\n#BettingTips #SportsAnalytics #AI #BetSmart #GamblingAwareness",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why a single price can feel misleading? In our latest video, we show how MatchSignal layers market averages and probability analysis over the raw odds, turning a simple number into a strategic insight. See the glowing price balance against fair probability, then watch the dashboard break it down for you. This context helps you spot potential value before you decide where to place a bet. Explore the full analysis at https://www.matchsignal.pro and make more informed choices. \n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit – odds can change and outcomes are uncertain.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "A price tag on its own doesn’t tell the whole story. Our new video walks you through how MatchSignal adds market context and probability estimates to each odds line, giving you a clearer picture of potential value. Watch the market price balance with fair probability, then see the AI‑driven dashboard highlight low, medium, and high‑risk tiers. Use this deeper insight to compare sportsbooks and decide where the odds might be worth a closer look. Visit https://www.matchsignal.pro for free, no‑registration analysis tools. \n\n⚠️ 18+ only. Gamble responsibly. This is informational only – we do not guarantee wins or profits.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Value Needs Context: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why a single price can feel misleading? In our latest video, we show how MatchSignal layers market averages and probability analysis over the raw odds, turning a simple number into a strategic insight. See the glowing price balance against fair probability, then watch the dashboard break it down for you. This context helps you spot potential value before you decide where to place a bet. Explore the full analysis at https://www.matchsignal.pro and make more informed choices.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:35:44.260Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

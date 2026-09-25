@@ -1,0 +1,69 @@
+{
+  "id": "20",
+  "status": "ready",
+  "source": {
+    "id": "20",
+    "topic": "DON’T LOOK AT ONE BOOK.",
+    "visual": "A person checks one sports market on a phone, then the screen expands into multiple equivalent market prices. MatchSignal identifies the market average and best tracked odds.",
+    "voiceover": "“Looking at one price can hide the bigger picture. Compare the market and see how the price fits the broader market.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242547/matchsignal-videos/20.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "👀 Looking at one sportsbook creates a massive blind spot. When you only see one price, you have no way of knowing how it compares to the wider market. MatchSignal tracks multiple sportsbooks side-by-side, calculating the market average and highlighting the best tracked odds for every fixture. See the full picture before you make a move. 🔍\n\n#SportsBetting #OddsComparison #MatchSignal #SportsAnalytics #ValueBetting #BetSmart #ResponsibleGambling #BettingTips #MarketContext #LineShopping\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "📱 Sticking to a single betting app often means settling for worse prices and missing vital market context. MatchSignal expands your vision by comparing odds across leading bookmakers and pairing every line with fair probability analysis and concise AI breakdowns. Start comparing smarter today. ⚡\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BookmakerComparison #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "👀 Relying on a single sportsbook often means missing out on better odds and critical market context. MatchSignal aggregates pricing from multiple sportsbooks, calculates market averages, and evaluates fair probability to show how any given price fits the broader market. Expand your view before deciding. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🔍 Why compare odds? Because sportsbooks rarely price matches identically. MatchSignal provides side-by-side odds comparison, AI-assisted explanations, and clear risk tiers for football, NBA, NFL, and more. Stop guessing from a single price and explore the market at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Don't Look at One Book: Sports Odds & Probability Analysis",
+          "description": "Looking at one price can hide the bigger picture. Compare the market and see how the price fits the broader market with MatchSignal.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BookmakerComparison",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "LineShopping"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

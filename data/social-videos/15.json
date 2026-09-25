@@ -1,0 +1,71 @@
+{
+  "id": "15",
+  "status": "ready",
+  "source": {
+    "id": "15",
+    "topic": "TOO MANY ODDS?",
+    "visual": "Dozens of markets, odds and sportsbook screens spin chaotically around the viewer. A MatchSignal scanner organizes the chaos into one compact card with selection, odds, probability, value, risk and explanation.",
+    "voiceover": "“Comparing betting markets manually takes time. MatchSignal organizes key pricing and analysis into one clear card. Explore MatchSignal.pro free.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242531/matchsignal-videos/15.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔍 Overwhelmed by a flood of odds? MatchSignal’s scanner pulls the noise into one clean card – showing the pick, odds, probability, value tier and a quick AI insight. It’s the fastest way to see where the market might offer a potential edge before you place a bet. Dive in and see the difference for yourself. Link in bio. 18+ only. Gamble responsibly. No guarantee of profit; odds can change. #SportsBetting #BettingAnalysis #AIInsights #BetSmart #FreeTools",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⚡️ Stop scrolling through endless sportsbook pages. MatchSignal consolidates the key data – selection, odds, fair probability, value signal and risk level – into a single card, plus a concise AI explanation to help you understand the numbers. Perfect for football, NBA, NFL and more. Explore the free platform today. Link in bio. 18+ only. Gamble responsibly. No guarantee of profit; odds can change. #BettingTips #OddsComparison #AIAnalytics #BetResponsibly #FreeBettingTools",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Tired of juggling dozens of sportsbook screens? MatchSignal turns that chaos into a single, easy‑to‑read card that shows the selection, odds, fair probability, value tier and a concise AI explanation. Quickly spot where the market may be offering a potential edge and make more informed decisions. Try it for free at https://www.matchsignal.pro. 18+ only. Gamble responsibly. No guarantee of profit; odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Manual odds comparison steals your time. With MatchSignal’s AI‑assisted analysis, you get a compact view of each market’s price, estimated value and risk level in seconds. Explore the platform’s betting guides, calculators and glossary to sharpen your strategy—all at no cost. Visit https://www.matchsignal.pro now. 18+ only. Gamble responsibly. No guarantee of profit; odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Too Many Odds?: Sports Odds & Probability Analysis",
+          "description": "Tired of juggling dozens of sportsbook screens? MatchSignal turns that chaos into a single, easy‑to‑read card that shows the selection, odds, fair probability, value tier and a concise AI explanation. Quickly spot where the market may be offering a potential edge and make more informed decisions. Try it for free at.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "FreeTools"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:17:28.163Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

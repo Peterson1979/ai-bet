@@ -1,0 +1,69 @@
+{
+  "id": "39",
+  "status": "ready",
+  "source": {
+    "id": "39",
+    "topic": "DON’T LET ONE NUMBER DECIDE THE STORY.",
+    "visual": "A person studies one huge market number projected on a wall. The wall expands to reveal additional prices, probability and market information before forming a MatchSignal dashboard.",
+    "voiceover": "“One number can be misleading without context. Compare the market and see the bigger picture with MatchSignal.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242644/matchsignal-videos/39.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🛑 Don't let a single number dictate your betting decision. An isolated odds quote on a sportsbook app can be misleading without wider market context. MatchSignal expands the picture by comparing odds across bookmakers, calculating fair probability, and assessing risk tiers. 📊\n\n#SportsBetting #MarketContext #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #InformedBetting #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "👀 Making sports decisions based on isolated numbers is a common pitfall. MatchSignal helps you see the broader market landscape with side-by-side odds comparison, market averages, and AI-assisted context across football, NBA, NFL, and tennis. 🚀\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BiggerPicture #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🛑 Fixating on a single sportsbook odds line can lead to biased conclusions. MatchSignal helps you see the bigger picture by tracking prices across sportsbooks, establishing market averages, and computing fair probabilities. Compare before deciding anything. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "📊 Expand your market view with MatchSignal. Discover how individual bookmaker odds compare against market averages and statistical probability estimates, complete with clear AI explanations across major sports leagues. Explore for free with MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Don't Let One Number Decide the Story: Sports Odds & Probability Analysis",
+          "description": "One number can be misleading without context. Compare the market and see the bigger picture with MatchSignal.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BiggerPicture",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "MarketContext"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

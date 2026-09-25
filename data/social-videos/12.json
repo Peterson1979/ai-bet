@@ -1,0 +1,67 @@
+{
+  "id": "12",
+  "status": "ready",
+  "source": {
+    "id": "12",
+    "topic": "CHECK FIRST. BET SECOND.",
+    "visual": "A finger moves toward a generic “PLACE BET” button. Time freezes just before the tap. MatchSignal appears and rapidly displays odds comparison, probability, value and risk.",
+    "voiceover": "“Don’t research the numbers after making your decision. Check price, probability, value and risk first at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242513/matchsignal-videos/12.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🚦 Stop the impulse! In the video, a finger hovers over the “PLACE BET” button—then MatchSignal pops up with a full odds comparison, probability, value and risk tier. That’s the power of AI‑assisted analysis before you commit. Check the price, probability, and risk first, then decide. 🎯\n\n🔗 Link in bio\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit; odds can change and outcomes are not guaranteed.\n\n#BetSmart #SportsAnalytics #OddsComparison #ValueBetting #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⏸️ Freeze the moment before you bet. Our video shows the exact second a user pauses, and MatchSignal instantly delivers market‑based probability, estimated value and a risk tier for the selected market. Use that insight to decide if the odds are truly worth it. 📊\n\n🔗 Link in bio\n\n⚠️ 18+ only. Gamble responsibly. Results may vary; this is informational only, odds can change and no outcome is guaranteed.\n\n#BettingTools #AIAnalysis #SportsBetting #ValueSignal #GamblingResponsibly",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Before you hit that “PLACE BET” button, pause and let MatchSignal do the heavy lifting. Our AI‑assisted analysis pulls refreshed odds from multiple sportsbooks, shows market‑based probability, estimated value and risk tier—all in seconds. Use the clear visual comparison to decide if the price is worth the risk before you commit. Explore the full suite at https://www.matchsignal.pro and make smarter, data‑driven choices. \n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit; odds can change and outcomes are uncertain.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Ever felt the urge to place a bet before checking the numbers? Flip the script with MatchSignal. Our platform instantly compares odds, highlights fair probability, and flags low‑, medium‑ or high‑risk tiers so you can assess value first. It’s free, no registration required, and covers football, NBA, NFL, hockey, tennis, MLB and MMA. Dive into the analysis at https://www.matchsignal.pro and let the data guide your next move. \n\n⚠️ 18+ only. Gamble responsibly. Results may vary; no guarantee of outcome and odds are subject to change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Check First Bet Second: Sports Odds & Probability Analysis",
+          "description": "Before you hit that “PLACE BET” button, pause and let MatchSignal do the heavy lifting. Our AI‑assisted analysis pulls refreshed odds from multiple sportsbooks, shows market‑based probability, estimated value and risk tier—all in seconds. Use the clear visual comparison to decide if the price is worth the risk before you commit. Explore the full suite at https://www.matchsignal.pro and make smarter, data‑driven choices.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:28:58.446Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

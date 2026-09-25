@@ -1,0 +1,69 @@
+{
+  "id": "52",
+  "status": "ready",
+  "source": {
+    "id": "52",
+    "topic": "SAME PICK. BETTER PRICE.",
+    "visual": "The same selection appears twice with two different odds. Nothing else changes. A calculator demonstrates how the price alters potential value before MatchSignal highlights the stronger available partner price.",
+    "voiceover": "“The selection can stay identical while the price changes its value. Compare available partner odds with MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242704/matchsignal-videos/52.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "💰 Why accept worse odds on the exact same selection? MatchSignal compares sportsbooks side-by-side to highlight the best tracked price and market average for every fixture. Maximize your pricing efficiency without altering your picks. 🚀\n\n#SportsBetting #SamePickBetterPrice #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #BestOdds #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "📱 Two sportsbooks, identical matchup, different odds. MatchSignal spots the best available partner prices so you never leave value on the table during your sports analysis. Compare lines across football, NBA, NFL, and tennis today. ⚡\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #LineShopping #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "💰 Backing the same selection at 1.90 versus 2.05 makes a substantial difference over the course of a season. MatchSignal tracks odds across top sportsbooks, instantly identifying the best available price and calculating fair probability. Find better pricing on your selections at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🚀 Maximize your sports research efficiency without changing your selections. MatchSignal compares bookmaker odds side-by-side and provides clear AI-assisted analysis for every game across major leagues. Compare partner odds today. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Same Pick, Better Price: Sports Odds & Probability Analysis",
+          "description": "The selection can stay identical while the price changes its value. Compare available partner odds with MatchSignal.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BetterPrice",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "LineShopping"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

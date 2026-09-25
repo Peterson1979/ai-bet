@@ -1,0 +1,72 @@
+{
+  "id": "3",
+  "status": "ready",
+  "source": {
+    "id": "3",
+    "topic": "READ THIS BEFORE “LOW RISK.”",
+    "visual": "A LOW badge enlarges dramatically. Beneath it appears: “NOT A GUARANTEE.” MEDIUM and HIGH then join it as all three become contextual labels on a MatchSignal card.",
+    "voiceover": "“Low, Medium and High help compare relative risk — not predict certainty. Every bet can lose. Review the full analysis at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242448/matchsignal-videos/3.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🚦 Low, Medium, High – your new risk compass. This video breaks down how MatchSignal’s risk tiers label each selection, reminding you that a low‑risk tag is *not* a guarantee of success. The AI compares fresh market odds with its probability analysis so you can spot possible value, then decide if the bet fits your comfort level. 🎯\n\nLink in bio\n\nDisclaimer:.\n18+ . Gamble responsibly. Odds can change; no guarantee of profit or win.\n\n#SportsBetting #BettingAnalysis #RiskManagement #AIInsights #GambleResponsibly",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 See the difference between a “Low” label and a sure thing. Our latest clip shows the Low badge swelling, then Medium and High joining to form a full risk picture on a MatchSignal card. The platform offers AI‑generated explanations, market odds vs. fair probability, and a Value Signal that flags potential upside – never a promise. Use the insight, weigh the risk, and bet wisely. 🎥\n\nLink in bio\n\nDisclaimer:.\n18+ .. Informational analysis only; not a guarantee. Odds can change. Gamble responsibly. Odds may shift and outcomes are never guaranteed.\n\n#BetSmart #SportsAnalytics #ValueSignal #ResponsibleGaming #BettingTips",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Understanding risk is the first step to smarter sports analysis. Our video shows how the Low, Medium and High risk tiers on MatchSignal give you a clear picture of relative risk – not a certainty of outcome. Use the AI‑driven comparison of market odds and probability estimates to see where potential value may exist, then decide if the bet fits your strategy. Visit https://www.matchsignal.pro to explore the full analysis and make more informed choices. \n\nDisclaimer:.\n18+ . Gamble responsibly. Odds can change and this platform does not guarantee any profit or winning outcome.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Every wager carries risk, and MatchSignal helps you see it. In this clip the Low badge expands to highlight that “NOT A GUARANTEE,” while Medium and High labels join to illustrate a spectrum of risk. The AI‑assisted breakdown shows market odds versus fair probability, giving you a transparent view of potential value without promising results. Dive deeper at https://www.matchsignal.pro and compare the data before you place a bet. \n\nDisclaimer:.\n18+ . Gamble responsibly. Odds may vary and no outcome is assured.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Read This Before Low Risk: Sports Odds & Probability Analysis",
+          "description": "Understanding risk is the first step to smarter sports analysis. Our video shows how the Low, Medium and High risk tiers on MatchSignal give you a clear picture of relative risk – not a certainty of outcome. Use the AI‑driven comparison of market odds and probability estimates to see where potential value may exist, then decide if the bet fits your strategy. Visit https://www.matchsignal.pro to explore the full analysis and make more informed choices. \n\nDisclaimer:.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "RiskManagement",
+            "AIInsights",
+            "GambleResponsibly"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T13:00:17.842Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

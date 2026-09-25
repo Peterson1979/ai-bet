@@ -1,0 +1,72 @@
+{
+  "id": "31",
+  "status": "ready",
+  "source": {
+    "id": "31",
+    "topic": "THE MARKET IS TALKING.",
+    "visual": "A football stadium fills with glowing market signals that rise from the pitch and connect into a network before becoming the MatchSignal dashboard.",
+    "voiceover": "“Markets contain information beyond a single price. MatchSignal helps you see the signals and context behind it.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242612/matchsignal-videos/31.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🚨 The market is speaking louder than ever! In this video, a football stadium erupts with glowing signals that merge into the MatchSignal dashboard. See how our AI‑assisted platform pulls together odds from multiple sportsbooks, adds probability analysis and risk tiers, and highlights potential value – all for free, no sign‑up needed. 📊 Want the same insight for your next bet? Link in bio.\n\n🔞 18+ only. Gamble responsibly. This is informational analysis; it does not guarantee profit. Odds can change and value signals are estimates.\n\n#SportsBetting #FootballAnalysis #BettingTools #AIInsights #ValueSignals",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔥 Watch the market come alive! Our latest clip shows stadium lights turning into a network of signals that feed straight into the MatchSignal dashboard. Whether you follow NBA, NFL or any of our supported sports, you get refreshed odds comparisons, AI‑generated context and clear risk tiers to help you spot potential value. No registration, no bets placed here – just smarter research. Link in bio.\n\n🔞 18+ only. Gamble responsibly. No guarantee of outcomes; signals are estimates and odds may vary.\n\n#BettingAnalytics #NBA #SportsData #BettingGuide #ResponsibleGambling",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "⚽️ The stadium lights aren’t the only thing glowing – the market is buzzing with hidden signals. In our new video, watch how MatchSignal transforms scattered odds into a clear dashboard, showing you probability analysis, AI‑driven context and risk tiers for every football pick. Dive deep into the data, compare multiple sportsbooks, and spot potential value before you decide. Ready to upgrade your research? Visit https://www.matchsignal.pro and explore the free, no‑registration tool today. \n\n🔞 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and value signals are estimates, not promises.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🏀 Basketball fans, the market is talking – are you listening? Our latest clip shows the MatchSignal dashboard lighting up as market signals converge, giving you concise AI explanations, fair‑probability estimates and Low/Medium/High risk tiers for NBA games. Compare refreshed odds across sportsbooks, see where the odds diverge, and identify potential value without any registration. Check it out at https://www.matchsignal.pro and start making more informed decisions. \n\n🔞 18+ only. Gamble responsibly. No guarantee of wins – signals are estimates and odds may shift.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "The Market Is Talking: Sports Odds & Probability Analysis",
+          "description": "⚽️ The stadium lights aren’t the only thing glowing – the market is buzzing with hidden signals. In our new video, watch how MatchSignal transforms scattered odds into a clear dashboard, showing you probability analysis, AI‑driven context and risk tiers for every football pick. Dive deep into the data, compare multiple sportsbooks, and spot potential value before you decide. Ready to upgrade your research? Visit https://www.matchsignal.pro and explore the free, no‑registration tool today.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "FootballAnalysis",
+            "BettingTools",
+            "AIInsights",
+            "ValueSignals"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:38:03.111Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

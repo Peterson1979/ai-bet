@@ -1,0 +1,72 @@
+{
+  "id": "13",
+  "status": "ready",
+  "source": {
+    "id": "13",
+    "topic": "ODDS ARE ONLY HALF THE STORY.",
+    "visual": "Large sportsbook odds occupy half the screen. The other half is dark until an estimated probability gauge activates. The two sides connect through a Value Signal calculation.",
+    "voiceover": "“Odds tell you the price. Probability helps tell you what that price may be worth. Compare both free at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242521/matchsignal-videos/13.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔍 Odds are just the price – the probability tells you if that price is worth it. Our latest video walks you through MatchSignal’s probability gauge and Value Signal that turn raw odds into actionable insight. No sign‑up, just free AI‑assisted analysis for Football, NBA, NFL and more. 🎯 Ready to see the hidden side of the market? Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. This content is for informational purposes only; it does not guarantee any outcome and odds can change.\n\n#SportsBetting #BettingAnalysis #ValueSignal #AIInsights #BettingTools",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⚡️ Half the screen shows raw sportsbook odds, the other half lights up with our probability gauge. That connection is the Value Signal – your clue to potential edge. MatchSignal gives you free, refreshed odds comparison, risk tiers, and AI explanations across multiple sports. Discover the full story before you bet. Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. Information only – no guarantee of profit and odds may vary.\n\n#BetSmart #OddsComparison #SportsAnalytics #FreeBettingTools #ResponsibleGambling",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why the odds you see are just half the picture? Our video shows how MatchSignal adds a probability gauge and a Value Signal to reveal potential edge. Dive into free AI‑assisted analysis, see market averages, risk tiers, and compare bookmaker odds side‑by‑side. No registration needed – just smarter insight before you consider a wager. Visit https://www.matchsignal.pro to explore. \n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit; odds can change and outcomes are uncertain.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "The odds you see are only the price tag – the real story lies in the probability behind them. In this clip MatchSignal layers AI‑generated probability estimates and a Value Signal on top of refreshed sportsbook odds, helping you spot potential value. Use our free tools, guides, and risk tiers to make more informed decisions. Check it out at https://www.matchsignal.pro. \n\n⚠️ 18+ only. Gamble responsibly. Information provided for educational purposes; no guarantee of results and odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Odds Are Only Half the Story: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why the odds you see are just half the picture? Our video shows how MatchSignal adds a probability gauge and a Value Signal to reveal potential edge. Dive into free AI‑assisted analysis, see market averages, risk tiers, and compare bookmaker odds side‑by‑side. No registration needed – just smarter insight before you consider a wager. Visit https://www.matchsignal.pro to explore.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "ValueSignal",
+            "AIInsights",
+            "BettingTools"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:29:24.455Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

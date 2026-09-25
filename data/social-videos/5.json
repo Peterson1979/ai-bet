@@ -1,0 +1,74 @@
+{
+  "id": "5",
+  "status": "ready",
+  "source": {
+    "id": "5",
+    "topic": "YES. AI CAN BE WRONG.",
+    "visual": "A futuristic AI prediction appears confidently, then a large “NO GUARANTEES” overlay interrupts it. The screen resets to probability, risk and market data rather than a certain outcome.",
+    "voiceover": "“AI and models can be wrong. MatchSignal doesn’t promise winners — it helps you evaluate probability, pricing and risk. Explore MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242458/matchsignal-videos/5.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🚨 AI can be wrong – that’s why MatchSignal shows you the full probability picture, not just a confident prediction. 📊 Compare refreshed odds, see risk tiers, and get concise AI explanations to evaluate potential value. 🎥 Watch the video, then tap the link in bio to explore the free tools, guides, and calculators that help you stay ahead of the game. \n\n#SportsBetting #BettingAnalysis #AIInsights #Probability #RiskManagement #GambleResponsibly #18Plus #MatchSignal #BettingTools #ValueSignal\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of win or profit; odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 When AI says “sure thing,” remember it’s still a model. MatchSignal flips the script – showing you market‑based probabilities, risk tiers, and side‑by‑side odds so you can spot real value signals. 🎯 Use the free calculators and betting glossary to sharpen every decision. 🎬 Watch the clip, then hit the link in bio to start exploring at no cost. \n\n#BettingStrategy #SportsAnalytics #AIModels #ProbabilityScience #BettingGuides #ResponsibleGambling #18AndOver #MatchSignal #FreeTools #OddsComparison\n\n⚠️ 18+ only. Gamble responsibly. This content is informational; no guarantee of outcome. Odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🤖 AI isn’t infallible – even the smartest models can miss. MatchSignal gives you a clear view of probability, market pricing and risk tiers so you can make more informed choices. Compare odds from multiple sportsbooks, see AI‑generated explanations, and spot potential value signals. Ready to dive deeper? Visit https://www.matchsignal.pro and explore the tools that keep you in control. \n\n⚠️ 18+ only. Gamble responsibly. This is for informational purposes; no guarantee of win, profit or outcome. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "⚠️ The future isn’t set in stone – AI predictions can be wrong. MatchSignal doesn’t promise winners; it equips you with market‑based probability analysis, risk categories (Low/Medium/High), and side‑by‑side odds comparison. Use the free calculators, betting guides, and glossary to sharpen your strategy across Football, NBA, NFL, and more. Check it out at https://www.matchsignal.pro. \n\n🔞 18+ only. Gamble responsibly. Information only – no guarantee of results. Odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Yes Ai Can Be Wrong: Sports Odds & Probability Analysis",
+          "description": "🤖 AI isn’t infallible – even the smartest models can miss. MatchSignal gives you a clear view of probability, market pricing and risk tiers so you can make more informed choices. Compare odds from multiple sportsbooks, see AI‑generated explanations, and spot potential value signals. Ready to dive deeper? Visit and explore the tools that keep you in control. ⚠️.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "Probability",
+            "RiskManagement",
+            "GambleResponsibly",
+            "18Plus"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:15:56.414Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

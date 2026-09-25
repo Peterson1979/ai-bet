@@ -1,0 +1,69 @@
+{
+  "id": "37",
+  "status": "ready",
+  "source": {
+    "id": "37",
+    "topic": "THE SAME GAME. A DIFFERENT VIEW.",
+    "visual": "A football match freezes and the camera rises above the stadium. The field transforms into an analytical map displaying best tracked odds, market average, fair probability and risk tier.",
+    "voiceover": "“The game is the same. A broader market view can change how you understand the numbers around it.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242638/matchsignal-videos/37.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🏟️ Everyone watches the same game, but having structured market context changes your entire perspective. MatchSignal elevates your sports analysis with best tracked odds, market averages, fair probability calculations, and clear risk tiers for every matchup. See beyond the surface. 📈\n\n#SportsBetting #DifferentPerspective #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #FootballAnalytics #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "✨ Shift your perspective from passive watching to analytical understanding. MatchSignal maps out multi-bookmaker odds, estimated value signals, and risk tiers for fixtures across football, basketball, hockey, and tennis. Explore a smarter way to view the numbers. 🎯\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #GameContext #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🏟️ Looking at a sports event through a single sportsbook lens limits your understanding. MatchSignal provides a bird's-eye view of market data, aggregating odds across sportsbooks and pairing them with AI-assisted probability analysis and clear risk classifications. Gain a new perspective with MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "📈 Upgrade your matchday research. MatchSignal gives you a fresh perspective by comparing multi-bookmaker pricing, calculating market averages, and highlighting risk levels on a clean, free dashboard. Explore comprehensive market context today. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "The Same Game, a Different View: Sports Odds & Probability Analysis",
+          "description": "The game is the same. A broader market view can change how you understand the numbers around it. Explore MatchSignal's odds comparison and probability tools.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "GamePerspective",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "MarketContext"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

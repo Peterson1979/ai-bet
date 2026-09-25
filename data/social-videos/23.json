@@ -1,0 +1,69 @@
+{
+  "id": "23",
+  "status": "ready",
+  "source": {
+    "id": "23",
+    "topic": "FIND THE SIGNAL IN THE NOISE.",
+    "visual": "A person surrounded by chaotic sports-market information follows one glowing signal until the noise organizes into a clear MatchSignal dashboard.",
+    "voiceover": "“There is a lot of information around every market. MatchSignal helps turn the noise into clear, useful context.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242558/matchsignal-videos/23.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🌐 The sports betting world is flooded with chaotic noise, shifting lines, and endless unverified opinions. MatchSignal cuts through the chaos by organizing market odds, fair probabilities, estimated value, and risk tiers into clean, transparent cards. Find the analytical signal that matters most. 💡\n\n#SportsBetting #SignalInTheNoise #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #DataDriven #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🎯 Stop sorting through confusing forum posts and noisy betting feeds. MatchSignal transforms complex market data into clear price comparisons and AI-assisted insights so you can evaluate sports fixtures objectively and quickly. Check today's clear market signals for free. 📈\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BettingCommunity #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🌐 Sports betting information overload is real. Between shifting lines, varying prices, and endless opinions, finding true value is tough. MatchSignal synthesizes sportsbook data into concise cards featuring best tracked odds, market averages, and clear risk tiers. Turn market noise into actionable clarity at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Cut through the betting noise with structured sports data. MatchSignal benchmarks prices across multiple sportsbooks and provides clear explanations of probability and market trends without complicated jargon. Discover clean market insights today. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Find the Signal in the Noise: Sports Odds & Probability Analysis",
+          "description": "There is a lot of information around every market. MatchSignal helps turn the noise into clear, useful context through multi-bookmaker odds comparison and probability analysis.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "SignalInTheNoise",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "MarketAnalysis"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

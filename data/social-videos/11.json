@@ -1,0 +1,72 @@
+{
+  "id": "11",
+  "status": "ready",
+  "source": {
+    "id": "11",
+    "topic": "VALUE BETS CAN LOSE.",
+    "visual": "A glowing Value Signal appears, followed by two possible paths: WIN and LOSS. Both remain visible while the Value Signal stays unchanged, emphasizing expected value versus individual outcome.",
+    "voiceover": "“A Value Signal is about estimated price advantage — not certainty. Even positive-value opportunities can lose. Understand the difference at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242505/matchsignal-videos/11.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "💡 Hook: “Value isn’t a guarantee—it's an edge.”\n\nIn the clip, a glowing Value Signal lights up, then splits into WIN and LOSS paths. That’s the core idea at MatchSignal: we estimate where the market price may be advantageous, but every bet can still swing either way. Our AI‑driven odds comparison shows fresh bookmaker prices, fair probability, and a risk tier (Low/Medium/High) so you can weigh the potential upside against the downside. Watch the video, then tap the link in bio to explore the free platform—no sign‑up needed. 🎥\n\n#SportsBetting #BettingAnalysis #ValueBet #AIInsights #GamblingResponsibly\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit or win; odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚦 Hook: “Two roads, one signal—choose wisely.”\n\nOur video shows a Value Signal staying steady while both WIN and LOSS routes stay visible, reminding you that even a statistically positive edge can lose. MatchSignal gives you the tools to compare odds across dozens of sportsbooks, see market averages, and read concise AI explanations of each pick’s expected value. Use the risk tier to match your comfort level and make informed decisions. Ready to see the difference? Link in bio takes you straight to the free analysis dashboard. 📊\n\n#BetSmart #OddsComparison #RiskManagement #SportsAnalytics #ResponsibleGambling\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit or win; odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🚀 Unlock the power of the Value Signal! Our AI compares fresh odds from dozens of sportsbooks and highlights where the market may undervalue a pick. The glowing signal in the video shows a potential edge—yet remember, even a positive‑value bet can end in a loss. Use MatchSignal’s probability analysis, risk tiers, and detailed AI explanations to make smarter, data‑driven decisions. Explore the full comparison tool at https://www.matchsignal.pro and see the odds, fair probabilities, and risk assessments side‑by‑side. 📊\n\n⚠️ Disclaimer: Betting involves risk. 18+ only. Gamble responsibly. No guarantee of profit or win; odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🔎 Ever wondered why a “good value” bet can still lose? Our video shows a Value Signal staying bright while two outcomes—WIN and LOSS—appear. MatchSignal doesn’t promise certainty; it simply flags where the price may be favorable compared to market‑based probability. Dive into our AI‑assisted odds comparison, see bookmaker coverage, risk tiers, and the estimated expected value before you place a wager. Visit https://www.matchsignal.pro to start analyzing for free—no registration required. 📈\n\n⚠️ Disclaimer: Betting involves risk. 18+ only. Gamble responsibly. No guarantee of profit or win; odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Value Bets Can Lose: Sports Odds & Probability Analysis",
+          "description": "🚀 Unlock the power of the Value Signal! Our AI compares fresh odds from dozens of sportsbooks and highlights where the market may undervalue a pick. The glowing signal in the video shows a potential edge—yet remember, even a positive‑value bet can end in a loss. Use MatchSignal’s probability analysis, risk tiers, and detailed AI explanations to make smarter, data‑driven decisions. Explore the full comparison tool at https://www.matchsignal.pro and see the odds, fair probabilities, and risk assessments side‑by‑side. 📊\n\n⚠️ Disclaimer: Betting involves risk.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "ValueBet",
+            "AIInsights",
+            "GamblingResponsibly"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:28:37.047Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

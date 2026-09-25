@@ -8,6 +8,7 @@ import { buildVideoCopyPrompt } from "./copy-prompt";
 import {
   buildVideoContentPackage,
   createRejectedVideoCopy,
+  normalizeGeneratedVideoCopy,
   parseGeneratedVideoCopy,
   validateGeneratedVideoCopy,
 } from "./copy-validate";
@@ -30,12 +31,13 @@ export async function generateVideoContentPackage(params: {
   generatedAt?: string;
 }): Promise<VideoCopyGenerationOutcome> {
   const firstRaw = await params.generate(buildVideoCopyPrompt({ input: params.input }));
-  const firstValidation = validateGeneratedVideoCopy(params.input.id, firstRaw);
+  const firstNormalized = normalizeGeneratedVideoCopy(firstRaw);
+  const firstValidation = validateGeneratedVideoCopy(params.input.id, firstNormalized);
   if (firstValidation.valid) {
     return {
       contentPackage: buildVideoContentPackage({
         input: params.input,
-        copy: parseGeneratedVideoCopy(firstRaw),
+        copy: parseGeneratedVideoCopy(firstNormalized),
         generatedAt: params.generatedAt,
       }),
       validationErrors: [],
@@ -50,10 +52,11 @@ export async function generateVideoContentPackage(params: {
       repairIssues: firstValidation.errors,
     })
   );
-  const secondValidation = validateGeneratedVideoCopy(params.input.id, secondRaw);
+  const secondNormalized = normalizeGeneratedVideoCopy(secondRaw);
+  const secondValidation = validateGeneratedVideoCopy(params.input.id, secondNormalized);
   let copy: GeneratedVideoCopy;
   try {
-    copy = parseGeneratedVideoCopy(secondRaw);
+    copy = parseGeneratedVideoCopy(secondNormalized);
   } catch {
     copy = createRejectedVideoCopy(params.input.id);
   }

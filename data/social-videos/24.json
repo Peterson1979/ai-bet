@@ -1,0 +1,71 @@
+{
+  "id": "24",
+  "status": "ready",
+  "source": {
+    "id": "24",
+    "topic": "NO PAYWALL.",
+    "visual": "A polished sports analytics dashboard appears behind two translucent barriers labelled “LOGIN” and “SUBSCRIBE.” The barriers smoothly dissolve into light, revealing a clean MatchSignal-style interface with sports analysis cards, probability tools, educational guides, calculators, and glossary resources. The scene should communicate open access to informational sports analysis tools without depicting gambling activity or bet placement.",
+    "voiceover": "“No subscription. No registration. MatchSignal provides free sports analytics, educational tools, calculators, guides, and market insights. Explore MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242566/matchsignal-videos/24.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "👀 See the walls come down! Our latest video reveals how MatchSignal gives you free, instant access to sports probability analysis, market averages and risk tiers—no login, no subscription. From football to MMA, explore calculators, guides and a betting glossary that help you understand the numbers behind the game. Ready to level up your insights? Link in bio.\n\n🔞 18+ | Gamble responsibly. This is analytical content only; outcomes are not guaranteed and odds can change.\n\n#SportsAnalytics #BettingTools #FreeAccess #AIInsights #GambleResponsibly",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "✨ No paywall, just pure data. Watch as the “LOGIN” and “SUBSCRIBE” barriers melt away to reveal MatchSignal’s open‑door dashboard packed with probability estimates, value signals and educational resources for NFL, NBA, tennis and more. All tools are free and require no registration—perfect for anyone who wants smarter sports analysis. Link in bio.\n\n🔞 18+ | Gamble responsibly. Content provides analysis only; no guarantee of results and odds may shift.\n\n#FreeSportsData #BettingEducation #AIAnalysis #NoRegistration #ResponsibleGaming",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🚀 Unlock the full power of sports analytics without any paywall or sign‑up. Our video shows how MatchSignal’s dashboard instantly reveals probability insights, market averages and risk tiers for football, NBA, NFL, and more. Dive into free guides, calculators and a betting glossary—all in one clean interface. Ready to explore smarter analysis? Visit https://www.matchsignal.pro now and see the data that can inform your decisions. \n\n🔞 18+ | Gamble responsibly. This platform provides analysis only; outcomes are not guaranteed and odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🔍 Curious about how AI‑assisted odds comparison works? Watch the barriers dissolve and discover MatchSignal’s free, no‑registration tools: market‑based probability, value signals, and detailed sport‑specific guides. Whether you follow hockey, tennis, MMA or MLB, you get transparent data to evaluate potential value—no subscription required. Check it out at https://www.matchsignal.pro and start analyzing today. \n\n🔞 18+ | Gamble responsibly. Information only; no guarantees of profit and odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "No Paywall: Sports Odds & Probability Analysis",
+          "description": "🚀 Unlock the full power of sports analytics without any paywall or sign‑up. Our video shows how MatchSignal’s dashboard instantly reveals probability insights, market averages and risk tiers for football, NBA, NFL, and more. Dive into free guides, calculators and a betting glossary—all in one clean interface. Ready to explore smarter analysis? Visit https://www.matchsignal.pro now and see the data that can inform your decisions.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "BettingTools",
+            "FreeAccess",
+            "AIInsights",
+            "GambleResponsibly"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:34:39.207Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "id": "14",
+  "status": "ready",
+  "source": {
+    "id": "14",
+    "topic": "NO MAGIC PREDICTIONS.",
+    "visual": "A futuristic glowing orb labelled “AI ANALYSIS” dissolves into streams of structured sports data, probability indicators, and analytical signals that assemble into a clean MatchSignal-style dashboard.",
+    "voiceover": "“MatchSignal is not about magic predictions. It combines sports data, probability analysis, and AI-generated explanations to help you understand the bigger picture. See how it works at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242526/matchsignal-videos/14.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "✨ No crystal ball, just clear data. MatchSignal turns a glowing AI orb into a dashboard packed with odds comparisons, probability scores and AI‑written insights. Watch how the platform highlights potential value and risk tiers across football, NBA, NFL and more – all without any registration. 📈\n\n🔗 Link in bio\n\n⚠️ 18+ • Gamble responsibly • This content is informational only – we don’t guarantee outcomes and odds can change.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #GambleResponsibly",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚀 From futuristic AI to actionable signals – MatchSignal strips away magic and shows you the numbers. See market‑average odds, fair probability, and AI‑generated explanations side‑by‑side, so you can decide which selections merit a closer look. Free, no‑login, and covering football, NBA, NFL, hockey, tennis, MLB and MMA. 📊\n\n🔗 Link in bio\n\n⚠️ 18+ • Gamble responsibly • Informational only – no guarantee of profit and odds may vary.\n\n#BettingTools #SportsData #AIAnalysis #BetSmart #ResponsibleGaming",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🔍 Want to see how the odds stack up without any “magic” tricks? MatchSignal pulls refreshed odds from dozens of sportsbooks, runs a market‑based probability model, and layers concise AI explanations on a clean dashboard. You’ll get a quick view of fair probability, value signals and risk tiers for football, NBA, NFL and more – all for free and with no registration. Explore the data‑driven approach at https://www.matchsignal.pro and decide what’s worth a deeper look. \n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit – odds can change and outcomes are uncertain.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "📊 Tired of vague predictions? MatchSignal replaces guesswork with structured analysis: compare multiple sportsbooks, see estimated value, and read AI‑generated explanations that break down why a market might be under‑priced. The platform also offers betting guides, calculators and a glossary to sharpen your understanding. Dive into the comparison tools at https://www.matchsignal.pro and see the numbers for yourself. \n\n⚠️ 18+ only. Gamble responsibly. This is informational only – no guarantee of winning, odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "No Magic Predictions: Sports Odds & Probability Analysis",
+          "description": "🔍 Want to see how the odds stack up without any “magic” tricks? MatchSignal pulls refreshed odds from dozens of sportsbooks, runs a market‑based probability model, and layers concise AI explanations on a clean dashboard. You’ll get a quick view of fair probability, value signals and risk tiers for football, NBA, NFL and more – all for free and with no registration. Explore the data‑driven approach at https://www.matchsignal.pro and decide what’s worth a deeper look.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "GambleResponsibly"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:29:38.076Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

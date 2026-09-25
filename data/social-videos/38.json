@@ -1,0 +1,69 @@
+{
+  "id": "38",
+  "status": "ready",
+  "source": {
+    "id": "38",
+    "topic": "ONE MARKET. FOUR SIGNALS.",
+    "visual": "A single glowing market price is hit by four beams that transform into Best Tracked Odds, Market Average, Fair Probability and Risk Tier.",
+    "voiceover": "“One market can reveal several useful signals. MatchSignal brings price, market context, probability and risk together.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242642/matchsignal-videos/38.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🧭 Every sports betting market contains four essential signals: Best Tracked Odds, Market Average, Fair Probability, and Risk Tier. MatchSignal brings all four dimensions together on one clean card so you never evaluate a match in the dark. Discover the full story behind the numbers. 💡\n\n#SportsBetting #FourSignals #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #RiskTier #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 Stop judging a betting market by the price alone. MatchSignal breaks down any matchup into four core analytical signals to help you understand market context, relative probability, and risk tiers. Experience structured sports research today. 📊\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #MarketSignals #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🧭 When evaluating a sports betting market, looking at one number is never enough. MatchSignal analyzes every matchup across four vital dimensions: best available odds, market-average price, fair probability, and risk tier. Get the complete picture before making any sports decision. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Get a complete 360-degree view of sports betting markets. MatchSignal unites odds comparison, statistical probability, and transparent risk assessments into easy-to-read cards for informed research. Discover today's key market signals at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "One Market, Four Signals: Sports Odds & Probability Analysis",
+          "description": "One market can reveal several useful signals. MatchSignal brings price, market context, probability, and risk together in one clear dashboard.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "FourSignals",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "RiskTier"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

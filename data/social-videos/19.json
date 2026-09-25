@@ -1,0 +1,71 @@
+{
+  "id": "19",
+  "status": "ready",
+  "source": {
+    "id": "19",
+    "topic": "ODDS ARE ONLY HALF THE STORY.",
+    "visual": "A football stadium transforms into a data environment where price, market, probability and MatchSignal metrics appear around the game.",
+    "voiceover": "“Odds are only part of the picture. MatchSignal adds market context and probability analysis to help you understand the price.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242544/matchsignal-videos/19.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "📊 Odds are only half the story. In our latest video the football field transforms into a data playground where price, market averages and probability pop up around the action. MatchSignal layers AI‑driven market context on top of refreshed sportsbook odds, showing you Low, Medium and High risk tiers, bookmaker coverage and a concise Value Signal estimate. Use the free calculators, betting guides and glossary to turn raw odds into informed decisions. 🎥 Watch the clip, then tap the link in bio to explore the full comparison tool. \n\n🔞 18+ only. Gamble responsibly. This analysis does not guarantee profit; odds can change.\n\n#SportsBetting #BettingAnalysis #AIInsights #Football #BetSmart #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚀 Want to see beyond the headline odds? Our new video turns a stadium into a data‑rich scene, revealing market context, fair probability and AI‑generated explanations for each price. MatchSignal compares multiple sportsbook odds, highlights potential value and ranks risk, giving you a clearer picture before you wager. Dive into the free tools, guides and glossary to sharpen your strategy. 🎬 Check out the video and hit the link in bio for the full platform experience. \n\n🔞 18+ only. Gamble responsibly. No guarantee of outcomes; odds may shift.\n\n#BettingTips #OddsAnalysis #AI #SportsData #NBA #ResponsibleGaming",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "⚽️ Ever wonder why the odds you see don’t tell the whole story? In our latest video, the stadium turns into a data hub, revealing price, market averages and probability insights that go beyond the headline numbers. MatchSignal layers AI‑driven analysis on top of refreshed sportsbook odds, so you can see where the market may be over‑ or under‑pricing a bet. Discover the Low, Medium and High risk tiers, compare bookmaker coverage and get concise explanations that help you decide if a selection has potential value. Dive into the full comparison at https://www.matchsignal.pro and explore tools like free calculators, betting guides and a glossary. \n\n🔞 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds and values can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🏀 The odds you see are just the tip of the iceberg. Watch our new video as a basketball arena morphs into a data‑rich environment, showing market context, fair probability and AI‑generated insights that add depth to every price point. MatchSignal aggregates multiple sportsbook odds, highlights the estimated value signal and breaks down risk tiers so you can spot potential edges. Use the platform’s free tools, guides and glossary to sharpen your understanding before you place a wager. Learn more at https://www.matchsignal.pro and see how market‑based analysis can change the way you view odds. \n\n🔞 18+ only. Gamble responsibly. No guarantee of winnings; odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Odds Are Only Half the Story: Sports Odds & Probability Analysis",
+          "description": "⚽️ Ever wonder why the odds you see don’t tell the whole story? In our latest video, the stadium turns into a data hub, revealing price, market averages and probability insights that go beyond the headline numbers. MatchSignal layers AI‑driven analysis on top of refreshed sportsbook odds, so you can see where the market may be over‑ or under‑pricing a bet. Discover the Low, Medium and High risk tiers, compare bookmaker coverage and get concise explanations that help you decide if a selection has potential value. Dive into the full comparison at https://www.matchsignal.pro and explore tools like free calculators, betting guides and a glossary.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "Football"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:32:11.368Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

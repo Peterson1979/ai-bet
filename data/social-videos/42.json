@@ -1,0 +1,69 @@
+{
+  "id": "42",
+  "status": "ready",
+  "source": {
+    "id": "42",
+    "topic": "THE MARKET MOVES. DO YOU NOTICE?",
+    "visual": "A city at night reflects changing sports-market prices on wet pavement. The numbers become streams of light that organize into MatchSignal market analytics.",
+    "voiceover": "“Markets can change quickly. MatchSignal helps you compare current prices with the wider market context.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242653/matchsignal-videos/42.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "⚡ Sports betting markets move fast as team news, injuries, and volume shift the lines. MatchSignal helps you stay on top of changes by comparing current prices with broader market averages, fair probability, and risk tiers. Never get caught off guard by sudden line movement. 📈\n\n#SportsBetting #MarketMovement #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #LineTracking #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🏙️ When betting odds fluctuate, understanding market context is crucial. MatchSignal tracks shifting sportsbook prices across major leagues, providing clear probability calculations, risk assessments, and AI-assisted summaries to keep your research grounded. 🎯\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #LineShifts #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "⚡ Sports betting markets are dynamic and fluid. Keeping track of price shifts across multiple sportsbooks is tough, but MatchSignal aggregates changing odds, benchmarks them against market averages, and updates fair probability metrics in real time. Stay informed on market movements with MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "📈 Stay informed as betting markets evolve. MatchSignal provides comprehensive odds comparison, concise AI explanations, and transparent risk tiers for football, basketball, hockey, and tennis. Track shifting market conditions for free at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "The Market Moves. Do You Notice?: Sports Odds & Probability Analysis",
+          "description": "Markets can change quickly. MatchSignal helps you compare current prices with the wider market context.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "MarketMovement",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "LineTracking"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

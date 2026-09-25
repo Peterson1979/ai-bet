@@ -1,0 +1,70 @@
+{
+  "id": "17",
+  "status": "ready",
+  "source": {
+    "id": "17",
+    "topic": "STOP CHASING ODDS.",
+    "visual": "Rapidly changing market prices pull back to reveal multiple equivalent market prices. MatchSignal compares them and displays Best Tracked Odds, Market Average, Fair Probability and Estimated Value.",
+    "voiceover": "“Don't just chase the odds. Compare the price with the market and probability. Explore MatchSignal free at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242539/matchsignal-videos/17.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🚀 Want to stop chasing the odds and start comparing them? MatchSignal shows you the best‑tracked odds, market average and fair probability in one clear view, plus an estimated value signal. Unlock free guides, calculators and a betting glossary to level up your game. Watch the video, tap the link in bio and see the difference! #SportsBetting #BettingAnalysis #AIInsights #ValueBetting #BetSmart Link in bio. 18+ | Gamble responsibly. No guarantee of profit; odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔎 See how quickly market prices can converge and why comparing them matters. MatchSignal delivers side‑by‑side odds, fair probability and an estimated value tier so you can evaluate potential value without the hype. Remember, this is analysis—not a guarantee of winnings. Explore the free platform now—link in bio. #BettingTips #OddsComparison #SportsAnalytics #RiskManagement #BetResponsibly Link in bio. 18+ | Gamble responsibly. No guarantee of profit; odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Tired of chasing fleeting odds? MatchSignal lets you compare the best‑tracked odds, market averages and fair probabilities side‑by‑side, so you can spot potential value before the market shifts. Our AI‑driven analysis highlights Low, Medium and High risk tiers, giving you a clearer picture of each selection. Dive into free tools, betting guides and calculators to sharpen your strategy. Explore the platform at https://www.matchsignal.pro and see how smarter comparison can improve your decision‑making. 18+ | Gamble responsibly. No guarantee of profit; odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Stop letting rapid price swings dictate your bets. With MatchSignal you get a concise view of the market: best tracked odds, average odds, fair probability and an estimated value signal—all refreshed regularly. Use the free calculators and glossaries to understand risk tiers and make more informed choices. Visit https://www.matchsignal.pro today and start comparing like a pro. 18+ | Gamble responsibly. No guarantee of profit; odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Stop Chasing Odds: Sports Odds & Probability Analysis",
+          "description": "Tired of chasing fleeting odds? MatchSignal lets you compare the best‑tracked odds, market averages and fair probabilities side‑by‑side, so you can spot potential value before the market shifts. Our AI‑driven analysis highlights Low, Medium and High risk tiers, giving you a clearer picture of each selection. Dive into free tools, betting guides and calculators to sharpen your strategy. Explore the platform at https://www.matchsignal.pro and see how smarter comparison can improve your decision‑making.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:31:04.424Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "40",
+  "status": "ready",
+  "source": {
+    "id": "40",
+    "topic": "THE PRICE IS JUST THE START.",
+    "visual": "A sports fan watches a match as one glowing price expands into multiple comparable prices, market average and probability indicators before becoming MatchSignal.",
+    "voiceover": "“The price is only the starting point. MatchSignal adds market and probability context to help you understand it.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242647/matchsignal-videos/40.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🎯 Finding a price is only the starting point of thorough sports research. MatchSignal enriches every odds quote with market-average benchmarks, fair probability models, and structured risk tier evaluations so you understand what the numbers truly represent. 🔍\n\n#SportsBetting #PriceIsTheStart #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #DataInsights #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "💡 Move beyond superficial betting odds. MatchSignal equips you with multi-sportsbook comparison tools, value estimates, and AI-assisted explanations to evaluate whether a price represents a fair proposition. Discover clearer sports analysis today. 📈\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BeyondOdds #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🎯 Finding a price is easy, but understanding its context requires data. MatchSignal turns raw bookmaker odds into actionable intelligence with market-average comparisons, fair probability calculations, and structured risk tiers. Take your research to the next level with MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Take your sports analysis further than basic odds listings. MatchSignal compares lines across sportsbooks, provides plain-language AI breakdowns, and highlights potential value signals across top leagues. Explore market context today. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "The Price Is Just the Start: Sports Odds & Probability Analysis",
+          "description": "The price is only the starting point. MatchSignal adds market and probability context to help you understand it.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "StartingPoint",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "ProbabilityAnalysis"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

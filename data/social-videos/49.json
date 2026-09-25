@@ -1,0 +1,69 @@
+{
+  "id": "49",
+  "status": "ready",
+  "source": {
+    "id": "49",
+    "topic": "DON’T CONFUSE CONFIDENCE WITH CERTAINTY.",
+    "visual": "A fictional sports analyst sees a probability number on a transparent screen. The view expands to show market prices, probability and risk together in MatchSignal.",
+    "voiceover": "“Probability is not certainty. MatchSignal helps you understand price, probability and market context without pretending the outcome is guaranteed.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242684/matchsignal-videos/49.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🧠 Never confuse statistical probability with absolute certainty. Even heavy favorites with high probability can lose. MatchSignal delivers transparent probability distributions, multi-sportsbook odds comparison, and clear risk tiers with zero false promises. 🛡️\n\n#SportsBetting #ConfidenceNotCertainty #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #ProbabilityContext #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "📊 In sports betting, certainty does not exist. MatchSignal helps you make grounded, rational decisions by displaying fair probability, market-average benchmarks, and relative risk tiers without hype or guarantees. Research responsibly and smartly. 🎯\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #HonestAnalytics #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🧠 It's easy to mistake a high probability rating for a guaranteed result, but every sports event carries inherent uncertainty. MatchSignal helps you evaluate price, probability, and risk context objectively across all major leagues without making false promises. Explore balanced market research at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🛡️ Keep a level head in sports betting. MatchSignal provides clear probability distributions, multi-sportsbook odds comparisons, and honest risk ratings so you can research matches responsibly. Learn how probability and risk align at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Don't Confuse Confidence with Certainty: Sports Odds & Probability Analysis",
+          "description": "Probability is not certainty. MatchSignal helps you understand price, probability, and market context without pretending any result is guaranteed.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "ProbabilityNotCertainty",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "RiskAwareness"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

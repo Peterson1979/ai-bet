@@ -1,0 +1,73 @@
+{
+  "id": "1",
+  "status": "ready",
+  "source": {
+    "id": "1",
+    "topic": "ONE PRICE IS A TINY WINDOW.",
+    "visual": "A fictional football fan sees one market price on a TV. The camera dives through the number into a spectacular 3D stadium surrounded by hundreds of market signals, which organize into a MatchSignal interface showing Best Tracked Odds, Market Average, Fair Probability, Estimated Value and Risk Tier.",
+    "voiceover": "“One price is only a tiny window into the market. MatchSignal helps you see the bigger picture with price, probability and market context.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242382/matchsignal-videos/1.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "👀 One price is only a tiny window into the market. With MatchSignal you get the whole stadium of data—best tracked odds, market average, fair probability, estimated value and risk tier—right at your fingertips. 🎥 Watch the video, then tap the link in bio to explore the full analysis for free. No registration required. \n\n#SportsBetting #BettingAnalysis #AIInsights #ValueSignal #ResponsibleGambling #18plus #MatchSignal #BettingTools #OddsComparison #BetSmart\n\n⚠️ 18+ | Gamble responsibly. This is analysis, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚨 One price gives you a glimpse; MatchSignal gives you the whole picture. Our AI‑assisted platform shows you market context—fair probability, risk tier, and potential value—so you can decide with confidence across football, NBA, NFL, and more. 🎬 Check the video, then hit the link in bio to start analyzing for free. \n\n#BettingStrategy #SportsAnalytics #AI #BettingGuide #FreeTools #ResponsibleGaming #18plus #MatchSignal #OddsAnalysis #BetBetter\n\n⚠️ 18+ | Gamble responsibly. This is analysis, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🔎 One price is just a tiny window. Dive into the full market with MatchSignal’s AI‑assisted analysis. See best tracked odds, market averages, fair probability, estimated value and risk tiers—all in one clear interface. Make more informed decisions on football, NBA, NFL, and more. Explore the power of context before you place a wager. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. This is analysis, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🚀 Tired of guessing from a single price? MatchSignal expands that tiny window into a 3‑D view of the market. Compare refreshed odds across sportsbooks, get concise AI explanations, and spot potential value signals for any sport—football, tennis, MMA, and beyond. Use our free calculators and guides to sharpen your strategy. Visit https://www.matchsignal.pro now.\n\n⚠️ 18+ | Gamble responsibly. This is analysis, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "One Price Is a Tiny Window: Sports Odds & Probability Analysis",
+          "description": "🔎 One price is just a tiny window. Dive into the full market with MatchSignal’s AI‑assisted analysis. See best tracked odds, market averages, fair probability, estimated value and risk tiers—all in one clear interface. Make more informed decisions on football, NBA, NFL, and more. Explore the power of context before you place a wager. https://www.matchsignal.pro.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "ValueSignal",
+            "18plus",
+            "BettingTools"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:23:49.501Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

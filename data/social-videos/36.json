@@ -1,0 +1,70 @@
+{
+  "id": "36",
+  "status": "ready",
+  "source": {
+    "id": "36",
+    "topic": "NUMBERS CAN HIDE A STORY.",
+    "visual": "Sports-market numbers reflected in a person's eye become a vast floating numerical landscape, then organize into price, market average, probability, value and risk.",
+    "voiceover": "“Numbers are more useful when you understand what they represent. MatchSignal adds market context to the numbers.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242635/matchsignal-videos/36.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔍 What if the numbers you see on a betting line could actually speak? Our video turns a simple eye‑reflection into a floating world of price, market average, probability, value, and risk. MatchSignal adds AI‑driven market context so you can decode each figure before you place a wager. Ready to see the story behind the stats? Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. This is not a guarantee of profit; odds can change and outcomes are uncertain.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "💡 Numbers hide a story—unlock it with MatchSignal. Watch as market odds reflected in an eye morph into a clear layout of price, market average, probability, value, and risk tiers. Our free platform compares multiple sportsbooks and gives concise AI explanations, so you can understand the true meaning behind each number. Explore more and start analyzing today. Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. No guaranteed wins; odds may shift and betting always carries risk.\n\n#BettingTools #SportsAnalytics #AI #BetSmart #GambleResponsibly",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why the numbers on a betting slip sometimes feel mysterious? In our new video, the numbers in a fan’s eye transform into a sprawling landscape, then neatly break down into price, market average, probability, value, and risk. MatchSignal’s AI‑assisted analysis adds that missing context, helping you see what each figure really means before you decide. Dive deeper into the data and make more informed choices with free, no‑registration tools. Visit https://www.matchsignal.pro to explore the platform today. \n\n⚠️ 18+ only. Gamble responsibly. This is not a guarantee of profit; odds can change and outcomes are uncertain.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Numbers tell a story—if you know how to read it. Our latest clip shows market odds reflected in a person’s eye, then arranged into clear categories: price, market average, probability, value, and risk tiers. MatchSignal compares refreshed odds from multiple sportsbooks and provides concise AI explanations so you can understand the hidden narrative behind each line. Use the free calculators, guides, and glossary to sharpen your analysis. Check it out at https://www.matchsignal.pro. \n\n⚠️ 18+ only. Gamble responsibly. No guarantee of winnings; odds may vary and betting involves risk.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Numbers Can Hide a Story: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why the numbers on a betting slip sometimes feel mysterious? In our new video, the numbers in a fan’s eye transform into a sprawling landscape, then neatly break down into price, market average, probability, value, and risk. MatchSignal’s AI‑assisted analysis adds that missing context, helping you see what each figure really means before you decide. Dive deeper into the data and make more informed choices with free, no‑registration tools. Visit https://www.matchsignal.pro to explore the platform today.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:45:04.794Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

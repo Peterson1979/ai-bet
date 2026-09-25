@@ -1,0 +1,70 @@
+{
+  "id": "48",
+  "status": "ready",
+  "source": {
+    "id": "48",
+    "topic": "RISK IS PART OF THE PICTURE.",
+    "visual": "A fictional person moves through a corridor of market signals that opens into an analytical room showing best tracked odds, market average, fair probability and risk tier.",
+    "voiceover": "“Every market has uncertainty. MatchSignal shows risk alongside price and probability for a more complete view.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242679/matchsignal-videos/48.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔎 Unlock the hidden layer of risk! In our new video, a virtual guide walks you through a corridor of market signals into an analytical hub where MatchSignal displays the best odds, market averages, fair probabilities, and a clear risk tier. That extra insight lets you see the full picture before you place any research bets. 🎥 Watch the clip, tap “Link in bio” to explore the free AI‑assisted platform—no sign‑up needed. \n\n⚠️ 18+ only. Gamble responsibly. Odds may shift; no guarantee of outcomes.\n#BetSmart #SportsAnalytics #RiskManagement #AIInsights #FreeTools",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⚡️ Risk isn’t a mystery when you have the right data. Our latest video shows a character navigating a hallway of market signals that opens to a dashboard highlighting top odds, market averages, fair probability and a Low/Medium/High risk tier. MatchSignal gives you that extra context so you can assess potential value with confidence. 🎬 Watch now and hit “Link in bio” to start analyzing for free—no registration required. \n\n⚠️ 18+ only. Gamble responsibly. Odds can change; no guarantee of profit.\n#BettingGuide #SportsBetting #DataDriven #AIAnalysis #ResponsibleGambling",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever feel like the odds are a maze? 🎯 MatchSignal cuts through the noise by showing you not only the best‑tracked odds but also the market average, fair probability and a clear risk tier. The video walks you through a corridor of signals that opens into an analytical room, giving you a fuller picture before you decide where to focus your research. Explore the tool for free—no registration required. https://www.matchsignal.pro\n\n⚠️ 18+ only. Gamble responsibly. Odds can change and no outcome is guaranteed.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Understanding uncertainty is key to smarter betting. In our latest video, a fictional analyst moves through a corridor of market signals, revealing how MatchSignal pairs price with probability and a risk tier (Low, Medium, High). This extra layer helps you weigh potential value against the odds of volatility. Dive into the free AI‑assisted platform and see how the data‑driven view can sharpen your strategy. https://www.matchsignal.pro\n\n⚠️ 18+ only. Gamble responsibly. Odds can change; no guarantee of profit.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Risk Is Part of the Picture: Sports Odds & Probability Analysis",
+          "description": "Ever feel like the odds are a maze? 🎯 MatchSignal cuts through the noise by showing you not only the best‑tracked odds but also the market average, fair probability and a clear risk tier. The video walks you through a corridor of signals that opens into an analytical room, giving you a fuller picture before you decide where to focus your research. Explore the tool for free—no registration required. ⚠️.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "RiskManagement",
+            "AIInsights",
+            "FreeTools"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:22:21.239Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

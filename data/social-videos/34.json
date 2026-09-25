@@ -1,0 +1,69 @@
+{
+  "id": "34",
+  "status": "ready",
+  "source": {
+    "id": "34",
+    "topic": "COMPARE BEFORE YOU DECIDE.",
+    "visual": "A fictional sports analyst faces a wall of market information. With a gesture, the chaos reorganizes into a comparison showing best tracked odds, market average and fair probability.",
+    "voiceover": "“Two prices can look similar, but context matters. Compare the market before you make your own decision.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242625/matchsignal-videos/34.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔍 Two sportsbook lines might look similar at first glance, but market context makes all the difference. MatchSignal lets you compare multi-bookmaker odds, fair probability, and risk tiers side-by-side before you make any decision. Take the guesswork out of your sports research. 🎯\n\n#SportsBetting #CompareBeforeYouBet #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #SmartBetting #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "⚡ Stop guessing which sportsbook offers the best deal. MatchSignal compares real-time sportsbook prices against market averages, giving you clear probability breakdowns and AI-assisted summaries across football, NBA, NFL, and tennis. Compare with clarity. 📊\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #MarketComparison #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🔍 Before making any sports decision, comparing the wider market is critical. Even slight differences in odds affect long-term results. MatchSignal provides instantaneous odds comparison, market-average calculations, and risk tiers across all major sporting events. Compare the market for yourself. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🎯 Smart sports fans always compare before they decide. MatchSignal gives you a free, comprehensive overview of market prices, fair probability, and estimated value so you can make informed choices based on data. Check today's odds comparisons at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Compare Before You Decide: Sports Odds & Probability Analysis",
+          "description": "Two prices can look similar, but context matters. Compare the market before you make your own decision with MatchSignal.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "MarketComparison",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "InformedDecisions"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

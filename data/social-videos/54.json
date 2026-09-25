@@ -1,0 +1,69 @@
+{
+  "id": "54",
+  "status": "ready",
+  "source": {
+    "id": "54",
+    "topic": "THE SMARTER QUESTION IS: WHY?",
+    "visual": "A person studies a sports market on a smartphone. The screen opens into a three-dimensional journey through price, market average, probability, risk and AI analysis before becoming MatchSignal.",
+    "voiceover": "“Instead of only asking what the price is, ask why it matters. MatchSignal gives you the market context to explore that question.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242715/matchsignal-videos/54.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🧠 Instead of only asking what the price is, the smarter question is why. MatchSignal explores the reasoning behind market pricing—combining multi-bookmaker comparisons, fair probability calculations, and AI-assisted explanations into one intuitive card. 💡\n\n#SportsBetting #AskWhy #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #MarketReasoning #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 Move beyond basic odds checking. MatchSignal explores the 'why' behind betting markets, connecting price comparison, probability estimates, and risk tiers so you can make informed decisions based on market context. 🚀\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #ContextMatters #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🧠 Asking 'what are the odds?' is only half the battle; the smarter question is 'why is the market priced this way?' MatchSignal provides the necessary market context—combining bookmaker price comparisons, fair probability models, and AI-assisted explanations. Understand the market at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "💡 Transform how you approach sports betting research. MatchSignal helps you understand the reasoning behind market pricing with comprehensive odds comparison, probability analysis, and clear risk classifications. Explore the deeper context for free with MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "The Smarter Question Is: Why?: Sports Odds & Probability Analysis",
+          "description": "Instead of only asking what the price is, ask why it matters. MatchSignal gives you the market context to explore that question.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "WhyItMatters",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "MarketContext"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

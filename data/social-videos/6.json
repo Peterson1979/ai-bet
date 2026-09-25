@@ -1,0 +1,69 @@
+{
+  "id": "6",
+  "status": "ready",
+  "source": {
+    "id": "6",
+    "topic": "MOST DATA NEVER BECOMES A SIGNAL.",
+    "visual": "Hundreds of possible markets rush toward an AI analysis engine. Most are rejected and fade away. Only validated, eligible opportunities pass through and become MatchSignal cards.",
+    "voiceover": "“MatchSignal doesn’t turn every market into a pick. Opportunities must pass data and analysis criteria first. See eligible signals at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242463/matchsignal-videos/6.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "📊 Most market data never makes the cut. While hundreds of potential betting markets fluctuate across sportsbooks every day, MatchSignal filters out the noise. Only opportunities that pass strict statistical analysis, fair probability thresholds, and market comparison become structured MatchSignal cards. Stop getting overwhelmed by endless lines—focus on validated market context. 🎯\n\n#SportsBetting #BettingAnalysis #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #DataDrivenBetting #AIBetting\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 Filtering the market is the secret to smarter sports research. Instead of turning every fixture into a pick, MatchSignal applies rigorous data criteria to screen odds across football, NBA, NFL, and tennis. You get clear market-average pricing, probability models, and transparent risk tiers so you can research with confidence. ⚡\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BettingCommunity #FreeBettingTools #18plus #SportsInsights\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "📊 Why quality beats quantity in sports betting research: every weekend brings thousands of shifting odds, but most never qualify as a meaningful signal. MatchSignal evaluates sportsbooks against fair probability models, market averages, and risk tiers to surface only eligible market opportunities with clear AI explanations. Explore transparent sports analytics before deciding. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "⚡ The sheer volume of betting markets can easily become overwhelming. MatchSignal uses automated filters to eliminate noisy data, presenting only validated opportunities with side-by-side odds comparison and objective probability insights across major sports leagues. Check today's eligible market signals for free. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Most Data Never Becomes a Signal: Sports Odds & Probability Analysis",
+          "description": "Most market data never makes the cut. Out of thousands of available odds across sportsbooks, MatchSignal filters out the noise and surfaces only opportunities that pass strict probability and market comparison criteria.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "MarketFiltering",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "DataAnalysis"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

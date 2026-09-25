@@ -1,0 +1,73 @@
+{
+  "id": "25",
+  "status": "ready",
+  "source": {
+    "id": "25",
+    "topic": "SAME MARKET. NEW PERSPECTIVE.",
+    "visual": "A football on a wet pitch transforms into a glowing market sphere surrounded by price, probability and market-average information, then becomes MatchSignal.",
+    "voiceover": "“The event stays the same. Your perspective changes when you compare the price with the wider market.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242571/matchsignal-videos/25.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "👀 Same match, new insight. Watch a football turn into a glowing market sphere, then into MatchSignal—showing how comparing sportsbook prices with the broader market can reveal hidden value. Our AI‑assisted analysis gives you probability estimates, risk tiers, and market averages, all for free. Ready to change your perspective? Link in bio.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #ResponsibleGambling #MatchSignal #Football #BetSmart #GambleResponsibly #18Plus\n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔄 The event doesn’t change, but your odds view does. Our video flips a wet‑pitch football into a market sphere packed with price, probability, and market‑average data—exactly what MatchSignal delivers. Compare multiple sportsbooks, see AI‑generated value signals, and decide with a clearer picture. Explore the platform for free. Link in bio.\n\n#BettingTips #AIAnalysis #ValueSignal #SportsAnalytics #ResponsibleGaming #MatchSignal #NBA #NFL #MLB #GamblingAwareness\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of wins; odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🔍 See the same football match from a fresh angle. MatchSignal pulls odds from multiple sportsbooks, layers AI‑driven probability analysis, and highlights where the market may be undervaluing a pick. The video shows a wet‑field ball turning into a glowing market sphere—just like the insight you get when you compare price with the wider market. Explore the data, spot potential value, and decide with confidence. https://www.matchsignal.pro\n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and outcomes are never certain.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "⚽️ The game stays the same, but your betting perspective can shift. MatchSignal’s AI compares refreshed odds across sportsbooks, shows market averages, and flags Low‑Medium‑High risk tiers so you can weigh potential value. In the video, a football morphs into a market sphere—illustrating how broader market data can reshape your view. Dive into the free tools, calculators, and guides to sharpen your strategy. https://www.matchsignal.pro\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of wins; odds may vary and risk remains.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Same Market New Perspective: Sports Odds & Probability Analysis",
+          "description": "🔍 See the same football match from a fresh angle. MatchSignal pulls odds from multiple sportsbooks, layers AI‑driven probability analysis, and highlights where the market may be undervaluing a pick. The video shows a wet‑field ball turning into a glowing market sphere—just like the insight you get when you compare price with the wider market. Explore the data, spot potential value, and decide with confidence. https://www.matchsignal.pro.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "Football",
+            "GambleResponsibly",
+            "18Plus"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:34:59.199Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

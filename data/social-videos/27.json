@@ -1,0 +1,70 @@
+{
+  "id": "27",
+  "status": "ready",
+  "source": {
+    "id": "27",
+    "topic": "YOUR SCREEN SHOWS ONE PRICE.",
+    "visual": "A phone showing one sports price expands into a huge three-dimensional market containing multiple prices and market signals, ending with MatchSignal.",
+    "voiceover": "“Your screen may show one price. The market can show much more. MatchSignal helps you see the bigger picture.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242579/matchsignal-videos/27.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔎 One price on your screen? Think bigger! 🎯 Our new video reveals how MatchSignal turns that lone odds line into a 3‑D market view, showing multiple sportsbook prices, AI‑driven value signals, and risk tiers. Get the edge you need for football, NBA, NFL, and more – all for free, no sign‑up required. Ready to see the full picture? Link in bio. \n\n⚠️ Values are estimates and may change; there’s no guarantee of profit or outcome. 18+ only. Gamble responsibly. #SportsBetting #BettingAnalysis #AIInsights #ValueBetting #BetSmart",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚀 From a single price to a market universe! 🌐 Watch how MatchSignal expands one odds figure into a multi‑price landscape with clear AI explanations, risk tiers, and potential value signals for football, NBA, NHL, and more. Use the free tools, calculators, and guides to sharpen your strategy without any registration. Discover the bigger picture today – Link in bio. \n\n⚠️ Values are estimates and may change; no guarantee of winnings. 18+ only. Gamble responsibly. #BettingTools #OddsComparison #SportsAnalytics #BettingGuide #ResponsibleGambling",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why the price you see on your phone might be just one slice of the betting market? Our latest video shows how MatchSignal expands that single number into a full three‑dimensional view of odds, value signals, and risk tiers across dozens of sportsbooks. By comparing refreshed odds and AI‑driven probability analysis, you can spot potential value before the crowd does. Dive deeper into football, NBA, NFL, and more with clear explanations that help you make smarter, data‑backed decisions. Explore the platform now at https://www.matchsignal.pro – remember, values are estimates and may change; there’s no guarantee of profit or outcome. 18+ only. Gamble responsibly.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "Your screen may show one price, but the market holds many. In this video, MatchSignal transforms a single odds line into a dynamic market landscape, highlighting multiple bookmaker prices, estimated fair probabilities, and Low‑Medium‑High risk tiers. Use our AI explanations and value signals to compare options and identify potential edges across football, NBA, NHL, MMA and more. The tool is free, requires no registration, and offers calculators, guides, and a betting glossary to sharpen your strategy. Check it out at https://www.matchsignal.pro – values are estimates and may change; no guarantee of winnings. 18+ only. Gamble responsibly.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Your Screen Shows One Price: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why the price you see on your phone might be just one slice of the betting market? Our latest video shows how MatchSignal expands that single number into a full three‑dimensional view of odds, value signals, and risk tiers across dozens of sportsbooks. By comparing refreshed odds and AI‑driven probability analysis, you can spot potential value before the crowd does. Dive deeper into football, NBA, NFL, and more with clear explanations that help you make smarter, data‑backed decisions. Explore the platform now at https://www.matchsignal.pro – remember, values are estimates and may change; there’s no guarantee of profit or outcome.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:36:25.319Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

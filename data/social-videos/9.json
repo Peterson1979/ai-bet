@@ -1,0 +1,72 @@
+{
+  "id": "9",
+  "status": "ready",
+  "source": {
+    "id": "9",
+    "topic": "3 NUMBERS. BEFORE ANY BET.",
+    "visual": "Three giant indicators appear in rapid sequence: AVAILABLE ODDS, ESTIMATED PROBABILITY, RISK TIER. They snap together into one MatchSignal card.",
+    "voiceover": "“Before making a decision, check the available price, estimated probability and risk. MatchSignal puts them together at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242484/matchsignal-videos/9.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "💡 BEFORE YOU BET, see the full picture. MatchSignal lines up the three crucial numbers—available odds, estimated probability, and risk tier—into one easy‑to‑read card. No sign‑up, no betting on the platform, just AI‑assisted insight that helps you gauge potential value. Watch the video, tap the link in bio, and start comparing odds for free at MatchSignal.pro.\n\n#BetSmart #SportsAnalytics #AIInsights #OddsComparison #ResponsibleGambling #GamblingAwareness #18Plus #MatchSignal #BettingTools #ValueSignal\n\n⚠.\n️ 18+ only. Gamble responsibly. This content is for informational purposes; it does not guarantee wins, profits, or outcomes. Odds can change and betting involves risk.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚦 THREE NUMBERS. ONE DECISION. MatchSignal brings together the market price, AI‑estimated probability, and a clear risk tier into a single card—so you can quickly spot potential value before you place a bet. The platform is free, requires no registration, and stays out of the actual betting process. Watch the clip, click the link in bio, and explore the analysis at MatchSignal.pro.\n\n#BettingAnalysis #SportsBetting #AIAnalytics #OddsCheck #RiskManagement #ResponsibleGaming #18Plus #MatchSignal #BettingStrategy #ValueBetting\n\n⚠.\n️ 18+ only.. Informational analysis only; not a guarantee. Odds can change. Gamble responsibly. This post offers analysis only; it does not guarantee any win or profit. Odds may vary and all betting carries risk.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "🚀 Ready to make smarter betting decisions? MatchSignal’s AI‑assisted analysis lines up three key data points—available odds, estimated probability, and risk tier—into one clear card. No registration, no betting on our site, just a quick comparison that helps you see potential value before you place a wager. Dive in at https://www.matchsignal.pro and explore the free tool that lets you weigh the odds with AI‑driven insight.\n\n⚠.\n️ 18+ only. Gamble responsibly. This is informational content; MatchSignal does not guarantee wins, profits, or outcomes. Odds can change and any betting involves risk.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🔍 Want a fast, no‑login way to compare market odds with AI‑estimated probabilities? MatchSignal shows you the price, the chance, and the risk tier in a single card, so you can assess potential value in seconds. It’s a free analysis platform—not a sportsbook—so you stay in control of your bets. Check it out now at https://www.matchsignal.pro and see how the three‑point snapshot can sharpen your pre‑bet research.\n\n⚠.\n️ 18+ only.. Informational analysis only; not a guarantee. Odds can change. Gamble responsibly. This post provides analysis only; it does not guarantee any win or profit. Odds may vary and betting always carries risk.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "3 Numbers Before Any Bet: Sports Odds & Probability Analysis",
+          "description": "🚀 Ready to make smarter betting decisions? MatchSignal’s AI‑assisted analysis lines up three key data points—available odds, estimated probability, and risk tier—into one clear card. No registration, no betting on our site, just a quick comparison that helps you see potential value before you place a wager. Dive in at https://www.matchsignal.pro and explore the free tool that lets you weigh the odds with AI‑driven insight.\n\n⚠.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "AIInsights",
+            "GamblingAwareness",
+            "18Plus",
+            "BettingTools",
+            "ValueSignal"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T13:06:34.886Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

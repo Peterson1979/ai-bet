@@ -1,0 +1,72 @@
+{
+  "id": "33",
+  "status": "ready",
+  "source": {
+    "id": "33",
+    "topic": "YOU’RE SEEING THE TIP OF THE ICEBERG.",
+    "visual": "A glowing sports-market price floats above a dark ocean. The camera dives underwater to reveal a huge network representing the wider market, which becomes MatchSignal analytics.",
+    "voiceover": "“One visible price can hide a much bigger market picture. MatchSignal helps bring that context to the surface.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242622/matchsignal-videos/33.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔎 The price you see is just the tip of the iceberg! Our video drops you beneath the surface to reveal a hidden network of odds that most bettors never see. MatchSignal’s AI‑assisted platform pulls together refreshed odds from many sportsbooks, adds market‑based probability, and flags potential value signals with clear risk tiers—all for free and with no registration. Get the full context, make smarter choices, and see why a single price can be misleading. 🎥 Watch the video, then tap the link in bio to explore the deeper market.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #BettingTools #ResponsibleGambling #18Plus #MatchSignal\n\n⚠️ 18+ only. Gamble responsibly. MatchSignal does not guarantee wins, profits, or outcomes; odds can change and value signals are estimates, not guarantees.",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🌊 One glowing price, endless hidden data. Our latest clip takes you underwater to uncover the massive market network that sits behind every odds line. With MatchSignal you get free, AI‑driven comparisons of refreshed sportsbook odds, probability estimates, and risk tier classifications—so you can spot potential value without the guesswork. No sign‑up required, just clear analytics to help you see the whole picture. 🎬 Dive in, then hit the link in bio to start exploring.\n\n#BettingStrategy #OddsComparison #AIAnalytics #SportsMarkets #BettingEducation #ResponsibleGaming #18Plus #MatchSignal\n\n⚠️ 18+ only. Gamble responsibly. MatchSignal does not guarantee wins, profits, or outcomes; odds can change and value signals are estimates, not guarantees.",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever feel like you’re only seeing the tip of the betting market? 🎯 The video shows a single price floating above a dark ocean, then dives deep to reveal the massive network of odds that most bettors miss. MatchSignal’s AI‑assisted analysis pulls those hidden layers into view, comparing refreshed odds from multiple sportsbooks and giving you a clear probability estimate with concise explanations. Use the platform to spot Low, Medium, or High‑Risk tiers, see market averages, and identify potential value signals—without ever having to register. Dive deeper at https://www.matchsignal.pro and start exploring the full market picture. \n\n⚠️ 18+ only. Gamble responsibly. MatchSignal does not guarantee wins, profits, or outcomes; odds can change and value signals are estimates, not guarantees.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "What if the price you see is just a sliver of a far larger betting landscape? 🌊 In this video, a glowing market price hovers above an ocean before the camera plunges down to expose a sprawling network of odds that MatchSignal maps out for you. The free platform aggregates regularly refreshed odds from dozens of sportsbooks, adds market‑based probability analysis, and highlights potential value signals—complete with AI‑generated insights and risk tiers. No registration, no betting on the site, just powerful context to help you make more informed decisions. Check it out at https://www.matchsignal.pro. \n\n⚠️ 18+ only. Gamble responsibly. MatchSignal does not guarantee wins, profits, or outcomes; odds can change and value signals are estimates, not guarantees.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "You’re Seeing the Tip of the Iceberg: Sports Odds & Probability Analysis",
+          "description": "Ever feel like you’re only seeing the tip of the betting market? 🎯 The video shows a single price floating above a dark ocean, then dives deep to reveal the massive network of odds that most bettors miss. MatchSignal’s AI‑assisted analysis pulls those hidden layers into view, comparing refreshed odds from multiple sportsbooks and giving you a clear probability estimate with concise explanations. Use the platform to spot Low, Medium, or High‑Risk tiers, see market averages, and identify potential value signals—without ever having to register. Dive deeper at https://www.matchsignal.pro and start exploring the full market picture.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights",
+            "BettingTools",
+            "18Plus"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:38:53.695Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

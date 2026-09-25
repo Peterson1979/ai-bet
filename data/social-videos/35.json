@@ -1,0 +1,72 @@
+{
+  "id": "35",
+  "status": "ready",
+  "source": {
+    "id": "35",
+    "topic": "A PICK ISN’T ENOUGH.",
+    "visual": "A simple team-vs-team prediction appears alone. Around it rapidly assemble best available odds, estimated probability, market average, Value Signal, bookmaker count, Risk Tier and explanation.",
+    "voiceover": "“MatchSignal doesn’t just show a selection. It adds pricing, probability, value, risk and market context. Explore today’s cards at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242631/matchsignal-videos/35.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔎 One pick isn’t enough – you need the full picture! 🎯 MatchSignal layers the best odds, probability estimates, market averages, a Value Signal, and risk tiers onto every prediction. Watch the video to see how the data comes together in seconds. Ready to explore today’s cards? Link in bio.\n\n⚠.\n️ 18+ only. Gamble responsibly. This platform provides analysis and potential value; it does not guarantee wins, profits, or outcomes. Odds can change.\n\n#SportsBetting #BettingAnalysis #ValueSignal #RiskManagement #AIInsights",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🚀 From a lone prediction to a data‑rich decision tool. MatchSignal adds pricing, probability, market context, and a clear risk tier so you can assess whether the odds offer real value. See the transformation in the video and start your own analysis today. Link in bio.\n\n⚠.\n️ 18+ only.. Informational analysis only; not a guarantee. Odds can change. Gamble responsibly. MatchSignal delivers estimates and insights, not guaranteed results. Odds may vary.\n\n#BetSmart #OddsComparison #SportsAnalytics #ResponsibleGambling #BettingTips",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why a simple pick can leave you guessing? MatchSignal turns a lone prediction into a full picture – showing the best odds, estimated win probability, market averages, a Value Signal, bookmaker count, and a clear risk tier. It’s the extra context you need to make smarter decisions before you place a wager. Dive into today’s matchups at https://www.matchsignal.pro and see the data behind every selection. \n\n⚠.\n️ 18+ only. Gamble responsibly. This tool provides analysis and potential value estimates; it does not guarantee wins, profits, or outcomes. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "A single pick tells only part of the story. With MatchSignal you get pricing, probability, market context, and a Value Signal all in one view, plus a risk tier to help you gauge exposure. Compare the freshest odds with AI‑driven insights and decide if the odds offer potential value. Explore the full analysis for today’s games at https://www.matchsignal.pro. \n\n⚠.\n️ 18+ only.. Informational analysis only; not a guarantee. Odds can change. Gamble responsibly. MatchSignal offers estimates and analysis, not guarantees of profit or win. Odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "A Pick Isn’t Enough: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why a simple pick can leave you guessing? MatchSignal turns a lone prediction into a full picture – showing the best odds, estimated win probability, market averages, a Value Signal, bookmaker count, and a clear risk tier. It’s the extra context you need to make smarter decisions before you place a wager. Dive into today’s matchups at https://www.matchsignal.pro and see the data behind every selection. \n\n⚠.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "ValueSignal",
+            "RiskManagement",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T13:24:05.511Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

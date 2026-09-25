@@ -1,0 +1,70 @@
+{
+  "id": "22",
+  "status": "ready",
+  "source": {
+    "id": "22",
+    "topic": "THE PRICE CAN FOOL YOU.",
+    "visual": "A sports price displayed on a phone expands into a transparent cube containing price, probability and market average, then resolves into MatchSignal analytics.",
+    "voiceover": "“A price means more when you know the market around it. MatchSignal helps put price and probability into context.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242554/matchsignal-videos/22.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🔍 A price can fool you—unless you see the whole market. Our new video transforms a simple odds line into a transparent cube that reveals the probability, market average, and MatchSignal’s AI‑driven Value Signal. By putting price in context, you gain a clearer sense of potential value before you decide to bet. 🎥 Watch the clip, then tap the link in bio to explore the free, no‑registration platform and start comparing odds yourself.\n\nLink in bio\n\n⚠.\n️ 18+ only.. Informational analysis only; not a guarantee. Odds can change. Gamble responsibly. This tool provides analysis, not guarantees; outcomes are not assured and odds may shift.\n\n#SportsBetting #BettingAnalysis #OddsComparison #AIInsights #ResponsibleGambling",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "💡 When a price expands into a cube, you see more than a number. In our latest video, the odds you see on a phone unfold into a 3‑D view of probability, market averages, and MatchSignal’s concise AI explanation. That extra context helps you identify possible value without any registration or hidden fees. 🎬 Check out the video, then follow the link in bio to start your free analysis on https://www.matchsignal.pro.\n\nLink in bio\n\n⚠.\n️ 18+ only. Gamble responsibly. This is informational content; it does not guarantee wins, profits, or specific results, and odds can change.\n\n#BettingTips #OddsAnalysis #SportsAnalytics #AIForBetting #PlayResponsibly",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why a single price can feel misleading? 🎯 In our latest video, a simple odds line expands into a transparent cube, revealing the underlying probability, market average, and the AI‑driven Value Signal that MatchSignal provides. By comparing the displayed price with the broader market, you get a clearer picture of potential value before you even think about placing a wager. Explore the full analysis at https://www.matchsignal.pro and see how context changes the game.\n\n⚠.\n️ 18+ only. Gamble responsibly. This is an informational tool; it does not guarantee profit, win, or any specific outcome. Odds can change and value estimates are not a promise of success.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "A price on its own can be deceptive – but when you see the market around it, the story shifts. Our video shows a price turning into a 3‑D cube that layers probability, market averages, and MatchSignal’s AI‑generated insights, helping you spot where the odds may be undervalued. Use the free, no‑registration platform to compare odds across bookmakers and get concise explanations for each signal. Dive deeper at https://www.matchsignal.pro.\n\n⚠.\n️ 18+ only. Gamble responsibly. This analysis is for informational purposes and does not guarantee any win, profit, or specific result. Odds are subject to change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "The Price Can Fool You: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why a single price can feel misleading? 🎯 In our latest video, a simple odds line expands into a transparent cube, revealing the underlying probability, market average, and the AI‑driven Value Signal that MatchSignal provides. By comparing the displayed price with the broader market, you get a clearer picture of potential value before you even think about placing a wager. Explore the full analysis at https://www.matchsignal.pro and see how context changes the game.\n\n⚠.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T13:14:53.568Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

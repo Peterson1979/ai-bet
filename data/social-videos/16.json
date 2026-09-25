@@ -1,0 +1,69 @@
+{
+  "id": "16",
+  "status": "ready",
+  "source": {
+    "id": "16",
+    "topic": "DO THIS BEFORE YOUR NEXT BET.",
+    "visual": "A ten-second timer starts. In rapid sequence: compare odds → check estimated probability → inspect Value Signal → review Risk Tier. The timer stops with the MatchSignal card complete.",
+    "voiceover": "“Before your next decision: compare the price, check probability, review value and understand the risk. Make MatchSignal.pro part of your research.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242536/matchsignal-videos/16.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "⏱️ Before your next sports decision, take ten seconds to build a disciplined research routine. With MatchSignal, you can instantly compare available odds, inspect calculated fair probabilities, evaluate estimated value, and review assigned risk tiers on a single clear dashboard. Never lock in a selection without understanding the market context first. 🚀\n\n#SportsBetting #BettingRoutine #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #BettingTips #AIAnalysis\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🛑 Jumping into a sports wager without checking market context is a costly habit. In just seconds, MatchSignal helps you benchmark bookmaker prices against market averages, fair probability, and concise AI explanations across top sporting events. Upgrade your pre-match preparation for free. 📈\n\n#BettingStrategy #SportsData #OddsAnalysis #ValueSignal #MatchSignal #SmartBetting #BettingChecklist #FreeBettingTools #18plus #SportsResearch\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "⏱️ Build a smarter pre-betting checklist. Before placing any wager, make it a rule to compare sportsbook odds, verify fair probability estimates, inspect potential value signals, and understand the assigned risk tier. MatchSignal brings all of these essential metrics together in one free dashboard. Explore comprehensive market research at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "🚀 Don't rush into a sports prediction based on gut feeling alone. MatchSignal streamlines your research by benchmarking prices against market averages and delivering concise AI breakdowns for every matchup across top leagues. Take ten seconds to check the numbers first with MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "title": "Do This Before Your Next Bet: Sports Odds & Probability Analysis",
+          "description": "Before your next decision: compare the price, check probability, review value, and understand the risk. Make MatchSignal part of your disciplined pre-bet research routine.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingChecklist",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "RiskManagement"
+          ],
+          "enabled": false
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-25T14:50:00.000Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}

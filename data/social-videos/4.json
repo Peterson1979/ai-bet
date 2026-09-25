@@ -1,0 +1,70 @@
+{
+  "id": "4",
+  "status": "ready",
+  "source": {
+    "id": "4",
+    "topic": "WHO WOULD YOU TRUST?",
+    "visual": "On the left, one anonymous betting tip floats alone. On the right, multiple market prices, estimated probability and bookmaker coverage build a structured data picture. The noisy tip disappears.",
+    "voiceover": "“One opinion gives you a prediction. Market data gives you context. MatchSignal combines pricing analysis with AI-assisted explanations at MatchSignal.pro.”",
+    "sourceUrl": "https://res.cloudinary.com/u4u07qyb/video/upload/v1790242453/matchsignal-videos/4.mp4"
+  },
+  "platforms": {
+    "instagram": {
+      "targets": [
+        {
+          "targetId": "instagram-main",
+          "caption": "🚀 Want the edge beyond a single tip? Our video shows how MatchSignal layers market odds, probability estimates, and bookmaker coverage into a clear picture, then lets AI explain the why. See the data‑driven difference for yourself. Link in bio\n\n⚠️ 18+ only. Gamble responsibly. Results are not guaranteed; odds can change.\n#SportsBetting #BettingAnalysis #AIInsights #BetSmart #MatchSignal",
+          "enabled": false
+        },
+        {
+          "targetId": "instagram-2",
+          "caption": "🔍 One opinion vs a full market view – which would you trust? Watch how MatchSignal transforms scattered tips into a structured analysis with AI‑assisted commentary, helping you make more informed choices. Link in bio\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of outcomes; odds may vary.\n#BettingTips #DataDriven #AI #BettingTools #MatchSignal",
+          "enabled": false
+        }
+      ]
+    },
+    "facebook": {
+      "targets": [
+        {
+          "targetId": "facebook-main",
+          "message": "Ever wonder why a lone tip feels shaky? Our latest video breaks down how MatchSignal pulls together odds from multiple sportsbooks, calculates fair probabilities, and adds AI explanations, giving you a richer context for every wager. Dive into the comparison tool at https://www.matchsignal.pro and see the difference data can make. \n\n⚠️ 18+ only. Gamble responsibly. This is informational only – no guarantee of results and odds can change.",
+          "enabled": false
+        },
+        {
+          "targetId": "facebook-2",
+          "message": "One opinion gives a prediction, but market data adds the story behind the numbers. In this clip, MatchSignal shows how pricing analysis, probability estimates, and bookmaker coverage combine with AI‑assisted insights to help you evaluate potential value. Explore the free platform at https://www.matchsignal.pro and start comparing odds yourself. \n\n⚠️ 18+ only. Gamble responsibly. Information provided is not a guarantee of outcome; odds may vary.",
+          "enabled": false
+        }
+      ]
+    },
+    "youtube": {
+      "targets": [
+        {
+          "targetId": "youtube-main",
+          "enabled": false,
+          "title": "Who Would You Trust?: Sports Odds & Probability Analysis",
+          "description": "Ever wonder why a lone tip feels shaky? Our latest video breaks down how MatchSignal pulls together odds from multiple sportsbooks, calculates fair probabilities, and adds AI explanations, giving you a richer context for every wager. Dive into the comparison tool at https://www.matchsignal.pro and see the difference data can make.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
+          "tags": [
+            "MatchSignal",
+            "OddsComparison",
+            "SportsAnalytics",
+            "BettingTips",
+            "ValueBetting",
+            "ResponsibleGambling",
+            "SportsData",
+            "BetSmart",
+            "SportsBetting",
+            "BettingAnalysis",
+            "AIInsights"
+          ]
+        }
+      ]
+    }
+  },
+  "generation": {
+    "provider": "groq",
+    "model": "openai/gpt-oss-120b",
+    "generatedAt": "2026-09-24T10:25:43.682Z",
+    "promptVersion": "matchsignal-video-copy-v3-meta-four"
+  }
+}
