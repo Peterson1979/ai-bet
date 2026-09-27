@@ -42,7 +42,7 @@ export const VIDEO_SOCIAL_TARGETS = [
   {
     id: "youtube-main",
     platform: "youtube",
-    enabled: true,
+    enabled: false,
     accountIdEnv: "YOUTUBE_CHANNEL_ID",
     clientIdEnv: "YOUTUBE_CLIENT_ID",
     clientSecretEnv: "YOUTUBE_CLIENT_SECRET",

@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "⚡️ Speed meets insight! Watch as our AI scans a flood of odds and surfaces the strongest price right to your phone. With MatchSignal you get instant, side‑by‑side comparisons so you never miss a value edge. Ready to upgrade your betting game? Link in bio. 18+ | Gamble responsibly. MatchSignal provides analysis, not guarantees. Odds can change. #SportsBetting #BettingTips #OddsComparison #AIAnalytics #BetSmart",
-          "enabled": true
+          "enabled": false
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Ever felt the rush of spotting a better price just before the action starts? With MatchSignal’s AI-assisted comparison, you can review available odds from multiple sportsbooks in one place and see the strongest available price on one clean card. No registration, no betting on our site—just clear, data-backed insight to help you decide faster. Explore the tool now at https://www.matchsignal.pro and see how a few extra points can shift your edge. 18+ | Gamble responsibly. MatchSignal provides analysis, not guarantees. Odds can change.",
-          "enabled": true
+          "enabled": false
         },
         {
           "targetId": "facebook-2",

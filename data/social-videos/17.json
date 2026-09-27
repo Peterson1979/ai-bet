@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🚀 Want to stop chasing the odds and start comparing them? MatchSignal shows you the best‑tracked odds, market average and fair probability in one clear view, plus an estimated value signal. Unlock free guides, calculators and a betting glossary to level up your game. Watch the video, tap the link in bio and see the difference! #SportsBetting #BettingAnalysis #AIInsights #ValueBetting #BetSmart Link in bio. 18+ | Gamble responsibly. No guarantee of profit; odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Tired of chasing fleeting odds? MatchSignal lets you compare the best‑tracked odds, market averages and fair probabilities side‑by‑side, so you can spot potential value before the market shifts. Our AI‑driven analysis highlights Low, Medium and High risk tiers, giving you a clearer picture of each selection. Dive into free tools, betting guides and calculators to sharpen your strategy. Explore the platform at https://www.matchsignal.pro and see how smarter comparison can improve your decision‑making. 18+ | Gamble responsibly. No guarantee of profit; odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

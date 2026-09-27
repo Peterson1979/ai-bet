@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "📖 Betting odds aren't just potential payout numbers—they represent implied probability. MatchSignal converts complex bookmaker odds into clear percentage probabilities, market averages, and risk tiers so you can see what the market is truly implying. 💡\n\n#SportsBetting #ImpliedProbability #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #BettingEducation #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "📖 Every decimal or moneyline price reflects an underlying implied probability set by sportsbooks. MatchSignal decodes these numbers, converting them into intuitive probability percentages and benchmarking them against market averages. Master the language of odds at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

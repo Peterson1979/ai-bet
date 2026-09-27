@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🏟️ Looking at a single bookmaker gives you a narrow sliver of the market. MatchSignal aggregates data from multiple leading sportsbooks to deliver wider market coverage, accurate price averages, and transparent fair probability models. See the whole stadium of data. 🔍\n\n#SportsBetting #MarketCoverage #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #BroadCoverage #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🏟️ How much of the betting market do you actually see when checking a single app? MatchSignal tracks multiple leading bookmakers simultaneously, providing transparent coverage metrics, market averages, and estimated probability. Expand your market coverage at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

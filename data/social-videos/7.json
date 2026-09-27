@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "⚡️ One dashboard, seven sports! Watch football, NBA, NFL, hockey, tennis, MLB and MMA race into clear MatchSignal analysis cards. Get AI‑driven probability estimates, market averages and risk tiers—all for free. Dive deeper with guides and calculators, but remember the signals are estimates, not guarantees, and odds can change. Link in bio. 18+ | Gamble responsibly. #SportsBetting #BettingAnalysis #AIInsights #FreeTools #MatchSignal",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Discover all seven major sports in one place with MatchSignal’s AI‑assisted analysis dashboard. The video shows football, NBA, NFL, hockey, tennis, MLB and MMA data turning into clear, concise cards that compare refreshed odds, estimate fair probabilities and flag potential value. Use the free tools and guides to deepen your understanding, but remember outcomes are never guaranteed and odds can change. Visit https://www.matchsignal.pro to explore the platform. 18+ only. Gamble responsibly. This is informational only – no guarantee of profit or win.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

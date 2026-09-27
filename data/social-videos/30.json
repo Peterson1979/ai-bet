@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "💡 ONE TAP = A FULL ANALYSIS 🌐\n\nIn the clip, a simple tap on a market expands into a powerful view: market average, best tracked odds, fair‑probability estimate, risk tier, and AI‑driven context—all in seconds. MatchSignal gives you the data you need to compare odds across sportsbooks and spot potential value before you place a wager. Ready to see more than just a price? Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #BetSmart",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🚀 One tap, endless insight. In the video, a single market selection expands into a full‑screen analysis hub—showing market average, the best tracked odds, a fair‑probability estimate, risk tier, and AI‑generated context. MatchSignal lets you see the whole picture before you decide, so you can weigh potential value with data‑driven confidence. Explore the tool at https://www.matchsignal.pro and see how a deeper view can sharpen your sports‑betting research. \n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and outcomes are uncertain.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

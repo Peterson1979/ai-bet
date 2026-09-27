@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🔎 Unlock the hidden layer of risk! In our new video, a virtual guide walks you through a corridor of market signals into an analytical hub where MatchSignal displays the best odds, market averages, fair probabilities, and a clear risk tier. That extra insight lets you see the full picture before you place any research bets. 🎥 Watch the clip, tap “Link in bio” to explore the free AI‑assisted platform—no sign‑up needed. \n\n⚠️ 18+ only. Gamble responsibly. Odds may shift; no guarantee of outcomes.\n#BetSmart #SportsAnalytics #RiskManagement #AIInsights #FreeTools",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Ever feel like the odds are a maze? 🎯 MatchSignal cuts through the noise by showing you not only the best‑tracked odds but also the market average, fair probability and a clear risk tier. The video walks you through a corridor of signals that opens into an analytical room, giving you a fuller picture before you decide where to focus your research. Explore the tool for free—no registration required. https://www.matchsignal.pro\n\n⚠️ 18+ only. Gamble responsibly. Odds can change and no outcome is guaranteed.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

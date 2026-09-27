@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🚀 See the whole betting landscape, not just a single number. In our new video the football field turns into a market map, showing how one price can blossom into multiple signals. MatchSignal’s AI‑driven analytics compare odds across sportsbooks, highlight potential value tiers, and give you clear explanations – all for free, no sign‑up needed. Ready to broaden your view? Link in bio.\n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and value signals are estimates.\n\n#BettingAnalysis #SportsBetting #AIInsights #ValueBetting #ResponsibleGambling",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🔎 Want a clearer view of the betting market? Our new video shows how a single price point can expand into a full market landscape, giving you the context you need before you decide. MatchSignal’s AI‑assisted analysis layers odds from multiple sportsbooks, highlights potential value tiers, and explains the why behind each signal. Dive into the data, compare bookmaker coverage, and spot the bigger picture – all for free and with no registration required. Explore the tool at https://www.matchsignal.pro and start making more informed decisions today. \n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and value signals are estimates, not promises.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

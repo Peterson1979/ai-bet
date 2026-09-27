@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "👀 One price is only a tiny window into the market. With MatchSignal you get the whole stadium of data—best tracked odds, market average, fair probability, estimated value and risk tier—right at your fingertips. 🎥 Watch the video, then tap the link in bio to explore the full analysis for free. No registration required. \n\n#SportsBetting #BettingAnalysis #AIInsights #ValueSignal #ResponsibleGambling #18plus #MatchSignal #BettingTools #OddsComparison #BetSmart\n\n⚠️ 18+ | Gamble responsibly. This is analysis, not a guarantee. Odds can change.\n\nLink in bio",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🔎 One price is just a tiny window. Dive into the full market with MatchSignal’s AI‑assisted analysis. See best tracked odds, market averages, fair probability, estimated value and risk tiers—all in one clear interface. Make more informed decisions on football, NBA, NFL, and more. Explore the power of context before you place a wager. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. This is analysis, not a guarantee. Odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

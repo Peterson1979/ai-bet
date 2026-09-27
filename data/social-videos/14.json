@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "✨ No crystal ball, just clear data. MatchSignal turns a glowing AI orb into a dashboard packed with odds comparisons, probability scores and AI‑written insights. Watch how the platform highlights potential value and risk tiers across football, NBA, NFL and more – all without any registration. 📈\n\n🔗 Link in bio\n\n⚠️ 18+ • Gamble responsibly • This content is informational only – we don’t guarantee outcomes and odds can change.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #GambleResponsibly",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🔍 Want to see how the odds stack up without any “magic” tricks? MatchSignal pulls refreshed odds from dozens of sportsbooks, runs a market‑based probability model, and layers concise AI explanations on a clean dashboard. You’ll get a quick view of fair probability, value signals and risk tiers for football, NBA, NFL and more – all for free and with no registration. Explore the data‑driven approach at https://www.matchsignal.pro and decide what’s worth a deeper look. \n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit – odds can change and outcomes are uncertain.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

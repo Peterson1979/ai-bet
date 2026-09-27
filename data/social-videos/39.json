@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🛑 Don't let a single number dictate your betting decision. An isolated odds quote on a sportsbook app can be misleading without wider market context. MatchSignal expands the picture by comparing odds across bookmakers, calculating fair probability, and assessing risk tiers. 📊\n\n#SportsBetting #MarketContext #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #InformedBetting #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🛑 Fixating on a single sportsbook odds line can lead to biased conclusions. MatchSignal helps you see the bigger picture by tracking prices across sportsbooks, establishing market averages, and computing fair probabilities. Compare before deciding anything. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

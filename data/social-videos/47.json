@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🤖 AI analysis is only as good as the market data that powers it. MatchSignal grounds its AI explanations in validated sportsbook odds, market-average comparisons, and mathematical probability models—giving you reliable, context-rich sports insights. 💡\n\n#SportsBetting #AINeedsData #MatchSignal #OddsComparison #ValueBetting #SportsAnalytics #BetSmart #ResponsibleGambling #AIBetting #BettingTips\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🤖 Artificial intelligence without real-world market context produces noisy, unreliable predictions. MatchSignal pairs machine learning analysis with validated sportsbook data, market-average comparisons, and mathematical probability models to deliver clear, actionable insights. See how data powers our AI at MatchSignal. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

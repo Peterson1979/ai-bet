@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🚨 AI can be wrong – that’s why MatchSignal shows you the full probability picture, not just a confident prediction. 📊 Compare refreshed odds, see risk tiers, and get concise AI explanations to evaluate potential value. 🎥 Watch the video, then tap the link in bio to explore the free tools, guides, and calculators that help you stay ahead of the game. \n\n#SportsBetting #BettingAnalysis #AIInsights #Probability #RiskManagement #GambleResponsibly #18Plus #MatchSignal #BettingTools #ValueSignal\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of win or profit; odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🤖 AI isn’t infallible – even the smartest models can miss. MatchSignal gives you a clear view of probability, market pricing and risk tiers so you can make more informed choices. Compare odds from multiple sportsbooks, see AI‑generated explanations, and spot potential value signals. Ready to dive deeper? Visit https://www.matchsignal.pro and explore the tools that keep you in control. \n\n⚠️ 18+ only. Gamble responsibly. This is for informational purposes; no guarantee of win, profit or outcome. Odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

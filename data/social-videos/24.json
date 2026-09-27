@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "👀 See the walls come down! Our latest video reveals how MatchSignal gives you free, instant access to sports probability analysis, market averages and risk tiers—no login, no subscription. From football to MMA, explore calculators, guides and a betting glossary that help you understand the numbers behind the game. Ready to level up your insights? Link in bio.\n\n🔞 18+ | Gamble responsibly. This is analytical content only; outcomes are not guaranteed and odds can change.\n\n#SportsAnalytics #BettingTools #FreeAccess #AIInsights #GambleResponsibly",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🚀 Unlock the full power of sports analytics without any paywall or sign‑up. Our video shows how MatchSignal’s dashboard instantly reveals probability insights, market averages and risk tiers for football, NBA, NFL, and more. Dive into free guides, calculators and a betting glossary—all in one clean interface. Ready to explore smarter analysis? Visit https://www.matchsignal.pro now and see the data that can inform your decisions. \n\n🔞 18+ | Gamble responsibly. This platform provides analysis only; outcomes are not guaranteed and odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

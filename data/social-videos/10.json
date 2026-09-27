@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🔍 Want to know the “why” behind every pick? MatchSignal adds a quick AI‑generated explanation and market context to each card. Tap “WHY?” and watch the card expand into probability insights, odds comparisons, and a clear risk tier. That extra layer of analysis helps you decide if the selection matches your betting plan. Ready to see the full breakdown? Link in bio.\n\n#SportsBetting #BettingAnalysis #AIInsights #ValueBetting #ResponsibleGambling #MatchSignal #BetSmart #GambleResponsibly #BettingTools #BettingCommunity\n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit – odds can change and outcomes are uncertain.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Ever wonder why a pick looks so simple? With MatchSignal you get more than just a selection – you get the story behind it. Tap the “WHY?” button and the card expands into market‑based probability, odds from multiple sportsbooks, and a concise AI‑generated explanation that puts the pick into context. That insight helps you weigh risk, see the estimated value tier, and decide if the bet fits your strategy. Explore the full breakdown at https://www.matchsignal.pro and make smarter decisions. \n\n⚠️ 18+ only. Gamble responsibly. No guarantee of profit – odds can change and outcomes are uncertain.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

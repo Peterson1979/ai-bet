@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🔍 Overwhelmed by a flood of odds? MatchSignal’s scanner pulls the noise into one clean card – showing the pick, odds, probability, value tier and a quick AI insight. It’s the fastest way to see where the market might offer a potential edge before you place a bet. Dive in and see the difference for yourself. Link in bio. 18+ only. Gamble responsibly. No guarantee of profit; odds can change. #SportsBetting #BettingAnalysis #AIInsights #BetSmart #FreeTools",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Tired of juggling dozens of sportsbook screens? MatchSignal turns that chaos into a single, easy‑to‑read card that shows the selection, odds, fair probability, value tier and a concise AI explanation. Quickly spot where the market may be offering a potential edge and make more informed decisions. Try it for free at https://www.matchsignal.pro. 18+ only. Gamble responsibly. No guarantee of profit; odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

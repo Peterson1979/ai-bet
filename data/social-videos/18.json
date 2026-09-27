@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🔍 Spot the price gap in seconds! Our AI instantly compares odds across sportsbooks, showing you the best tracked price, market average, and a fair‑probability estimate. Use MatchSignal’s free analysis to see where value may exist—no guarantees, odds can change. 🎥 Watch the video, then tap the link in bio to explore the tool. #SportsBetting #OddsComparison #BettingAnalysis #AIInsights #FreeTools\n\n18+ | Gamble responsibly. This is informational only; no outcome is guaranteed.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Ever wonder why the same game shows different prices? MatchSignal’s free AI‑assisted platform pulls the latest odds from multiple sportsbooks, calculates a market average, and estimates a fair probability—so you can see where potential value may lie. It’s an analytical tool, not a guarantee of profit, and odds can vary. Explore the comparison at https://www.matchsignal.pro and make smarter decisions.\n\n18+ | Gamble responsibly. This post is informational only; no outcome is guaranteed.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🚨 The market is speaking louder than ever! In this video, a football stadium erupts with glowing signals that merge into the MatchSignal dashboard. See how our AI‑assisted platform pulls together odds from multiple sportsbooks, adds probability analysis and risk tiers, and highlights potential value – all for free, no sign‑up needed. 📊 Want the same insight for your next bet? Link in bio.\n\n🔞 18+ only. Gamble responsibly. This is informational analysis; it does not guarantee profit. Odds can change and value signals are estimates.\n\n#SportsBetting #FootballAnalysis #BettingTools #AIInsights #ValueSignals",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "⚽️ The stadium lights aren’t the only thing glowing – the market is buzzing with hidden signals. In our new video, watch how MatchSignal transforms scattered odds into a clear dashboard, showing you probability analysis, AI‑driven context and risk tiers for every football pick. Dive deep into the data, compare multiple sportsbooks, and spot potential value before you decide. Ready to upgrade your research? Visit https://www.matchsignal.pro and explore the free, no‑registration tool today. \n\n🔞 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and value signals are estimates, not promises.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

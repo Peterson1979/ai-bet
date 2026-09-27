@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "👀 Looking at one sportsbook creates a massive blind spot. When you only see one price, you have no way of knowing how it compares to the wider market. MatchSignal tracks multiple sportsbooks side-by-side, calculating the market average and highlighting the best tracked odds for every fixture. See the full picture before you make a move. 🔍\n\n#SportsBetting #OddsComparison #MatchSignal #SportsAnalytics #ValueBetting #BetSmart #ResponsibleGambling #BettingTips #MarketContext #LineShopping\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.\n\nLink in bio",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "👀 Relying on a single sportsbook often means missing out on better odds and critical market context. MatchSignal aggregates pricing from multiple sportsbooks, calculates market averages, and evaluates fair probability to show how any given price fits the broader market. Expand your view before deciding. https://www.matchsignal.pro\n\n⚠️ 18+ | Gamble responsibly. Informational analysis only, not a guarantee. Odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "📊 What does the market say about today’s football action? MatchSignal turns a sea of odds into a single, easy‑to‑read dashboard – market average, best tracked price, fair probability and a clear risk tier. Watch the video, tap “Link in bio” and see how AI‑assisted analysis can give you a sharper edge. \n\n🔗 Link in bio\n\n⚠️ 18+ only. Gamble responsibly. This is informational analysis; it does not guarantee profit and odds may shift.\n\n#FootballBetting #SportsAnalytics #BettingTools #ValueBetting #ResponsibleGambling",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "🚀 Want to see what the market really thinks before you pick a football pick? MatchSignal aggregates the latest odds from multiple sportsbooks, shows the market average, the best‑tracked price and a fair‑probability estimate, all with a clear risk‑tier label. Use the AI‑driven summary to understand why a signal appears “High Value” and decide if it fits your strategy. Explore the tool at https://www.matchsignal.pro and start comparing odds in seconds. \n\n⚠️ 18+ only. Gamble responsibly. This is analysis, not a guarantee of profit. Odds can change and outcomes are never certain.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",

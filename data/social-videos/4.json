@@ -14,7 +14,7 @@
         {
           "targetId": "instagram-main",
           "caption": "🚀 Want the edge beyond a single tip? Our video shows how MatchSignal layers market odds, probability estimates, and bookmaker coverage into a clear picture, then lets AI explain the why. See the data‑driven difference for yourself. Link in bio\n\n⚠️ 18+ only. Gamble responsibly. Results are not guaranteed; odds can change.\n#SportsBetting #BettingAnalysis #AIInsights #BetSmart #MatchSignal",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "instagram-2",
@@ -28,7 +28,7 @@
         {
           "targetId": "facebook-main",
           "message": "Ever wonder why a lone tip feels shaky? Our latest video breaks down how MatchSignal pulls together odds from multiple sportsbooks, calculates fair probabilities, and adds AI explanations, giving you a richer context for every wager. Dive into the comparison tool at https://www.matchsignal.pro and see the difference data can make. \n\n⚠️ 18+ only. Gamble responsibly. This is informational only – no guarantee of results and odds can change.",
-          "enabled": false
+          "enabled": true
         },
         {
           "targetId": "facebook-2",
