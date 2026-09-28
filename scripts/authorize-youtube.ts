@@ -1,4 +1,5 @@
 import { loadEnvConfig } from "@next/env";
+import fs from "node:fs";
 import http from "node:http";
 import readline from "node:readline";
 import { URL } from "node:url";
@@ -29,7 +30,19 @@ function parseArgs(argv: string[]) {
   const scopes =
     scopesIndex >= 0 ? argv[scopesIndex + 1].split(",").map((s) => s.trim()) : undefined;
 
-  return { code, port, redirectUri, scopes };
+  const expectedChannelIndex = argv.indexOf("--expected-channel");
+  const expectedChannel =
+    expectedChannelIndex >= 0 ? argv[expectedChannelIndex + 1] : undefined;
+
+  const outputEnvIndex = argv.indexOf("--output-env");
+  const outputEnv =
+    outputEnvIndex >= 0 ? argv[outputEnvIndex + 1] : undefined;
+
+  const promptIndex = argv.indexOf("--prompt");
+  const prompt =
+    promptIndex >= 0 ? argv[promptIndex + 1] : "select_account consent";
+
+  return { code, port, redirectUri, scopes, expectedChannel, outputEnv, prompt };
 }
 
 function promptForCode(): Promise<string> {
@@ -91,25 +104,32 @@ async function main() {
     `http://localhost:${port}/oauth2callback`;
 
   const scopes = args.scopes || DEFAULT_YOUTUBE_SCOPES;
+  const prompt = args.prompt || "select_account consent";
 
   const authUrl = buildYouTubeAuthUrl({
     clientId,
     redirectUri,
     scopes,
     accessType: "offline",
-    prompt: "consent",
+    prompt,
   });
 
   console.log("\n================================================================================");
-  console.log("MATCHSIGNAL YOUTUBE OAUTH AUTHORIZATION HELPER");
+  console.log("YOUTUBE OAUTH AUTHORIZATION HELPER");
   console.log("================================================================================");
-  console.log(`Client ID:    ${maskSecret(clientId, 6)}`);
-  console.log(`Redirect URI: ${redirectUri}`);
-  console.log(`Scopes:       ${scopes.join("\n              ")}`);
+  console.log(`Client ID:        ${maskSecret(clientId, 6)}`);
+  console.log(`Redirect URI:     ${redirectUri}`);
+  console.log(`Scopes:           ${scopes.join("\n                  ")}`);
+  if (args.expectedChannel) {
+    console.log(`Expected Channel: ${args.expectedChannel}`);
+  }
+  if (args.outputEnv) {
+    console.log(`Output File:      ${args.outputEnv}`);
+  }
   console.log("================================================================================");
   console.log("\n1. Open the following URL in your browser:\n");
   console.log(`   ${authUrl}\n`);
-  console.log("2. Sign in to the Google / YouTube account you want to publish with.");
+  console.log("2. Sign in to the Google / YouTube account you want to authorize.");
   console.log("3. Grant the requested permissions.\n");
 
   let code = args.code;
@@ -221,6 +241,48 @@ async function main() {
     // Optional tokeninfo inspection
   }
 
+  if (args.expectedChannel) {
+    const expectedLower = args.expectedChannel.toLowerCase().trim();
+    const actualTitle = (channelInfo?.title || "").toLowerCase().trim();
+    const actualHandle = (channelInfo?.customUrl || "").toLowerCase().trim();
+    const actualId = (channelInfo?.id || "").trim();
+
+    const isMatch =
+      actualTitle.includes(expectedLower) ||
+      actualHandle.includes(expectedLower) ||
+      actualId === args.expectedChannel.trim();
+
+    if (!isMatch) {
+      console.error("\n================================================================================");
+      console.error("[ERROR] AUTHENTICATED CHANNEL DOES NOT MATCH EXPECTED CHANNEL");
+      console.error("================================================================================");
+      console.error(`Expected Channel: "${args.expectedChannel}"`);
+      console.error(`Actual Channel:   "${channelInfo?.title || "Unknown"}"`);
+      if (channelInfo?.id) console.error(`Actual ID:        ${channelInfo.id}`);
+      if (channelInfo?.customUrl) console.error(`Actual Handle:    ${channelInfo.customUrl}`);
+      console.error("Stopping and discarding tokens to prevent assigning credentials to the wrong channel.");
+      console.error("================================================================================\n");
+      process.exit(1);
+    }
+  }
+
+  if (args.outputEnv) {
+    const envLines = [
+      `# YouTube OAuth Credentials`,
+      `# Channel: ${channelInfo?.title || "Unknown"} (${channelInfo?.id || "Unknown"})`,
+      `# Generated: ${new Date().toISOString()}`,
+      `YOUTUBE_CLIENT_ID=${clientId}`,
+      `YOUTUBE_CLIENT_SECRET=${clientSecret}`,
+      tokens.refresh_token ? `YOUTUBE_REFRESH_TOKEN=${tokens.refresh_token}` : "",
+      channelInfo?.id ? `YOUTUBE_CHANNEL_ID=${channelInfo.id}` : "",
+      channelInfo?.title ? `YOUTUBE_CHANNEL_TITLE=${channelInfo.title}` : "",
+      channelInfo?.customUrl ? `YOUTUBE_CHANNEL_HANDLE=${channelInfo.customUrl}` : "",
+      "",
+    ].filter(Boolean);
+
+    fs.writeFileSync(args.outputEnv, envLines.join("\n"), { encoding: "utf8" });
+  }
+
   console.log("\n================================================================================");
   console.log("YOUTUBE OAUTH AUTHORIZATION SUCCESSFUL");
   console.log("================================================================================");
@@ -237,13 +299,18 @@ async function main() {
     console.log(`Granted Scopes: ${tokenInfo?.scope || tokens.scope}`);
   }
   console.log("--------------------------------------------------------------------------------");
-  console.log("SAVE THE FOLLOWING TO YOUR .env.local (and deployment environment):");
-  console.log("--------------------------------------------------------------------------------");
-  if (tokens.refresh_token) {
-    console.log(`YOUTUBE_REFRESH_TOKEN=${tokens.refresh_token}`);
-  }
-  if (channelInfo?.id) {
-    console.log(`YOUTUBE_CHANNEL_ID=${channelInfo.id}`);
+  if (args.outputEnv) {
+    console.log(`CREDENTIALS STORED: ${args.outputEnv}`);
+    console.log(`Refresh Token:      ${maskSecret(tokens.refresh_token, 6)} (Stored locally)`);
+  } else {
+    console.log("SAVE THE FOLLOWING TO YOUR .env.local (and deployment environment):");
+    console.log("--------------------------------------------------------------------------------");
+    if (tokens.refresh_token) {
+      console.log(`YOUTUBE_REFRESH_TOKEN=${maskSecret(tokens.refresh_token, 6)}`);
+    }
+    if (channelInfo?.id) {
+      console.log(`YOUTUBE_CHANNEL_ID=${channelInfo.id}`);
+    }
   }
   console.log("================================================================================\n");
 }

@@ -55,7 +55,7 @@
             "BetSmart",
             "ProbabilityAnalysis"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

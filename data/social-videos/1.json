@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "One Price Is a Tiny Window: Sports Odds & Probability Analysis",
           "description": "🔎 One price is just a tiny window. Dive into the full market with MatchSignal’s AI‑assisted analysis. See best tracked odds, market averages, fair probability, estimated value and risk tiers—all in one clear interface. Make more informed decisions on football, NBA, NFL, and more. Explore the power of context before you place a wager. https://www.matchsignal.pro.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

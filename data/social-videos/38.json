@@ -55,7 +55,7 @@
             "BetSmart",
             "RiskTier"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

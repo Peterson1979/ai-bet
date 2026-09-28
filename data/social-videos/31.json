@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "The Market Is Talking: Sports Odds & Probability Analysis",
           "description": "⚽️ The stadium lights aren’t the only thing glowing – the market is buzzing with hidden signals. In our new video, watch how MatchSignal transforms scattered odds into a clear dashboard, showing you probability analysis, AI‑driven context and risk tiers for every football pick. Dive deep into the data, compare multiple sportsbooks, and spot potential value before you decide. Ready to upgrade your research? Visit https://www.matchsignal.pro and explore the free, no‑registration tool today.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

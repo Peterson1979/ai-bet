@@ -55,7 +55,7 @@
             "BetSmart",
             "MarketAverage"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

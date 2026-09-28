@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Winner? Wrong First Question: Sports Odds & Probability Analysis",
           "description": "Think betting is just about picking a winner? Think again. Our latest video breaks down the four pillars of a smart wager—price, probability, value, and risk. MatchSignal’s AI‑driven analysis pulls together the latest odds from multiple sportsbooks, shows you the market average and highlights where a potential value signal appears. Use the insights to weigh risk levels and make more informed choices, not guesses. Dive deeper at https://www.matchsignal.pro and see how the data can sharpen your strategy.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

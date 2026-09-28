@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Check First Bet Second: Sports Odds & Probability Analysis",
           "description": "Before you hit that “PLACE BET” button, pause and let MatchSignal do the heavy lifting. Our AI‑assisted analysis pulls refreshed odds from multiple sportsbooks, shows market‑based probability, estimated value and risk tier—all in seconds. Use the clear visual comparison to decide if the price is worth the risk before you commit. Explore the full suite at https://www.matchsignal.pro and make smarter, data‑driven choices.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

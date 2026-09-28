@@ -55,7 +55,7 @@
             "BetSmart",
             "MarketContext"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

@@ -55,7 +55,7 @@
             "BetSmart",
             "MarketBenchmark"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

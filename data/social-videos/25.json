@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Same Market New Perspective: Sports Odds & Probability Analysis",
           "description": "🔍 See the same football match from a fresh angle. MatchSignal pulls odds from multiple sportsbooks, layers AI‑driven probability analysis, and highlights where the market may be undervaluing a pick. The video shows a wet‑field ball turning into a glowing market sphere—just like the insight you get when you compare price with the wider market. Explore the data, spot potential value, and decide with confidence. https://www.matchsignal.pro.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

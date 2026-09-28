@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Who Would You Trust?: Sports Odds & Probability Analysis",
           "description": "Ever wonder why a lone tip feels shaky? Our latest video breaks down how MatchSignal pulls together odds from multiple sportsbooks, calculates fair probabilities, and adds AI explanations, giving you a richer context for every wager. Dive into the comparison tool at https://www.matchsignal.pro and see the difference data can make.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

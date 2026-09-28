@@ -55,7 +55,7 @@
             "BetSmart",
             "LineShopping"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

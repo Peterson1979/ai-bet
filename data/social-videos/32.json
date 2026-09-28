@@ -55,7 +55,7 @@
             "BetSmart",
             "ExpectedValue"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

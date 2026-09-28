@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "What If the Price Isn’t the Point?: Sports Odds & Probability Analysis",
           "description": "Ever wonder why the price alone doesn’t tell the whole story? Our latest video shows a runner turning into a 3‑D market, revealing comparable odds, the market average and underlying probabilities before MatchSignal’s AI breaks it down. By seeing the context, you can spot potential value and make more informed decisions – but remember, outcomes are never guaranteed and odds may shift. Explore the analysis at https://www.matchsignal.pro.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

@@ -55,7 +55,7 @@
             "BetSmart",
             "LineTracking"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Your Screen Shows One Price: Sports Odds & Probability Analysis",
           "description": "Ever wonder why the price you see on your phone might be just one slice of the betting market? Our latest video shows how MatchSignal expands that single number into a full three‑dimensional view of odds, value signals, and risk tiers across dozens of sportsbooks. By comparing refreshed odds and AI‑driven probability analysis, you can spot potential value before the crowd does. Dive deeper into football, NBA, NFL, and more with clear explanations that help you make smarter, data‑backed decisions. Explore the platform now at https://www.matchsignal.pro – remember, values are estimates and may change; there’s no guarantee of profit or outcome.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "No Magic Predictions: Sports Odds & Probability Analysis",
           "description": "🔍 Want to see how the odds stack up without any “magic” tricks? MatchSignal pulls refreshed odds from dozens of sportsbooks, runs a market‑based probability model, and layers concise AI explanations on a clean dashboard. You’ll get a quick view of fair probability, value signals and risk tiers for football, NBA, NFL and more – all for free and with no registration. Explore the data‑driven approach at https://www.matchsignal.pro and decide what’s worth a deeper look.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

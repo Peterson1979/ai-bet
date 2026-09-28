@@ -55,7 +55,7 @@
             "ExpectedValue",
             "RiskManagement"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

@@ -55,7 +55,7 @@
             "BetSmart",
             "RiskManagement"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "3 Numbers Before Any Bet: Sports Odds & Probability Analysis",
           "description": "🚀 Ready to make smarter betting decisions? MatchSignal’s AI‑assisted analysis lines up three key data points—available odds, estimated probability, and risk tier—into one clear card. No registration, no betting on our site, just a quick comparison that helps you see potential value before you place a wager. Dive in at https://www.matchsignal.pro and explore the free tool that lets you weigh the odds with AI‑driven insight.\n\n⚠.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

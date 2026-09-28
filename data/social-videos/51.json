@@ -55,7 +55,7 @@
             "BetSmart",
             "OddsEducation"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

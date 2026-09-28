@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Don’t Just Show Me the Pick: Sports Odds & Probability Analysis",
           "description": "Ever wonder why a pick looks so simple? With MatchSignal you get more than just a selection – you get the story behind it. Tap the “WHY?” button and the card expands into market‑based probability, odds from multiple sportsbooks, and a concise AI‑generated explanation that puts the pick into context. That insight helps you weigh risk, see the estimated value tier, and decide if the bet fits your strategy. Explore the full breakdown at https://www.matchsignal.pro and make smarter decisions.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

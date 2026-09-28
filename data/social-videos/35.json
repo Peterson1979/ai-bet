@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "A Pick Isn’t Enough: Sports Odds & Probability Analysis",
           "description": "Ever wonder why a simple pick can leave you guessing? MatchSignal turns a lone prediction into a full picture – showing the best odds, estimated win probability, market averages, a Value Signal, bookmaker count, and a clear risk tier. It’s the extra context you need to make smarter decisions before you place a wager. Dive into today’s matchups at https://www.matchsignal.pro and see the data behind every selection. \n\n⚠.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

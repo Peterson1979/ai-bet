@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Read This Before Low Risk: Sports Odds & Probability Analysis",
           "description": "Understanding risk is the first step to smarter sports analysis. Our video shows how the Low, Medium and High risk tiers on MatchSignal give you a clear picture of relative risk – not a certainty of outcome. Use the AI‑driven comparison of market odds and probability estimates to see where potential value may exist, then decide if the bet fits your strategy. Visit https://www.matchsignal.pro to explore the full analysis and make more informed choices. \n\nDisclaimer:.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

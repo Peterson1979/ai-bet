@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "One Bet Different Prices: Sports Odds & Probability Analysis",
           "description": "Ever wonder why the same game shows different prices? MatchSignal’s free AI‑assisted platform pulls the latest odds from multiple sportsbooks, calculates a market average, and estimates a fair probability—so you can see where potential value may lie. It’s an analytical tool, not a guarantee of profit, and odds can vary. Explore the comparison at https://www.matchsignal.pro and make smarter decisions.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

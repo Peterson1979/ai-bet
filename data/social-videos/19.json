@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Odds Are Only Half the Story: Sports Odds & Probability Analysis",
           "description": "⚽️ Ever wonder why the odds you see don’t tell the whole story? In our latest video, the stadium turns into a data hub, revealing price, market averages and probability insights that go beyond the headline numbers. MatchSignal layers AI‑driven analysis on top of refreshed sportsbook odds, so you can see where the market may be over‑ or under‑pricing a bet. Discover the Low, Medium and High risk tiers, compare bookmaker coverage and get concise explanations that help you decide if a selection has potential value. Dive into the full comparison at https://www.matchsignal.pro and explore tools like free calculators, betting guides and a glossary.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

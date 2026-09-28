@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Yes Ai Can Be Wrong: Sports Odds & Probability Analysis",
           "description": "🤖 AI isn’t infallible – even the smartest models can miss. MatchSignal gives you a clear view of probability, market pricing and risk tiers so you can make more informed choices. Compare odds from multiple sportsbooks, see AI‑generated explanations, and spot potential value signals. Ready to dive deeper? Visit and explore the tools that keep you in control. ⚠️.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

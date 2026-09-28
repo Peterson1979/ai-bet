@@ -55,7 +55,7 @@
             "BetSmart",
             "ArtificialIntelligence"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "The Price Can Fool You: Sports Odds & Probability Analysis",
           "description": "Ever wonder why a single price can feel misleading? 🎯 In our latest video, a simple odds line expands into a transparent cube, revealing the underlying probability, market average, and the AI‑driven Value Signal that MatchSignal provides. By comparing the displayed price with the broader market, you get a clearer picture of potential value before you even think about placing a wager. Explore the full analysis at https://www.matchsignal.pro and see how context changes the game.\n\n⚠.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Stop Chasing Odds: Sports Odds & Probability Analysis",
           "description": "Tired of chasing fleeting odds? MatchSignal lets you compare the best‑tracked odds, market averages and fair probabilities side‑by‑side, so you can spot potential value before the market shifts. Our AI‑driven analysis highlights Low, Medium and High risk tiers, giving you a clearer picture of each selection. Dive into free tools, betting guides and calculators to sharpen your strategy. Explore the platform at https://www.matchsignal.pro and see how smarter comparison can improve your decision‑making.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

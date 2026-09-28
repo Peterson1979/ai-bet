@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Risk Is Part of the Picture: Sports Odds & Probability Analysis",
           "description": "Ever feel like the odds are a maze? 🎯 MatchSignal cuts through the noise by showing you not only the best‑tracked odds but also the market average, fair probability and a clear risk tier. The video walks you through a corridor of signals that opens into an analytical room, giving you a fuller picture before you decide where to focus your research. Explore the tool for free—no registration required. ⚠️.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

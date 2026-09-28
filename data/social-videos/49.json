@@ -55,7 +55,7 @@
             "BetSmart",
             "RiskAwareness"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

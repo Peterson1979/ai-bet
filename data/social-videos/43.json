@@ -55,7 +55,7 @@
             "BetSmart",
             "MarketGaps"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

@@ -55,7 +55,7 @@
             "BetSmart",
             "MarketAnalysis"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

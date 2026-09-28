@@ -131,7 +131,7 @@ export function buildYouTubeAuthUrl(params: {
   scopes?: readonly string[];
   state?: string;
   accessType?: "offline" | "online";
-  prompt?: "consent" | "select_account" | "none";
+  prompt?: "consent" | "select_account" | "none" | string;
 }): string {
   if (!params.clientId?.trim()) {
     throw new YouTubeAuthError({ message: "clientId is required to generate auth URL" });

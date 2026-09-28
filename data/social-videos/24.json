@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "No Paywall: Sports Odds & Probability Analysis",
           "description": "🚀 Unlock the full power of sports analytics without any paywall or sign‑up. Our video shows how MatchSignal’s dashboard instantly reveals probability insights, market averages and risk tiers for football, NBA, NFL, and more. Dive into free guides, calculators and a betting glossary—all in one clean interface. Ready to explore smarter analysis? Visit https://www.matchsignal.pro now and see the data that can inform your decisions.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

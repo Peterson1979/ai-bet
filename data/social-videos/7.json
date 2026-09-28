@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Your Sports One Dashboard: Sports Odds & Probability Analysis",
           "description": "Discover all seven major sports in one place with MatchSignal’s AI‑assisted analysis dashboard. The video shows football, NBA, NFL, hockey, tennis, MLB and MMA data turning into clear, concise cards that compare refreshed odds, estimate fair probabilities and flag potential value. Use the free tools and guides to deepen your understanding, but remember outcomes are never guaranteed and odds can change. Visit https://www.matchsignal.pro to explore the platform.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

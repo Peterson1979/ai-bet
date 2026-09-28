@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Value Needs Context: Sports Odds & Probability Analysis",
           "description": "Ever wonder why a single price can feel misleading? In our latest video, we show how MatchSignal layers market averages and probability analysis over the raw odds, turning a simple number into a strategic insight. See the glowing price balance against fair probability, then watch the dashboard break it down for you. This context helps you spot potential value before you decide where to place a bet. Explore the full analysis at https://www.matchsignal.pro and make more informed choices.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

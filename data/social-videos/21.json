@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "What Does the Market Say?: Sports Odds & Probability Analysis",
           "description": "🚀 Want to see what the market really thinks before you pick a football pick? MatchSignal aggregates the latest odds from multiple sportsbooks, shows the market average, the best‑tracked price and a fair‑probability estimate, all with a clear risk‑tier label. Use the AI‑driven summary to understand why a signal appears “High Value” and decide if it fits your strategy. Explore the tool at https://www.matchsignal.pro and start comparing odds in seconds.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

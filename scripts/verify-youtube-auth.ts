@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { loadEnvConfig } from "@next/env";
 
 import {
@@ -9,7 +10,24 @@ import {
 } from "../app/lib/social/video/youtube-auth";
 
 async function main() {
-  loadEnvConfig(process.cwd(), true);
+  const envFileIndex = process.argv.indexOf("--env-file");
+  const envFilePath = envFileIndex >= 0 ? process.argv[envFileIndex + 1] : undefined;
+
+  if (envFilePath && fs.existsSync(envFilePath)) {
+    const content = fs.readFileSync(envFilePath, "utf8");
+    for (const line of content.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const eqIdx = trimmed.indexOf("=");
+      if (eqIdx > 0) {
+        const key = trimmed.slice(0, eqIdx).trim();
+        const val = trimmed.slice(eqIdx + 1).trim();
+        process.env[key] = val;
+      }
+    }
+  } else {
+    loadEnvConfig(process.cwd(), true);
+  }
 
   const clientId = process.env.YOUTUBE_CLIENT_ID?.trim();
   const clientSecret = process.env.YOUTUBE_CLIENT_SECRET?.trim();

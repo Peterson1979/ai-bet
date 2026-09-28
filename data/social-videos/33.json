@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "You’re Seeing the Tip of the Iceberg: Sports Odds & Probability Analysis",
           "description": "Ever feel like you’re only seeing the tip of the betting market? 🎯 The video shows a single price floating above a dark ocean, then dives deep to reveal the massive network of odds that most bettors miss. MatchSignal’s AI‑assisted analysis pulls those hidden layers into view, comparing refreshed odds from multiple sportsbooks and giving you a clear probability estimate with concise explanations. Use the platform to spot Low, Medium, or High‑Risk tiers, see market averages, and identify potential value signals—without ever having to register. Dive deeper at https://www.matchsignal.pro and start exploring the full market picture.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

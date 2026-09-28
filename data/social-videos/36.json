@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Numbers Can Hide a Story: Sports Odds & Probability Analysis",
           "description": "Ever wonder why the numbers on a betting slip sometimes feel mysterious? In our new video, the numbers in a fan’s eye transform into a sprawling landscape, then neatly break down into price, market average, probability, value, and risk. MatchSignal’s AI‑assisted analysis adds that missing context, helping you see what each figure really means before you decide. Dive deeper into the data and make more informed choices with free, no‑registration tools. Visit https://www.matchsignal.pro to explore the platform today.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

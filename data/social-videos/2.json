@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "The Ai Can’t Just Invent a Bet: Sports Odds & Probability Analysis",
           "description": "Ever wonder why AI can’t just make up a bet? In our new video, the holographic AI tries to conjure random picks, only to have them rejected. The system then pulls real, refreshed odds from multiple sportsbooks, runs market‑based probability analysis, and delivers a concise, AI‑generated insight card. That’s the power of MatchSignal – it works with validated market data, not imagined selections, giving you clear context, estimated value tiers, and a quick risk rating. Dive deeper at https://www.matchsignal.pro and see how the AI‑assisted analysis can help you spot potential value across Football, NBA, NFL, and more.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

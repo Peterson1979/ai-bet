@@ -55,7 +55,7 @@
             "BetSmart",
             "InformedDecisions"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

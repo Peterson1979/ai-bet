@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Too Many Odds?: Sports Odds & Probability Analysis",
           "description": "Tired of juggling dozens of sportsbook screens? MatchSignal turns that chaos into a single, easy‑to‑read card that shows the selection, odds, fair probability, value tier and a concise AI explanation. Quickly spot where the market may be offering a potential edge and make more informed decisions. Try it for free at.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

@@ -55,7 +55,7 @@
             "BetSmart",
             "DataAnalysis"
           ],
-          "enabled": false
+          "enabled": true
         }
       ]
     }

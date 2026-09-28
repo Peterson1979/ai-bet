@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Stop Guessing Start Comparing: Sports Odds & Probability Analysis",
           "description": "📊 Stop guessing and start comparing! Our new video shows how a scattered sea of market signals can be turned into a clear MatchSignal dashboard – you’ll see the best‑tracked odds, market averages, fair probability, and a risk tier rating all in one place. The AI‑driven analysis adds concise context so you can make smarter decisions, not just follow a single number. Dive into the free, no‑registration tool at https://www.matchsignal.pro and see the difference for yourself.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

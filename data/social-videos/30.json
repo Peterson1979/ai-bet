@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "One Click Much More Context: Sports Odds & Probability Analysis",
           "description": "🚀 One tap, endless insight. In the video, a single market selection expands into a full‑screen analysis hub—showing market average, the best tracked odds, a fair‑probability estimate, risk tier, and AI‑generated context. MatchSignal lets you see the whole picture before you decide, so you can weigh potential value with data‑driven confidence. Explore the tool at https://www.matchsignal.pro and see how a deeper view can sharpen your sports‑betting research.\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [

@@ -547,7 +547,7 @@ async function runTests() {
   }
 
   // ===========================================================================
-  // 6. Verify default static targets maintain youtube-main as disabled
+  // 6. Verify default static targets have youtube-main enabled
   // ===========================================================================
   {
     const defaultYouTubeTarget = VIDEO_SOCIAL_TARGETS.find(
@@ -556,8 +556,8 @@ async function runTests() {
     assert(defaultYouTubeTarget);
     assert.equal(
       defaultYouTubeTarget.enabled,
-      false,
-      "CRITICAL: youtube-main must remain disabled in production targets.ts!"
+      true,
+      "CRITICAL: youtube-main must be enabled in production targets.ts!"
     );
   }
 

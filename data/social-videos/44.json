@@ -41,7 +41,7 @@
       "targets": [
         {
           "targetId": "youtube-main",
-          "enabled": false,
+          "enabled": true,
           "title": "Don’t Lose the Bigger Picture: Sports Odds & Probability Analysis",
           "description": "🔎 Want a clearer view of the betting market? Our new video shows how a single price point can expand into a full market landscape, giving you the context you need before you decide. MatchSignal’s AI‑assisted analysis layers odds from multiple sportsbooks, highlights potential value tiers, and explains the why behind each signal. Dive into the data, compare bookmaker coverage, and spot the bigger picture – all for free and with no registration required. Explore the tool at and start making more informed decisions today. ⚠️.\n\nExplore MatchSignal: https://www.matchsignal.pro\n\n18+ | Gamble responsibly | MatchSignal provides informational analysis only; odds can change and no prediction guarantees an outcome.",
           "tags": [
