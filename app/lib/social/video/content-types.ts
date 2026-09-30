@@ -1,6 +1,7 @@
 import type {
   FacebookTargetVideoContent,
   InstagramTargetVideoContent,
+  ThreadsTargetVideoContent,
   YouTubeTargetVideoContent,
 } from "./types";
 
@@ -49,6 +50,7 @@ export type VideoContentPackage = {
     instagram: { targets: InstagramTargetVideoContent[] };
     facebook: { targets: FacebookTargetVideoContent[] };
     youtube: { targets: YouTubeTargetVideoContent[] };
+    threads?: { targets: ThreadsTargetVideoContent[] };
   };
   generation: {
     provider: typeof VIDEO_COPY_PROVIDER;

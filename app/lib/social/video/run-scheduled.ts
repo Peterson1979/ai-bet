@@ -11,6 +11,7 @@ import {
 } from "./preflight";
 import { publishFacebookReel } from "./publish-facebook-reel";
 import { publishInstagramReel } from "./publish-instagram-reel";
+import { publishThreadsVideo } from "./publish-threads-video";
 import { publishYouTubeVideo } from "./publish-youtube-video";
 import { selectLeastRecentlyUsedVideo } from "./select-video";
 import {
@@ -79,6 +80,7 @@ export type ScheduledVideoSocialDependencies = {
   publishInstagram?: typeof publishInstagramReel;
   publishFacebook?: typeof publishFacebookReel;
   publishYouTube?: typeof publishYouTubeVideo;
+  publishThreads?: typeof publishThreadsVideo;
   logFailure?: (record: ScheduledVideoSocialFailureLog) => void;
 };
 
@@ -98,6 +100,7 @@ function allTargetsForAsset(
     ...resolved.instagram,
     ...resolved.facebook,
     ...resolved.youtube,
+    ...resolved.threads,
   ];
 }
 
@@ -359,15 +362,24 @@ export async function runScheduledVideoSocial(
                   environment,
                   onProgress,
                 })
-              : await (dependencies.publishYouTube ?? publishYouTubeVideo)({
-                  runId: run!.runId,
-                  asset: asset!,
-                  target,
-                  resumeState: latest,
-                  environment,
-                  privacyStatus: privacyConfig.status,
-                  onProgress,
-                });
+              : target.platform === "youtube"
+                ? await (dependencies.publishYouTube ?? publishYouTubeVideo)({
+                    runId: run!.runId,
+                    asset: asset!,
+                    target,
+                    resumeState: latest,
+                    environment,
+                    privacyStatus: privacyConfig.status,
+                    onProgress,
+                  })
+                : await (dependencies.publishThreads ?? publishThreadsVideo)({
+                    runId: run!.runId,
+                    asset: asset!,
+                    target,
+                    resumeState: latest,
+                    environment,
+                    onProgress,
+                  });
 
         latest = published.state;
         if (!hasConfirmedProviderPublication(latest)) {

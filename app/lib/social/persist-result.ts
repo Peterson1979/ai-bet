@@ -17,6 +17,7 @@ export type SocialPublicationState = {
   pickIds: string[];
   instagram?: SocialChannelState;
   facebook?: SocialChannelState;
+  threads?: SocialChannelState;
   updatedAt: string;
 };
 
@@ -27,20 +28,22 @@ export function getPublicationId(dateKey: string, topPicks: TopPick[]): string {
 }
 
 export async function getPublicationState(
-  publicationId: string
+  publicationId: string,
+  redisClient: any = redis
 ): Promise<SocialPublicationState | null> {
-  return redis.get<SocialPublicationState>(`social:pub:${publicationId}`);
+  return redisClient.get(`social:pub:${publicationId}`);
 }
 
 export async function updatePublicationChannel(
   publicationId: string,
   dateKey: string,
   pickIds: string[],
-  channel: "instagram" | "facebook",
-  channelState: SocialChannelState
+  channel: "instagram" | "facebook" | "threads",
+  channelState: SocialChannelState,
+  redisClient: any = redis
 ): Promise<SocialPublicationState> {
   const key = `social:pub:${publicationId}`;
-  const current = (await redis.get<SocialPublicationState>(key)) || {
+  const current = (await redisClient.get(key)) || {
     publicationId,
     date: dateKey,
     pickIds,
@@ -50,28 +53,30 @@ export async function updatePublicationChannel(
   current[channel] = channelState;
   current.updatedAt = new Date().toISOString();
 
-  await redis.set(key, current);
+  await redisClient.set(key, current);
 
   if (
     current.instagram?.status === "published" &&
     current.facebook?.status === "published"
   ) {
-    await redis.zadd("social:posted:index", {
-      score: Date.now(),
-      member: publicationId,
-    });
+    if (typeof redisClient.zadd === "function") {
+      await redisClient.zadd("social:posted:index", {
+        score: Date.now(),
+        member: publicationId,
+      });
+    }
   }
 
   return current;
 }
 
-export async function isLegacyPosted(candidateId: string) {
-  const val = await redis.get(`social:posted:${candidateId}`);
+export async function isLegacyPosted(candidateId: string, redisClient: any = redis) {
+  const val = await redisClient.get(`social:posted:${candidateId}`);
   return !!val;
 }
 
-export async function isAlreadyPosted(candidateId: string) {
-  return isLegacyPosted(candidateId);
+export async function isAlreadyPosted(candidateId: string, redisClient: any = redis) {
+  return isLegacyPosted(candidateId, redisClient);
 }
 
 export async function savePostedResult(
@@ -81,9 +86,11 @@ export async function savePostedResult(
     caption: string;
     ig?: any;
     fb?: any;
-  }
+    threads?: any;
+  },
+  redisClient: any = redis
 ) {
-  await redis.set(`social:posted:${pick.id}`, {
+  await redisClient.set(`social:posted:${pick.id}`, {
     candidateId: pick.id,
     eventId: pick.eventId,
     postedAt: new Date().toISOString(),
@@ -94,10 +101,13 @@ export async function savePostedResult(
     caption: result.caption,
     instagram: result.ig ?? null,
     facebook: result.fb ?? null,
+    threads: result.threads ?? null,
   });
 
-  await redis.zadd("social:posted:index", {
-    score: Date.now(),
-    member: pick.id,
-  });
+  if (typeof redisClient.zadd === "function") {
+    await redisClient.zadd("social:posted:index", {
+      score: Date.now(),
+      member: pick.id,
+    });
+  }
 }

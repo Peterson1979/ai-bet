@@ -23,6 +23,11 @@ import {
   type InstagramReelPublishResult,
 } from "./publish-instagram-reel";
 import {
+  publishThreadsVideo,
+  type ThreadsVideoPublisherOptions,
+  type ThreadsVideoPublishResult,
+} from "./publish-threads-video";
+import {
   publishYouTubeVideo,
   type YouTubeVideoPublisherOptions,
   type YouTubeVideoPublishResult,
@@ -66,6 +71,9 @@ type FacebookPublisher = (
 type YouTubePublisher = (
   options: YouTubeVideoPublisherOptions
 ) => Promise<YouTubeVideoPublishResult>;
+type ThreadsPublisher = (
+  options: ThreadsVideoPublisherOptions
+) => Promise<ThreadsVideoPublishResult>;
 
 export type LiveVideoSocialDependencies = {
   manifest?: readonly VideoAsset[];
@@ -97,6 +105,7 @@ export type LiveVideoSocialDependencies = {
   publishInstagram?: InstagramPublisher;
   publishFacebook?: FacebookPublisher;
   publishYouTube?: YouTubePublisher;
+  publishThreads?: ThreadsPublisher;
 };
 
 export type LiveVideoSocialResult = {
@@ -110,7 +119,8 @@ function isCanaryPlatform(
   return (
     value === "instagram" ||
     value === "facebook" ||
-    value === "youtube"
+    value === "youtube" ||
+    value === "threads"
   );
 }
 
@@ -428,15 +438,24 @@ export async function runLiveVideoSocialCanary(
               environment,
               onProgress,
             })
-          : await (dependencies.publishYouTube ?? publishYouTubeVideo)({
-              runId,
-              asset,
-              target,
-              resumeState: latestState,
-              environment,
-              privacyStatus: privacyConfig.status,
-              onProgress,
-            });
+          : request.platform === "youtube"
+            ? await (dependencies.publishYouTube ?? publishYouTubeVideo)({
+                runId,
+                asset,
+                target,
+                resumeState: latestState,
+                environment,
+                privacyStatus: privacyConfig.status,
+                onProgress,
+              })
+            : await (dependencies.publishThreads ?? publishThreadsVideo)({
+                runId,
+                asset,
+                target,
+                resumeState: latestState,
+                environment,
+                onProgress,
+              });
 
     latestState = result.state;
     if (!hasConfirmedProviderPublication(latestState)) {

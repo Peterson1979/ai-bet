@@ -49,9 +49,29 @@ export type YouTubeVideoPreflightResult = {
   unverifiedProviderChecks: string[];
 };
 
+export type ThreadsVideoPreflightResult = {
+  targetId: string;
+  platform: "threads";
+  targetEnabled: boolean;
+  assetEnabled: boolean;
+  destinationEnabled: boolean;
+  accountIdPresent: boolean;
+  accountIdMatchesExpected: boolean;
+  accessTokenPresent: boolean;
+  sourceHttps: boolean;
+  sourceCloudinaryVideo: boolean;
+  sourceMp4Path: boolean;
+  copyUsable: boolean;
+  valid: boolean;
+  errors: string[];
+  unverifiedMediaConstraints: string[];
+  unverifiedProviderChecks: string[];
+};
+
 export type SocialVideoPreflightResult =
   | MetaVideoPreflightResult
-  | YouTubeVideoPreflightResult;
+  | YouTubeVideoPreflightResult
+  | ThreadsVideoPreflightResult;
 
 export class MetaVideoPreflightError extends Error {
   readonly result: MetaVideoPreflightResult;
@@ -69,6 +89,16 @@ export class YouTubeVideoPreflightError extends Error {
   constructor(result: YouTubeVideoPreflightResult) {
     super(`YouTube target ${result.targetId} failed video preflight`);
     this.name = "YouTubeVideoPreflightError";
+    this.result = result;
+  }
+}
+
+export class ThreadsVideoPreflightError extends Error {
+  readonly result: ThreadsVideoPreflightResult;
+
+  constructor(result: ThreadsVideoPreflightResult) {
+    super(`Threads target ${result.targetId} failed video preflight`);
+    this.name = "ThreadsVideoPreflightError";
     this.result = result;
   }
 }
@@ -320,15 +350,108 @@ export function preflightYouTubeVideoTarget(params: {
   };
 }
 
+export function preflightThreadsVideoTarget(params: {
+  asset: VideoAsset;
+  target: SocialTarget;
+  environment?: EnvironmentSource;
+  allowDisabled?: boolean;
+}): ThreadsVideoPreflightResult {
+  const { asset, target } = params;
+  if (target.platform !== "threads") {
+    throw new TypeError("Threads video preflight only supports Threads targets");
+  }
+
+  const environment = params.environment ?? process.env;
+  const targetContent = getVideoTargetContent(asset, "threads", target.id);
+  const accountIdPresent = configuredValuePresent(
+    environment,
+    target.accountIdEnv
+  );
+  const configuredAccountId = target.accountIdEnv
+    ? environment[target.accountIdEnv]?.trim()
+    : undefined;
+  const accountIdMatchesExpected =
+    !target.expectedAccountId || configuredAccountId === target.expectedAccountId;
+  const accessTokenPresent = configuredValuePresent(
+    environment,
+    target.accessTokenEnv
+  );
+  const source = inspectSourceUrl(asset.sourceUrl);
+  const copyUsable = Boolean(
+    targetContent &&
+      "caption" in targetContent &&
+      typeof targetContent.caption === "string" &&
+      targetContent.caption.trim()
+  );
+  const errors: string[] = [];
+
+  if (!params.allowDisabled) {
+    if (!target.enabled) errors.push("target is disabled");
+    if (!asset.enabled) errors.push("asset is disabled");
+    if (!targetContent) {
+      errors.push("exact threads target content is not configured");
+    } else if (!targetContent.enabled) {
+      errors.push("threads destination is disabled for target");
+    }
+  } else {
+    if (!targetContent) {
+      errors.push("exact threads target content is not configured");
+    }
+  }
+
+  if (!accountIdPresent) errors.push("THREADS_USER_ID is not configured");
+  if (accountIdPresent && !accountIdMatchesExpected) {
+    errors.push("configured Threads User ID does not match the target registry");
+  }
+  if (!accessTokenPresent) errors.push("THREADS_ACCESS_TOKEN is not configured");
+  if (!source.sourceHttps) errors.push("source URL must use HTTPS");
+  if (!source.sourceCloudinaryVideo) {
+    errors.push("source URL must be a public Cloudinary video delivery URL");
+  }
+  if (!source.sourceMp4Path) errors.push("source URL must use an MP4-style path");
+  if (!copyUsable) {
+    errors.push("Threads caption is required");
+  }
+
+  return {
+    targetId: target.id,
+    platform: "threads",
+    targetEnabled: target.enabled,
+    assetEnabled: asset.enabled,
+    destinationEnabled: targetContent?.enabled ?? false,
+    accountIdPresent,
+    accountIdMatchesExpected,
+    accessTokenPresent,
+    ...source,
+    copyUsable,
+    valid: errors.length === 0,
+    errors,
+    unverifiedMediaConstraints: [
+      "codec and audio codec",
+      "duration and file size",
+      "pixel dimensions and aspect ratio",
+      "frame rate and bitrate",
+    ],
+    unverifiedProviderChecks: [
+      "token validity, expiry, and granted scopes",
+      "Threads account eligibility for video publishing",
+    ],
+  };
+}
+
 export function preflightSocialVideoTarget(params: {
   asset: VideoAsset;
   target: SocialTarget;
   environment?: EnvironmentSource;
   allowDisabled?: boolean;
 }): SocialVideoPreflightResult {
-  return params.target.platform === "youtube"
-    ? preflightYouTubeVideoTarget(params)
-    : preflightMetaVideoTarget(params);
+  if (params.target.platform === "youtube") {
+    return preflightYouTubeVideoTarget(params);
+  }
+  if (params.target.platform === "threads") {
+    return preflightThreadsVideoTarget(params);
+  }
+  return preflightMetaVideoTarget(params);
 }
 
 export function assertMetaVideoPreflight(
@@ -341,6 +464,12 @@ export function assertYouTubeVideoPreflight(
   result: YouTubeVideoPreflightResult
 ): asserts result is YouTubeVideoPreflightResult & { valid: true } {
   if (!result.valid) throw new YouTubeVideoPreflightError(result);
+}
+
+export function assertThreadsVideoPreflight(
+  result: ThreadsVideoPreflightResult
+): asserts result is ThreadsVideoPreflightResult & { valid: true } {
+  if (!result.valid) throw new ThreadsVideoPreflightError(result);
 }
 
 export function readMetaTargetCredentials(
@@ -356,6 +485,26 @@ export function readMetaTargetCredentials(
 
   if (!accountId || !accessToken) {
     throw new TypeError("Meta target credentials are incomplete; run preflight first");
+  }
+
+  return { accountId, accessToken };
+}
+
+export function readThreadsTargetCredentials(
+  target: SocialTarget,
+  environment: EnvironmentSource
+): { accountId: string; accessToken: string } {
+  const accountId = target.accountIdEnv
+    ? environment[target.accountIdEnv]?.trim()
+    : undefined;
+  const accessToken = target.accessTokenEnv
+    ? environment[target.accessTokenEnv]?.trim()
+    : undefined;
+
+  if (!accountId || !accessToken) {
+    throw new TypeError(
+      "Threads target credentials are incomplete (THREADS_USER_ID or THREADS_ACCESS_TOKEN missing); run preflight first"
+    );
   }
 
   return { accountId, accessToken };

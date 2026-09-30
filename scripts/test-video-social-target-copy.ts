@@ -233,6 +233,16 @@ function testResolutionAndValidation() {
         expectedAccountId: undefined,
         instagramApiMode: undefined,
       },
+      {
+        id: "threads-main",
+        accountIdEnv: "THREADS_USER_ID",
+        accessTokenEnv: "THREADS_ACCESS_TOKEN",
+        clientIdEnv: undefined,
+        clientSecretEnv: undefined,
+        refreshTokenEnv: undefined,
+        expectedAccountId: undefined,
+        instagramApiMode: undefined,
+      },
     ]
   );
 

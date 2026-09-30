@@ -2,6 +2,7 @@ export const VIDEO_SOCIAL_PLATFORMS = [
   "instagram",
   "facebook",
   "youtube",
+  "threads",
 ] as const;
 
 export type VideoSocialPlatform = (typeof VIDEO_SOCIAL_PLATFORMS)[number];
@@ -28,6 +29,10 @@ export type YouTubeTargetVideoContent = TargetVideoContent & {
   tags?: string[];
 };
 
+export type ThreadsTargetVideoContent = TargetVideoContent & {
+  caption: string;
+};
+
 export type InstagramVideoConfig = {
   targets: InstagramTargetVideoContent[];
 };
@@ -40,6 +45,10 @@ export type YouTubeVideoConfig = {
   targets: YouTubeTargetVideoContent[];
 };
 
+export type ThreadsVideoConfig = {
+  targets: ThreadsTargetVideoContent[];
+};
+
 export type VideoAsset = {
   id: string;
   sourceUrl: string;
@@ -48,6 +57,7 @@ export type VideoAsset = {
     instagram: InstagramVideoConfig;
     facebook: FacebookVideoConfig;
     youtube: YouTubeVideoConfig;
+    threads?: ThreadsVideoConfig;
   };
 };
 
@@ -131,6 +141,14 @@ export type SafeProviderError = {
 };
 
 export type InstagramContainerStatus =
+  | "PUBLISHED"
+  | "FINISHED"
+  | "IN_PROGRESS"
+  | "ERROR"
+  | "EXPIRED"
+  | "UNKNOWN";
+
+export type ThreadsContainerStatus =
   | "PUBLISHED"
   | "FINISHED"
   | "IN_PROGRESS"

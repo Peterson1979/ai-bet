@@ -4,7 +4,9 @@ import { selectPick } from "../../lib/social/select-pick";
 import { calculateSocialScore } from "../../lib/social/score";
 import { publishInstagramCarousel } from "../../lib/social/publish-instagram";
 import { publishFacebook } from "../../lib/social/publish-facebook";
+import { publishThreads } from "../../lib/social/publish-threads";
 import { generateFacebookCarouselCaption } from "../../lib/social/caption-facebook";
+import { generateThreadsPredictionCaption } from "../../lib/social/caption-threads";
 import {
   getPublicationId,
   getPublicationState,
@@ -293,10 +295,16 @@ export async function GET(req: Request) {
     stage = "checking-publication-state";
     const pubState = await getPublicationState(publicationId);
 
+    const threadsConfigured = !!(env.THREADS_USER_ID && env.THREADS_ACCESS_TOKEN);
     const igAlreadyPublished = pubState?.instagram?.status === "published";
     const fbAlreadyPublished = pubState?.facebook?.status === "published";
+    const threadsAlreadyPublished = pubState?.threads?.status === "published";
 
-    if (igAlreadyPublished && fbAlreadyPublished) {
+    if (
+      igAlreadyPublished &&
+      fbAlreadyPublished &&
+      (!threadsConfigured || threadsAlreadyPublished)
+    ) {
       console.log("[social-run] skipped: all channels already published", {
         publicationId,
       });
@@ -312,6 +320,10 @@ export async function GET(req: Request) {
         facebook: {
           status: "skipped",
           postId: pubState?.facebook?.postId ?? null,
+        },
+        threads: {
+          status: "skipped",
+          postId: pubState?.threads?.postId ?? null,
         },
       });
     }
@@ -353,6 +365,7 @@ export async function GET(req: Request) {
     );
 
     const facebookCaption = await generateFacebookCarouselCaption(topPicks);
+    const threadsCaption = generateThreadsPredictionCaption(topPicks);
 
     stage = "rendering-uploading";
     const origin = env.NEXT_PUBLIC_SITE_URL;
@@ -450,6 +463,51 @@ export async function GET(req: Request) {
       }
     }
 
+    stage = "publishing-threads";
+    let threadsResult: unknown = null;
+    let threadsError: string | null = null;
+    let threadsResultStatus: "published" | "skipped" | "failed" = "skipped";
+    let threadsPostId: string | null = pubState?.threads?.postId ?? null;
+
+    if (!threadsConfigured) {
+      console.log("[social-run] threads not configured, skipping", {
+        publicationId,
+      });
+      threadsResultStatus = "skipped";
+    } else if (threadsAlreadyPublished) {
+      console.log("[social-run] threads already published, skipping", {
+        publicationId,
+      });
+      threadsResultStatus = "skipped";
+    } else {
+      try {
+        const primaryImageUrl = uploadedCarouselImageUrls[0];
+        if (!primaryImageUrl) {
+          throw new Error("No rendered prediction card image available for Threads");
+        }
+        threadsResult = await publishThreads(primaryImageUrl, threadsCaption);
+        threadsPostId = (threadsResult as any)?.id ? String((threadsResult as any).id) : null;
+        threadsResultStatus = "published";
+        console.log("[social-run] threads publish done", { threadsPostId });
+
+        await updatePublicationChannel(publicationId, dateKey, pickIds, "threads", {
+          status: "published",
+          postId: threadsPostId,
+          publishedAt: new Date().toISOString(),
+        });
+      } catch (error) {
+        threadsError =
+          error instanceof Error ? error.message : "unknown threads publish error";
+        console.error("[social-run] threads publish failed", { threadsError });
+        threadsResultStatus = "failed";
+
+        await updatePublicationChannel(publicationId, dateKey, pickIds, "threads", {
+          status: "failed",
+          error: threadsError.slice(0, 300),
+        });
+      }
+    }
+
     const igFinalPublished =
       igAlreadyPublished || instagramResultStatus === "published";
     const fbFinalPublished =
@@ -463,6 +521,7 @@ export async function GET(req: Request) {
           caption: instagramCaption,
           ig: ig ?? pubState?.instagram,
           fb: fb ?? pubState?.facebook,
+          threads: threadsResult ?? pubState?.threads,
         });
       } catch (legacyErr) {
         console.warn("[social-run] legacy savePostedResult error:", legacyErr);
@@ -485,10 +544,16 @@ export async function GET(req: Request) {
         postId: fbPostId,
         error: facebookError,
       },
+      threads: {
+        status: threadsResultStatus,
+        postId: threadsPostId,
+        error: threadsError,
+      },
       instagramSlidesCount: uploadedCarouselImageUrls.length,
       instagramSlideImageUrls: uploadedCarouselImageUrls,
       instagramCaption,
       facebookCaption,
+      threadsCaption,
       stage: "done",
     });
   } catch (error) {

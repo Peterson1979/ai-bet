@@ -24,7 +24,11 @@
     "youtube:test-upload": "npx tsx scripts/test-youtube-upload.ts",
     "validate:youtube-auth": "npx tsx scripts/test-youtube-auth.ts",
     "validate:youtube-publishing": "npx tsx scripts/test-youtube-publishing.ts",
-    "validate:youtube": "npx tsx scripts/test-youtube-auth.ts && npx tsx scripts/test-youtube-publishing.ts"
+    "validate:youtube": "npx tsx scripts/test-youtube-auth.ts && npx tsx scripts/test-youtube-publishing.ts",
+    "validate:threads-publishing": "npx tsx scripts/test-threads-publishing.ts",
+    "validate:threads-prediction": "npx tsx scripts/test-threads-prediction-publishing.ts",
+    "test:threads-prediction-live": "npx tsx scripts/test-threads-prediction-live.ts",
+    "test:threads-video-live": "npx tsx scripts/test-threads-video-live.ts"
   },
   "dependencies": {
     "@sparticuz/chromium": "^149.0.0",

@@ -190,19 +190,20 @@ async function main() {
     true
   );
 
-  // The checked-in 0818 package resolves only currently active targets in VIDEO_SOCIAL_TARGETS.
+  // The checked-in 0818 package has all target contents disabled by default.
   const tomorrow = VIDEO_MANIFEST.find((video) => video.id === "0818");
   assert(tomorrow);
   const resolved = resolveVideoTargets(tomorrow, VIDEO_SOCIAL_TARGETS);
   assert.deepEqual(
     resolved.instagram.map((target) => target.id),
-    ["instagram-main"]
+    []
   );
   assert.deepEqual(
     resolved.facebook.map((target) => target.id),
-    ["facebook-main"]
+    []
   );
   assert.deepEqual(resolved.youtube, []);
+  assert.deepEqual(resolved.threads, []);
 
   // When secondary and youtube targets are enabled in a test fixture, all destinations resolve.
   const allEnabledTargets = VIDEO_SOCIAL_TARGETS.map((t) => ({ ...t, enabled: true }));
@@ -219,6 +220,15 @@ async function main() {
         youtube: {
           targets: tomorrow.platforms.youtube.targets.map((t) => ({ ...t, enabled: true })),
         },
+        threads: {
+          targets: [
+            {
+              targetId: "threads-main",
+              enabled: true,
+              caption: "Test threads caption",
+            },
+          ],
+        },
       },
     },
     allEnabledTargets
@@ -234,6 +244,10 @@ async function main() {
   assert.deepEqual(
     allResolved.youtube.map((target) => target.id),
     ["youtube-main"]
+  );
+  assert.deepEqual(
+    allResolved.threads.map((target) => target.id),
+    ["threads-main"]
   );
   const invalidReady = structuredClone(contentPackage);
   invalidReady.status = "ready";

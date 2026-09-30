@@ -2,6 +2,7 @@ import type {
   ResolvedVideoTarget,
   ResolvedVideoTargets,
   SocialTarget,
+  ThreadsTargetVideoContent,
   VideoAsset,
   VideoSocialPlatform,
 } from "./types";
@@ -48,6 +49,13 @@ export const VIDEO_SOCIAL_TARGETS = [
     clientSecretEnv: "YOUTUBE_CLIENT_SECRET",
     refreshTokenEnv: "YOUTUBE_REFRESH_TOKEN",
   },
+  {
+    id: "threads-main",
+    platform: "threads",
+    enabled: true,
+    accountIdEnv: "THREADS_USER_ID",
+    accessTokenEnv: "THREADS_ACCESS_TOKEN",
+  },
 ] satisfies SocialTarget[];
 
 export function getVideoTargetContent(
@@ -67,19 +75,27 @@ export function getVideoTargetContent(
 ): VideoAsset["platforms"]["youtube"]["targets"][number] | undefined;
 export function getVideoTargetContent(
   asset: VideoAsset,
+  platform: "threads",
+  targetId: string
+): ThreadsTargetVideoContent | undefined;
+export function getVideoTargetContent(
+  asset: VideoAsset,
   platform: VideoSocialPlatform,
   targetId: string
 ):
   | VideoAsset["platforms"]["instagram"]["targets"][number]
   | VideoAsset["platforms"]["facebook"]["targets"][number]
   | VideoAsset["platforms"]["youtube"]["targets"][number]
+  | ThreadsTargetVideoContent
   | undefined;
 export function getVideoTargetContent(
   asset: VideoAsset,
   platform: VideoSocialPlatform,
   targetId: string
 ) {
-  return asset.platforms[platform].targets.find(
+  const platformConfig = asset.platforms[platform];
+  if (!platformConfig || !Array.isArray(platformConfig.targets)) return undefined;
+  return platformConfig.targets.find(
     (content) => content.targetId === targetId
   );
 }
@@ -100,7 +116,10 @@ export function resolveTargetsForPlatform(
       .map((target) => [target.id, target])
   );
 
-  return asset.platforms[platform].targets.flatMap((content) => {
+  const platformConfig = asset.platforms[platform];
+  if (!platformConfig || !Array.isArray(platformConfig.targets)) return [];
+
+  return platformConfig.targets.flatMap((content) => {
     if (!content.enabled) return [];
     const target = enabledTargets.get(content.targetId);
     return target ? [target] : [];
@@ -115,5 +134,6 @@ export function resolveVideoTargets(
     instagram: resolveTargetsForPlatform(asset, "instagram", targets),
     facebook: resolveTargetsForPlatform(asset, "facebook", targets),
     youtube: resolveTargetsForPlatform(asset, "youtube", targets),
+    threads: resolveTargetsForPlatform(asset, "threads", targets),
   };
 }

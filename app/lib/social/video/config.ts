@@ -109,6 +109,7 @@ export function buildDryRunPublicationPlan(
       instagram: resolvedTargets.instagram.map((target) => target.id),
       facebook: resolvedTargets.facebook.map((target) => target.id),
       youtube: resolvedTargets.youtube.map((target) => target.id),
+      threads: resolvedTargets.threads.map((target) => target.id),
     },
     targetContent: {
       instagram: asset.platforms.instagram.targets.map((content) => ({
@@ -120,6 +121,9 @@ export function buildDryRunPublicationPlan(
       youtube: asset.platforms.youtube.targets.map((content) => ({
         ...content,
         tags: content.tags ?? [],
+      })),
+      threads: (asset.platforms.threads?.targets ?? []).map((content) => ({
+        ...content,
       })),
     },
   };

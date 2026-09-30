@@ -125,6 +125,23 @@ Compare the odds for yourself: https://www.matchsignal.pro
           },
         ],
       },
+      threads: {
+        targets: [
+          {
+            targetId: "threads-main",
+            enabled: false,
+            caption: `Ever wondered what actually happens before a bookmaker sets a price?
+
+Every sportsbook uses models to turn match stats and player data into odds — but no two bookmakers get the exact same number.
+
+MatchSignal compares odds across Football, NBA, NFL, Hockey, Tennis, MLB and MMA side by side, with AI-assisted probability analysis for every pick.
+
+Compare odds: https://www.matchsignal.pro
+
+18+ | Gamble responsibly | Analysis, not guarantees.`,
+          },
+        ],
+      },
     },
   },
   ...loadReadyVideoAssets(),

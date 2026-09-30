@@ -3,6 +3,7 @@ import {
   parseVideoContentPackage,
   validateVideoContentPackage,
 } from "./copy-validate";
+import { formatThreadsVideoCaption } from "./threads-caption";
 import type { VideoAsset } from "./types";
 
 /**
@@ -24,12 +25,40 @@ export function loadReadyVideoAssets(
       );
     }
 
+    const hasEnabledPlatformDestination = Boolean(
+      contentPackage.platforms.instagram?.targets?.some((t) => t.enabled) ||
+      contentPackage.platforms.facebook?.targets?.some((t) => t.enabled) ||
+      contentPackage.platforms.youtube?.targets?.some((t) => t.enabled)
+    );
+
+    const threadsConfig =
+      contentPackage.platforms.threads &&
+      Array.isArray(contentPackage.platforms.threads.targets) &&
+      contentPackage.platforms.threads.targets.length > 0
+        ? contentPackage.platforms.threads
+        : {
+            targets: [
+              {
+                targetId: "threads-main",
+                caption: formatThreadsVideoCaption({
+                  message:
+                    contentPackage.platforms.facebook?.targets[0]?.message ||
+                    contentPackage.platforms.instagram?.targets[0]?.caption,
+                }),
+                enabled: hasEnabledPlatformDestination,
+              },
+            ],
+          };
+
     return [
       {
         id: contentPackage.id,
         sourceUrl: contentPackage.source.sourceUrl,
         enabled: true,
-        platforms: contentPackage.platforms,
+        platforms: {
+          ...contentPackage.platforms,
+          threads: threadsConfig,
+        },
       },
     ];
   });

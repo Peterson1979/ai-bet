@@ -82,14 +82,18 @@ function validateTargets(
     if (!isPlatform(platform)) {
       errors.push({
         path: `${path}.platform`,
-        message: "must be instagram, facebook, or youtube",
+        message: "must be instagram, facebook, youtube, or threads",
       });
     }
     if (typeof enabled !== "boolean") {
       errors.push({ path: `${path}.enabled`, message: "must be a boolean" });
     }
 
-    if (platform === "instagram" || platform === "facebook") {
+    if (
+      platform === "instagram" ||
+      platform === "facebook" ||
+      platform === "threads"
+    ) {
       validateEnvReference(candidate, "accountIdEnv", path, errors);
       validateEnvReference(candidate, "accessTokenEnv", path, errors);
       if (
@@ -242,6 +246,15 @@ function validatePlatformConfig(params: {
           message: "is required when Facebook destination is enabled",
         });
       }
+    } else if (platform === "threads") {
+      if (typeof candidate.caption !== "string") {
+        errors.push({ path: `${targetPath}.caption`, message: "must be a string" });
+      } else if (candidate.enabled === true && candidate.caption.trim() === "") {
+        errors.push({
+          path: `${targetPath}.caption`,
+          message: "is required when Threads destination is enabled",
+        });
+      }
     } else {
       if (typeof candidate.title !== "string") {
         errors.push({ path: `${targetPath}.title`, message: "must be a string" });
@@ -320,6 +333,9 @@ export function validateVideoSocialConfiguration(
     }
 
     for (const platform of VIDEO_SOCIAL_PLATFORMS) {
+      if (platform === "threads" && candidate.platforms[platform] === undefined) {
+        continue;
+      }
       validatePlatformConfig({
         platform,
         value: candidate.platforms[platform],

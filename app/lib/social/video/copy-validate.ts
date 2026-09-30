@@ -163,6 +163,15 @@ const PackageSchema = z
             }).strict()
           ),
         }).strict(),
+        threads: z.object({
+          targets: z.array(
+            z.object({
+              targetId: z.string(),
+              caption: z.string(),
+              enabled: z.boolean(),
+            }).strict()
+          ),
+        }).strict().optional(),
       })
       .strict(),
     generation: z
