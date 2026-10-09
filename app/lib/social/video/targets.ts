@@ -137,3 +137,17 @@ export function resolveVideoTargets(
     threads: resolveTargetsForPlatform(asset, "threads", targets),
   };
 }
+
+export function allTargetsForAsset(
+  asset: VideoAsset,
+  targets: readonly SocialTarget[]
+): SocialTarget[] {
+  const resolved = resolveVideoTargets(asset, targets);
+  return [
+    ...resolved.instagram,
+    ...resolved.facebook,
+    ...resolved.youtube,
+    ...resolved.threads,
+  ];
+}
+

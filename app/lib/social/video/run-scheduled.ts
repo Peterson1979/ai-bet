@@ -28,7 +28,7 @@ import {
   saveTargetPublicationState,
   saveVideoRun,
 } from "./state";
-import { resolveVideoTargets, VIDEO_SOCIAL_TARGETS } from "./targets";
+import { allTargetsForAsset, VIDEO_SOCIAL_TARGETS } from "./targets";
 import type {
   SafeProviderError,
   SocialTarget,
@@ -90,19 +90,6 @@ export type ScheduledVideoSocialResult = {
 };
 
 const ACTIVE_RUN_SLOT = "scheduled:active";
-
-function allTargetsForAsset(
-  asset: VideoAsset,
-  targets: readonly SocialTarget[]
-): SocialTarget[] {
-  const resolved = resolveVideoTargets(asset, targets);
-  return [
-    ...resolved.instagram,
-    ...resolved.facebook,
-    ...resolved.youtube,
-    ...resolved.threads,
-  ];
-}
 
 function summary(state: VideoTargetPublicationState) {
   return {
@@ -397,6 +384,13 @@ export async function runScheduledVideoSocial(
           asset!.id,
           Number.isFinite(timestamp) ? timestamp : nowMs
         );
+        console.log(`[video-social-run] ${target.platform} published successfully`, {
+          runId: run!.runId,
+          videoId: asset!.id,
+          targetId: target.id,
+          postId: latest.postId ?? latest.providerMediaId,
+          publishedAt: latest.publishedAt,
+        });
         return { ok: true as const, state: latest, providerCalled: true };
       } catch (error) {
         const secrets: string[] = [];
@@ -472,6 +466,13 @@ export async function runScheduledVideoSocial(
     updatedAt: new Date(dependencies.now?.() ?? Date.now()).toISOString(),
   };
   await saveRun(run);
+  console.log("[video-social-run] scheduled run completed", {
+    runId: run.runId,
+    videoId: asset.id,
+    status,
+    successfulTargets: successful.map((s) => s.state.targetId),
+    totalTargets: results.length,
+  });
 
   return {
     status:

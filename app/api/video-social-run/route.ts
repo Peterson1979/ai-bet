@@ -20,7 +20,10 @@ import {
   type ScheduledVideoSocialResult,
 } from "@/app/lib/social/video/run-scheduled";
 import { readVideoLastSuccessHistory } from "@/app/lib/social/video/state";
-import { VIDEO_SOCIAL_TARGETS } from "@/app/lib/social/video/targets";
+import {
+  allTargetsForAsset,
+  VIDEO_SOCIAL_TARGETS,
+} from "@/app/lib/social/video/targets";
 import type { VideoLastSuccessHistory } from "@/app/lib/social/video/types";
 import { validateVideoSocialConfiguration } from "@/app/lib/social/video/validate";
 
@@ -93,6 +96,7 @@ export async function handleVideoSocialRun(
   }
 
   if (modeConfig.mode === "disabled") {
+    console.log("[video-social-run] skipped: video social publishing is disabled");
     return Response.json({
       ok: true,
       mode: "disabled",
@@ -112,6 +116,7 @@ export async function handleVideoSocialRun(
     };
 
     if (intent.intent === "canary") {
+      console.log("[video-social-run] live canary run executing", intent);
       const runLiveCanary =
         dependencies.runLiveCanary ??
         ((canaryIntent) =>
@@ -120,6 +125,7 @@ export async function handleVideoSocialRun(
       return Response.json(result.body, { status: result.status });
     }
 
+    console.log("[video-social-run] live scheduled run executing");
     const runLiveScheduled =
       dependencies.runLiveScheduled ??
       (() => runScheduledVideoSocial({ environment }));
@@ -147,12 +153,17 @@ export async function handleVideoSocialRun(
 
   try {
     const nowMs = dependencies.now?.() ?? Date.now();
+    const eligibleManifest = VIDEO_MANIFEST.filter(
+      (candidate) =>
+        candidate.enabled &&
+        allTargetsForAsset(candidate, VIDEO_SOCIAL_TARGETS).length > 0
+    );
     const readHistory =
       dependencies.readHistory ?? readVideoLastSuccessHistory;
     const history = await readHistory(
-      VIDEO_MANIFEST.map((asset) => asset.id)
+      eligibleManifest.map((asset) => asset.id)
     );
-    const selection = selectLeastRecentlyUsedVideo(VIDEO_MANIFEST, history, {
+    const selection = selectLeastRecentlyUsedVideo(eligibleManifest, history, {
       nowMs,
       cooldownMs: VIDEO_SOCIAL_COOLDOWN_MS,
     });

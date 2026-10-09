@@ -18,6 +18,7 @@ import {
   buildWhySignalSummary,
   resetPersistentDailyCredits,
 } from "@/app/lib/odds";
+import { runScheduledVideoSocial } from "@/app/lib/social/video/run-scheduled";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -612,6 +613,33 @@ export async function GET(request: Request) {
       };
     }
 
+    let videoSocialRun: {
+      ok: boolean;
+      status: number;
+      body: unknown;
+    } | null = null;
+
+    try {
+      const videoResult = await runScheduledVideoSocial({
+        environment: process.env,
+      });
+      videoSocialRun = {
+        ok: videoResult.status >= 200 && videoResult.status < 300,
+        status: videoResult.status,
+        body: videoResult.body,
+      };
+    } catch (error) {
+      console.error("[daily-run] video-social-run error:", error);
+      videoSocialRun = {
+        ok: false,
+        status: 500,
+        body: {
+          error:
+            error instanceof Error ? error.message : "video-social-run failed",
+        },
+      };
+    }
+
     return Response.json({
       success: true,
       stored: true,
@@ -625,6 +653,7 @@ export async function GET(request: Request) {
         healthySports: newHealthyCount,
       },
       socialRun,
+      videoSocialRun,
     });
   } catch (error) {
     console.error("[daily-run] Error:", error);
