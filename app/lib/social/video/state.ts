@@ -245,9 +245,17 @@ export async function getVideoRun(slot: string) {
 
 export async function saveVideoRun(record: VideoRunRecord) {
   const redis = await getSharedRedis();
-  return redis.set(VIDEO_SOCIAL_KEYS.run(record.slot), record, {
-    ex: DETAIL_RECORD_TTL_SECONDS,
-  });
+  const keys = [VIDEO_SOCIAL_KEYS.run(record.slot)];
+  if (record.runId && record.runId !== record.slot) {
+    keys.push(VIDEO_SOCIAL_KEYS.run(record.runId));
+  }
+  return Promise.all(
+    keys.map((key) =>
+      redis.set(key, record, {
+        ex: DETAIL_RECORD_TTL_SECONDS,
+      })
+    )
+  );
 }
 
 export async function getTargetPublicationState(

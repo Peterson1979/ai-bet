@@ -106,6 +106,153 @@ function summary(state: VideoTargetPublicationState) {
   };
 }
 
+export const SCHEDULED_RUN_MAX_RETRY_AGE_MS = 24 * 60 * 60 * 1000;
+export const SCHEDULED_RUN_MAX_TARGET_ATTEMPTS = 3;
+
+export type ActiveRunEvaluation =
+  | { action: "resume"; asset: VideoAsset; targets: SocialTarget[] }
+  | { action: "retire"; retiredRun: VideoRunRecord; reason: string }
+  | { action: "invalid"; error: string };
+
+export async function evaluateActiveRun(params: {
+  run: VideoRunRecord;
+  manifest: readonly VideoAsset[];
+  targets: readonly SocialTarget[];
+  nowMs: number;
+  maxRetryAgeMs?: number;
+  maxTargetAttempts?: number;
+  getPublicationState: (
+    runId: string,
+    platform: any,
+    targetId: string
+  ) => Promise<VideoTargetPublicationState | null>;
+}): Promise<ActiveRunEvaluation> {
+  const {
+    run,
+    manifest,
+    targets,
+    nowMs,
+    maxRetryAgeMs = SCHEDULED_RUN_MAX_RETRY_AGE_MS,
+    maxTargetAttempts = SCHEDULED_RUN_MAX_TARGET_ATTEMPTS,
+    getPublicationState,
+  } = params;
+
+  if (run.intent !== "scheduled") {
+    return { action: "invalid", error: "active run is not a scheduled run" };
+  }
+
+  if (run.status === "published") {
+    return {
+      action: "retire",
+      retiredRun: run,
+      reason: "already_fully_published",
+    };
+  }
+
+  const asset = manifest.find((candidate) => candidate.id === run.videoId);
+  if (!asset) {
+    return {
+      action: "retire",
+      retiredRun: {
+        ...run,
+        status:
+          run.status === "partially_published" ? "partially_published" : "failed",
+        updatedAt: new Date(nowMs).toISOString(),
+      },
+      reason: "asset_not_in_manifest",
+    };
+  }
+
+  const enabled = new Map(
+    allTargetsForAsset(asset, targets).map((target) => [target.id, target])
+  );
+  const selectedTargets = run.targetIds.flatMap((targetId) => {
+    const target = enabled.get(targetId);
+    return target ? [target] : [];
+  });
+
+  if (selectedTargets.length !== run.targetIds.length) {
+    return {
+      action: "retire",
+      retiredRun: {
+        ...run,
+        status:
+          run.status === "partially_published" ? "partially_published" : "failed",
+        updatedAt: new Date(nowMs).toISOString(),
+      },
+      reason: "incomplete scheduled run no longer matches enabled targets",
+    };
+  }
+
+  const runCreatedAtMs = run.createdAt ? Date.parse(run.createdAt) : NaN;
+  const isStale =
+    !Number.isFinite(runCreatedAtMs) || nowMs - runCreatedAtMs > maxRetryAgeMs;
+
+  const targetStates = await Promise.all(
+    selectedTargets.map(async (target) => {
+      const state = await getPublicationState(
+        run.runId,
+        target.platform,
+        target.id
+      );
+      return { target, state };
+    })
+  );
+
+  const publishedCount = targetStates.filter(
+    ({ state }) => state?.status === "published"
+  ).length;
+
+  if (publishedCount === selectedTargets.length) {
+    return {
+      action: "retire",
+      retiredRun: {
+        ...run,
+        status: "published",
+        updatedAt: new Date(nowMs).toISOString(),
+      },
+      reason: "all_targets_already_published",
+    };
+  }
+
+  const uncompleted = targetStates.filter(
+    ({ state }) => state?.status !== "published"
+  );
+
+  const allUncompletedTerminal =
+    uncompleted.length > 0 &&
+    uncompleted.every(({ state }) => {
+      if (!state) return false;
+      if (state.status === "failed") {
+        if (state.error && state.error.retryable === false) return true;
+        if (state.attempts >= maxTargetAttempts) return true;
+      }
+      return false;
+    });
+
+  if (isStale || allUncompletedTerminal) {
+    const finalStatus =
+      publishedCount > 0 ? "partially_published" : "failed";
+    return {
+      action: "retire",
+      retiredRun: {
+        ...run,
+        status: finalStatus,
+        updatedAt: new Date(nowMs).toISOString(),
+      },
+      reason: isStale
+        ? "stale_run_exceeded_retry_window"
+        : "all_uncompleted_targets_terminal",
+    };
+  }
+
+  return {
+    action: "resume",
+    asset,
+    targets: selectedTargets,
+  };
+}
+
 export async function runScheduledVideoSocial(
   dependencies: ScheduledVideoSocialDependencies = {}
 ): Promise<ScheduledVideoSocialResult> {
@@ -178,34 +325,91 @@ export async function runScheduledVideoSocial(
 
   const getRun = dependencies.getRun ?? getVideoRun;
   const saveRun = dependencies.saveRun ?? saveVideoRun;
+  const getPublicationState =
+    dependencies.getPublicationState ?? getTargetPublicationState;
+  const savePublicationState =
+    dependencies.savePublicationState ?? saveTargetPublicationState;
+  const recordTargetSuccess =
+    dependencies.recordTargetSuccess ?? recordSuccessfulTargetUse;
+  const recordGlobalSuccess =
+    dependencies.recordGlobalSuccess ?? recordSuccessfulVideoUse;
+
   let run = await getRun(ACTIVE_RUN_SLOT);
   let asset: VideoAsset | undefined;
   let selectedTargets: SocialTarget[] = [];
 
-  if (run && run.intent === "scheduled" && run.status !== "published") {
-    asset = manifest.find((candidate) => candidate.id === run!.videoId);
-    if (asset) {
-      const enabled = new Map(
-        allTargetsForAsset(asset, targets).map((target) => [target.id, target])
-      );
-      selectedTargets = run.targetIds.flatMap((targetId) => {
-        const target = enabled.get(targetId);
-        return target ? [target] : [];
+  if (run) {
+    const evaluation = await evaluateActiveRun({
+      run,
+      manifest,
+      targets,
+      nowMs,
+      getPublicationState,
+    });
+
+    if (evaluation.action === "resume") {
+      asset = evaluation.asset;
+      selectedTargets = evaluation.targets;
+    } else if (evaluation.action === "retire") {
+      console.warn("[video-social-run] retiring active run", {
+        runId: evaluation.retiredRun.runId,
+        videoId: evaluation.retiredRun.videoId,
+        status: evaluation.retiredRun.status,
+        reason: evaluation.reason,
       });
-    }
-    if (!asset || selectedTargets.length !== run.targetIds.length) {
+      await saveRun(evaluation.retiredRun);
+
+      if (
+        evaluation.retiredRun.status === "published" ||
+        evaluation.retiredRun.status === "partially_published"
+      ) {
+        const targetStates = await Promise.all(
+          evaluation.retiredRun.targetIds.map(async (targetId) => {
+            const target = targets.find((t) => t.id === targetId);
+            if (!target) return null;
+            return getPublicationState(
+              evaluation.retiredRun.runId,
+              target.platform,
+              target.id
+            );
+          })
+        );
+        const publishedTimestamps = targetStates
+          .filter(
+            (state): state is VideoTargetPublicationState =>
+              state?.status === "published"
+          )
+          .map((state) =>
+            state.publishedAt ? Date.parse(state.publishedAt) : nowMs
+          )
+          .filter((t) => Number.isFinite(t));
+
+        const maxPublishedAt =
+          publishedTimestamps.length > 0
+            ? Math.max(...publishedTimestamps)
+            : nowMs;
+
+        await recordGlobalSuccess(
+          evaluation.retiredRun.videoId,
+          maxPublishedAt
+        );
+      }
+      run = null;
+    } else {
       return {
         status: 409,
         body: {
           ok: false,
           mode: "live",
           intent: "scheduled",
-          error: "incomplete scheduled run no longer matches enabled targets",
+          error: evaluation.error,
           providerCallsMade: false,
         },
       };
     }
-  } else {
+  }
+
+  if (!run) {
     const eligibleManifest = manifest.filter(
       (candidate) =>
         candidate.enabled && allTargetsForAsset(candidate, targets).length > 0
@@ -249,6 +453,10 @@ export async function runScheduledVideoSocial(
     await saveRun(run);
   }
 
+  if (!asset || !run) {
+    throw new TypeError("invariant violation: scheduled asset and run must be defined");
+  }
+
   // Re-run fail-closed credential/copy preflight on both new runs and resumes.
   const invalidPreflight = selectedTargets
     .map((target) =>
@@ -285,12 +493,6 @@ export async function runScheduledVideoSocial(
     };
   }
 
-  const getPublicationState =
-    dependencies.getPublicationState ?? getTargetPublicationState;
-  const savePublicationState =
-    dependencies.savePublicationState ?? saveTargetPublicationState;
-  const recordTargetSuccess =
-    dependencies.recordTargetSuccess ?? recordSuccessfulTargetUse;
   const nowIso = new Date(nowMs).toISOString();
   run = { ...run, status: "publishing", updatedAt: nowIso };
   await saveRun(run);
